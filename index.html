@@ -1891,6 +1891,23 @@
     });
   }
 
+  function warehouseMatch(itemWarehouse, filterWh, rowDepartments = []){
+    if (!filterWh) return true;
+    if (itemWarehouse === filterWh) return true;
+    // H9 Warehouse logic: In Kingdee, H1 and H9 lines share the H9 workshop/warehouse supply chain.
+    // When filtering for H9 warehouse (H9 Assembly-Workshop Warehouse or H9), items used by H1 or H9 assembly lines are included.
+    const isH9Filter = filterWh === 'H9 Assembly-Workshop Warehouse' || /^H9(\b|_|-|\s)/i.test(filterWh) || filterWh.includes('H9');
+    if (isH9Filter) {
+      if (Array.isArray(rowDepartments) && rowDepartments.some(d => {
+        const norm = normalizeDepartmentName(d).toLowerCase();
+        return norm.includes('h1') || norm.includes('h9');
+      })) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   function getDepartmentOverridesMap(){
     const map = new Map();
     if (Array.isArray(window.DEPARTMENT_OVERRIDES)) {
@@ -2520,8 +2537,20 @@
       safetyDept.innerHTML=stockOptions;
       if([...safetyDept.options].some(o=>o.value===selSafety))safetyDept.value=selSafety;
     }
-    const warehouses=[...new Set(db.inventory.map(x=>x.warehouse).filter(Boolean))].sort();const w=el('warehouseFilter'),old=w.value;w.innerHTML='<option value="">📦 ทุกคลังสินค้า</option>'+warehouses.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');if(warehouses.includes(old))w.value=old;
-    const safetyWh=el('safetyWarehouseFilter');if(safetyWh){const selWh=safetyWh.value;safetyWh.innerHTML='<option value="">ทุกคลังสินค้า</option>'+warehouses.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');if(warehouses.includes(selWh))safetyWh.value=selWh;}
+    const warehouses=[...new Set(db.inventory.map(x=>x.warehouse).filter(Boolean))].sort();
+    const whOptionsHtml = warehouses.map(x => {
+      const label = (x === 'H9 Assembly-Workshop Warehouse') ? `${esc(x)} (คลัง H9 / H1)` : esc(x);
+      return `<option value="${esc(x)}">${label}</option>`;
+    }).join('');
+    const w=el('warehouseFilter'),old=w.value;
+    w.innerHTML='<option value="">📦 ทุกคลังสินค้า</option>'+whOptionsHtml;
+    if(warehouses.includes(old))w.value=old;
+    const safetyWh=el('safetyWarehouseFilter');
+    if(safetyWh){
+      const selWh=safetyWh.value;
+      safetyWh.innerHTML='<option value="">ทุกคลังสินค้า</option>'+whOptionsHtml;
+      if(warehouses.includes(selWh))safetyWh.value=selWh;
+    }
     updatePageTitle();
   }
   function selectedPlan(){return db.plans.filter(x=>x.modelCode&&n(x.quantity)>0)}
@@ -3209,7 +3238,21 @@
     ensureStockRowsCache();const q=(el('stockSearch').value||'').trim().toLocaleLowerCase(),wh=el('warehouseFilter').value,dept=el('stockDept').value;
     const lastInventoryImport=[...(db.imports||[])].filter(x=>x.type==='inventory').sort((a,b)=>(Date.parse(b.at)||0)-(Date.parse(a.at)||0))[0];
     const snapshotAt=db.settings.lastInventoryAt||lastInventoryImport?.at||db.inventory.find(x=>x.importedAt)?.importedAt||'';
-    const rows=stockRowsCache.filter(row=>{const item=row.item,globalMatch=(!wh||item.warehouse===wh)&&(!dept||row.departments.includes(dept)||deptMatch(row.departments, dept))&&(!q||row.searchText.includes(q))&&(!stockCodeQuickSearch||row.values.materialCode.toLocaleLowerCase().includes(stockCodeQuickSearch));const columnMatch=Object.entries(stockValueFilters).every(([key,selected])=>selected.includes(row.values[key]));return globalMatch&&columnMatch});stockFilteredCount=rows.length;
+    const rows=stockRowsCache.filter(row=>{
+      const item=row.item;
+      const globalMatch=warehouseMatch(item.warehouse, wh, row.departments)
+        &&(!dept||row.departments.includes(dept)||deptMatch(row.departments, dept))
+        &&(!q||row.searchText.includes(q))
+        &&(!stockCodeQuickSearch||row.values.materialCode.toLocaleLowerCase().includes(stockCodeQuickSearch));
+      const columnMatch=Object.entries(stockValueFilters).every(([key,selected])=>{
+        if (key === 'warehouse') {
+          return selected.some(selWh => warehouseMatch(row.values.warehouse, selWh, row.departments));
+        }
+        return selected.includes(row.values[key]);
+      });
+      return globalMatch&&columnMatch;
+    });
+    stockFilteredCount=rows.length;
     const totalPages=Math.max(1,Math.ceil(rows.length/stockPageSize));stockPage=Math.min(stockPage,totalPages);const startIndex=(stockPage-1)*stockPageSize,pageRows=rows.slice(startIndex,startIndex+stockPageSize),visibleFrom=rows.length?startIndex+1:0,visibleTo=Math.min(startIndex+stockPageSize,rows.length);
     el('stockCount').textContent=fmt(rows.length)+(stockViewMode==='grouped'?' รายการแยกคลัง':' แถว')+' · '+fmt(new Set(rows.map(row=>row.item.materialCode)).size)+' Part';
     const materials=new Set(rows.map(row=>String(row.item.materialCode||'').trim()).filter(Boolean)),missingDept=new Set(rows.filter(row=>!row.departments.length).map(row=>String(row.item.materialCode||'').trim()).filter(Boolean));
@@ -3555,12 +3598,12 @@
     let filtered = rowsWithHealth.filter(r => {
       if(q && !r.searchText.includes(q)) return false;
       if(dept && !deptMatch(r.departments, dept)) return false;
-      if(wh && !r.warehouses.includes(wh)) return false;
+      if(wh && !r.warehouses.some(itemWh => warehouseMatch(itemWh, wh, r.departments))) return false;
       if(safetyStatus !== 'all' && r.health.status !== safetyStatus) return false;
 
       if(safetyValueFilters.specification && !safetyValueFilters.specification.includes(r.specification || '—')) return false;
       if(safetyValueFilters.department && !r.departments.some(d => safetyValueFilters.department.includes(d) || safetyValueFilters.department.some(f => deptMatch([d], f))) && !(r.departments.length === 0 && safetyValueFilters.department.includes('รอระบุแผนก'))) return false;
-      if(safetyValueFilters.warehouse && !r.warehouses.some(w => safetyValueFilters.warehouse.includes(w)) && !(r.warehouses.length === 0 && safetyValueFilters.warehouse.includes('—'))) return false;
+      if(safetyValueFilters.warehouse && !r.warehouses.some(w => safetyValueFilters.warehouse.some(selWh => warehouseMatch(w, selWh, r.departments))) && !(r.warehouses.length === 0 && safetyValueFilters.warehouse.includes('—'))) return false;
       if(safetyValueFilters.stockHealth && !safetyValueFilters.stockHealth.includes(r.health.label)) return false;
       if(safetyValueFilters.unit && !safetyValueFilters.unit.includes(r.unit || '—')) return false;
 
