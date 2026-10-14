@@ -33,81 +33,90 @@
     .model-opt-item.selected{background:#e6f5f3}
     .model-opt-item:last-child{border-bottom:none}
 
-    /* Minimalist Topbar & Action Elements */
+    /* Cute & Minimalist Topbar Layout */
     .topbar {
-      height: 58px !important;
-      background: rgba(255, 255, 255, 0.94) !important;
-      border-bottom: 1px solid #e2e8f0 !important;
+      height: 56px !important;
+      background: rgba(255, 255, 255, 0.95) !important;
+      border-bottom: 1px solid #edf2f7 !important;
       display: flex !important;
       align-items: center !important;
       justify-content: space-between !important;
-      padding: 0 24px !important;
+      padding: 0 18px !important;
       position: sticky !important;
       top: 0 !important;
       z-index: 50 !important;
-      backdrop-filter: blur(12px) !important;
-      -webkit-backdrop-filter: blur(12px) !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
     }
     .crumb {
-      font-size: 13.5px !important;
+      font-size: 13px !important;
       color: #64748b !important;
       display: flex !important;
       align-items: center !important;
-      gap: 7px !important;
+      gap: 6px !important;
       white-space: nowrap !important;
       flex-shrink: 0 !important;
     }
     .crumb b {
       color: #0f172a !important;
-      font-size: 16px !important;
+      font-size: 15.5px !important;
       font-weight: 700 !important;
+      letter-spacing: -0.2px !important;
       margin-left: 0 !important;
     }
     .top-actions {
       display: flex !important;
       align-items: center !important;
-      gap: 7px !important;
-      flex-wrap: wrap !important;
+      gap: 6px !important;
+      flex-wrap: nowrap !important; /* CRITICAL: Never wrap into second line */
+      flex-shrink: 0 !important;
     }
     .top-vdiv {
       width: 1px;
-      height: 20px;
+      height: 18px;
       background: #e2e8f0;
       margin: 0 2px;
+      flex-shrink: 0;
     }
     .sync-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 11px;
-      border-radius: 20px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      font-size: 12px;
-      color: #475569;
-      max-width: 360px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #f0fdfa;
+      border: 1px solid #ccfbf1;
+      font-size: 11.5px;
+      font-weight: 550;
+      color: #0f766e;
+      max-width: 160px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      flex-shrink: 1;
     }
     .sync-pill:hover {
-      background: #f1f5f9;
-      border-color: #cbd5e1;
+      background: #e6fffa;
+      border-color: #99f6e4;
+      max-width: 280px;
+      box-shadow: 0 2px 8px rgba(13, 148, 136, 0.12);
     }
     .sync-dot {
-      width: 7px;
-      height: 7px;
+      width: 6.5px;
+      height: 6.5px;
       border-radius: 50%;
       background: #10b981;
-      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
       flex-shrink: 0;
     }
     .btn-clean {
-      height: 33px !important;
-      padding: 0 11px !important;
-      border-radius: 7px !important;
-      font-size: 12.5px !important;
+      height: 31px !important;
+      padding: 0 10px !important;
+      border-radius: 20px !important; /* Cute soft pill */
+      font-size: 12px !important;
       font-weight: 600 !important;
       border: 1px solid #e2e8f0 !important;
       background: #ffffff !important;
@@ -115,77 +124,85 @@
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      gap: 5px !important;
+      gap: 4px !important;
       cursor: pointer !important;
-      transition: all 0.15s ease !important;
+      transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1) !important;
       white-space: nowrap !important;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
       line-height: 1 !important;
+      flex-shrink: 0 !important;
     }
     .btn-clean:hover {
       background: #f8fafc !important;
       border-color: #cbd5e1 !important;
       color: #0f172a !important;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05) !important;
     }
     .btn-clean:active {
-      transform: scale(0.98);
+      transform: translateY(0);
     }
     .btn-clean-primary {
-      background: #0f766e !important;
-      border-color: #0f766e !important;
+      background: linear-gradient(135deg, #0d9488, #0f766e) !important;
+      border-color: #0d9488 !important;
       color: #ffffff !important;
-      box-shadow: 0 1px 3px rgba(15, 118, 110, 0.22) !important;
+      box-shadow: 0 2px 6px rgba(13, 148, 136, 0.25) !important;
     }
     .btn-clean-primary:hover {
-      background: #115e59 !important;
-      border-color: #115e59 !important;
+      background: linear-gradient(135deg, #0f766e, #115e59) !important;
       color: #ffffff !important;
+      box-shadow: 0 4px 10px rgba(13, 148, 136, 0.35) !important;
     }
     .btn-clean-icon {
-      width: 33px !important;
+      width: 31px !important;
+      height: 31px !important;
       padding: 0 !important;
+      border-radius: 50% !important; /* Cute circle icon button */
     }
     .btn-clean-danger {
-      color: #dc2626 !important;
-      border-color: #fee2e2 !important;
-      background: #fff !important;
+      color: #e11d48 !important;
+      border-color: #fecdd3 !important;
+      background: #fff5f5 !important;
     }
     .btn-clean-danger:hover {
-      background: #fef2f2 !important;
-      border-color: #fecaca !important;
+      background: #ffe4e6 !important;
+      border-color: #fda4af !important;
+      color: #be123c !important;
     }
     .user-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      padding: 2px 9px;
+      gap: 5px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 2px 8px 2px 6px;
       border-radius: 20px;
-      font-size: 12px;
-      color: #166534;
-      height: 31px;
+      font-size: 11.5px;
+      color: #334155;
+      height: 29px;
+      flex-shrink: 0;
     }
     .user-dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: #16a34a;
+      background: #10b981;
+      flex-shrink: 0;
     }
     .user-name {
       font-weight: 600;
-      max-width: 90px;
+      max-width: 65px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
     .role-badge {
-      background: #dcfce7;
-      color: #15803d;
-      font-size: 10px;
+      background: #e2e8f0;
+      color: #475569;
+      font-size: 9.5px;
       font-weight: 700;
       padding: 1px 5px;
-      border-radius: 4px;
+      border-radius: 10px;
       text-transform: uppercase;
     }
     .badge-mini {
@@ -199,6 +216,26 @@
       background: #fef3c7;
       color: #92400e;
       border: 1px solid #fde68a;
+    }
+    @media (max-width: 1350px) {
+      .sync-pill {
+        max-width: 115px;
+      }
+      .user-name {
+        max-width: 55px;
+      }
+    }
+    @media (max-width: 1220px) {
+      .crumb span:first-child, .crumb span:nth-child(2) {
+        display: none;
+      }
+      .sync-pill span:last-child {
+        display: none;
+      }
+      .sync-pill {
+        padding: 5px;
+        max-width: 24px;
+      }
     }
     /* Sticky Sidebar Navigation */
     .sidebar {
@@ -599,7 +636,7 @@
         </div>
         
         <button class="btn-clean btn-clean-primary" id="autoFetchKingdeeBtn" title="ดึงข้อมูล On-Hand สดจาก Kingdee ERP อัตโนมัติ">
-          <span>⚡</span> ดึง Kingdee (Auto)
+          <span>⚡</span> ดึง Kingdee
         </button>
         <button class="btn-clean" id="reloadBtn" title="โหลดข้อมูลซ้ำ">
           <span>↻</span> โหลดซ้ำ
@@ -1489,8 +1526,9 @@
         sourceRemote=true;
         lastSheetPullAt=new Date().toISOString();
         localStorage.setItem('onhandLastSheetPullAt',lastSheetPullAt);
-        el('syncState').textContent=`Google Sheets · ดึงเมื่อ ${time(lastSheetPullAt)}`;
-        el('reloadBtn').textContent='↻ โหลดจาก Google Sheets';
+        el('syncState').textContent=`Sheets · ${time(lastSheetPullAt)}`;
+        if(el('syncStateWrap')) el('syncStateWrap').title=`Google Sheets · ดึงข้อมูลเมื่อ ${time(lastSheetPullAt)}`;
+        el('reloadBtn').textContent='↻ โหลดซ้ำ';
         el('connectionNotice').classList.add('hidden');
         if((!db.departmentMap?.length || db.departmentMap.length === 0) && Array.isArray(window.DEPARTMENT_SEED?.rows)){
           db.departmentMap = structuredClone(window.DEPARTMENT_SEED.rows);
@@ -1539,15 +1577,17 @@
       }catch(err){
         sourceRemote=false;
         db=localDb();
-        el('syncState').textContent='Google Sheets เชื่อมต่อไม่ได้ · ตรวจสิทธิ์บัญชี';
-        el('reloadBtn').textContent='↻ โหลดจาก Google Sheets';
+        el('syncState').textContent='Sheets หลุด';
+        if(el('syncStateWrap')) el('syncStateWrap').title='Google Sheets เชื่อมต่อไม่ได้ · ตรวจสอบสิทธิ์บัญชี';
+        el('reloadBtn').textContent='↻ โหลดซ้ำ';
         console.error(err);
       }
     }else{
       sourceRemote=false;
       db=localDb();
-      el('syncState').textContent=db.inventory.length?'On-Hand snapshot ในเครื่อง · ยังไม่เชื่อม Google Sheets':'โหมดทดลองใน browser · ยังไม่เชื่อม Google Sheets';
-      el('reloadBtn').textContent='↻ โหลด snapshot On-Hand';
+      el('syncState').textContent=db.inventory.length?'Snapshot ในเครื่อง':'โหมดทดลอง';
+      if(el('syncStateWrap')) el('syncStateWrap').title=db.inventory.length?`On-Hand snapshot ในเครื่อง (${fmt(db.inventory.length)} แถว) · ยังไม่เชื่อม Google Sheets`:'โหมดทดลองใน browser · ยังไม่เชื่อม Google Sheets';
+      el('reloadBtn').textContent='↻ โหลดซ้ำ';
     }
     updateConnectionNotice();
     if(firstPageLoad){
@@ -4851,15 +4891,16 @@
     const isAdmin = u?.role === 'admin';
     accessIsAdmin = isAdmin;
 
-    if(el('topbarUserName')) el('topbarUserName').textContent = u ? (u.name || u.username) : '—';
+    if(el('topbarUserName')) el('topbarUserName').textContent = u ? (u.username === 'admin' ? 'Admin' : (u.name || u.username)) : '—';
     if(el('topbarUserRoleBadge')) {
       el('topbarUserRoleBadge').textContent = isAdmin ? 'Admin' : 'User';
-      el('topbarUserRoleBadge').className = isAdmin ? 'badge teal' : 'badge green';
+      el('topbarUserRoleBadge').className = isAdmin ? 'role-badge' : 'role-badge user';
     }
 
     const pendingCount = (db.users || []).filter(x => x.status === 'pending').length;
     if(el('pendingUsersBadge')){
-      el('pendingUsersBadge').textContent = `${pendingCount} รออนุมัติ`;
+      el('pendingUsersBadge').textContent = String(pendingCount);
+      el('pendingUsersBadge').title = `${pendingCount} คำขอรออนุมัติ`;
       el('pendingUsersBadge').classList.toggle('hidden', !isAdmin || pendingCount === 0);
     }
     if(el('sidebarPendingBadge')){
