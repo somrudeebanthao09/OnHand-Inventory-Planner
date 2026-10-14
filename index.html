@@ -678,7 +678,7 @@
         cursor: pointer !important;
       }
       .mobile-action-dropdown {
-        display: flex;
+        display: flex !important;
         flex-direction: column;
         position: absolute;
         top: 50px;
@@ -1299,6 +1299,9 @@
       background: #fee2e2;
       color: #991b1b;
     }
+    .hidden, [hidden], .btn-clean.hidden, button.hidden, .sidebar .nav button.hidden, .sidebar .nav button[hidden] {
+      display: none !important;
+    }
 </style>
 </head>
 <body>
@@ -1440,7 +1443,7 @@
       <button data-page="orders" style="display:flex;align-items:center"><span class="ico">📋</span><span class="nav-label">วิเคราะห์ Order ขาด</span><span id="orderShortageBadge" class="badge red hidden" style="margin-left:auto;padding:2px 7px;font-size:11px">0</span></button>
       <button data-page="stock"><span class="ico">▤</span><span class="nav-label">คลังทั้งหมด</span></button>
       <button data-page="safety"><span class="ico">◇</span><span class="nav-label">Safety stock</span></button>
-      <button data-page="imports"><span class="ico">⇧</span><span class="nav-label">นำเข้าข้อมูล</span></button>
+      <button data-page="imports" id="sidebarImportsBtn"><span class="ico">⇧</span><span class="nav-label">นำเข้าข้อมูล</span></button>
       <button data-page="users" id="sidebarUsersBtn" style="display:flex;align-items:center"><span class="ico">👥</span><span class="nav-label">จัดการสมาชิก</span><span id="sidebarPendingBadge" class="badge amber hidden" style="margin-left:auto;padding:1px 6px;font-size:10.5px">0</span></button>
       <button data-page="settings"><span class="ico">⚙</span><span class="nav-label">ตั้งค่า</span></button>
     </nav>
@@ -4300,12 +4303,13 @@
     closeMobileSidebar();
     closeMobileActionDropdown();
     const cu = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
-    if(page === 'users' && (!cu || cu.role !== 'admin')) page = 'overview';
-    activePage=page;document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===`page-${page}`));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page||(page==='lot'&&x.dataset.page==='stock')));updatePageTitle();if(page==='compare'){renderPlanList();renderAnalysis()}if(page==='stock')renderStock();if(page==='safety')renderSafety();if(page==='lot')renderLotDetailPage();if(page==='orders')renderOrdersPage();if(page==='users')renderUsersPage();updateStockHScroll();updateSafetyHScroll()}
+    if((page === 'users' || page === 'imports') && (!cu || cu.role !== 'admin')) page = 'overview';
+    activePage=page;document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===`page-${page}`));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page||(page==='lot'&&x.dataset.page==='stock')));updatePageTitle();if(page==='compare'){renderPlanList();renderAnalysis()}if(page==='stock')renderStock();if(page==='safety')renderSafety();if(page==='lot')renderLotDetailPage();if(page==='orders')renderOrdersPage();if(page==='users')renderUsersPage();if(page==='imports')renderImports();updateStockHScroll();updateSafetyHScroll()}
   function updatePageTitle(){const labels={overview:'ภาพรวม',compare:'จำลองแผนผลิต',orders:'วิเคราะห์ Order ขาด',stock:'คลังทั้งหมด',safety:'Safety stock',imports:'นำเข้าข้อมูล',settings:'ตั้งค่า',lot:'รายละเอียด Lot',users:'จัดการสมาชิกและอนุมัติ'};el('pageTitle').textContent=labels[activePage]||''}
   let currentLotMaterial='',lotReturnPage='stock',currentLotWarehouse='';
   function openLotDetailPage(materialCode,warehouse='',fromPage=activePage){if(!materialCode)return;if(fromPage!=='lot')lotReturnPage=fromPage;currentLotMaterial=String(materialCode).trim();currentLotWarehouse=String(warehouse||'').trim();renderLotDetailPage(currentLotMaterial,currentLotWarehouse);goto('lot');window.scrollTo({top:0,behavior:'smooth'})}
   window.openLotDetailPage = openLotDetailPage;
+  window.goto = goto;
   function returnFromLotDetail(){goto(lotReturnPage||'stock')}
   function renderLotDetailPage(code=currentLotMaterial,warehouse=currentLotWarehouse){
     if(code)currentLotMaterial=String(code).trim();code=currentLotMaterial;if(!code)return;
@@ -6002,6 +6006,19 @@
       el('sidebarUsersBtn').classList.toggle('hidden', !isAdmin);
     }
 
+    // Toggle Data Import controls based on admin role
+    if(el('quickImportBtn')){
+      el('quickImportBtn').classList.toggle('hidden', !isAdmin);
+    }
+    if(el('sidebarImportsBtn')){
+      el('sidebarImportsBtn').classList.toggle('hidden', !isAdmin);
+    }
+    document.querySelectorAll('button[data-page="imports"]').forEach(b => b.classList.toggle('hidden', !isAdmin));
+    document.querySelectorAll('button[data-goto="imports"]').forEach(b => b.classList.toggle('hidden', !isAdmin));
+    if(el('uploadPmlBtn')){
+      el('uploadPmlBtn').classList.toggle('hidden', !isAdmin);
+    }
+
     // Sync mobile menu user profile & badges
     if(el('mobileMenuUserName')) el('mobileMenuUserName').textContent = u ? (u.username === 'admin' ? 'Admin' : (u.name || u.username)) : '—';
     if(el('mobileMenuUserRole')) {
@@ -6014,6 +6031,14 @@
     }
     if(el('mobileActionMembersBtn')){
       el('mobileActionMembersBtn').classList.toggle('hidden', !isAdmin);
+    }
+    if(el('mobileActionImportBtn')){
+      el('mobileActionImportBtn').classList.toggle('hidden', !isAdmin);
+    }
+
+    // Guard active page if not admin
+    if((activePage === 'imports' || activePage === 'users') && !isAdmin){
+      goto('overview');
     }
   }
 
