@@ -720,8 +720,32 @@
         border-radius: 12px !important;
       }
       .modal-kpi-grid {
-        grid-template-columns: 1fr !important;
-        gap: 6px !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 5px !important;
+        margin-bottom: 8px !important;
+      }
+      .modal-kpi-grid > div {
+        padding: 6px 8px !important;
+        border-radius: 8px !important;
+      }
+      .modal-kpi-grid > div > div:first-child {
+        font-size: 9px !important;
+        line-height: 1.15 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+      .modal-kpi-grid > div > strong {
+        font-size: 13.5px !important;
+        margin-top: 1px !important;
+      }
+      .modal-kpi-grid > div > span:last-child {
+        font-size: 8.5px !important;
+        line-height: 1.15 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        display: block !important;
       }
 
       /* Stock & Safety Summary Cards on mobile */
@@ -1685,6 +1709,7 @@
         </div>
         <p id="orderModalMaterialName" style="color:#0f172a;font-size:13.5px;font-weight:600;margin:0 0 2px">—</p>
         <p id="orderModalMaterialSub" style="color:#64748b;font-size:11.5px;margin:0">สเปก: — · หน่วย: — · แผนกที่ใช้: —</p>
+        <div id="orderModalPartTypeRow" style="margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap"></div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
         <button id="orderModalViewLotBtn" class="btn soft" type="button" style="font-size:11.5px;height:30px;padding:0 11px;border-radius:16px;display:inline-flex;align-items:center;gap:4px" title="ไปดูตำแหน่งจัดเก็บและ Lot ในคลังสินค้า">
@@ -1732,7 +1757,7 @@
           <tr style="background:#f8fafc;border-bottom:1px solid #e2e8f0">
             <th style="width:36px;text-align:center;padding:7px 6px;font-size:11px;font-weight:650;color:#475569">#</th>
             <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">เลขที่ Order (MO)</th>
-            <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">สินค้าสำเร็จรูป (Product)</th>
+            <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">รุ่นที่ผลิต / รายละเอียดสินค้า (Model / Description)</th>
             <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">แผนก</th>
             <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">สถานะงาน</th>
             <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">สถานะเบิก</th>
@@ -1772,6 +1797,7 @@
         </div>
         <p id="moModalProductName" style="color:#0f172a;font-size:13.5px;font-weight:600;margin:0 0 2px">—</p>
         <p id="moModalSub" style="color:#64748b;font-size:11.5px;margin:0">แผนก: — · สถานะงาน: — · สถานะเบิก: — · วันที่ต้องการ: —</p>
+        <div id="moModalModelRelationRow" style="margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap"></div>
       </div>
       <button id="moModalCloseBtn" class="btn" type="button" style="width:30px;height:30px;padding:0;border-radius:50%;font-size:13px;display:grid;place-items:center;border-color:#e2e8f0;color:#64748b" aria-label="ปิด">✕</button>
     </div>
@@ -2403,6 +2429,72 @@
     }
     return [...m.values()].sort((a,b)=>(a.name||a.code).localeCompare(b.name||b.code, undefined, {numeric: true, sensitivity: 'base'}));
   };
+
+  // === BOM Model Relationship Helpers (Common Part / Dedicated / Parent FG) ===
+  let bomPartToModelsCache = null;
+  let bomProductToParentsCache = null;
+
+  function invalidateBomModelRelations() {
+    bomPartToModelsCache = null;
+    bomProductToParentsCache = null;
+  }
+
+  function initBomModelRelations() {
+    bomPartToModelsCache = new Map();
+    bomProductToParentsCache = new Map();
+
+    const bomRows = (db.bom && db.bom.length) ? db.bom : (window.BOM_SEED?.rows || []);
+    for (const b of bomRows) {
+      const mat = String(b.materialCode || '').trim();
+      const model = String(b.modelCode || '').trim();
+      const modelName = String(b.modelName || b.modelCode || '').trim();
+      const dept = String(b.department || '').trim();
+
+      if (mat && model) {
+        // Material -> Direct models using it
+        if (!bomPartToModelsCache.has(mat)) bomPartToModelsCache.set(mat, new Map());
+        bomPartToModelsCache.get(mat).set(model, { modelCode: model, modelName, department: dept });
+
+        // Sub-assembly / Product -> Parent models
+        if (!bomProductToParentsCache.has(mat)) bomProductToParentsCache.set(mat, new Map());
+        bomProductToParentsCache.get(mat).set(model, { modelCode: model, modelName, department: dept });
+      }
+    }
+  }
+
+  function getModelsUsingPart(materialCode) {
+    if (!bomPartToModelsCache) initBomModelRelations();
+    const map = bomPartToModelsCache.get(String(materialCode || '').trim());
+    return map ? Array.from(map.values()) : [];
+  }
+
+  function getParentModelsForProduct(productCode) {
+    if (!bomProductToParentsCache) initBomModelRelations();
+    const map = bomProductToParentsCache.get(String(productCode || '').trim());
+    return map ? Array.from(map.values()) : [];
+  }
+
+  function getTopFinishedGoodsForProduct(productCode, depth = 0, visited = new Set()) {
+    const code = String(productCode || '').trim();
+    if (!code || depth > 5 || visited.has(code)) return [];
+    visited.add(code);
+    const directParents = getParentModelsForProduct(code);
+    if (!directParents.length) return [];
+
+    const results = [];
+    for (const p of directParents) {
+      const grandParents = getTopFinishedGoodsForProduct(p.modelCode, depth + 1, new Set(visited));
+      if (grandParents.length > 0) {
+        results.push(...grandParents);
+      } else {
+        results.push(p);
+      }
+    }
+    const unique = new Map();
+    results.forEach(r => unique.set(r.modelCode, r));
+    return Array.from(unique.values());
+  }
+
   const activeDepts=()=>{
     const active = db.settings.activeDepts || DEPTS;
     const all = allProductionDepartments();
@@ -3821,7 +3913,7 @@
     }else{
       data=rows.map(r=>({department:String(readMapped(r,p,'department')).trim(),modelCode:String(readMapped(r,p,'modelCode')).trim(),modelName:String(readMapped(r,p,'modelName')).trim(),materialCode:String(readMapped(r,p,'materialCode')).trim(),materialName:String(readMapped(r,p,'materialName')).trim(),qtyPer:n(readMapped(r,p,'qtyPer')),unit:String(readMapped(r,p,'unit')).trim(),source:p.fileName,importedAt:stamp})).filter(x=>x.department&&x.modelCode&&x.materialCode);
       const unknown=[...new Set(data.map(x=>x.department).filter(x=>!DEPTS.includes(x)))];if(unknown.length){showError(`ไฟล์มีแผนกนอกขอบเขตที่กำหนด: ${unknown.join(', ')} กรุณากรองเฉพาะ H9 Assembly Production Line หรือ Assembly Production Line ก่อนนำเข้า`,'พบแผนกนอกขอบเขต');return}if(!data.length){showError('ไม่พบ BOM ที่มีแผนก รหัส Model และรหัส Part ครบ');return}
-      const depts=new Set(data.map(x=>x.department));db.bom=db.bom.filter(x=>!depts.has(x.department)).concat(data);db.settings.lastBomAt=stamp;
+      const depts=new Set(data.map(x=>x.department));db.bom=db.bom.filter(x=>!depts.has(x.department)).concat(data);db.settings.lastBomAt=stamp;invalidateBomModelRelations();
     }
     db.imports.push({type:p.type,filename:p.fileName,count:data.length,department:p.type==='bom'?[...new Set(data.map(x=>x.department))].join(', '):'',at:stamp});pendingImport=null;el('mappingPanel').classList.add('hidden');el(p.type==='inventory'?'stockFile':'bomFile').value='';
     if(p.type==='inventory'&&hasGoogle()){
@@ -4648,6 +4740,16 @@
 
     const rowsHtml = pageRows.map((mo, idx) => {
       const rowNum = startIdx + idx + 1;
+      const prodCode = String(mo.productCode || '').trim();
+      const parentFGs = getTopFinishedGoodsForProduct(prodCode);
+      const directParents = getParentModelsForProduct(prodCode);
+      const relatedFGs = parentFGs.length ? parentFGs : directParents;
+      let parentFgLine = '';
+      if (relatedFGs.length > 0) {
+        const fgNames = relatedFGs.map(p => esc(p.modelName || p.modelCode)).slice(0, 2).join(' / ');
+        const moreCount = relatedFGs.length > 2 ? ` +${relatedFGs.length - 2}` : '';
+        parentFgLine = `<div style="font-size:10px;color:#0284c7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2;margin-top:1px" title="ประกอบเป็นรุ่นหลัก: ${relatedFGs.map(p => esc(p.modelName || p.modelCode)).join(', ')}">↳ รุ่นหลัก: ${fgNames}${moreCount}</div>`;
+      }
 
       if (mo.isFinished) {
         return `<tr style="cursor:pointer;background:#f8fafc;color:#64748b;opacity:0.88" onclick="if(!event.target.closest('button')) window.appOpenMoDetail('${esc(mo.moNumber)}')">
@@ -4660,6 +4762,7 @@
           </td>
           <td style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:9px 6px" title="${esc(mo.productName || '—')}">
             <strong style="font-size:12.5px;color:#64748b">${esc(mo.productName || '—')}</strong>
+            ${parentFgLine}
           </td>
           <td style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:9px 6px" title="${esc(mo.department || '—')}">
             <span class="badge gray" style="font-size:11px;max-width:100%;overflow:hidden;text-overflow:ellipsis;display:inline-block;vertical-align:middle;background:#e2e8f0;color:#64748b">${esc(mo.department || '—')}</span>
@@ -4698,6 +4801,7 @@
         </td>
         <td style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:9px 6px" title="${esc(mo.productName || '—')}">
           <strong style="font-size:12.5px">${esc(mo.productName || '—')}</strong>
+          ${parentFgLine}
         </td>
         <td style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:9px 6px" title="${esc(mo.department || '—')}">
           <span class="badge gray" style="font-size:11px;max-width:100%;overflow:hidden;text-overflow:ellipsis;display:inline-block;vertical-align:middle">${esc(mo.department || '—')}</span>
@@ -4821,6 +4925,27 @@
     el('orderModalMaterialName').textContent = m.materialName || '—';
     el('orderModalMaterialSub').innerHTML = `<strong>สเปก:</strong> ${esc(m.specification || '—')} · <strong>หน่วย:</strong> ${esc(m.unit || '—')} · <strong>แผนก:</strong> ${esc(m.department || '—')}`;
 
+    const bomModels = getModelsUsingPart(m.materialCode);
+    const isCommon = bomModels.length > 1;
+    const modelBadge = bomModels.length === 0
+      ? '<span class="badge gray" style="font-size:10px;padding:2px 7px">🎯 ไม่พบใน BOM</span>'
+      : (isCommon
+          ? `<span class="badge blue" style="font-size:10px;padding:2px 7px;font-weight:700" title="ใช้ร่วมใน ${bomModels.length} รุ่น">🔗 Common Part (ใช้ร่วม ${bomModels.length} รุ่น)</span>`
+          : `<span class="badge gray" style="font-size:10px;padding:2px 7px;font-weight:600" title="เฉพาะรุ่น: ${esc(bomModels[0]?.modelName || '')}">🎯 เฉพาะรุ่น: ${esc(bomModels[0]?.modelName || '')}</span>`
+        );
+
+    let modelsHtml = '';
+    if (bomModels.length > 0) {
+      const modelPills = bomModels.map(x => `<span class="badge" style="background:#f1f5f9;color:#334155;font-size:10px;padding:1px 6px;border:1px solid #e2e8f0;font-weight:600" title="${esc(x.modelCode)}: ${esc(x.modelName)}">${esc(x.modelName || x.modelCode)}</span>`).slice(0, 4).join(' ');
+      const moreText = bomModels.length > 4 ? `<span style="font-size:10.5px;color:#64748b;font-weight:600">+ อีก ${bomModels.length - 4} รุ่น</span>` : '';
+      modelsHtml = `<div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:11px;color:#475569"><span style="color:#64748b;font-weight:600">รุ่นที่ใช้ Part นี้ใน BOM:</span> ${modelPills} ${moreText}</div>`;
+    }
+
+    const typeRow = el('orderModalPartTypeRow');
+    if (typeRow) {
+      typeRow.innerHTML = `${modelBadge} ${modelsHtml}`;
+    }
+
     el('orderModalStatusBadge').textContent = m.isShortage ? '🔴 ขาดสต็อก' : '🟢 เพียงพอ';
     el('orderModalStatusBadge').className = m.isShortage ? 'badge red' : 'badge green';
 
@@ -4884,6 +5009,9 @@
       return;
     }
 
+    const partModels = getModelsUsingPart(currentDetailMaterialCode);
+    const isPartCommon = partModels.length > 1;
+
     const rowsHtml = displayOrders.map((ord, idx) => {
       let stBadge = '';
       if (ord.orderFulfillmentStatus === 'SUFFICIENT') {
@@ -4898,15 +5026,39 @@
         ? `<strong style="color:var(--red);font-size:12px">-${fmtQty(ord.orderShortageQty)}</strong>`
         : '<span style="color:#15803d;font-size:11.5px">0</span>';
 
+      const prodCode = String(ord.productCode || '').trim();
+      const prodName = String(ord.productName || '—').trim();
+      const parentFGs = getTopFinishedGoodsForProduct(prodCode);
+      const directParents = getParentModelsForProduct(prodCode);
+      const relatedFGs = parentFGs.length ? parentFGs : directParents;
+      let parentFgHtml = '';
+      if (relatedFGs.length > 0) {
+        const fgNames = relatedFGs.map(p => esc(p.modelName || p.modelCode)).slice(0, 2).join(' / ');
+        const moreCount = relatedFGs.length > 2 ? ` +${relatedFGs.length - 2} รุ่น` : '';
+        parentFgHtml = `<div style="margin-top:3px;font-size:10px;color:#0369a1;background:#f0f9ff;border:1px solid #bae6fd;border-radius:4px;padding:2px 6px;line-height:1.3" title="ประกอบเป็นรุ่นหลัก: ${relatedFGs.map(p => esc(p.modelName || p.modelCode)).join(', ')}">↳ <strong>ประกอบเป็นรุ่นหลัก:</strong> ${fgNames}${moreCount}</div>`;
+      } else {
+        parentFgHtml = `<div style="margin-top:2px;font-size:9.5px;color:#15803d;font-weight:600">🏷️ สินค้าสำเร็จรูป (FG)</div>`;
+      }
+
+      const partRoleBadge = isPartCommon
+        ? `<span class="badge" style="background:#e0f2fe;color:#0369a1;font-size:9px;padding:1px 5px;font-weight:600" title="Common Part: ใช้ร่วม ${partModels.length} รุ่น">🔗 Common</span>`
+        : (partModels.length === 1
+            ? `<span class="badge" style="background:#f1f5f9;color:#64748b;font-size:9px;padding:1px 5px;font-weight:600" title="เฉพาะรุ่น: ${esc(partModels[0]?.modelName || '')}">🎯 เฉพาะรุ่น</span>`
+            : '');
+
       return `<tr style="transition:background 0.15s;border-bottom:1px solid #edf2f7">
         <td style="width:36px;text-align:center;color:#94a3b8;font-size:11px;padding:6px 6px">${idx + 1}</td>
         <td style="padding:6px 8px">
           <strong class="code" style="color:var(--teal);cursor:pointer;font-size:11.5px" onclick="window.appOpenMoDetail('${esc(ord.moNumber)}')">${esc(ord.moNumber)}</strong>
         </td>
         <td style="padding:6px 8px">
-          <div style="max-width:240px;white-space:normal">
-            <span class="sub" style="font-family:monospace;font-size:10.5px;display:block;color:#64748b">${esc(ord.productCode || '')}</span>
-            <strong style="font-size:11.5px;font-weight:600;color:#0f172a;line-height:1.25">${esc(ord.productName || '—')}</strong>
+          <div style="max-width:280px;white-space:normal">
+            <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+              <span class="sub" style="font-family:monospace;font-size:10.5px;color:#64748b">${esc(prodCode)}</span>
+              ${partRoleBadge}
+            </div>
+            <strong style="font-size:11.5px;font-weight:600;color:#0f172a;line-height:1.25;display:block">${esc(prodName)}</strong>
+            ${parentFgHtml}
           </div>
         </td>
         <td style="padding:6px 8px"><span class="badge gray" style="font-size:10.5px;padding:2px 6px">${esc(ord.department || '—')}</span></td>
@@ -4935,6 +5087,22 @@
     el('moModalMoNumber').textContent = mo.moNumber;
     el('moModalProductName').textContent = `${mo.productCode} · ${mo.productName || '—'}`;
     el('moModalSub').textContent = `แผนก: ${mo.department || '—'} · สถานะงาน: ${mo.taskStatus || '—'} · สถานะเบิก: ${mo.pickStatus || '—'} · วันที่ต้องการ: ${mo.requiredTime || '—'}`;
+
+    // Model Relation & FG display
+    const moProdCode = String(mo.productCode || '').trim();
+    const parentFGs = getTopFinishedGoodsForProduct(moProdCode);
+    const directParents = getParentModelsForProduct(moProdCode);
+    const relatedFGs = parentFGs.length ? parentFGs : directParents;
+    const moModelRow = el('moModalModelRelationRow');
+    if (moModelRow) {
+      if (relatedFGs.length > 0) {
+        const fgPills = relatedFGs.map(x => `<span class="badge" style="background:#e0f2fe;color:#0369a1;font-size:10px;padding:2px 7px;border:1px solid #bae6fd;font-weight:600" title="${esc(x.modelCode)}: ${esc(x.modelName)}">${esc(x.modelName || x.modelCode)}</span>`).slice(0, 4).join(' ');
+        const moreCount = relatedFGs.length > 4 ? `<span style="font-size:10.5px;color:#0369a1;font-weight:600">+ อีก ${relatedFGs.length - 4} รุ่น</span>` : '';
+        moModelRow.innerHTML = `<span class="badge blue" style="font-size:10px;padding:2px 7px;font-weight:700">🧩 ชิ้นส่วนประกอบ (Sub-Assembly)</span> <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:11px;color:#0369a1"><span style="color:#0284c7;font-weight:600">↳ ประกอบเป็นรุ่นหลัก (FG):</span> ${fgPills} ${moreCount}</div>`;
+      } else {
+        moModelRow.innerHTML = `<span class="badge green" style="font-size:10px;padding:2px 7px;font-weight:700">🏷️ สินค้าสำเร็จรูป (Finished Goods - FG)</span> <span style="font-size:11px;color:#15803d;font-weight:600">ผลิตเป็นสินค้าตัวหลักโดยตรง</span>`;
+      }
+    }
 
     el('moModalTotalParts').textContent = `${mo.totalParts} รายการ`;
     el('moModalShortageParts').textContent = `${mo.missingParts} รายการ`;
@@ -5023,6 +5191,14 @@
         ? `<strong style="color:var(--red);font-size:12px">-${fmtQty(it.orderShortageQty)}</strong>`
         : '<span style="color:#15803d;font-size:11.5px">0</span>';
 
+      const partModels = getModelsUsingPart(it.materialCode);
+      const isCommon = partModels.length > 1;
+      const commonBadge = isCommon
+        ? `<span class="badge" style="background:#e0f2fe;color:#0369a1;font-size:9.5px;padding:1px 5px;font-weight:600" title="Common Part: ใช้ร่วม ${partModels.length} รุ่น (${partModels.map(m=>esc(m.modelName||m.modelCode)).join(', ')})">🔗 Common (${partModels.length} รุ่น)</span>`
+        : (partModels.length === 1
+            ? `<span class="badge" style="background:#f1f5f9;color:#64748b;font-size:9.5px;padding:1px 5px;font-weight:600" title="เฉพาะรุ่น: ${esc(partModels[0].modelName||partModels[0].modelCode)}">🎯 เฉพาะรุ่น</span>`
+            : '');
+
       return `<tr ${mo.isFinished ? 'style="background:#f8fafc;color:#64748b;border-bottom:1px solid #edf2f7"' : 'style="border-bottom:1px solid #edf2f7"'}>
         <td style="width:36px;text-align:center;color:#94a3b8;font-size:11px;padding:6px 6px">${idx + 1}</td>
         <td style="padding:6px 8px">
@@ -5031,7 +5207,12 @@
             <button class="btn soft" type="button" style="padding:1px 6px;font-size:10.5px;height:22px;border-radius:11px" onclick="el('moDetailModal').classList.remove('show');window.appOpenLotDetail('${esc(it.materialCode)}')" title="ดู Lot ในคลัง">📦 Lot</button>
           </div>
         </td>
-        <td style="padding:6px 8px"><strong style="font-size:11.5px;font-weight:600;color:${mo.isFinished ? '#64748b' : '#0f172a'}">${esc(it.materialName || '—')}</strong></td>
+        <td style="padding:6px 8px">
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <strong style="font-size:11.5px;font-weight:600;color:${mo.isFinished ? '#64748b' : '#0f172a'}">${esc(it.materialName || '—')}</strong>
+            ${commonBadge}
+          </div>
+        </td>
         <td style="padding:6px 8px"><span style="font-size:11px;color:${mo.isFinished ? '#64748b' : '#475569'}">${esc(it.specification || '—')}</span></td>
         <td style="padding:6px 8px;font-size:11.5px;color:#64748b">${esc(it.unit || '—')}</td>
         <td class="num" style="padding:6px 8px;font-size:11.5px">${fmtQty(it.demandQty)}</td>
