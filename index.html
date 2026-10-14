@@ -339,6 +339,101 @@
       to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
+    /* Safety Standard Policy Interactive Tabs */
+    .safety-policy-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+      transition: all 0.2s ease;
+    }
+    .safety-policy-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .safety-policy-tabs-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 8px;
+      padding-bottom: 2px;
+    }
+    .safety-policy-tabs {
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+      min-width: max-content;
+    }
+    .safety-policy-tab {
+      border: 1px solid #d5dfe4;
+      background: #ffffff;
+      padding: 5px 13px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      user-select: none;
+      white-space: nowrap;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+    .safety-policy-tab:hover {
+      border-color: #94a3b8;
+      background: #f1f5f9;
+      transform: translateY(-1px);
+    }
+    .safety-policy-tab.active[data-tab="min"] {
+      background: #fef2f2 !important;
+      color: #b91c1c !important;
+      border-color: #f87171 !important;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(239, 68, 68, 0.18);
+    }
+    .safety-policy-tab.active[data-tab="normal"] {
+      background: #f0fdf4 !important;
+      color: #15803d !important;
+      border-color: #4ade80 !important;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(34, 197, 94, 0.18);
+    }
+    .safety-policy-tab.active[data-tab="max"] {
+      background: #faf5ff !important;
+      color: #7e22ce !important;
+      border-color: #c084fc !important;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(168, 85, 247, 0.18);
+    }
+    .safety-policy-tab.active[data-tab="calc"] {
+      background: #e6f5f3 !important;
+      color: #087e78 !important;
+      border-color: #2dd4bf !important;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(8, 126, 120, 0.18);
+    }
+    .safety-policy-detail {
+      margin-top: 10px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      line-height: 1.55;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      animation: policyFadeIn 0.18s ease-out;
+    }
+    @keyframes policyFadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* ==========================================================
        Mobile Responsive System (สำหรับสมาร์ทโฟนและแท็บเล็ต)
        รองรับทั้ง Desktop (PC เดิม 100%) และ Mobile Version สวยงาม
@@ -812,6 +907,37 @@
       }
       .plan-header-row {
         display: none !important;
+      }
+
+      /* Safety Standard Policy Tabs on Mobile */
+      .safety-policy-box {
+        padding: 9px 11px !important;
+        margin-bottom: 12px !important;
+      }
+      .safety-policy-head {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 6px !important;
+      }
+      .safety-policy-hint {
+        display: none !important;
+      }
+      .safety-policy-tabs-wrap {
+        margin-top: 6px !important;
+      }
+      .safety-policy-tabs {
+        gap: 6px !important;
+      }
+      .safety-policy-tab {
+        flex-shrink: 0 !important;
+        font-size: 12px !important;
+        padding: 4px 10px !important;
+      }
+      .safety-policy-detail {
+        padding: 8px 10px !important;
+        font-size: 12px !important;
       }
     }
 
@@ -1345,31 +1471,25 @@
           </div>
         </div>
 
-        <div id="safetyInfoBox" class="panel" style="background:#f8fafc;border:1px solid #cbd5e1;padding:16px 20px;margin-bottom:18px;border-radius:10px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-            <strong style="font-size:15px;color:#1e293b;display:flex;align-items:center;gap:6px">
-              <span>📊</span> มาตรฐานการควบคุมระดับสินค้าคงคลัง (Inventory Level Standard Policy)
-            </strong>
-            <button type="button" id="safetyInfoCloseBtn" style="background:none;border:none;color:#64748b;font-size:16px;cursor:pointer;padding:2px 6px" title="ปิดกล่องแนะนำ">✕</button>
+        <div id="safetyInfoBox" class="panel safety-policy-box">
+          <div class="safety-policy-head">
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="font-size:13.5px;font-weight:700;color:#1e293b;display:inline-flex;align-items:center;gap:6px">
+                <span>📊</span> มาตรฐานควบคุมระดับสต็อก (Standard Policy)
+              </span>
+              <span class="safety-policy-hint" style="font-size:12px;color:var(--muted)">(คลิกแท็บเพื่อดูรายละเอียด)</span>
+            </div>
+            <button type="button" id="safetyInfoCloseBtn" class="btn soft" style="font-size:12px;padding:2px 8px;height:26px;border-radius:6px;border:1px solid #cbd5e1;color:#64748b" title="ซ่อนแถบเกณฑ์มาตรฐาน">✕ ซ่อน</button>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));gap:14px;font-size:13px;line-height:1.55">
-            <div style="background:#fff;padding:12px 14px;border-radius:8px;border:1px solid #e2e8f0;border-left:4px solid #ef4444">
-              <strong style="color:#b91c1c;display:block;margin-bottom:4px">🔴 ขั้นต่ำ / Min (Safety Stock)</strong>
-              <span>ระดับสต็อกกันชนสำรองฉุกเฉิน ป้องกันความเสี่ยง Lead time ส่งช้าหรือของเสีย หากยอดพร้อมใช้ <strong>ต่ำกว่า Min</strong> ถือว่า <span class="badge red" style="padding:2px 6px">วิกฤต/ต้องสั่งเพิ่มด่วน</span></span>
-            </div>
-            <div style="background:#fff;padding:12px 14px;border-radius:8px;border:1px solid #e2e8f0;border-left:4px solid #10b981">
-              <strong style="color:#047857;display:block;margin-bottom:4px">🟢 ระดับพอดี (Normal / Optimal Range)</strong>
-              <span>เมื่อยอดพร้อมใช้อยู่ระหว่าง <strong>Min ถึง Max</strong> สต็อกมีความสมดุล ปลอดภัยสำหรับการผลิตต่อเนื่องโดยไม่ก่อให้เกิดภาระคลัง <span class="badge green" style="padding:2px 6px">สต็อกสมดุล</span></span>
-            </div>
-            <div style="background:#fff;padding:12px 14px;border-radius:8px;border:1px solid #e2e8f0;border-left:4px solid #8b5cf6">
-              <strong style="color:#6d28d9;display:block;margin-bottom:4px">🟣 เพดานสูงสุด / Max (Overstock Limit)</strong>
-              <span>เพดานสต็อกสูงสุดที่ไม่ควรให้เกิน เพื่อป้องกันเงินจมและพื้นที่คลังล้น หากยอดพร้อมใช้ <strong>สูงกว่า Max</strong> ถือว่า <span class="badge purple" style="padding:2px 6px">สต็อกล้น/ควรชะลอสั่ง</span></span>
-            </div>
-            <div style="background:#fff;padding:12px 14px;border-radius:8px;border:1px solid #e2e8f0;border-left:4px solid #087e78">
-              <strong style="color:#087e78;display:block;margin-bottom:4px">🛡️ ฐานข้อมูลที่ใช้คำนวณ (Available 🛡️)</strong>
-              <span>คิดจาก <strong>ยอดพร้อมใช้จริง</strong> (On-Hand ลบ ยอดจอง) และ <u>ไม่นับรวมคลังงานเสีย/เศษซาก (Defective &amp; Scrap Warehouse)</u> เพื่อให้ได้ตัวเลขที่นำไปผลิตได้จริง 100%</span>
+          <div class="safety-policy-tabs-wrap">
+            <div class="safety-policy-tabs" id="safetyPolicyTabs">
+              <button type="button" class="safety-policy-tab" data-tab="min" title="คลิกเพื่อดูรายละเอียดสต็อกขั้นต่ำ">🔴 ขั้นต่ำ / Min (Safety Stock)</button>
+              <button type="button" class="safety-policy-tab" data-tab="normal" title="คลิกเพื่อดูรายละเอียดระดับพอดี">🟢 พอดี / Normal (Optimal)</button>
+              <button type="button" class="safety-policy-tab" data-tab="max" title="คลิกเพื่อดูรายละเอียดเพดานสต็อก">🟣 เพดาน / Max (Overstock)</button>
+              <button type="button" class="safety-policy-tab" data-tab="calc" title="คลิกเพื่อดูสูตรและคลังที่ใช้คำนวณ">🛡️ ฐานข้อมูลคำนวณ</button>
             </div>
           </div>
+          <div id="safetyPolicyDetail" class="safety-policy-detail hidden"></div>
         </div>
 
         <div id="safetyMetricsWrap" class="cards" style="grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));gap:12px;margin-bottom:18px"></div>
@@ -6234,8 +6354,128 @@
   el('safetyPageSize')?.addEventListener('change',e=>{safetyPageSize=Number(e.target.value)||100;safetyPage=1;renderSafety()});
   el('safetyPrevPage')?.addEventListener('click',()=>{if(safetyPage>1){safetyPage--;renderSafety()}});
   el('safetyNextPage')?.addEventListener('click',()=>{const total=Math.ceil(allMaterials().length/safetyPageSize);if(safetyPage<total){safetyPage++;renderSafety()}});
-  el('safetyInfoToggleBtn')?.addEventListener('click',()=>{const b=el('safetyInfoBox');if(b)b.classList.toggle('hidden')});
-  el('safetyInfoCloseBtn')?.addEventListener('click',()=>{const b=el('safetyInfoBox');if(b)b.classList.add('hidden')});
+  const SAFETY_POLICY_INFO = {
+    min: {
+      title: '🔴 ขั้นต่ำ / Min (Safety Stock)',
+      badgeClass: 'badge red',
+      badgeText: 'วิกฤต / ต้องสั่งด่วน',
+      tagText: '🛡️ ป้องกันไลน์ช็อต',
+      borderColor: '#ef4444',
+      bgGrad: 'linear-gradient(to right, #fef2f2, #ffffff)',
+      desc: 'ระดับสต็อกกันชนสำรองฉุกเฉิน ป้องกันความเสี่ยงกรณี Supplier ส่งช้าหรือมีชิ้นส่วนเสียจากการผลิต',
+      rule: 'หากยอดพร้อมใช้ <strong>Available &lt; Min</strong> → ระบบจะแจ้งเตือนสถานะสีแดง และแนะนำให้สั่งเติมด่วน',
+      tip: 'แนะนำฝ่ายจัดซื้อ/วางแผนเร่งเปิด PO หรือติดตาม Supplier ทันที และตรวจสอบยอดจองของแผนก'
+    },
+    normal: {
+      title: '🟢 ระดับพอดี / Normal (Optimal Range)',
+      badgeClass: 'badge green',
+      badgeText: 'สต็อกสมดุล',
+      tagText: '✨ พร้อมผลิตต่อเนื่อง',
+      borderColor: '#10b981',
+      bgGrad: 'linear-gradient(to right, #f0fdf4, #ffffff)',
+      desc: 'เมื่อยอดพร้อมใช้อยู่ระหว่าง <strong>Min ถึง Max</strong> สต็อกมีความสมดุล ปลอดภัยสำหรับการผลิตต่อเนื่อง',
+      rule: 'สถานะ <strong>สมดุล (Normal)</strong> ไม่เสี่ยงไลน์ช็อต และไม่ก่อให้เกิดภาระพื้นที่จัดเก็บหรือเงินจม',
+      tip: 'ผลิตและสั่งซื้อเติมสต็อกตามรอบแผนปกติ (Regular Cycle / Reorder Point)'
+    },
+    max: {
+      title: '🟣 เพดานสูงสุด / Max (Overstock Limit)',
+      badgeClass: 'badge purple',
+      badgeText: 'สต็อกล้นเพดาน',
+      tagText: '💰 ควบคุมเงินจม',
+      borderColor: '#8b5cf6',
+      bgGrad: 'linear-gradient(to right, #faf5ff, #ffffff)',
+      desc: 'เพดานสต็อกสูงสุดที่ไม่ควรให้เกิน เพื่อป้องกันเงินจม (Holding Cost) และไม่เปลืองพื้นที่คลังจัดเก็บ',
+      rule: 'หากยอดพร้อมใช้ <strong>Available &gt; Max</strong> → ถือว่าสต็อกล้นเพดาน ควรชะลอการสั่งซื้อ',
+      tip: 'ควรชะลอ PO ที่ยังไม่ถึงกำหนดส่ง หรือทบทวน Lot Size ในการสั่งให้สอดคล้องกับความต้องการจริง'
+    },
+    calc: {
+      title: '🛡️ ฐานข้อมูลและสูตรคำนวณ (Available Stock 🛡️)',
+      badgeClass: 'badge',
+      badgeStyle: 'background:#e6f5f3;color:#087e78;border:1px solid #bce3df',
+      badgeText: 'พร้อมใช้จริง 100%',
+      tagText: '🚫 ตัดคลังงานเสียออก',
+      borderColor: '#087e78',
+      bgGrad: 'linear-gradient(to right, #e6f5f3, #ffffff)',
+      desc: 'คิดจาก <strong>Available = ยอดคงคลัง On-Hand รวม ลบ ยอดจอง (Allocated)</strong> ตามแผนการผลิตจริง',
+      rule: '<u>ไม่นับรวมคลังงานเสียและเศษซาก</u> (Defective & Scrap Warehouse) เพื่อให้ได้ตัวเลขที่ใช้ผลิตจริงได้ 100%',
+      tip: 'เชื่อมโยงคลังอัตโนมัติ: เช่น กรองคลัง H9 จะรวมชิ้นส่วน H1 ใน Customer Material & Purchased Warehouse ให้อัตโนมัติ'
+    }
+  };
+
+  let activeSafetyPolicyTab = null;
+
+  function setSafetyPolicyTab(tabKey) {
+    const detailBox = el('safetyPolicyDetail');
+    const tabs = document.querySelectorAll('.safety-policy-tab');
+    if (!detailBox) return;
+
+    if (activeSafetyPolicyTab === tabKey) {
+      activeSafetyPolicyTab = null;
+      tabs.forEach(t => t.classList.remove('active'));
+      detailBox.classList.add('hidden');
+      detailBox.innerHTML = '';
+      return;
+    }
+
+    activeSafetyPolicyTab = tabKey;
+    tabs.forEach(t => {
+      if (t.dataset.tab === tabKey) t.classList.add('active');
+      else t.classList.remove('active');
+    });
+
+    const info = SAFETY_POLICY_INFO[tabKey];
+    if (!info) {
+      detailBox.classList.add('hidden');
+      return;
+    }
+
+    detailBox.innerHTML = `
+      <div style="border-left:4px solid ${info.borderColor};padding-left:12px;background:${info.bgGrad};border-radius:6px;padding:9px 13px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+              <strong style="font-size:13.5px;color:#1e293b">${info.title}</strong>
+              <span class="${info.badgeClass}" ${info.badgeStyle ? `style="${info.badgeStyle};padding:2px 7px;font-size:11px"` : 'style="padding:2px 7px;font-size:11px"'}>${info.badgeText}</span>
+              <span class="badge gray" style="padding:2px 7px;font-size:11px">${info.tagText}</span>
+            </div>
+            <div style="color:#334155;font-size:12.5px;line-height:1.45">${info.desc}</div>
+            <div style="color:#1e293b;font-size:12px;margin-top:1px"><strong>เกณฑ์:</strong> ${info.rule}</div>
+            <div style="color:#64748b;font-size:11.5px;display:flex;align-items:center;gap:5px;margin-top:1px">
+              <span>💡</span> <em>${info.tip}</em>
+            </div>
+          </div>
+          <button type="button" class="safety-detail-close-btn" style="background:none;border:none;color:#94a3b8;font-size:16px;cursor:pointer;padding:0 4px;line-height:1;border-radius:4px" title="ย่อเก็บ">✕</button>
+        </div>
+      </div>
+    `;
+    detailBox.classList.remove('hidden');
+
+    detailBox.querySelector('.safety-detail-close-btn')?.addEventListener('click', () => {
+      setSafetyPolicyTab(tabKey);
+    });
+  }
+
+  document.querySelectorAll('.safety-policy-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setSafetyPolicyTab(btn.dataset.tab);
+    });
+  });
+
+  el('safetyInfoToggleBtn')?.addEventListener('click', () => {
+    const b = el('safetyInfoBox');
+    if (!b) return;
+    if (b.classList.contains('hidden')) {
+      b.classList.remove('hidden');
+      if (!activeSafetyPolicyTab) setSafetyPolicyTab('min');
+    } else {
+      b.classList.add('hidden');
+    }
+  });
+
+  el('safetyInfoCloseBtn')?.addEventListener('click', () => {
+    const b = el('safetyInfoBox');
+    if (b) b.classList.add('hidden');
+  });
   document.querySelectorAll('.safety-status-tabs .safety-pill').forEach(btn=>{
     btn.addEventListener('click',()=>{setSafetyStatusFilter(btn.dataset.status);});
   });
