@@ -310,6 +310,35 @@
       color: #0f172a !important;
     }
 
+    /* Modal Backdrop & Dialog System (Centered & elevated above sidebar/topbar) */
+    .modal-backdrop {
+      position: fixed !important;
+      inset: 0 !important;
+      background: rgba(15, 23, 42, 0.55) !important;
+      backdrop-filter: blur(4px) !important;
+      -webkit-backdrop-filter: blur(4px) !important;
+      display: none !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 16px !important;
+      z-index: 9000 !important; /* CRITICAL: Must be above sidebar (25) and topbar (50) */
+    }
+    .modal-backdrop.show {
+      display: flex !important;
+    }
+    .modal {
+      background: #ffffff !important;
+      border-radius: 14px !important;
+      box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.06) !important;
+      border: 1px solid #e2e8f0 !important;
+      color: #0f172a !important;
+      animation: modalFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.97) translateY(6px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
     /* Security Auto-Lock Screen */
     .lock-screen-overlay {
       position: fixed;
@@ -1143,73 +1172,76 @@
 </div>
 
 <div class="modal-backdrop" id="orderDetailModal">
-  <div class="modal" style="width:min(1280px,96vw);max-height:92vh;display:flex;flex-direction:column;text-align:left;padding:24px">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-shrink:0;gap:12px">
+  <div class="modal" style="width:min(1100px,94vw);max-height:90vh;display:flex;flex-direction:column;text-align:left;padding:20px 22px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;flex-shrink:0;gap:12px">
       <div>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap">
-          <span class="badge red" id="orderModalStatusBadge" style="font-size:12px">🔴 ขาดสต็อก</span>
-          <h2 style="margin:0;font-size:19px;display:flex;align-items:center;gap:8px">
-            <span>Part:</span>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap">
+          <span class="badge red" id="orderModalStatusBadge" style="font-size:11px;padding:2px 8px;border-radius:12px">🔴 ขาดสต็อก</span>
+          <h2 style="margin:0;font-size:16px;font-weight:700;display:flex;align-items:center;gap:6px">
+            <span style="color:#64748b;font-weight:600">Part:</span>
             <span id="orderModalMaterialCode" style="color:var(--teal)">—</span>
           </h2>
         </div>
-        <p id="orderModalMaterialName" style="color:var(--ink);font-size:14.5px;font-weight:600;margin:0 0 3px">—</p>
-        <p id="orderModalMaterialSub" style="color:var(--muted);font-size:13px;margin:0">สเปก: — · หน่วย: — · แผนกที่ใช้: —</p>
+        <p id="orderModalMaterialName" style="color:#0f172a;font-size:13.5px;font-weight:600;margin:0 0 2px">—</p>
+        <p id="orderModalMaterialSub" style="color:#64748b;font-size:11.5px;margin:0">สเปก: — · หน่วย: — · แผนกที่ใช้: —</p>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
-        <button id="orderModalViewLotBtn" class="btn soft" type="button" style="font-size:13px;padding:7px 12px" title="ไปดูตำแหน่งจัดเก็บและ Lot ในคลังสินค้า">
+        <button id="orderModalViewLotBtn" class="btn soft" type="button" style="font-size:11.5px;height:30px;padding:0 11px;border-radius:16px;display:inline-flex;align-items:center;gap:4px" title="ไปดูตำแหน่งจัดเก็บและ Lot ในคลังสินค้า">
           📦 ดู Lot ในคลัง
         </button>
-        <button id="orderModalCloseBtn" class="btn" type="button" style="padding:5px 10px;font-size:14px" aria-label="ปิด">✕</button>
+        <button id="orderModalCloseBtn" class="btn" type="button" style="width:30px;height:30px;padding:0;border-radius:50%;font-size:13px;display:grid;place-items:center;border-color:#e2e8f0;color:#64748b" aria-label="ปิด">✕</button>
       </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;flex-shrink:0">
-      <div style="background:#f7f9f9;border:1px solid var(--line);border-radius:9px;padding:12px 16px">
-        <div style="color:var(--muted);font-size:12px">ต้องการใช้รวมทั้งหมด (Unissued Demand)</div>
-        <strong id="orderModalTotalDemand" style="font-size:22px;display:block;margin-top:2px">0</strong>
-        <span style="font-size:11.5px;color:var(--muted)">รวมทุก Order ที่เปิดอยู่</span>
+    <!-- 3 KPI Cards -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;flex-shrink:0">
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:9px 13px">
+        <div style="color:#64748b;font-size:11px;font-weight:600">ต้องการใช้รวมทั้งหมด (Unissued Demand)</div>
+        <strong id="orderModalTotalDemand" style="font-size:16.5px;font-weight:750;display:block;margin-top:2px;letter-spacing:-0.2px">0</strong>
+        <span style="font-size:10.5px;color:#94a3b8">รวมทุก Order ที่เปิดอยู่</span>
       </div>
-      <div style="background:#eaf6ef;border:1px solid #c2e5d0;border-radius:9px;padding:12px 16px">
-        <div style="color:#287a55;font-size:12px">คงเหลือพร้อมใช้ในคลัง (Available On-Hand)</div>
-        <strong id="orderModalAvailableStock" style="font-size:22px;color:#18794e;display:block;margin-top:2px">0</strong>
-        <span style="font-size:11.5px;color:#287a55">สต็อก On-Hand ล่าสุด</span>
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:9px 13px">
+        <div style="color:#166534;font-size:11px;font-weight:600">คงเหลือพร้อมใช้ในคลัง (Available On-Hand)</div>
+        <strong id="orderModalAvailableStock" style="font-size:16.5px;font-weight:750;color:#15803d;display:block;margin-top:2px;letter-spacing:-0.2px">0</strong>
+        <span style="font-size:10.5px;color:#16a34a">สต็อก On-Hand ล่าสุด</span>
       </div>
-      <div id="orderModalShortageBox" style="background:#fff0ef;border:1px solid #f4d5d2;border-radius:9px;padding:12px 16px">
-        <div id="orderModalShortageLabel" style="color:var(--red);font-size:12px">ขาดสุทธิ (Shortage Quantity)</div>
-        <strong id="orderModalShortageQty" style="font-size:22px;color:var(--red);display:block;margin-top:2px">0</strong>
-        <span id="orderModalShortageSub" style="font-size:11.5px;color:var(--red)">ไม่พอกับแผนการผลิต</span>
+      <div id="orderModalShortageBox" style="background:#fff1f2;border:1px solid #fecdd3;border-radius:10px;padding:9px 13px">
+        <div id="orderModalShortageLabel" style="color:#e11d48;font-size:11px;font-weight:600">ขาดสุทธิ (Shortage Quantity)</div>
+        <strong id="orderModalShortageQty" style="font-size:16.5px;font-weight:750;color:#e11d48;display:block;margin-top:2px;letter-spacing:-0.2px">0</strong>
+        <span id="orderModalShortageSub" style="font-size:10.5px;color:#f43f5e">ไม่พอกับแผนการผลิต</span>
       </div>
     </div>
 
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-shrink:0;gap:10px;flex-wrap:wrap">
-      <div style="display:flex;align-items:center;gap:10px">
-        <strong style="font-size:14px">รายการ Order ที่รอใช้ Part นี้:</strong>
-        <span id="orderModalFilterSummary" style="font-size:12.5px;color:var(--muted)">กำลังโหลด...</span>
+    <!-- Filter & Action Controls -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-shrink:0;gap:8px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:8px">
+        <strong style="font-size:12.5px;font-weight:700;color:#1e293b">รายการ Order ที่รอใช้ Part นี้:</strong>
+        <span id="orderModalFilterSummary" style="font-size:11.5px;color:#64748b">กำลังโหลด...</span>
       </div>
       <div style="display:flex;align-items:center;gap:6px">
-        <button type="button" class="btn soft" id="orderModalFilterShortageBtn" style="padding:4px 10px;font-size:12px">🔴 เฉพาะ Order ที่ขาด (<span id="orderModalShortageCountBadge">0</span>)</button>
-        <button type="button" class="btn soft" id="orderModalFilterAllBtn" style="padding:4px 10px;font-size:12px">⚪ แสดงทั้งหมด (<span id="orderModalAllCountBadge">0</span>)</button>
+        <button type="button" class="btn soft" id="orderModalFilterShortageBtn" style="height:27px;padding:0 10px;font-size:11px;border-radius:14px">🔴 เฉพาะ Order ที่ขาด (<span id="orderModalShortageCountBadge">0</span>)</button>
+        <button type="button" class="btn soft" id="orderModalFilterAllBtn" style="height:27px;padding:0 10px;font-size:11px;border-radius:14px">⚪ แสดงทั้งหมด (<span id="orderModalAllCountBadge">0</span>)</button>
       </div>
     </div>
 
-    <div class="table-wrap" style="flex:1;overflow:auto;max-height:460px">
-      <table style="width:100%;min-width:960px;border-collapse:collapse;font-size:13px">
-        <thead>
-          <tr style="background:#f7f9f9">
-            <th style="width:36px;text-align:center;position:sticky;left:0;z-index:2;background:#f7f9f9">#</th>
-            <th style="position:sticky;left:36px;z-index:2;background:#f7f9f9;box-shadow:2px 0 4px rgba(0,0,0,0.04)">เลขที่ Order (MO)</th>
-            <th>สินค้าสำเร็จรูป (Product)</th>
-            <th>แผนก</th>
-            <th>สถานะงาน</th>
-            <th>สถานะเบิก</th>
-            <th class="num">ต้องการ</th>
-            <th class="num">เบิกแล้ว</th>
-            <th class="num">ค้างเบิก</th>
-            <th class="num" style="color:#287a55">จัดสรร FIFO</th>
-            <th class="num" style="color:var(--red)">ขาดใน Order</th>
-            <th style="text-align:center">สถานะ</th>
-            <th>วันที่ต้องการ</th>
+    <!-- Table Wrap -->
+    <div class="table-wrap" style="flex:1;overflow:auto;max-height:440px;border:1px solid #e2e8f0;border-radius:8px">
+      <table style="width:100%;min-width:960px;border-collapse:collapse;font-size:11.5px">
+        <thead style="position:sticky;top:0;z-index:3;background:#f8fafc">
+          <tr style="background:#f8fafc;border-bottom:1px solid #e2e8f0">
+            <th style="width:36px;text-align:center;padding:7px 6px;font-size:11px;font-weight:650;color:#475569">#</th>
+            <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">เลขที่ Order (MO)</th>
+            <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">สินค้าสำเร็จรูป (Product)</th>
+            <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">แผนก</th>
+            <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">สถานะงาน</th>
+            <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">สถานะเบิก</th>
+            <th class="num" style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">ต้องการ</th>
+            <th class="num" style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">เบิกแล้ว</th>
+            <th class="num" style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">ค้างเบิก</th>
+            <th class="num" style="color:#15803d;padding:7px 8px;font-size:11px;font-weight:650">จัดสรร FIFO</th>
+            <th class="num" style="color:#e11d48;padding:7px 8px;font-size:11px;font-weight:650">ขาดใน Order</th>
+            <th style="text-align:center;padding:7px 8px;font-size:11px;font-weight:650;color:#475569">สถานะ</th>
+            <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">วันที่ต้องการ</th>
           </tr>
         </thead>
         <tbody id="orderModalTableBody">
@@ -1218,74 +1250,78 @@
       </table>
     </div>
 
-    <div class="modal-actions" style="margin-top:14px;justify-content:space-between;align-items:center;flex-shrink:0">
-      <span class="helper" style="font-size:12px">💡 ไม่รวม Order ที่ปิด/Complete ไปแล้วในระบบ Kingdee</span>
-      <button class="btn primary" id="orderModalDoneBtn" type="button">ปิดหน้าต่าง</button>
+    <!-- Modal Footer -->
+    <div class="modal-actions" style="margin-top:12px;justify-content:space-between;align-items:center;flex-shrink:0">
+      <span class="helper" style="font-size:11px;color:#94a3b8">💡 ไม่รวม Order ที่ปิด/Complete ไปแล้วในระบบ Kingdee</span>
+      <button class="btn primary" id="orderModalDoneBtn" type="button" style="height:31px;font-size:11.5px;padding:0 14px;border-radius:16px">ปิดหน้าต่าง</button>
     </div>
   </div>
 </div>
 
 <div class="modal-backdrop" id="moDetailModal">
-  <div class="modal" style="width:min(1240px,96vw);max-height:92vh;display:flex;flex-direction:column;text-align:left;padding:24px">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;flex-shrink:0;gap:12px">
+  <div class="modal" style="width:min(1100px,94vw);max-height:90vh;display:flex;flex-direction:column;text-align:left;padding:20px 22px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;flex-shrink:0;gap:12px">
       <div>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap">
-          <span class="badge blue" id="moModalStatusBadge" style="font-size:12px;background:#e8f0fe;color:#1a73e8">Order แผนผลิต</span>
-          <h2 style="margin:0;font-size:19px;display:flex;align-items:center;gap:8px">
-            <span>Order No:</span>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap">
+          <span class="badge blue" id="moModalStatusBadge" style="font-size:11px;padding:2px 8px;border-radius:12px;background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe">Order แผนผลิต</span>
+          <h2 style="margin:0;font-size:16px;font-weight:700;display:flex;align-items:center;gap:6px">
+            <span style="color:#64748b;font-weight:600">Order No:</span>
             <span id="moModalMoNumber" style="color:var(--teal)">—</span>
           </h2>
         </div>
-        <p id="moModalProductName" style="color:var(--ink);font-size:14.5px;font-weight:600;margin:0 0 3px">—</p>
-        <p id="moModalSub" style="color:var(--muted);font-size:13px;margin:0">แผนก: — · สถานะงาน: — · สถานะเบิก: — · วันที่ต้องการ: —</p>
+        <p id="moModalProductName" style="color:#0f172a;font-size:13.5px;font-weight:600;margin:0 0 2px">—</p>
+        <p id="moModalSub" style="color:#64748b;font-size:11.5px;margin:0">แผนก: — · สถานะงาน: — · สถานะเบิก: — · วันที่ต้องการ: —</p>
       </div>
-      <button id="moModalCloseBtn" class="btn" type="button" style="padding:5px 10px;font-size:14px" aria-label="ปิด">✕</button>
+      <button id="moModalCloseBtn" class="btn" type="button" style="width:30px;height:30px;padding:0;border-radius:50%;font-size:13px;display:grid;place-items:center;border-color:#e2e8f0;color:#64748b" aria-label="ปิด">✕</button>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;flex-shrink:0">
-      <div style="background:#f7f9f9;border:1px solid var(--line);border-radius:9px;padding:12px 16px">
-        <div style="color:var(--muted);font-size:12px">จำนวน Part ทั้งหมดใน Order</div>
-        <strong id="moModalTotalParts" style="font-size:22px;display:block;margin-top:2px">0</strong>
-        <span style="font-size:11.5px;color:var(--muted)">รายการเบิกวัตถุดิบ</span>
+    <!-- 3 KPI Cards -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;flex-shrink:0">
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:9px 13px">
+        <div style="color:#64748b;font-size:11px;font-weight:600">จำนวน Part ทั้งหมดใน Order</div>
+        <strong id="moModalTotalParts" style="font-size:16.5px;font-weight:750;display:block;margin-top:2px;letter-spacing:-0.2px">0</strong>
+        <span style="font-size:10.5px;color:#94a3b8">รายการเบิกวัตถุดิบ</span>
       </div>
-      <div id="moModalShortageBox" style="background:#fff0ef;border:1px solid #f4d5d2;border-radius:9px;padding:12px 16px">
-        <div style="color:var(--red);font-size:12px">จำนวน Part ที่ขาด (Shortage)</div>
-        <strong id="moModalShortageParts" style="font-size:22px;color:var(--red);display:block;margin-top:2px">0</strong>
-        <span style="font-size:11.5px;color:var(--red)">ไม่พร้อมจ่ายเข้าไลน์</span>
+      <div id="moModalShortageBox" style="background:#fff1f2;border:1px solid #fecdd3;border-radius:10px;padding:9px 13px">
+        <div style="color:#e11d48;font-size:11px;font-weight:600">จำนวน Part ที่ขาด (Shortage)</div>
+        <strong id="moModalShortageParts" style="font-size:16.5px;font-weight:750;color:#e11d48;display:block;margin-top:2px;letter-spacing:-0.2px">0</strong>
+        <span style="font-size:10.5px;color:#f43f5e">ไม่พร้อมจ่ายเข้าไลน์</span>
       </div>
-      <div id="moModalStatusBox" style="background:#eaf6ef;border:1px solid #c2e5d0;border-radius:9px;padding:12px 16px">
-        <div style="color:#287a55;font-size:12px">ความพร้อมของ Order นี้</div>
-        <strong id="moModalStatusText" style="font-size:20px;color:#18794e;display:block;margin-top:2px">พร้อมผลิต 100%</strong>
-        <span style="font-size:11.5px;color:#287a55">ตรวจสอบเทียบกับสต็อกจริง</span>
+      <div id="moModalStatusBox" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:9px 13px">
+        <div style="color:#166534;font-size:11px;font-weight:600">ความพร้อมของ Order นี้</div>
+        <strong id="moModalStatusText" style="font-size:15.5px;font-weight:750;color:#15803d;display:block;margin-top:2px;letter-spacing:-0.2px">พร้อมผลิต 100%</strong>
+        <span style="font-size:10.5px;color:#16a34a">ตรวจสอบเทียบกับสต็อกจริง</span>
       </div>
     </div>
 
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-shrink:0;gap:10px;flex-wrap:wrap">
-      <div style="display:flex;align-items:center;gap:10px">
-        <strong style="font-size:14px">รายการวัตถุดิบที่ใช้ใน Order นี้:</strong>
-        <span id="moModalFilterSummary" style="font-size:12.5px;color:var(--muted)">กำลังโหลด...</span>
+    <!-- Filter & Action Controls -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-shrink:0;gap:8px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:8px">
+        <strong style="font-size:12.5px;font-weight:700;color:#1e293b">รายการวัตถุดิบที่ใช้ใน Order นี้:</strong>
+        <span id="moModalFilterSummary" style="font-size:11.5px;color:#64748b">กำลังโหลด...</span>
       </div>
       <div style="display:flex;align-items:center;gap:6px">
-        <button type="button" class="btn soft" id="moModalFilterShortageBtn" style="padding:4px 10px;font-size:12px">🔴 เฉพาะ Part ที่ขาด (<span id="moModalShortageCountBadge">0</span>)</button>
-        <button type="button" class="btn soft" id="moModalFilterAllBtn" style="padding:4px 10px;font-size:12px">⚪ แสดงทั้งหมด (<span id="moModalAllCountBadge">0</span>)</button>
+        <button type="button" class="btn soft" id="moModalFilterShortageBtn" style="height:27px;padding:0 10px;font-size:11px;border-radius:14px">🔴 เฉพาะ Part ที่ขาด (<span id="moModalShortageCountBadge">0</span>)</button>
+        <button type="button" class="btn soft" id="moModalFilterAllBtn" style="height:27px;padding:0 10px;font-size:11px;border-radius:14px">⚪ แสดงทั้งหมด (<span id="moModalAllCountBadge">0</span>)</button>
       </div>
     </div>
 
-    <div class="table-wrap" style="flex:1;overflow:auto;max-height:460px">
-      <table style="width:100%;min-width:950px;border-collapse:collapse;font-size:13px">
-        <thead>
-          <tr style="background:#f7f9f9">
-            <th style="width:36px;text-align:center;position:sticky;left:0;z-index:2;background:#f7f9f9">#</th>
-            <th style="position:sticky;left:36px;z-index:2;background:#f7f9f9;box-shadow:2px 0 4px rgba(0,0,0,0.04)">รหัส Part</th>
-            <th>ชื่อ Part</th>
-            <th>Specification</th>
-            <th>หน่วย</th>
-            <th class="num">ต้องการใน Order</th>
-            <th class="num">เบิกแล้ว</th>
-            <th class="num">ค้างเบิก (Unissued)</th>
-            <th class="num" style="color:#287a55">พร้อมใช้ในคลัง</th>
-            <th class="num" style="color:var(--red)">ขาดสุทธิ</th>
-            <th style="text-align:center">สถานะ</th>
+    <!-- Table Wrap -->
+    <div class="table-wrap" style="flex:1;overflow:auto;max-height:440px;border:1px solid #e2e8f0;border-radius:8px">
+      <table style="width:100%;min-width:950px;border-collapse:collapse;font-size:11.5px">
+        <thead style="position:sticky;top:0;z-index:3;background:#f8fafc">
+          <tr style="background:#f8fafc;border-bottom:1px solid #e2e8f0">
+            <th style="width:36px;text-align:center;padding:7px 6px;font-size:11px;font-weight:650;color:#475569">#</th>
+            <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">รหัส Part</th>
+            <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">ชื่อ Part</th>
+            <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">Specification</th>
+            <th style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">หน่วย</th>
+            <th class="num" style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">ต้องการใน Order</th>
+            <th class="num" style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">เบิกแล้ว</th>
+            <th class="num" style="padding:7px 8px;font-size:11px;font-weight:650;color:#475569">ค้างเบิก (Unissued)</th>
+            <th class="num" style="color:#15803d;padding:7px 8px;font-size:11px;font-weight:650">พร้อมใช้ในคลัง</th>
+            <th class="num" style="color:#e11d48;padding:7px 8px;font-size:11px;font-weight:650">ขาดสุทธิ</th>
+            <th style="text-align:center;padding:7px 8px;font-size:11px;font-weight:650;color:#475569">สถานะ</th>
           </tr>
         </thead>
         <tbody id="moModalTableBody">
@@ -1294,8 +1330,9 @@
       </table>
     </div>
 
-    <div class="modal-actions" style="margin-top:14px;justify-content:flex-end;align-items:center;flex-shrink:0">
-      <button class="btn primary" id="moModalDoneBtn" type="button">ปิดหน้าต่าง</button>
+    <!-- Modal Footer -->
+    <div class="modal-actions" style="margin-top:12px;justify-content:flex-end;align-items:center;flex-shrink:0">
+      <button class="btn primary" id="moModalDoneBtn" type="button" style="height:31px;font-size:11.5px;padding:0 14px;border-radius:16px">ปิดหน้าต่าง</button>
     </div>
   </div>
 </div>
@@ -4327,38 +4364,38 @@
     const rowsHtml = displayOrders.map((ord, idx) => {
       let stBadge = '';
       if (ord.orderFulfillmentStatus === 'SUFFICIENT') {
-        stBadge = '<span class="badge green" style="font-size:11.5px">🟢 สต็อกพอ</span>';
+        stBadge = '<span class="badge green" style="font-size:10.5px;padding:2px 6px">🟢 พอ</span>';
       } else if (ord.orderFulfillmentStatus === 'PARTIAL') {
-        stBadge = '<span class="badge amber" style="font-size:11.5px">🟡 พอแค่บางส่วน</span>';
+        stBadge = '<span class="badge amber" style="font-size:10.5px;padding:2px 6px">🟡 บางส่วน</span>';
       } else {
-        stBadge = '<span class="badge red" style="font-size:11.5px">🔴 ขาดทั้งหมด</span>';
+        stBadge = '<span class="badge red" style="font-size:10.5px;padding:2px 6px">🔴 ขาด</span>';
       }
 
       const shortageText = ord.orderShortageQty > 0
-        ? `<strong style="color:var(--red);font-size:14px">-${fmtQty(ord.orderShortageQty)}</strong>`
-        : '<span style="color:#287a55">0</span>';
+        ? `<strong style="color:var(--red);font-size:12px">-${fmtQty(ord.orderShortageQty)}</strong>`
+        : '<span style="color:#15803d;font-size:11.5px">0</span>';
 
-      return `<tr style="transition:background 0.15s">
-        <td style="width:36px;text-align:center;color:var(--muted);font-size:12.5px;position:sticky;left:0;z-index:1;background:#fff">${idx + 1}</td>
-        <td style="position:sticky;left:36px;z-index:1;background:#fff;box-shadow:2px 0 4px rgba(0,0,0,0.04)">
-          <strong class="code" style="color:var(--teal);cursor:pointer" onclick="window.appOpenMoDetail('${esc(ord.moNumber)}')">${esc(ord.moNumber)}</strong>
+      return `<tr style="transition:background 0.15s;border-bottom:1px solid #edf2f7">
+        <td style="width:36px;text-align:center;color:#94a3b8;font-size:11px;padding:6px 6px">${idx + 1}</td>
+        <td style="padding:6px 8px">
+          <strong class="code" style="color:var(--teal);cursor:pointer;font-size:11.5px" onclick="window.appOpenMoDetail('${esc(ord.moNumber)}')">${esc(ord.moNumber)}</strong>
         </td>
-        <td>
-          <div style="max-width:260px;white-space:normal">
-            <span class="sub" style="font-family:monospace;font-size:12px;display:block">${esc(ord.productCode || '')}</span>
-            <strong style="font-size:13px">${esc(ord.productName || '—')}</strong>
+        <td style="padding:6px 8px">
+          <div style="max-width:240px;white-space:normal">
+            <span class="sub" style="font-family:monospace;font-size:10.5px;display:block;color:#64748b">${esc(ord.productCode || '')}</span>
+            <strong style="font-size:11.5px;font-weight:600;color:#0f172a;line-height:1.25">${esc(ord.productName || '—')}</strong>
           </div>
         </td>
-        <td><span class="badge gray" style="font-size:11.5px">${esc(ord.department || '—')}</span></td>
-        <td><span class="badge gray" style="font-size:11.5px">${esc(ord.taskStatus || '—')}</span></td>
-        <td><span class="badge gray" style="font-size:11.5px">${esc(ord.pickStatus || '—')}</span></td>
-        <td class="num" style="font-size:13.5px">${fmtQty(ord.demandQty)}</td>
-        <td class="num" style="font-size:13.5px">${fmtQty(ord.issuedQty)}</td>
-        <td class="num" style="font-weight:700;font-size:14px">${fmtQty(ord.unissuedQty)}</td>
-        <td class="num" style="color:#287a55;font-weight:700;font-size:14px">${fmtQty(ord.allocatedQty)}</td>
-        <td class="num">${shortageText}</td>
-        <td style="text-align:center">${stBadge}</td>
-        <td style="font-size:12px;color:var(--muted)">${esc(ord.requiredTime || '—')}</td>
+        <td style="padding:6px 8px"><span class="badge gray" style="font-size:10.5px;padding:2px 6px">${esc(ord.department || '—')}</span></td>
+        <td style="padding:6px 8px"><span class="badge gray" style="font-size:10.5px;padding:2px 6px">${esc(ord.taskStatus || '—')}</span></td>
+        <td style="padding:6px 8px"><span class="badge gray" style="font-size:10.5px;padding:2px 6px">${esc(ord.pickStatus || '—')}</span></td>
+        <td class="num" style="padding:6px 8px;font-size:11.5px">${fmtQty(ord.demandQty)}</td>
+        <td class="num" style="padding:6px 8px;font-size:11.5px">${fmtQty(ord.issuedQty)}</td>
+        <td class="num" style="padding:6px 8px;font-weight:700;font-size:11.5px;color:#0f172a">${fmtQty(ord.unissuedQty)}</td>
+        <td class="num" style="padding:6px 8px;color:#15803d;font-weight:700;font-size:11.5px">${fmtQty(ord.allocatedQty)}</td>
+        <td class="num" style="padding:6px 8px">${shortageText}</td>
+        <td style="text-align:center;padding:6px 8px">${stBadge}</td>
+        <td style="padding:6px 8px;font-size:11px;color:#64748b">${esc(ord.requiredTime || '—')}</td>
       </tr>`;
     }).join('');
 
@@ -4452,34 +4489,34 @@
       const isShort = (it.orderShortageQty || 0) > 0;
       let stBadge = '';
       if (mo.isFinished) {
-        stBadge = '<span class="badge gray" style="font-size:11px;background:#e2e8f0;color:#475569">⚪ เบิกครบแล้ว</span>';
+        stBadge = '<span class="badge gray" style="font-size:10.5px;padding:2px 6px;background:#e2e8f0;color:#475569">⚪ เบิกครบแล้ว</span>';
       } else if (isShort) {
-        stBadge = '<span class="badge red" style="font-size:11.5px">🔴 ขาด</span>';
+        stBadge = '<span class="badge red" style="font-size:10.5px;padding:2px 6px">🔴 ขาด</span>';
       } else {
-        stBadge = '<span class="badge green" style="font-size:11.5px">🟢 พร้อม</span>';
+        stBadge = '<span class="badge green" style="font-size:10.5px;padding:2px 6px">🟢 พร้อม</span>';
       }
 
       const shortQtyHtml = (!mo.isFinished && isShort)
-        ? `<strong style="color:var(--red);font-size:14px">-${fmtQty(it.orderShortageQty)}</strong>`
-        : '<span style="color:#287a55">0</span>';
+        ? `<strong style="color:var(--red);font-size:12px">-${fmtQty(it.orderShortageQty)}</strong>`
+        : '<span style="color:#15803d;font-size:11.5px">0</span>';
 
-      return `<tr ${mo.isFinished ? 'style="background:#f8fafc;color:#64748b"' : ''}>
-        <td style="width:36px;text-align:center;color:var(--muted);font-size:12.5px;position:sticky;left:0;z-index:1;background:${mo.isFinished ? '#f8fafc' : '#fff'}">${idx + 1}</td>
-        <td style="position:sticky;left:36px;z-index:1;background:${mo.isFinished ? '#f8fafc' : '#fff'};box-shadow:2px 0 4px rgba(0,0,0,0.04)">
+      return `<tr ${mo.isFinished ? 'style="background:#f8fafc;color:#64748b;border-bottom:1px solid #edf2f7"' : 'style="border-bottom:1px solid #edf2f7"'}>
+        <td style="width:36px;text-align:center;color:#94a3b8;font-size:11px;padding:6px 6px">${idx + 1}</td>
+        <td style="padding:6px 8px">
           <div style="display:flex;align-items:center;gap:6px">
-            <strong class="code" style="color:${mo.isFinished ? '#64748b' : 'var(--teal)'};cursor:pointer" onclick="el('moDetailModal').classList.remove('show');window.appOpenOrderDetail('${esc(it.materialCode)}')">${esc(it.materialCode)}</strong>
-            <button class="btn soft" type="button" style="padding:2px 6px;font-size:11px" onclick="el('moDetailModal').classList.remove('show');window.appOpenLotDetail('${esc(it.materialCode)}')" title="ดู Lot ในคลัง">📦 Lot</button>
+            <strong class="code" style="color:${mo.isFinished ? '#64748b' : 'var(--teal)'};cursor:pointer;font-size:11.5px" onclick="el('moDetailModal').classList.remove('show');window.appOpenOrderDetail('${esc(it.materialCode)}')">${esc(it.materialCode)}</strong>
+            <button class="btn soft" type="button" style="padding:1px 6px;font-size:10.5px;height:22px;border-radius:11px" onclick="el('moDetailModal').classList.remove('show');window.appOpenLotDetail('${esc(it.materialCode)}')" title="ดู Lot ในคลัง">📦 Lot</button>
           </div>
         </td>
-        <td><strong style="font-size:13.5px;color:${mo.isFinished ? '#64748b' : 'inherit'}">${esc(it.materialName || '—')}</strong></td>
-        <td><span style="font-size:13px;color:${mo.isFinished ? '#64748b' : '#244a52'}">${esc(it.specification || '—')}</span></td>
-        <td style="font-size:13px">${esc(it.unit || '—')}</td>
-        <td class="num">${fmtQty(it.demandQty)}</td>
-        <td class="num">${fmtQty(it.issuedQty)}</td>
-        <td class="num" style="font-weight:700">${fmtQty(it.unissuedQty)}</td>
-        <td class="num" style="color:#287a55;font-weight:700">${fmtQty(avail)}</td>
-        <td class="num">${shortQtyHtml}</td>
-        <td style="text-align:center">${stBadge}</td>
+        <td style="padding:6px 8px"><strong style="font-size:11.5px;font-weight:600;color:${mo.isFinished ? '#64748b' : '#0f172a'}">${esc(it.materialName || '—')}</strong></td>
+        <td style="padding:6px 8px"><span style="font-size:11px;color:${mo.isFinished ? '#64748b' : '#475569'}">${esc(it.specification || '—')}</span></td>
+        <td style="padding:6px 8px;font-size:11.5px;color:#64748b">${esc(it.unit || '—')}</td>
+        <td class="num" style="padding:6px 8px;font-size:11.5px">${fmtQty(it.demandQty)}</td>
+        <td class="num" style="padding:6px 8px;font-size:11.5px">${fmtQty(it.issuedQty)}</td>
+        <td class="num" style="padding:6px 8px;font-weight:700;font-size:11.5px;color:#0f172a">${fmtQty(it.unissuedQty)}</td>
+        <td class="num" style="padding:6px 8px;color:#15803d;font-weight:700;font-size:11.5px">${fmtQty(avail)}</td>
+        <td class="num" style="padding:6px 8px">${shortQtyHtml}</td>
+        <td style="text-align:center;padding:6px 8px">${stBadge}</td>
       </tr>`;
     }).join('');
 
