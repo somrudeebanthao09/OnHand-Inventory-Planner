@@ -2689,7 +2689,8 @@
     return local;
   }
   function isAutoSyncEnabled(){
-    return db?.settings?.autoLoginKingdee10m === true;
+    // Disabled background Kingdee login permanently so the user's active Kingdee session is NEVER kicked out
+    return false;
   }
   function updateConnectionNotice(){
     const notice=el('connectionNotice');
@@ -8393,20 +8394,7 @@
   function renderAutoSyncCountdown(){
     const label = el('autoSyncCountdownText');
     if(!label) return;
-    if(!isAutoSyncEnabled()){
-      label.textContent = '⏸️ ปิดการดึงข้อมูลอัตโนมัติอยู่ (กดเปิดสวิตช์เพื่อให้ดึงทุก 10 นาที)';
-      label.style.color = '#718087';
-      return;
-    }
-    if(isSilentAutoSyncing){
-      label.textContent = '⏳ กำลังดึงข้อมูลสดจาก Kingdee ERP อัตโนมัติ...';
-      label.style.color = '#0f6a66';
-      return;
-    }
-    const diffSec = Math.max(0, Math.floor((nextAutoSyncAtMs - Date.now()) / 1000));
-    const mm = String(Math.floor(diffSec / 60)).padStart(2, '0');
-    const ss = String(diffSec % 60).padStart(2, '0');
-    label.textContent = `⚡ เปิดใช้งานอยู่ · ดึงอัตโนมัติรอบถัดไปในอีก ${mm}:${ss} นาที`;
+    label.textContent = '🛡️ โหมดปลอดภัย: อ่านจากไฟล์ในเครื่องเท่านั้น (ไม่ล็อกอินแย่ง Session ใน Kingdee)';
     label.style.color = '#0f6a66';
   }
 
@@ -9300,32 +9288,8 @@
   }
 
   async function initAdminSyncWorker() {
-    if (!hasGoogle() || adminQueuePollTimer) return;
-    try {
-      const helperBase = await checkHelperHealth();
-      if (!helperBase) return;
-    } catch (_) {
-      return;
-    }
-
-    console.log('[AdminSyncWorker] Local helper detected. Machine is acting as Admin Kingdee Bridge.');
-    adminQueuePollTimer = setInterval(async () => {
-      if (isAdminProcessingSync) return;
-      try {
-        const res = await callGoogle('getKingdeeSyncStatus');
-        const req = res?.request;
-        if (req && req.status === 'pending') {
-          const reqTime = new Date(req.requestedAt).getTime();
-          // Process if requested within last 3 minutes
-          if (Date.now() - reqTime < 180000) {
-            console.log('[AdminSyncWorker] Processing pending sync request from:', req.requestedBy);
-            await processRemoteSyncRequest(req);
-          }
-        }
-      } catch (e) {
-        // Quiet
-      }
-    }, 10000);
+    // Disabled remote Kingdee login worker so no background process ever logs into Kingdee
+    return;
   }
 
   async function processRemoteSyncRequest(req) {
