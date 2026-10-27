@@ -14,7 +14,7 @@
   <script src="./xlsx.full.min.js" onerror="this.onerror=null;this.src='https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js'"></script>
   <script src="./OnHandSeed.js?v=20261027v7"></script>
   <script src="./DepartmentMapSeed.js?v=20261027v7"></script>
-  <script src="./ProductionOrdersSeed.js?v=20261027v7"></script>
+  <script src="./ProductionOrdersSeed.js?v=20261027v8"></script>
   <script src="./ProductionExecutionSeed.js?v=20261027v7"></script>
   <script src="./BomSeed.js?v=20261027v7"></script>
   <style>
@@ -1695,36 +1695,35 @@
       <section class="page" id="page-po-tracking">
         <div class="title-row" style="margin-bottom:14px">
           <div>
-            <h1 style="font-size:23px;margin:0 0 6px;color:#0f172a">📋 ติดตามสถานะ Production Order · ตัดจ่าย Part (Direct Transfer) · Report · QC · คลัง &amp; เทียบงานจริง Barcode</h1>
-            <p style="font-size:14px;color:#475569;line-height:1.5;margin:0">
-              ตรวจสอบทุก Production Order ตั้งแต่ <b>① เช็ค BOM &amp; การตัดจ่าย Part (Direct Transfer)</b> ➜ <b>② งานผลิตจริงจาก <a href="https://github.com/jrh91234/H9-barcode-record" target="_blank" rel="noopener" style="color:var(--teal);font-weight:700">H9-barcode-record</a></b> ➜ <b>③ Production Report ในระบบ ERP</b> ➜ <b>④ QC Confirm</b> ➜ <b>⑤ Warehouse รับเข้าคลัง</b> เพื่อดูว่าขาดเท่าไหร่และติดตรงไหนจะได้ตามถูกจุด
-            </p>
+            <h1 style="font-size:23px;margin:0 0 4px;color:#0f172a">📋 ติดตาม Order ผลิต</h1>
+            <p style="font-size:13px;color:#475569;line-height:1.35;margin:0">Direct Transfer · PPBOM · Barcode · Report · QC · คลัง</p>
           </div>
           <div class="row-actions" style="align-items:center;gap:8px">
             <button class="btn primary" id="syncBarcodeLiveBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700">🔄 ซิงค์งานจริง H9-barcode-record</button>
             <button class="btn soft" id="uploadExecFileBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700" title="นำเข้าไฟล์ Production Order Execution Details (.xlsx) จาก Kingdee">📥 อัปเดต Execution Details</button>
             <input type="file" id="execFileInput" accept=".xlsx,.xls,.csv" class="hidden">
-            <button class="btn soft" id="uploadPoPmlBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700" title="นำเข้าไฟล์ Production Material List / Direct Transfer (.xlsx) จาก Kingdee">📥 อัปเดตการจ่าย Part (PML)</button>
+            <button class="btn soft" id="uploadPoPmlBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700" title="นำเข้ารายการ Part และจำนวนตาม Production Order จาก Production Material List / Issue (PPBOM) ของ Kingdee">📥 อัปเดต BOM/เบิก PPBOM</button>
             <button class="btn" id="exportPoTrackingCsvBtn" type="button" style="font-size:13.5px;padding:9px 14px">📤 ส่งออก CSV</button>
           </div>
         </div>
 
-        <!-- 5-Step Pipeline Banner -->
-        <div style="background:linear-gradient(135deg,#f0fdfa 0%,#eff6ff 100%);border:1px solid #99f6e4;border-radius:12px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:#0f172a">
-            <span style="background:#0f766e;color:#fff;font-weight:700;padding:4px 10px;border-radius:99px;font-size:12px">5 ขั้นตอนเช็คสถานะ Order</span>
-            <span><b>1. ตัดจ่าย Part (Direct Transfer):</b> จ่ายครบตาม BOM หรือไม่</span>
-            <span style="color:#94a3b8">➜</span>
-            <span><b>2. ผลิตจริง (Barcode):</b> สแกนหน้าไลน์จริงกี่ตัว</span>
-            <span style="color:#94a3b8">➜</span>
-            <span><b>3. Production Report:</b> กด Report ใน ERP ตรงงานจริงไหม</span>
-            <span style="color:#94a3b8">➜</span>
-            <span><b>4. QC Confirm:</b> ตรวจผ่านหรือยัง</span>
-            <span style="color:#94a3b8">➜</span>
-            <span><b>5. Warehouse:</b> รับเข้าคลัง FG ครบหรือยัง</span>
+        <!-- Collapsible 5-Step Pipeline Help -->
+        <details style="background:linear-gradient(135deg,#f0fdfa 0%,#eff6ff 100%);border:1px solid #99f6e4;border-radius:10px;padding:9px 14px;margin-bottom:14px">
+          <summary style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;cursor:pointer;color:#0f766e;font-size:12.5px;font-weight:750">
+            <span>ℹ️ วิธีอ่านสถานะ Order · 5 ขั้นตอน (กดเพื่อขยาย)</span>
+            <span id="poTrackingSyncInfo" style="font-size:11.5px;color:#0369a1;font-weight:650">กำลังโหลดข้อมูล...</span>
+          </summary>
+          <div style="padding:10px 4px 2px;color:#0f172a">
+            <p style="font-size:12.5px;color:#475569;line-height:1.45;margin:0 0 8px">ยอดโอน <b>Direct Transfer (ZJDB)</b> และยอดเบิก <b>Production Material Issue (PPBOM)</b> เป็นคนละข้อมูล ให้ตรวจแยกกัน</p>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px">
+              <span><b>1. จ่าย Part:</b> ZJDB / PPBOM</span><span style="color:#94a3b8">➜</span>
+              <span><b>2. ผลิตจริง:</b> <a href="https://github.com/jrh91234/H9-barcode-record" target="_blank" rel="noopener" style="color:var(--teal);font-weight:700">H9 Barcode</a></span><span style="color:#94a3b8">➜</span>
+              <span><b>3. Report:</b> ERP</span><span style="color:#94a3b8">➜</span>
+              <span><b>4. QC Confirm</b></span><span style="color:#94a3b8">➜</span>
+              <span><b>5. Warehouse:</b> รับเข้า FG</span>
+            </div>
           </div>
-          <div id="poTrackingSyncInfo" style="font-size:12.5px;color:#0369a1;font-weight:600">กำลังโหลดข้อมูล...</div>
-        </div>
+        </details>
 
         <!-- 5 Clickable KPI Pipeline Filter Cards -->
         <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;margin-bottom:15px">
@@ -1734,7 +1733,7 @@
               <span class="badge red" style="font-size:11px;padding:2px 7px">ตามคลังวัตถุดิบ</span>
             </div>
             <div class="metric-value" id="poKpiStuckTransfer" style="color:#e11d48;font-size:26px;margin-top:6px">0 Order</div>
-            <div class="metric-note" id="poKpiStuckTransferSub" style="font-size:12px;margin-top:3px">Direct Transfer ยังจ่าย Part ไม่ครบตาม BOM</div>
+            <div class="metric-note" id="poKpiStuckTransferSub" style="font-size:12px;margin-top:3px">ZJDB ยังโอน Part ไม่ครบตาม BOM · ดูยอด PPBOM แยกในตาราง</div>
           </div>
 
           <div class="card metric" id="poCardStuckReport" onclick="window.appSetPoTrackingStatus('stuck_report')" style="cursor:pointer;padding:14px 15px;border-top:3px solid #ea580c;transition:all .15s" title="คลิกเพื่อกรองเฉพาะ Order ที่ผลิตจริงใน Barcode แล้ว แต่ยังกด Report ใน ERP ไม่ครบ">
@@ -2396,35 +2395,40 @@
         <button id="poModalFilterUnissuedBtn" class="btn soft" type="button" style="padding:5px 12px;font-size:12.5px;height:32px;border-radius:16px">
           🔴 เฉพาะ Part ที่ยังตัดจ่ายไม่ครบ (<span id="poModalUnissuedPartsBadge">0</span> Part)
         </button>
+        <button id="poModalFilterLabelBtn" class="btn soft" type="button" style="padding:5px 12px;font-size:12.5px;height:32px;border-radius:16px" title="กลุ่ม Label / Sticker / QR Code ที่จ่ายเป็นม้วนใช้ร่วมกันหลาย Order (เช็คเทียบคลัง H9)">
+          🏷️ กลุ่ม Label จ่ายยกม้วน (<span id="poModalLabelPartsBadge">0</span> Part)
+        </button>
       </div>
       <div id="poModalTableSummary" style="font-size:12.5px;color:#475569;font-weight:600"></div>
     </div>
 
     <!-- Scrollable BOM vs Direct Transfer Table -->
     <div class="table-wrap" style="flex:1;min-height:220px;overflow-y:auto;overflow-x:auto;border:1px solid var(--line);border-radius:10px">
-      <table style="width:100%;min-width:1020px;table-layout:fixed;border-collapse:collapse;font-size:13.5px;white-space:normal">
+      <table style="width:100%;min-width:1220px;table-layout:fixed;border-collapse:collapse;font-size:12.5px;white-space:normal">
         <colgroup>
-          <col style="width:42px">
-          <col style="width:140px">
-          <col style="width:auto">
-          <col style="width:105px">
-          <col style="width:125px">
-          <col style="width:160px">
-          <col style="width:125px">
-          <col style="width:135px">
-          <col style="width:145px">
+          <col style="width:38px">
+          <col style="width:124px">
+          <col style="width:220px">
+          <col style="width:90px">
+          <col style="width:110px">
+          <col style="width:132px">
+          <col style="width:142px">
+          <col style="width:100px">
+          <col style="width:118px">
+          <col style="width:146px">
         </colgroup>
         <thead style="position:sticky;top:0;z-index:2;background:#f8fafc;box-shadow:0 1px 2px rgba(0,0,0,0.06)">
           <tr>
-            <th style="text-align:center;padding:10px 6px;font-size:12.5px">#</th>
-            <th style="padding:10px 8px;font-size:12.5px">รหัส Part</th>
-            <th style="padding:10px 8px;font-size:12.5px">ชื่อ Part (วัตถุดิบใน BOM)</th>
-            <th class="num" style="padding:10px 8px;font-size:12.5px;background:#f0f9ff;color:#0369a1">ใช้ต่อ 1 ตัว</th>
-            <th class="num" style="padding:10px 8px;font-size:12.5px;font-weight:750">ต้องใช้ตาม Order</th>
-            <th class="num" style="padding:10px 8px;font-size:12.5px;background:#f0fdf4;color:#15803d;font-weight:750">โอนจริง (Direct Transfer ZJDB)</th>
-            <th class="num" style="padding:10px 8px;font-size:12.5px;background:#fff1f2;color:#be123c;font-weight:750">ค้างจ่าย (Unissued)</th>
-            <th class="num" style="padding:10px 8px;font-size:12.5px;color:#0f766e">สต็อกคลังหลัก / H9</th>
-            <th style="text-align:center;padding:10px 8px;font-size:12.5px">สถานะตัดจ่าย Part</th>
+            <th style="text-align:center;padding:9px 5px;font-size:12px">#</th>
+            <th style="padding:9px 6px;font-size:12px">รหัส Part</th>
+            <th style="padding:9px 7px;font-size:12px">ชื่อ Part (วัตถุดิบใน BOM)</th>
+            <th class="num" style="padding:9px 5px;font-size:12px;background:#f0f9ff;color:#0369a1">ใช้ต่อ 1 ตัว</th>
+            <th class="num" style="padding:9px 5px;font-size:12px;font-weight:750">ต้องใช้ตาม Order</th>
+            <th class="num" style="padding:9px 5px;font-size:12px;background:#f0fdf4;color:#15803d;font-weight:750">โอนจริง (Direct Transfer ZJDB)</th>
+            <th class="num" style="padding:9px 5px;font-size:12px;background:#eff6ff;color:#1d4ed8;font-weight:750" title="ยอด Issued Quantity จาก Production Material Issue (PPBOM) ใน Kingdee">เบิกจริง (Production Material Issue)</th>
+            <th class="num" style="padding:9px 5px;font-size:12px;background:#fff1f2;color:#be123c;font-weight:750">ค้างจ่าย (Unissued)</th>
+            <th class="num" style="padding:9px 5px;font-size:12px;color:#0f766e">สต็อกคลังหลัก / H9</th>
+            <th style="text-align:center;padding:9px 5px;font-size:12px">สถานะตัดจ่าย Part</th>
           </tr>
         </thead>
         <tbody id="poModalTableBody">
@@ -2434,7 +2438,7 @@
     </div>
 
     <div class="modal-actions" style="margin-top:11px;justify-content:space-between;align-items:center;flex-shrink:0">
-      <span class="helper" style="font-size:12px;color:#64748b">🔗 เชื่อมข้อมูล: Kingdee Production Material List (Direct Transfer) + Production Order Execution Details + <a href="https://github.com/jrh91234/H9-barcode-record" target="_blank" rel="noopener" style="color:var(--teal);font-weight:700">H9-barcode-record</a></span>
+      <span class="helper" style="font-size:12px;color:#64748b">🔗 แยกยอดจาก Kingdee Direct Transfer (ZJDB) และ Production Material Issue (PPBOM) + Production Order Execution Details + <a href="https://github.com/jrh91234/H9-barcode-record" target="_blank" rel="noopener" style="color:var(--teal);font-weight:700">H9-barcode-record</a></span>
       <button class="btn primary" id="poModalDoneBtn" type="button" style="height:36px;font-size:13.5px;padding:0 18px;border-radius:18px">ปิดหน้าต่าง</button>
     </div>
   </div>
@@ -2542,7 +2546,7 @@
       approvedAt: '2026-10-13T00:00:00.000Z'
     }
   ];
-  const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',security:{autoLockMinutes:15,passcode:'1234'}}};
+  const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],productionMaterialIssues:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',lastMaterialIssueAt:'',security:{autoLockMinutes:15,passcode:'1234'}}};
   let db = structuredClone(initial), activePage='overview', firstPageLoad=true, pendingImport=null, currentAnalysis=[], sourceRemote=false, lastSheetPullAt=localStorage.getItem('onhandLastSheetPullAt')||'', remoteSaveTimer=null, remoteSaveQueue=Promise.resolve();
   const el = id => document.getElementById(id);
   const n = value => { const x=Number(String(value??'').replace(/,/g,'').trim()); return Number.isFinite(x)?x:0; };
@@ -6221,44 +6225,77 @@
         return;
       }
       const parsedOrders = [];
-      let currentMo = '';
+      let currentOrder = {};
+      const readCell = (row, names) => {
+        for (const name of names) {
+          const value = row[name];
+          if (value !== undefined && value !== null && String(value).trim() !== '') return value;
+        }
+        return undefined;
+      };
+      const readText = (row, names) => {
+        const value = readCell(row, names);
+        return value === undefined ? '' : String(value).trim();
+      };
+      const orderFields = {
+        ppbomNumber: ['Document Number', 'PPBOM Number', 'Production Material List Number'],
+        docStatus: ['Document Status', 'PPBOM Status'],
+        productCode: ['Product Code', 'Production Product Code', 'Finished Good Code'],
+        productName: ['Product Name', 'Production Product Name', 'Finished Good Name'],
+        orderQty: ['Production Order Quantity', 'Production Order Qty', 'Order Quantity', 'Order Qty', 'Planned Production Quantity'],
+        status: ['Production Order Task Status', 'Production Order Status', 'Task Status', 'Status'],
+        department: ['Production Department', 'Workshop/Production Department', 'Production Workshop', 'Workshop']
+      };
+      const demandQtyFields = ['Demand Quantity', 'Demand Qty', 'Required Quantity', 'Required Qty', 'Standard Quantity', 'Standard Qty', 'Material Required Quantity', 'Material Quantity', 'Required Qty.'];
       for (const r of rows) {
-        const moRaw = String(r['Production Order No.'] || '').trim();
-        if (moRaw) currentMo = moRaw;
-        const matCode = String(r['Material Code'] || '').trim();
-        if (!currentMo || !matCode) continue;
+        const moRaw = readText(r, ['Production Order Number', 'Production Order No.', 'MO No.', 'MO Number', 'Production Order']);
+        if (moRaw && normalizeMoKey(moRaw) !== normalizeMoKey(currentOrder.moNumber || '')) currentOrder = {};
+        if (moRaw) currentOrder.moNumber = moRaw;
+        for (const [field, aliases] of Object.entries(orderFields)) {
+          const value = readCell(r, aliases);
+          if (value !== undefined) currentOrder[field] = field === 'orderQty' ? n(value) : String(value).trim();
+        }
+        const matCode = readText(r, ['Material Code', 'Component Material Code', 'Material No.', 'Component Code']);
+        if (!currentOrder.moNumber || !matCode) continue;
+        const demandRaw = readCell(r, demandQtyFields);
+        const issuedRaw = readCell(r, ['Issued Quantity', 'Actual Issued Quantity', 'Issued Qty', 'Actual Issued Qty']);
         parsedOrders.push({
-          moNumber: currentMo,
-          productCode: String(r['Product Code'] || '').trim(),
-          productName: String(r['Product Name'] || '').trim(),
-          orderQty: n(r['Quantity']),
-          status: String(r['Status'] || '').trim(),
-          department: String(r['Workshop/Production Department'] || '').trim(),
+          ...currentOrder,
           materialCode: matCode,
-          materialName: String(r['Material Name'] || '').trim(),
-          specification: String(r['Specifications'] || '').trim(),
-          unit: String(r['Numerator / Denominator'] || r['Unit'] || 'Pcs').trim(),
-          demandQty: n(r['Demand Qty']),
-          issuedQty: n(r['Issued Qty']),
-          unissuedQty: n(r['Unissued Qty']),
-          consumedQty: n(r['Consumed Qty']),
-          wipQty: n(r['WIP Qty']),
-          issuingWarehouse: String(r['Issuing Warehouse'] || '').trim()
+          materialName: readText(r, ['Material Name', 'Component Material Name', 'Material Description']),
+          specification: readText(r, ['Specification', 'Specifications', 'Material Specification']),
+          unit: readText(r, ['Component UoM', 'Component Unit', 'Material Unit', 'UoM', 'Unit', 'Numerator / Denominator']) || 'Pcs',
+          demandQty: n(demandRaw),
+          _hasDemandQty: demandRaw !== undefined,
+          ppbomIssuedQty: n(issuedRaw),
+          ppbomIssueQtyAvailable: issuedRaw !== undefined,
+          ppbomUnissuedQty: n(readCell(r, ['Unissued Quantity', 'Unissued Qty', 'Remaining Quantity', 'Remaining Qty'])),
+          consumedQty: n(readCell(r, ['Consumed Quantity', 'Consumed Qty'])),
+          wipQty: n(readCell(r, ['WIP Quantity', 'WIP Qty'])),
+          issuingWarehouse: readText(r, ['Issuing Warehouse', 'Issue Warehouse', 'Warehouse'])
         });
       }
       if (!parsedOrders.length) {
         toast('ไม่พบคอลัมน์ Production Order No. / Material Code ในไฟล์นี้');
         return;
       }
-      db.productionOrders = parsedOrders;
-      if (window.PRODUCTION_ORDERS_SEED) {
-        window.PRODUCTION_ORDERS_SEED.orders = parsedOrders;
+      const missingDemandRows = parsedOrders.filter(row => !row._hasDemandQty).length;
+      if (missingDemandRows) {
+        toast(`นำเข้ายกเลิก: พบ ${fmt(missingDemandRows)} รายการที่ไม่มีคอลัมน์ Demand/Required/Standard Quantity · ตรวจหัวคอลัมน์ไฟล์ก่อน`);
+        return;
       }
+      parsedOrders.forEach(row => { delete row._hasDemandQty; });
+      const replacedMoKeys = new Set(parsedOrders.map(row => normalizeMoKey(row.moNumber)).filter(Boolean));
+      db.productionMaterialIssues = [
+        ...(Array.isArray(db.productionMaterialIssues) ? db.productionMaterialIssues.filter(row => !replacedMoKeys.has(normalizeMoKey(row.moNumber))) : []),
+        ...parsedOrders
+      ];
+      db.settings.lastMaterialIssueAt = new Date().toISOString();
       saveLocalDb(db);
       computeOrderShortages();
       if (typeof renderOrdersPage === 'function') renderOrdersPage();
       if (typeof renderPoTrackingPage === 'function') renderPoTrackingPage();
-      toast(`✅ นำเข้า Production Material List สำเร็จ (${fmt(parsedOrders.length)} แถว)`);
+      toast(`✅ นำเข้า Production Material Issue (PPBOM) สำเร็จ (${fmt(parsedOrders.length)} รายการ)`);
     } catch (err) {
       console.error(err);
       toast('เกิดข้อผิดพลาดในการอ่านไฟล์ Production Material List');
@@ -6317,7 +6354,7 @@
     }
     return {
       moNumber: String(mo.moNumber || '—'),
-      productModel: `${mo.productCode || '—'} · ${mo.productName || '—'} (${mo.hasOrderBomData ? 'Order BOM' : 'BOM'} ${mo.totalParts} Part)`,
+      productModel: `${mo.productCode || '—'} · ${mo.productName || '—'} (${mo.hasOrderBomData ? 'Order BOM' : 'BOM รุ่น'} ${mo.totalParts} Part)`,
       orderQty: `${fmt(mo.orderQty)} ตัว`,
       transferStatus: mo.isTransferComplete
         ? `✅ ครบ ${mo.totalParts}/${mo.totalParts} Part (พร้อมทำ ${fmt(mo.orderQty)} ตัว)`
@@ -6583,11 +6620,75 @@
     return window.PRODUCTION_EXECUTION_SEED;
   }
 
+  function getProductionMaterialIssueRows() {
+    const seed = window.PRODUCTION_MATERIAL_ISSUE_SEED;
+    if (Array.isArray(seed?.rows) && !Array.isArray(seed.normalizedRows)) {
+      const fields = seed.fields || [];
+      seed.normalizedRows = seed.rows.map(row => {
+        if (!Array.isArray(row)) return row;
+        const out = {};
+        fields.forEach((key, i) => { out[key] = row[i]; });
+        return out;
+      });
+    }
+    const seedRows = Array.isArray(seed?.normalizedRows) ? seed.normalizedRows : [];
+    const importedRows = Array.isArray(db.productionMaterialIssues) ? db.productionMaterialIssues : [];
+    if (!importedRows.length) return seedRows;
+    const seedAt = Date.parse(seed?.snapshotAt || '');
+    const importedAt = Date.parse(db.settings?.lastMaterialIssueAt || '');
+    const importIsNewer = !seedRows.length || !Number.isFinite(seedAt) || (Number.isFinite(importedAt) && importedAt >= seedAt);
+    if (!importIsNewer) {
+      // A saved browser/Sheet import must not replace a newer order-level PPBOM snapshot.
+      // Keep imported orders only when they are absent from the snapshot.
+      const seedMoKeys = new Set(seedRows.map(row => normalizeMoKey(row.moNumber)).filter(Boolean));
+      const importedOnlyOrders = importedRows.filter(row => !seedMoKeys.has(normalizeMoKey(row.moNumber)));
+      return seedRows.concat(importedOnlyOrders);
+    }
+    const replacedMoKeys = new Set(importedRows.map(row => normalizeMoKey(row.moNumber)).filter(Boolean));
+    return seedRows.filter(row => !replacedMoKeys.has(normalizeMoKey(row.moNumber))).concat(importedRows);
+  }
+
   function computePoTracking() {
     const orderSnapshotRows = window.PRODUCTION_ORDERS_SEED?.orders || [];
-    const pmlRows = hasGoogle() && db.productionOrders?.length
+    const transferRows = hasGoogle() && db.productionOrders?.length
       ? db.productionOrders
       : (orderSnapshotRows.length ? orderSnapshotRows : (db.productionOrders || []));
+    const importedOrderBomRows = getProductionMaterialIssueRows();
+    const pmlRows = importedOrderBomRows.length ? importedOrderBomRows : transferRows;
+    const transferOrderByMo = new Map();
+    for (const r of transferRows) {
+      const moNum = normalizeMoKey(r.moNumber);
+      const orderQty = n(r.orderQty);
+      if (moNum && orderQty > 0 && !transferOrderByMo.has(moNum)) {
+        transferOrderByMo.set(moNum, { orderQty, orderQtySource: 'Production Order' });
+      }
+    }
+    const directTransferByKey = new Map();
+    for (const r of transferRows) {
+      const moNum = normalizeMoKey(r.moNumber);
+      const matCode = String(r.materialCode || '').trim();
+      if (!moNum || !matCode) continue;
+      const key = `${moNum}::${matCode}`;
+      const item = directTransferByKey.get(key) || { qty: 0, docs: new Set() };
+      item.qty += r.directTransferQty !== undefined ? n(r.directTransferQty) : (r.onlyZjdbMode ? n(r.issuedQty) : 0);
+      String(r.directTransferDocs || r.orderDirectTransferDocs || '').split(',').map(s => s.trim()).filter(Boolean).forEach(doc => item.docs.add(doc));
+      directTransferByKey.set(key, item);
+    }
+    const materialIssueByKey = new Map();
+    for (const r of importedOrderBomRows) {
+      const moNum = normalizeMoKey(r.moNumber);
+      const matCode = String(r.materialCode || '').trim();
+      if (!moNum || !matCode) continue;
+      const key = `${moNum}::${matCode}`;
+      const item = materialIssueByKey.get(key) || { demandQty: 0, issuedQty: 0, unissuedQty: 0, consumedQty: 0, wipQty: 0, rows: 0 };
+      item.demandQty += n(r.demandQty);
+      item.issuedQty += n(r.ppbomIssuedQty ?? r.issuedQty);
+      item.unissuedQty += n(r.ppbomUnissuedQty ?? r.unissuedQty);
+      item.consumedQty += n(r.consumedQty);
+      item.wipQty += n(r.wipQty);
+      item.rows++;
+      materialIssueByKey.set(key, item);
+    }
     const bomRows = (db.bom && db.bom.length)
       ? db.bom
       : (window.BOM_SEED?.rows || []);
@@ -6651,6 +6752,14 @@
         const pOv = overrides.get(prodCode);
         const execInfo = executionByMo[moNum] || null;
         const bcInfo = barcodeByMo[moNum] || null;
+        const transferOrder = transferOrderByMo.get(moNum);
+        const orderQtyCandidates = [
+          [n(r.orderQty), 'PPBOM'],
+          [n(transferOrder?.orderQty), transferOrder?.orderQtySource || 'Production Order'],
+          [n(execInfo?.orderQty), 'Execution Details'],
+          [n(bcInfo?.planQty), 'Barcode']
+        ];
+        const orderQtySource = orderQtyCandidates.find(([qty]) => qty > 0);
         const rawDept = r.department || execInfo?.department || pOv?.department || 'H9 Assembly Production Line';
         mo = {
           moNumber: moNum,
@@ -6659,10 +6768,11 @@
           productCode: prodCode || execInfo?.materialCode || '',
           productName: pOv?.materialName || r.productName || execInfo?.materialName || bcInfo?.orderModel || prodCode,
           department: normalizeDepartmentName(rawDept) || rawDept,
-          orderQty: n(r.orderQty) || execInfo?.orderQty || bcInfo?.planQty || 0,
+          orderQty: orderQtySource?.[0] || 0,
+          orderQtySource: orderQtySource?.[1] || '',
           pmlStatus: String(r.taskStatus || r.status || '').trim(),
           pickStatus: String(r.pickStatus || '').trim(),
-          hasOrderBomData: Boolean(r.ppbomNumber || r.docStatus || r.pickStatus),
+          hasOrderBomData: Boolean(importedOrderBomRows.length || r.ppbomNumber || r.docStatus || r.pickStatus),
           itemsMap: new Map(),
           items: [],
           execInfo,
@@ -6670,27 +6780,49 @@
         };
         moMap.set(moNum, mo);
       }
-      if (r.ppbomNumber || r.docStatus || r.pickStatus) mo.hasOrderBomData = true;
+      if (!mo.orderQty) {
+        const candidateOrderQty = n(r.orderQty) || n(transferOrderByMo.get(moNum)?.orderQty) || n(mo.execInfo?.orderQty) || n(mo.bcInfo?.planQty);
+        if (candidateOrderQty > 0) {
+          mo.orderQty = candidateOrderQty;
+          mo.orderQtySource = n(r.orderQty) ? 'PPBOM' : (n(transferOrderByMo.get(moNum)?.orderQty) ? 'Production Order' : (n(mo.execInfo?.orderQty) ? 'Execution Details' : 'Barcode'));
+        }
+      }
+      if (importedOrderBomRows.length || r.ppbomNumber || r.docStatus || r.pickStatus) mo.hasOrderBomData = true;
       if (!mo.ppbomNumber && r.ppbomNumber) mo.ppbomNumber = String(r.ppbomNumber).trim();
-      const docStr = String(r.directTransferDocs || r.orderDirectTransferDocs || '').trim();
+      const transferInfo = directTransferByKey.get(`${moNum}::${String(r.materialCode || '').trim()}`);
+      const docStr = [...new Set([
+        ...Array.from(transferInfo?.docs || []),
+        ...String(r.directTransferDocs || r.orderDirectTransferDocs || '').split(',').map(s => s.trim()).filter(Boolean)
+      ])].join(', ');
       if (docStr) {
         docStr.split(',').map(s => s.trim()).filter(Boolean).forEach(d => mo.directTransferDocsSet.add(d));
       }
 
       const matCode = String(r.materialCode || '').trim();
       if (!matCode) continue;
+      const existing = mo.itemsMap.get(matCode);
+      const issue = materialIssueByKey.get(`${moNum}::${matCode}`);
       const demandQty = n(r.demandQty);
-      const directTransferQty = r.directTransferQty !== undefined ? n(r.directTransferQty) : n(r.issuedQty);
+      const directTransferQty = transferInfo
+        ? (existing ? 0 : transferInfo.qty)
+        : (r.directTransferQty !== undefined ? n(r.directTransferQty) : (r.onlyZjdbMode ? n(r.issuedQty) : 0));
+      const ppbomDemandQty = r.ppbomDemandQty !== undefined ? n(r.ppbomDemandQty) : n(r.demandQty);
+      const ppbomIssuedQty = n(r.ppbomIssuedQty);
+      const ppbomUnissuedQty = r.ppbomUnissuedQty !== undefined ? n(r.ppbomUnissuedQty) : Math.max(0, +(ppbomDemandQty - ppbomIssuedQty).toFixed(4));
+      const hasPpBomIssueData = r.ppbomIssueQtyAvailable === false ? false : (Boolean(issue) || r.ppbomIssuedQty !== undefined);
       const issuedQty = directTransferQty;
       const unissuedQty = Math.max(0, +(demandQty - issuedQty).toFixed(4));
       const consumedQty = n(r.consumedQty);
       const wipQty = n(r.wipQty);
-      const dtDocs = String(r.directTransferDocs || '').trim();
+      const dtDocs = docStr;
 
-      const existing = mo.itemsMap.get(matCode);
       if (existing) {
         existing.demandQty += demandQty;
         existing.directTransferQty += directTransferQty;
+        existing.ppbomDemandQty += ppbomDemandQty;
+        existing.ppbomIssuedQty += ppbomIssuedQty;
+        existing.ppbomUnissuedQty += ppbomUnissuedQty;
+        existing.hasPpBomIssueData = existing.hasPpBomIssueData || hasPpBomIssueData;
         existing.issuedQty += issuedQty;
         existing.unissuedQty = Math.max(0, +(existing.demandQty - existing.issuedQty).toFixed(4));
         existing.consumedQty += consumedQty;
@@ -6703,9 +6835,9 @@
         const invMeta = invMetaMap.get(matCode);
         const modelBom = bomByModel.get(mo.productCode);
         const bomComp = modelBom ? modelBom.get(matCode) : null;
-        const inferredQtyPer = mo.hasOrderBomData
-          ? (mo.orderQty > 0 && demandQty > 0 ? +(demandQty / mo.orderQty).toFixed(6) : 0)
-          : (bomComp?.qtyPer || (mo.orderQty > 0 && demandQty > 0 ? +(demandQty / mo.orderQty).toFixed(4) : 1));
+        const inferredQtyPer = mo.orderQty > 0 && demandQty > 0
+          ? +(demandQty / mo.orderQty).toFixed(6)
+          : (mo.hasOrderBomData ? 0 : (bomComp?.qtyPer || 1));
 
         mo.itemsMap.set(matCode, {
           materialCode: matCode,
@@ -6713,15 +6845,20 @@
           specification: mOv?.specification || r.specification || invMeta?.specification || '',
           unit: r.unit || bomComp?.unit || invMeta?.unit || 'Pcs',
           qtyPer: inferredQtyPer,
+          qtyPerKnown: inferredQtyPer > 0,
           demandQty,
           directTransferQty,
+          ppbomDemandQty,
+          ppbomIssuedQty,
+          ppbomUnissuedQty,
+          hasPpBomIssueData,
           directTransferDocs: dtDocs,
           issuedQty,
           unissuedQty,
           consumedQty,
           wipQty,
           issuingWarehouse: r.issuingWarehouse || '',
-          sourceType: 'PML'
+          sourceType: mo.hasOrderBomData ? 'PML' : 'BOM'
         });
       }
     }
@@ -6835,7 +6972,14 @@
       }
     }
 
-    // 4. For every MO, cross-check against full standard BOM (so e.g. 6001ZZ00345 always shows all 28 parts!)
+    function isLabelRollPart(it) {
+      if (!it) return false;
+      if (it.sourceType === 'BOM-NonMRP') return true;
+      const text = `${it.materialName || ''} ${it.specification || ''}`;
+      return /label|sticker|qr\s*code|barcode|diagram|สติกเกอร์|ลาเบล/i.test(text);
+    }
+
+    // 4. Use the Order's own PPBOM rows as its exact part list; use model BOM only when Order rows are unavailable.
     const moList = Array.from(moMap.values());
     let transferIssueMoCount = 0;
     let unreportedDiffMoCount = 0;
@@ -6846,7 +6990,7 @@
       const modelBom = bomByModel.get(mo.productCode);
       if (mo.orderQty <= 0) {
         for (const it of mo.itemsMap.values()) {
-          if (it.demandQty > 0 && it.qtyPer > 0) {
+          if (!mo.hasOrderBomData && it.demandQty > 0 && it.qtyPer > 0) {
             const est = Math.round(it.demandQty / it.qtyPer);
             if (est > 0) {
               mo.orderQty = est;
@@ -6855,10 +6999,14 @@
           }
         }
       }
+      if (mo.hasOrderBomData && mo.orderQty > 0) {
+        for (const it of mo.itemsMap.values()) {
+          it.qtyPer = it.demandQty > 0 ? +(it.demandQty / mo.orderQty).toFixed(6) : 0;
+          it.qtyPerKnown = it.qtyPer > 0;
+        }
+      }
       if (modelBom && !mo.hasOrderBomData) {
-        // Check if existing PML items are already 100% issued
         const pmlItems = Array.from(mo.itemsMap.values());
-        const allPmlIssued = pmlItems.length > 0 && pmlItems.every(it => it.issuedQty >= it.demandQty - 1e-6);
         const allPmlConsumedRatio = pmlItems.length > 0
           ? Math.max(...pmlItems.map(it => it.demandQty > 0 ? Math.min(1, it.consumedQty / it.demandQty) : 0))
           : 0;
@@ -6868,8 +7016,6 @@
             const mOv = overrides.get(matCode);
             const invMeta = invMetaMap.get(matCode);
             const reqQty = +(bomComp.qtyPer * mo.orderQty).toFixed(4);
-            // Non-MRP label parts added to standard BOM: if the MO's MRP parts are already issued, non-MRP floor stock is also used alongside
-            const issQty = allPmlIssued ? reqQty : 0;
             const consQty = +(reqQty * allPmlConsumedRatio).toFixed(4);
             mo.itemsMap.set(matCode, {
               materialCode: matCode,
@@ -6878,10 +7024,10 @@
               unit: bomComp.unit || invMeta?.unit || 'Pcs',
               qtyPer: bomComp.qtyPer,
               demandQty: reqQty,
-              issuedQty: issQty,
-              unissuedQty: Math.max(0, +(reqQty - issQty).toFixed(4)),
+              issuedQty: 0,
+              unissuedQty: reqQty,
               consumedQty: consQty,
-              wipQty: Math.max(0, +(issQty - consQty).toFixed(4)),
+              wipQty: 0,
               issuingWarehouse: 'H9 Assembly-Workshop Warehouse',
               sourceType: 'BOM-NonMRP'
             });
@@ -6892,18 +7038,59 @@
       const items = Array.from(mo.itemsMap.values());
       let transferReadyParts = 0;
       let transferMissingParts = 0;
+      let labelRollPartsCount = 0;
+      let labelRollH9CoveredCount = 0;
+      let labelRollExemptLowH9Count = 0;
       let minSetsFromIssued = Infinity;
       let maxSetsConsumedBackflush = 0;
 
       for (const it of items) {
         it.mainStockNoH9 = availNoH9Map.get(it.materialCode) || 0;
         it.h9Stock = h9StockMap.get(it.materialCode) || 0;
-        const unissued = Math.max(0, +(it.demandQty - it.issuedQty).toFixed(4));
-        it.unissuedQty = unissued;
-        it.isTransferComplete = it.demandQty <= 0 || it.issuedQty + 1e-5 >= it.demandQty;
+        it.isLabelRoll = isLabelRollPart(it);
+        if (it.isLabelRoll) labelRollPartsCount++;
 
-        const setsIssued = it.qtyPer > 0 ? Math.floor((it.issuedQty + 1e-6) / it.qtyPer) : mo.orderQty;
-        const setsConsumed = it.qtyPer > 0 ? Math.round(it.consumedQty / it.qtyPer) : 0;
+        const rawUnissued = Math.max(0, +(it.demandQty - it.issuedQty).toFixed(4));
+        it.rawUnissuedQty = rawUnissued;
+        it.rollCoveredMode = '';
+
+        let setsIssued = mo.orderQty > 0 && it.demandQty > 0
+          ? Math.floor((it.issuedQty + 1e-6) / it.demandQty * mo.orderQty)
+          : (it.qtyPer > 0 ? Math.floor((it.issuedQty + 1e-6) / it.qtyPer) : 0);
+
+        if (it.demandQty <= 0 || rawUnissued <= 1e-5) {
+          // Tier 1: Transferred via ZJDB for this MO
+          it.isTransferComplete = true;
+          it.unissuedQty = 0;
+        } else if (it.isLabelRoll) {
+          if (it.h9Stock >= rawUnissued) {
+            // Tier 2: Common Label/Sticker/QR roll is already in H9 Warehouse in sufficient quantity
+            it.isTransferComplete = true;
+            it.unissuedQty = 0;
+            it.rollCoveredMode = 'h9_stock';
+            setsIssued = mo.orderQty;
+            labelRollH9CoveredCount++;
+          } else if (it.mainStockNoH9 + it.h9Stock >= rawUnissued) {
+            // Tier 3: H9 stock shows 0 or less than needed, but Main Stock has roll(s) available -> Exempt from blocking Order
+            it.isTransferComplete = true;
+            it.unissuedQty = 0;
+            it.rollCoveredMode = 'roll_exempt_low_h9';
+            setsIssued = mo.orderQty;
+            labelRollExemptLowH9Count++;
+          } else {
+            // Tier 4: Neither Main Stock nor H9 has enough of this Label
+            it.isTransferComplete = false;
+            it.unissuedQty = rawUnissued;
+            it.rollCoveredMode = 'roll_shortage';
+          }
+        } else {
+          it.isTransferComplete = false;
+          it.unissuedQty = rawUnissued;
+        }
+
+        const setsConsumed = mo.orderQty > 0 && it.demandQty > 0
+          ? Math.round(it.consumedQty / it.demandQty * mo.orderQty)
+          : (it.qtyPer > 0 ? Math.round(it.consumedQty / it.qtyPer) : 0);
         it.setsFromIssued = setsIssued;
         it.setsFromConsumed = setsConsumed;
 
@@ -6917,10 +7104,13 @@
         }
       }
 
-      // Sort items: unissued first, then by materialCode
+      // Sort items: unissued first, then Label roll exempt/H9 items, then by materialCode
       items.sort((a, b) => {
         if (a.isTransferComplete !== b.isTransferComplete) return a.isTransferComplete ? 1 : -1;
         if (b.unissuedQty !== a.unissuedQty) return b.unissuedQty - a.unissuedQty;
+        const aRollOrder = a.rollCoveredMode === 'roll_exempt_low_h9' ? 0 : (a.rollCoveredMode === 'h9_stock' ? 1 : 2);
+        const bRollOrder = b.rollCoveredMode === 'roll_exempt_low_h9' ? 0 : (b.rollCoveredMode === 'h9_stock' ? 1 : 2);
+        if (aRollOrder !== bRollOrder) return aRollOrder - bRollOrder;
         return a.materialCode.localeCompare(b.materialCode);
       });
 
@@ -6928,6 +7118,13 @@
       mo.totalParts = items.length;
       mo.transferReadyParts = transferReadyParts;
       mo.transferMissingParts = transferMissingParts;
+      mo.labelRollPartsCount = labelRollPartsCount;
+      mo.labelRollH9CoveredCount = labelRollH9CoveredCount;
+      mo.labelRollExemptLowH9Count = labelRollExemptLowH9Count;
+      mo.ppbomIssueDataParts = items.filter(it => it.hasPpBomIssueData).length;
+      mo.ppbomIssuePendingParts = items.filter(it => it.hasPpBomIssueData && n(it.ppbomIssuedQty) + 1e-5 < (n(it.ppbomDemandQty) || n(it.demandQty))).length;
+      mo.ppbomIssueCompleteParts = mo.ppbomIssueDataParts - mo.ppbomIssuePendingParts;
+      mo.ppbomIssueUnknownParts = Math.max(0, items.length - mo.ppbomIssueDataParts);
       mo.isTransferComplete = items.length > 0 && transferMissingParts === 0;
       mo.maxSetsFromIssued = Number.isFinite(minSetsFromIssued) ? minSetsFromIssued : 0;
       mo.transferPct = mo.totalParts > 0 ? Math.round((transferReadyParts / mo.totalParts) * 100) : 0;
@@ -7085,7 +7282,11 @@
     if (el('poKpiCompleted')) el('poKpiCompleted').textContent = `${fmt(data.completedMoCount)} Order`;
     if (el('poTrackingSyncInfo')) {
       const bcCount = Object.keys(window.PRODUCTION_EXECUTION_SEED?.barcodeByMo || {}).length;
-      el('poTrackingSyncInfo').innerHTML = `🟢 เชื่อมโยง H9-barcode-record (${fmt(bcCount)} Job) + Execution Details เรียบร้อย`;
+      const issueRows = getProductionMaterialIssueRows();
+      const issueAtValue = db.settings.lastMaterialIssueAt || window.PRODUCTION_MATERIAL_ISSUE_SEED?.snapshotAt || '';
+      const issueAt = issueRows.length ? ` · PPBOM ${fmt(issueRows.length)} รายการ${issueAtValue ? ` (${time(issueAtValue)})` : ''}` : ` · ไม่มีข้อมูล PPBOM`;
+      const issueCount = issueRows.length;
+      el('poTrackingSyncInfo').innerHTML = `🟢 Direct Transfer ${fmt(db.productionOrders?.length || 0)} รายการ · H9-barcode-record ${fmt(bcCount)} Job + Execution Details${issueAt}`;
     }
 
     // Populate Department filter
@@ -7152,14 +7353,24 @@
     const fActive = k => Boolean(poTrackingColumnFilters[k]);
 
     const rowsHtml = !pageRows.length
-      ? `<tr><td colspan="10" style="padding:28px"><div class="empty" style="margin:0"><b>ไม่พบรายการ Production Order ตามตัวกรองที่เลือก</b>ลองเปลี่ยนตัวกรองคอลัมน์ หรือกดปุ่ม "ล้างตัวกรอง"</div></td></tr>`
+      ? `<tr><td colspan="11" style="padding:28px"><div class="empty" style="margin:0"><b>ไม่พบรายการ Production Order ตามตัวกรองที่เลือก</b>ลองเปลี่ยนตัวกรองคอลัมน์ หรือกดปุ่ม "ล้างตัวกรอง"</div></td></tr>`
       : pageRows.map(mo => {
+      const ppbomIssueCell = mo.ppbomIssueDataParts > 0
+        ? `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:3px">
+             <span class="badge ${mo.ppbomIssuePendingParts > 0 || mo.ppbomIssueUnknownParts > 0 ? 'amber' : 'green'}" style="font-size:11px;padding:2px 7px;font-weight:800">${mo.ppbomIssuePendingParts > 0 ? `⚠️ ค้างเบิก ${mo.ppbomIssuePendingParts} Part` : (mo.ppbomIssueUnknownParts > 0 ? '⚠️ ข้อมูลไม่ครบ' : '✅ เบิกครบ')}</span>
+             <span style="font-size:10px;color:#1d4ed8;font-weight:700;line-height:1.25">เบิกครบ ${mo.ppbomIssueCompleteParts}/${mo.ppbomIssueDataParts} Part</span>
+             ${mo.ppbomIssueUnknownParts > 0 ? `<span style="font-size:9.5px;color:#b45309;font-weight:700">ไม่พบข้อมูล ${mo.ppbomIssueUnknownParts} Part</span>` : ''}
+           </div>`
+        : `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:2px">
+             <span class="badge gray" style="font-size:10.5px;padding:2px 7px;font-weight:750">— ไม่มีข้อมูล PPBOM</span>
+             <span style="font-size:9.5px;color:#64748b;line-height:1.2">ยืนยันยอดเบิกไม่ได้</span>
+           </div>`;
       const transferBadge = mo.isTransferComplete
-        ? `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:1px">
+        ? `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:2px">
              <span class="badge green" style="font-size:11.5px;padding:2px 8px;font-weight:800">✅ ครบ ${mo.totalParts}/${mo.totalParts} Part</span>
              <span style="font-size:10.5px;color:#15803d;font-weight:600">พร้อมทำ ${fmt(mo.orderQty)} ตัว</span>
            </div>`
-        : `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:1px">
+        : `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:2px">
              <span class="badge red" style="font-size:11.5px;padding:2px 8px;font-weight:800">🔴 ขาด ${mo.transferMissingParts}/${mo.totalParts} Part</span>
              <span style="font-size:10.5px;color:#b91c1c;font-weight:600">จ่ายพอทำ ${fmt(mo.maxSetsFromIssued)} ตัว</span>
            </div>`;
@@ -7215,7 +7426,7 @@
           <div style="font-weight:800;font-size:12.5px;color:#0f172a;line-height:1.25">${esc(mo.productName)}</div>
           <div style="font-size:10.5px;color:#475569;margin-top:3px;display:flex;align-items:center;gap:4px;flex-wrap:wrap">
             <span class="code" style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-weight:700">${esc(mo.productCode)}</span>
-            <span style="color:#0369a1;font-weight:700">🧩 ${mo.hasOrderBomData ? `Order BOM${mo.ppbomNumber ? ` ${esc(mo.ppbomNumber)}` : ''}` : 'BOM รุ่น'} ${mo.totalParts} Part</span>
+            <span style="color:${mo.hasOrderBomData ? '#0369a1' : '#b45309'};font-weight:700" title="${mo.hasOrderBomData ? 'รายการ Part จาก BOM/PPBOM ของ Order นี้โดยตรง' : 'ไม่พบ BOM ของ Order นี้; ตัวเลข Part มาจาก BOM มาตรฐานของรุ่น'}">${mo.hasOrderBomData ? '🧾 Order BOM' : '⚠️ BOM รุ่น'} ${mo.totalParts} Part</span>
           </div>
         </td>
         <td class="num" style="padding:9px 6px">
@@ -7223,6 +7434,7 @@
           <div style="font-size:10px;color:#64748b">${esc(mo.taskStatus || '—')}</div>
         </td>
         <td style="text-align:center;padding:9px 5px">${transferBadge}</td>
+        <td style="text-align:center;padding:9px 5px;background:#eff6ff">${ppbomIssueCell}</td>
         <td class="num" style="padding:9px 6px;background:#f0fdf4">${barcodeCell}</td>
         <td class="num" style="padding:9px 6px;background:#fffbeb">
           <div style="font-size:14.5px;font-weight:900;color:${mo.reportQty > 0 ? '#b45309' : '#64748b'}">${fmt(mo.reportQty)} <span style="font-size:10.5px;font-weight:600">ตัว</span></div>
@@ -7250,17 +7462,18 @@
     }).join('');
 
     el('poTrackingTableWrap').innerHTML = `
-      <table style="width:100%;min-width:0;table-layout:fixed;border-collapse:collapse;font-size:12.5px;white-space:normal">
+      <table style="width:100%;min-width:1280px;table-layout:fixed;border-collapse:collapse;font-size:12.5px;white-space:normal">
         <colgroup>
-          <col style="width:11%">
-          <col style="width:15%">
-          <col style="width:7%">
-          <col style="width:11%">
-          <col style="width:11%">
-          <col style="width:9%">
-          <col style="width:7%">
-          <col style="width:7%">
+          <col style="width:10%">
           <col style="width:14%">
+          <col style="width:6%">
+          <col style="width:10%">
+          <col style="width:10%">
+          <col style="width:10%">
+          <col style="width:8%">
+          <col style="width:6%">
+          <col style="width:6%">
+          <col style="width:12%">
           <col style="width:8%">
         </colgroup>
         <thead style="position:sticky;top:0;z-index:3;background:#f8fafc;box-shadow:0 1px 2px rgba(0,0,0,0.06)">
@@ -7285,9 +7498,12 @@
             </th>
             <th style="padding:10px 5px;text-align:center;font-size:11.5px">
               <div class="orders-th-cell" style="justify-content:center">
-                <span>1. Direct Transfer</span>
-                <button class="orders-filter-toggle po-filter-toggle ${fActive('transferStatus') ? 'active' : ''}" data-filter-key="transferStatus" type="button" title="กรองสถานะ Direct Transfer">▾</button>
+                <span title="แสดงจำนวน Part ที่โอนด้วย Direct Transfer (ZJDB) แยกจากยอดเบิก PPBOM">1a. Direct Transfer (ZJDB)</span>
+                <button class="orders-filter-toggle po-filter-toggle ${fActive('transferStatus') ? 'active' : ''}" data-filter-key="transferStatus" type="button" title="กรองสถานะ Direct Transfer (ZJDB)">▾</button>
               </div>
+            </th>
+            <th style="padding:10px 5px;text-align:center;font-size:11.5px;background:#dbeafe;color:#1d4ed8" title="ยอดเบิกเทียบ Demand จาก Production Material Issue (PPBOM) แสดงแยกจาก Direct Transfer">
+              <div class="orders-th-cell" style="justify-content:center"><span>1b. Material Issue (PPBOM)</span></div>
             </th>
             <th class="num" style="padding:10px 6px;font-size:11.5px;background:#dcfce7;color:#166534">
               <div class="orders-th-cell" style="justify-content:flex-end">
@@ -7349,9 +7565,13 @@
     }
     if (el('poModalTitle')) el('poModalTitle').textContent = `${mo.productCode} · ${mo.productName}`;
     if (el('poModalSubtitle')) {
+      const ppbomText = mo.ppbomNumber ? ` · Production Material Issue: ${mo.ppbomNumber}` : '';
       const zjdbText = mo.directTransferDocs ? ` · ใบโอน Direct Transfer: ${mo.directTransferDocs}` : '';
-      const bomLabel = mo.hasOrderBomData ? `BOM ของ Order${mo.ppbomNumber ? ` (${mo.ppbomNumber})` : ''}` : 'BOM รุ่นชั่วคราว';
-      el('poModalSubtitle').textContent = `แผนก: ${mo.department} · จำนวนสั่งผลิต (Order): ${fmt(mo.orderQty)} ตัว · ${bomLabel}: ${mo.totalParts} Part/ตัว${zjdbText}`;
+      const bomSourceText = mo.hasOrderBomData ? 'BOM/Part จาก Order นี้' : 'ไม่พบ BOM ของ Order · แสดง BOM รุ่นชั่วคราว';
+      const orderQtyLabel = mo.orderQty > 0
+        ? `${fmt(mo.orderQty)} ตัว${mo.orderQtySource ? ` (${mo.orderQtySource})` : ''}`
+        : 'ไม่พบจำนวนผลิตในข้อมูล Order';
+      el('poModalSubtitle').textContent = `แผนก: ${mo.department} · Order: ${orderQtyLabel} · ${bomSourceText}: ${mo.totalParts} Part${mo.orderQty > 0 ? '/ตัว' : ''}${ppbomText}${zjdbText}`;
     }
 
     // Populate 5-Step Pipeline Grid inside Modal
@@ -7425,48 +7645,90 @@
 
     const allItems = mo.items || [];
     const unissuedItems = allItems.filter(it => !it.isTransferComplete);
+    const labelItems = allItems.filter(it => it.isLabelRoll);
+    const ppbomPendingParts = allItems.filter(it => it.hasPpBomIssueData && n(it.ppbomIssuedQty) + 1e-5 < (n(it.ppbomDemandQty) || n(it.demandQty))).length;
+    const ppbomUnknownParts = allItems.filter(it => !it.hasPpBomIssueData).length;
 
     if (el('poModalAllPartsBadge')) el('poModalAllPartsBadge').textContent = allItems.length;
     if (el('poModalUnissuedPartsBadge')) el('poModalUnissuedPartsBadge').textContent = unissuedItems.length;
+    if (el('poModalLabelPartsBadge')) el('poModalLabelPartsBadge').textContent = labelItems.length;
 
-    if (poModalFilterMode === 'unissued') {
-      if (el('poModalFilterUnissuedBtn')) el('poModalFilterUnissuedBtn').className = 'btn primary';
-      if (el('poModalFilterAllBtn')) el('poModalFilterAllBtn').className = 'btn soft';
-    } else {
-      if (el('poModalFilterAllBtn')) el('poModalFilterAllBtn').className = 'btn primary';
-      if (el('poModalFilterUnissuedBtn')) el('poModalFilterUnissuedBtn').className = 'btn soft';
-    }
+    if (el('poModalFilterAllBtn')) el('poModalFilterAllBtn').className = poModalFilterMode === 'all' ? 'btn primary' : 'btn soft';
+    if (el('poModalFilterUnissuedBtn')) el('poModalFilterUnissuedBtn').className = poModalFilterMode === 'unissued' ? 'btn primary' : 'btn soft';
+    if (el('poModalFilterLabelBtn')) el('poModalFilterLabelBtn').className = poModalFilterMode === 'label' ? 'btn primary' : 'btn soft';
 
-    const displayItems = poModalFilterMode === 'unissued' ? unissuedItems : allItems;
+    const displayItems = poModalFilterMode === 'unissued'
+      ? unissuedItems
+      : (poModalFilterMode === 'label' ? labelItems : allItems);
+
     if (el('poModalTableSummary')) {
-      el('poModalTableSummary').innerHTML = `โครงสร้าง BOM ทั้งหมด <strong>${allItems.length} Part/ตัว</strong> · สั่งผลิต <strong>${fmt(mo.orderQty)} ตัว</strong> · จ่ายครบแล้ว <strong style="color:#15803d">${mo.transferReadyParts} Part</strong> · ค้างจ่าย <strong style="color:${mo.transferMissingParts > 0 ? '#dc2626' : '#15803d'}">${mo.transferMissingParts} Part</strong>`;
+      const labelNote = mo.labelRollPartsCount > 0
+        ? ` · 🏷️ กลุ่ม Label จ่ายยกม้วน <strong style="color:#0369a1">${mo.labelRollPartsCount} Part</strong> (มีใน H9 พอใช้ ${mo.labelRollH9CoveredCount}${mo.labelRollExemptLowH9Count > 0 ? ` · ยกเว้นเบิกม้วน ${mo.labelRollExemptLowH9Count}` : ''})`
+        : '';
+      const bomSourceNote = mo.hasOrderBomData
+        ? `<strong style="color:#0369a1">Part จาก BOM ของ Order${mo.ppbomNumber ? ` (${esc(mo.ppbomNumber)})` : ''}</strong>`
+        : `<strong style="color:#b45309">ไม่พบ BOM ของ Order · ใช้ BOM รุ่นชั่วคราว; นำเข้า PPBOM เพื่อยืนยัน</strong>`;
+      el('poModalTableSummary').innerHTML = `${bomSourceNote} · แสดง <strong>${allItems.length} Part</strong> · Direct Transfer ครบ <strong style="color:#15803d">${mo.transferReadyParts} Part</strong> · ค้างโอน <strong style="color:${mo.transferMissingParts > 0 ? '#dc2626' : '#15803d'}">${mo.transferMissingParts} Part</strong> · PPBOM ค้างเบิก <strong style="color:${ppbomPendingParts > 0 ? '#b45309' : '#1d4ed8'}">${ppbomPendingParts} Part</strong>${ppbomUnknownParts ? ` · ไม่พบ PPBOM ${ppbomUnknownParts} Part` : ''}${labelNote}`;
     }
 
     if (!displayItems.length) {
-      el('poModalTableBody').innerHTML = `<tr><td colspan="9" style="text-align:center;padding:28px;color:var(--muted);font-size:14px">🎉 ไม่มีรายการ Part ค้างจ่าย (Direct Transfer ครบ 100% ทุกตัวแล้ว)</td></tr>`;
+      const emptyMsg = poModalFilterMode === 'label'
+        ? 'ไม่มีรายการกลุ่ม Label ใน Order นี้'
+        : '🎉 ไม่มีรายการ Part ค้างจ่าย (Direct Transfer ครบและกลุ่ม Label จ่ายยกม้วนพร้อมใช้ 100% ทุกตัวแล้ว)';
+      el('poModalTableBody').innerHTML = `<tr><td colspan="10" style="text-align:center;padding:28px;color:var(--muted);font-size:14px">${emptyMsg}</td></tr>`;
       return;
     }
 
     const rowsHtml = displayItems.map((it, idx) => {
+      const ppbomQty = n(it.ppbomIssuedQty);
+      const ppbomDemandQty = n(it.ppbomDemandQty) || n(it.demandQty);
+      const ppbomMissingQty = it.hasPpBomIssueData
+        ? Math.max(0, +(ppbomDemandQty - ppbomQty).toFixed(4))
+        : 0;
       let stBadge = '';
-      if (it.isTransferComplete) {
-        stBadge = `<span class="badge green" style="font-size:11.5px;padding:3px 8px;font-weight:800">✅ จ่ายครบแล้ว</span>`;
-      } else if (it.mainStockNoH9 >= it.unissuedQty) {
-        stBadge = `<span class="badge amber" style="font-size:11.5px;padding:3px 8px;font-weight:800" title="มีของในคลังหลักพร้อมโอน Direct Transfer">🟡 รอโอน (คลังมีของ)</span>`;
+      if (it.rollCoveredMode === 'h9_stock') {
+        stBadge = `<span class="badge green" style="font-size:11.5px;padding:3px 8px;font-weight:800" title="Part กลุ่ม Label จ่ายเป็นม้วน Common: เช็คแล้วมีสต็อกในคลัง H9 (${fmtQty(it.h9Stock)} ${esc(it.unit)}) พอใช้งาน">✅ มีม้วนใน H9 พอใช้</span>`;
+      } else if (it.rollCoveredMode === 'roll_exempt_low_h9') {
+        stBadge = `<span class="badge amber" style="font-size:11.5px;padding:3px 8px;font-weight:800" title="ยกเว้นไม่บล็อก Order เพราะเป็นสติกเกอร์จ่ายยกม้วน (คลังหลักมี ${fmtQty(it.mainStockNoH9)} ${esc(it.unit)} · H9 เหลือ ${fmtQty(it.h9Stock)})">🏷️ ยกเว้นเบิกม้วน (คลังมีของ)</span>`;
+      } else if (it.isTransferComplete) {
+        stBadge = it.hasPpBomIssueData && ppbomMissingQty > 1e-5
+          ? `<span class="badge amber" style="font-size:11.5px;padding:3px 8px;font-weight:800" title="Direct Transfer ครบ แต่ Production Material Issue (PPBOM) ยังขาด ${fmtQty(ppbomMissingQty)} ${esc(it.unit)}">✅ โอนครบ · ⚠️ PPBOM ยังไม่ครบ</span>`
+          : `<span class="badge green" style="font-size:11.5px;padding:3px 8px;font-weight:800">✅ Direct Transfer ครบ</span>`;
+      } else if (it.hasPpBomIssueData && ppbomMissingQty <= 1e-5 && ppbomDemandQty > 0) {
+        stBadge = `<span class="badge amber" style="font-size:11.5px;padding:3px 8px;font-weight:800" title="Production Material Issue (PPBOM) ครบ แต่ Direct Transfer (ZJDB) ยังไม่ครบ">⚠️ PPBOM ครบ · รอ ZJDB</span>`;
+      } else if (it.mainStockNoH9 + it.h9Stock >= it.unissuedQty) {
+        stBadge = `<span class="badge amber" style="font-size:11.5px;padding:3px 8px;font-weight:800" title="มีของในคลังพร้อมโอน Direct Transfer">🟡 รอโอน (คลังมีของ)</span>`;
       } else {
-        const shortStock = Math.max(0, +(it.unissuedQty - it.mainStockNoH9).toFixed(4));
-        stBadge = `<span class="badge red" style="font-size:11.5px;padding:3px 8px;font-weight:800" title="คลังหลักมีของไม่พอโอน">🔴 ขาดของ (-${fmtQty(shortStock)})</span>`;
+        const shortStock = Math.max(0, +(it.unissuedQty - (it.mainStockNoH9 + it.h9Stock)).toFixed(4));
+        stBadge = `<span class="badge red" style="font-size:11.5px;padding:3px 8px;font-weight:800" title="สต็อกรวมไม่พอจ่าย">🔴 ขาดของ (-${fmtQty(shortStock)})</span>`;
       }
 
       const nonMrpTag = it.sourceType === 'BOM-NonMRP'
         ? `<span class="badge gray" style="font-size:10px;padding:1px 6px" title="Part ใน BOM มาตรฐาน (Non-MRP / สติกเกอร์เบิกยกม้วน)">BOM มาตรฐาน</span>`
         : '';
-
-      const zjdbDocTag = it.directTransferDocs
-        ? `<div style="font-size:10.5px;color:#059669;font-weight:700;margin-top:1px">${esc(it.directTransferDocs)}</div>`
+      const labelRollTag = it.isLabelRoll
+        ? `<span class="badge" style="background:#e0f2fe;color:#0369a1;font-size:10px;padding:1px 6px;font-weight:700" title="กลุ่ม Label / Sticker / QR Code จ่ายเป็นม้วนใช้ร่วมหลาย Order (เช็คเทียบคลัง H9)">🏷️ จ่ายยกม้วน (Common)</span>`
         : '';
 
-      return `<tr style="border-bottom:1px solid #edf2f7;background:${!it.isTransferComplete ? '#fff1f2' : 'transparent'}">
+      let zjdbDocTag = it.directTransferDocs
+        ? `<div style="font-size:10.5px;color:#059669;font-weight:700;margin-top:1px">${esc(it.directTransferDocs)}</div>`
+        : '';
+      if (!it.directTransferDocs && it.rollCoveredMode === 'h9_stock') {
+        zjdbDocTag = `<div style="font-size:10.5px;color:#0284c7;font-weight:700;margin-top:1px">🏷️ ใช้ม้วนใน H9 (มี ${fmtQty(it.h9Stock)})</div>`;
+      } else if (!it.directTransferDocs && it.rollCoveredMode === 'roll_exempt_low_h9') {
+        zjdbDocTag = `<div style="font-size:10.5px;color:#b45309;font-weight:700;margin-top:1px">🏷️ ยกเว้นม้วน Common (คลังมี ${fmtQty(it.mainStockNoH9)})</div>`;
+      }
+      const ppbomSubTag = !it.hasPpBomIssueData
+        ? `<div style="font-size:10.5px;color:#94a3b8;margin-top:1px">ไม่พบข้อมูล PPBOM</div>`
+        : (ppbomMissingQty <= 1e-5
+          ? `<div style="font-size:10.5px;color:#1d4ed8;font-weight:700;margin-top:1px">✅ เบิกครบตาม PPBOM</div>`
+          : `<div style="font-size:10.5px;color:#b45309;font-weight:700;margin-top:1px">ค้างเบิก ${fmtQty(ppbomMissingQty)}</div>`);
+
+      const rowBg = !it.isTransferComplete
+        ? '#fff1f2'
+        : (it.rollCoveredMode === 'roll_exempt_low_h9' ? '#fffbeb' : 'transparent');
+
+      return `<tr style="border-bottom:1px solid #edf2f7;background:${rowBg}">
         <td style="text-align:center;padding:9px 6px;color:#64748b;font-weight:600">${idx + 1}</td>
         <td style="padding:9px 8px;white-space:nowrap">
           <div style="display:flex;align-items:center;gap:5px">
@@ -7476,15 +7738,20 @@
         <td style="padding:9px 8px">
           <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
             <strong style="font-size:13px;color:#0f172a">${esc(it.materialName || '—')}</strong>
+            ${labelRollTag}
             ${nonMrpTag}
           </div>
           ${it.specification ? `<div style="font-size:11.5px;color:#64748b">${esc(it.specification)}</div>` : ''}
         </td>
-        <td class="num" style="padding:9px 8px;background:#f0f9ff;font-weight:800;color:#0369a1;white-space:nowrap">${fmtQty(it.qtyPer)} <span style="font-size:11px;font-weight:600">${esc(it.unit)}</span></td>
+        <td class="num" style="padding:9px 8px;background:#f0f9ff;font-weight:800;color:#0369a1;white-space:nowrap">${it.qtyPerKnown === false || !(it.qtyPer > 0) ? '—' : fmtQty(it.qtyPer)} <span style="font-size:11px;font-weight:600">${it.qtyPerKnown === false || !(it.qtyPer > 0) ? '' : esc(it.unit)}</span></td>
         <td class="num" style="padding:9px 8px;font-weight:800;font-size:13.5px;color:#0f172a;white-space:nowrap">${fmtQty(it.demandQty)} <span style="font-size:11px;color:#64748b;font-weight:600">${esc(it.unit)}</span></td>
-        <td class="num" style="padding:9px 8px;background:#f0fdf4;font-weight:800;font-size:13.5px;color:${it.issuedQty > 0 ? '#15803d' : '#64748b'};white-space:nowrap">
+        <td class="num" style="padding:9px 8px;background:#f0fdf4;font-weight:800;font-size:13.5px;color:${it.issuedQty > 0 ? '#15803d' : (it.rollCoveredMode ? '#0369a1' : '#64748b')};white-space:nowrap">
           <div>${fmtQty(it.issuedQty)} <span style="font-size:11px;font-weight:600">${esc(it.unit)}</span></div>
           ${zjdbDocTag}
+        </td>
+        <td class="num" style="padding:9px 8px;background:#eff6ff;font-weight:800;font-size:13.5px;color:${!it.hasPpBomIssueData ? '#94a3b8' : (ppbomMissingQty <= 1e-5 ? '#1d4ed8' : (ppbomQty > 0 ? '#b45309' : '#dc2626'))};white-space:nowrap">
+          <div>${it.hasPpBomIssueData ? `${fmtQty(ppbomQty)} / ${fmtQty(ppbomDemandQty)}` : '—'} <span style="font-size:11px;font-weight:600">${it.hasPpBomIssueData ? esc(it.unit) : ''}</span></div>
+          ${ppbomSubTag}
         </td>
         <td class="num" style="padding:9px 8px;background:${it.unissuedQty > 0 ? '#fef2f2' : '#fffbeb'};font-weight:800;font-size:13.5px;color:${it.unissuedQty > 0 ? '#dc2626' : '#94a3b8'};white-space:nowrap">${fmtQty(it.unissuedQty)} <span style="font-size:11px;font-weight:600">${esc(it.unit)}</span></td>
         <td class="num" style="padding:9px 8px;font-size:12.5px;white-space:nowrap">
@@ -7638,9 +7905,12 @@
       'Model Code (รหัสรุ่น)',
       'Model Name (ชื่อรุ่น)',
       'Order Qty (จำนวนสั่งผลิต)',
+      'BOM Source (แหล่ง BOM)',
       'BOM Parts/Unit (จำนวน Part ใน BOM)',
       'Direct Transfer Ready Parts (Part ที่จ่ายครบ)',
       'Direct Transfer Missing Parts (Part ที่ค้างจ่าย)',
+      'Production Material Issue Data Parts (จำนวน Part ที่พบข้อมูล PPBOM)',
+      'Production Material Issue Pending Parts (Part ที่ยังเบิก PPBOM ไม่ครบ)',
       'Actual Produced H9-Barcode (ยอดผลิตจริง Barcode)',
       'Scan Completion Date (วันจบตัวสุดท้ายของ Order)',
       'ERP Production Report Qty (ยอดกด Report)',
@@ -7658,9 +7928,12 @@
         cleanCsv(mo.productCode),
         cleanCsv(mo.productName),
         mo.orderQty,
+        cleanCsv(mo.hasOrderBomData ? `Order BOM / PPBOM ${mo.ppbomNumber || ''}` : 'Standard BOM by Model (Order BOM not found)'),
         mo.totalParts,
         mo.transferReadyParts,
         mo.transferMissingParts,
+        mo.ppbomIssueDataParts,
+        mo.ppbomIssuePendingParts,
         mo.hasBarcodeRecord ? mo.actualBarcodeQty : '',
         cleanCsv(mo.barcodeEndDate || ''),
         mo.reportQty,
@@ -8647,6 +8920,7 @@
   el('poTrackingDetailModal')?.addEventListener('click', e => { if (e.target === el('poTrackingDetailModal')) el('poTrackingDetailModal').classList.remove('show'); });
   el('poModalFilterAllBtn')?.addEventListener('click', () => { poModalFilterMode = 'all'; renderPoModalTable(); });
   el('poModalFilterUnissuedBtn')?.addEventListener('click', () => { poModalFilterMode = 'unissued'; renderPoModalTable(); });
+  el('poModalFilterLabelBtn')?.addEventListener('click', () => { poModalFilterMode = 'label'; renderPoModalTable(); });
   setTimeout(() => { if (typeof syncBarcodeRecordLive === 'function') syncBarcodeRecordLive(true); }, 2500);
 
   el('ordersTableWrap').addEventListener('click', event => {
