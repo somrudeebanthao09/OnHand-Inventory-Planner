@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#f4f6f8">
   <title>Material Planner | ระบบวางแผนวัตถุดิบ</title>
+  <style>
+    html:not(.app-ready)::before{content:"กำลังเปิด Material Planner\Aกำลังอ่านข้อมูล กรุณารอสักครู่";white-space:pre;position:fixed;inset:0;z-index:2147483647;display:grid;place-content:center;text-align:center;background:#f4f6f8;color:#17252d;font:650 17px/1.8 "Segoe UI",Tahoma,Arial,sans-serif}
+    html:not(.app-ready):not(.app-boot-error)::after{content:"";position:fixed;z-index:2147483647;left:calc(50% - 18px);top:calc(50% - 55px);width:36px;height:36px;border:4px solid #cde8e5;border-top-color:#087e78;border-radius:50%;animation:appBootSpin .8s linear infinite}
+    html.app-boot-error:not(.app-ready)::before{content:"เปิด Material Planner ไม่สำเร็จ\Aกด Ctrl+R เพื่อโหลดอีกครั้ง";color:#b91c1c}
+    @keyframes appBootSpin{to{transform:rotate(360deg)}}
+  </style>
   <script src="./xlsx.full.min.js" onerror="this.onerror=null;this.src='https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js'"></script>
   <script src="./OnHandSeed.js?v=20261027v7"></script>
   <script src="./DepartmentMapSeed.js?v=20261027v7"></script>
@@ -2553,39 +2559,46 @@
   function showAccessGate(state){el('appShell').classList.add('hidden');el('accessGate').classList.remove('hidden');el('accessEmail').textContent=state?.email||'ตรวจสอบไม่ได้';el('accessRequestForm').classList.add('hidden');if(!state?.ok){el('accessMessage').textContent=state?.message||'ยืนยันบัญชี Google ไม่สำเร็จ กรุณาเปิดผ่าน URL เว็บแอปด้วยบัญชีบริษัท';return}if(state.status==='pending'){el('accessMessage').textContent='ส่งคำขอแล้ว รอ Admin อนุมัติก่อนจึงจะเห็นข้อมูล';return}if(state.status==='approved'){el('accessMessage').textContent='อนุมัติแล้ว กำลังเปิดเว็บ';return}el('accessMessage').textContent=state.status==='rejected'?'คำขอก่อนหน้าถูกปฏิเสธ สามารถส่งคำขอใหม่ให้ Admin พิจารณาได้':'ยังไม่มีสิทธิ์เข้าใช้เว็บ ส่งคำขอให้ Admin อนุมัติ';el('accessRequestForm').classList.remove('hidden')}
   async function renderAccessRequests(){if(!accessIsAdmin)return;const host=el('accessRequestsList');host.innerHTML='<div class="empty">กำลังโหลดคำขอ…</div>';try{const rows=await callGoogle('listAccessRequests'),pending=rows.filter(x=>x.status==='pending');host.innerHTML=pending.length?`<div class="table-wrap"><table class="access-table"><thead><tr><th>อีเมล</th><th>ชื่อ</th><th>ขอเมื่อ</th><th>จัดการ</th></tr></thead><tbody>${pending.map(x=>`<tr><td>${esc(x.email)}</td><td>${esc(x.displayName||'—')}</td><td>${esc(time(x.requestedAt))}</td><td><button class="btn soft accessReview" data-email="${esc(x.email)}" data-decision="approved">อนุมัติ</button> <button class="btn danger accessReview" data-email="${esc(x.email)}" data-decision="rejected">ปฏิเสธ</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty"><b>ไม่มีคำขอรออนุมัติ</b></div>'}catch(err){host.innerHTML='<div class="notice red">โหลดคำขอไม่ได้ ตรวจสิทธิ์ Admin และการเชื่อมต่อ Google Sheets</div>';console.error(err)}}
   async function boot(){
-    initInactivityTracker();
-    initAuthListeners();
-    initUserManagementListeners();
-    await loadData();
-    startScheduler();
-    initAdminSyncWorker();
+    try{
+      initInactivityTracker();
+      initAuthListeners();
+      initUserManagementListeners();
+      await loadData();
+      startScheduler();
+      initAdminSyncWorker();
 
-    const currentUser = getCurrentUser();
-    if(!currentUser){
-      showAuthScreen('login');
-      return;
-    }
-
-    hideAuthScreen();
-    updateAuthUI();
-
-    if(sessionStorage.getItem('onhandScreenLocked')==='true'){
-      lockScreen('session');
-    }
-
-    if(hasGoogle()){
-      try{
-        const state=await callGoogle('getAccessState');
-        accessIsAdmin=Boolean(state.isAdmin) || currentUser.role === 'admin';
-        el('accessGate').classList.add('hidden');
-        el('accessAdminPanel').classList.toggle('hidden',!accessIsAdmin);
-        if(accessIsAdmin)renderAccessRequests();
-      }catch(err){
-        console.error(err);
+      const currentUser = getCurrentUser();
+      if(!currentUser){
+        showAuthScreen('login');
+        document.documentElement.classList.add('app-ready');
+        return;
       }
-    }else{
-      accessIsAdmin = currentUser.role === 'admin';
-      el('accessAdminPanel').classList.toggle('hidden',!accessIsAdmin);
+
+      hideAuthScreen();
+      updateAuthUI();
+
+      if(sessionStorage.getItem('onhandScreenLocked')==='true'){
+        lockScreen('session');
+      }
+
+      if(hasGoogle()){
+        try{
+          const state=await callGoogle('getAccessState');
+          accessIsAdmin=Boolean(state.isAdmin) || currentUser.role === 'admin';
+          el('accessGate').classList.add('hidden');
+          el('accessAdminPanel').classList.toggle('hidden',!accessIsAdmin);
+          if(accessIsAdmin)renderAccessRequests();
+        }catch(err){
+          console.error(err);
+        }
+      }else{
+        accessIsAdmin = currentUser.role === 'admin';
+        el('accessAdminPanel').classList.toggle('hidden',!accessIsAdmin);
+      }
+      document.documentElement.classList.add('app-ready');
+    }catch(err){
+      console.error('Material Planner startup failed',err);
+      document.documentElement.classList.add('app-boot-error');
     }
   }
   function normalizeDb(input){
@@ -6304,7 +6317,7 @@
     }
     return {
       moNumber: String(mo.moNumber || '—'),
-      productModel: `${mo.productCode || '—'} · ${mo.productName || '—'} (BOM ${mo.totalParts} Part)`,
+      productModel: `${mo.productCode || '—'} · ${mo.productName || '—'} (${mo.hasOrderBomData ? 'Order BOM' : 'BOM'} ${mo.totalParts} Part)`,
       orderQty: `${fmt(mo.orderQty)} ตัว`,
       transferStatus: mo.isTransferComplete
         ? `✅ ครบ ${mo.totalParts}/${mo.totalParts} Part (พร้อมทำ ${fmt(mo.orderQty)} ตัว)`
@@ -6571,9 +6584,10 @@
   }
 
   function computePoTracking() {
-    const pmlRows = (db.productionOrders && db.productionOrders.length && db.productionOrders[0]?.onlyZjdbMode === true)
+    const orderSnapshotRows = window.PRODUCTION_ORDERS_SEED?.orders || [];
+    const pmlRows = hasGoogle() && db.productionOrders?.length
       ? db.productionOrders
-      : (window.PRODUCTION_ORDERS_SEED?.orders || db.productionOrders || []);
+      : (orderSnapshotRows.length ? orderSnapshotRows : (db.productionOrders || []));
     const bomRows = (db.bom && db.bom.length)
       ? db.bom
       : (window.BOM_SEED?.rows || []);
@@ -6645,9 +6659,10 @@
           productCode: prodCode || execInfo?.materialCode || '',
           productName: pOv?.materialName || r.productName || execInfo?.materialName || bcInfo?.orderModel || prodCode,
           department: normalizeDepartmentName(rawDept) || rawDept,
-          orderQty: n(r.orderQty ?? r.quantity) || execInfo?.orderQty || bcInfo?.planQty || 0,
+          orderQty: n(r.orderQty) || execInfo?.orderQty || bcInfo?.planQty || 0,
           pmlStatus: String(r.taskStatus || r.status || '').trim(),
           pickStatus: String(r.pickStatus || '').trim(),
+          hasOrderBomData: Boolean(r.ppbomNumber || r.docStatus || r.pickStatus),
           itemsMap: new Map(),
           items: [],
           execInfo,
@@ -6655,6 +6670,7 @@
         };
         moMap.set(moNum, mo);
       }
+      if (r.ppbomNumber || r.docStatus || r.pickStatus) mo.hasOrderBomData = true;
       if (!mo.ppbomNumber && r.ppbomNumber) mo.ppbomNumber = String(r.ppbomNumber).trim();
       const docStr = String(r.directTransferDocs || r.orderDirectTransferDocs || '').trim();
       if (docStr) {
@@ -6687,7 +6703,9 @@
         const invMeta = invMetaMap.get(matCode);
         const modelBom = bomByModel.get(mo.productCode);
         const bomComp = modelBom ? modelBom.get(matCode) : null;
-        const inferredQtyPer = bomComp?.qtyPer || (mo.orderQty > 0 && demandQty > 0 ? +(demandQty / mo.orderQty).toFixed(4) : 1);
+        const inferredQtyPer = mo.hasOrderBomData
+          ? (mo.orderQty > 0 && demandQty > 0 ? +(demandQty / mo.orderQty).toFixed(6) : 0)
+          : (bomComp?.qtyPer || (mo.orderQty > 0 && demandQty > 0 ? +(demandQty / mo.orderQty).toFixed(4) : 1));
 
         mo.itemsMap.set(matCode, {
           materialCode: matCode,
@@ -6837,7 +6855,7 @@
           }
         }
       }
-      if (modelBom) {
+      if (modelBom && !mo.hasOrderBomData) {
         // Check if existing PML items are already 100% issued
         const pmlItems = Array.from(mo.itemsMap.values());
         const allPmlIssued = pmlItems.length > 0 && pmlItems.every(it => it.issuedQty >= it.demandQty - 1e-6);
@@ -7197,7 +7215,7 @@
           <div style="font-weight:800;font-size:12.5px;color:#0f172a;line-height:1.25">${esc(mo.productName)}</div>
           <div style="font-size:10.5px;color:#475569;margin-top:3px;display:flex;align-items:center;gap:4px;flex-wrap:wrap">
             <span class="code" style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-weight:700">${esc(mo.productCode)}</span>
-            <span style="color:#0369a1;font-weight:700">🧩 BOM ${mo.totalParts} Part</span>
+            <span style="color:#0369a1;font-weight:700">🧩 ${mo.hasOrderBomData ? `Order BOM${mo.ppbomNumber ? ` ${esc(mo.ppbomNumber)}` : ''}` : 'BOM รุ่น'} ${mo.totalParts} Part</span>
           </div>
         </td>
         <td class="num" style="padding:9px 6px">
@@ -7332,7 +7350,8 @@
     if (el('poModalTitle')) el('poModalTitle').textContent = `${mo.productCode} · ${mo.productName}`;
     if (el('poModalSubtitle')) {
       const zjdbText = mo.directTransferDocs ? ` · ใบโอน Direct Transfer: ${mo.directTransferDocs}` : '';
-      el('poModalSubtitle').textContent = `แผนก: ${mo.department} · จำนวนสั่งผลิต (Order): ${fmt(mo.orderQty)} ตัว · โครงสร้าง BOM: ${mo.totalParts} Part/ตัว${zjdbText}`;
+      const bomLabel = mo.hasOrderBomData ? `BOM ของ Order${mo.ppbomNumber ? ` (${mo.ppbomNumber})` : ''}` : 'BOM รุ่นชั่วคราว';
+      el('poModalSubtitle').textContent = `แผนก: ${mo.department} · จำนวนสั่งผลิต (Order): ${fmt(mo.orderQty)} ตัว · ${bomLabel}: ${mo.totalParts} Part/ตัว${zjdbText}`;
     }
 
     // Populate 5-Step Pipeline Grid inside Modal
