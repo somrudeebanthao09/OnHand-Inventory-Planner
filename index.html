@@ -2101,6 +2101,7 @@
  <div id="stockFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์"><div class="stock-filter-popup-head"><strong id="stockFilterTitle">ตัวกรอง</strong><button id="stockFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><input id="stockFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา" autocomplete="off"><label class="stock-filter-select-all"><input id="stockFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="stockFilterCount" class="helper"></div><div id="stockFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="stockFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="stockFilterCancel" class="btn" type="button">ยกเลิก</button><button id="stockFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
  <div id="ordersFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ Order"><div class="stock-filter-popup-head"><strong id="ordersFilterTitle">ตัวกรอง</strong><button id="ordersFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><input id="ordersFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="ordersFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="ordersFilterCount" class="helper"></div><div id="ordersFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="ordersFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="ordersFilterCancel" class="btn" type="button">ยกเลิก</button><button id="ordersFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
  <div id="safetyFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ Safety Stock"><div class="stock-filter-popup-head"><strong id="safetyFilterTitle">ตัวกรอง</strong><button id="safetyFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><input id="safetyFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="safetyFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="safetyFilterCount" class="helper"></div><div id="safetyFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="safetyFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="safetyFilterCancel" class="btn" type="button">ยกเลิก</button><button id="safetyFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
+ <div id="poTrackingFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ ติดตาม Order ผลิต"><div class="stock-filter-popup-head"><strong id="poTrackingFilterTitle">ตัวกรอง</strong><button id="poTrackingFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><input id="poTrackingFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="poTrackingFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="poTrackingFilterCount" class="helper"></div><div id="poTrackingFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="poTrackingFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="poTrackingFilterCancel" class="btn" type="button">ยกเลิก</button><button id="poTrackingFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
  <div class="toast" id="toast" role="status"></div>
 <div class="modal-backdrop" id="fileErrorModal"><div class="modal"><h2 id="modalTitle">ไม่สามารถนำเข้าไฟล์</h2><p id="modalMessage"></p><div class="modal-actions"><button class="btn primary" id="modalClose">รับทราบ</button></div></div></div>
 
@@ -6263,6 +6264,234 @@
   let currentPoModalMo = '';
   let poModalFilterMode = 'all';
   let poTrackingCache = null;
+  let poTrackingColumnFilters = {};
+  let poTrackingFilterKey = '';
+  let poTrackingFilterAnchor = null;
+  let poTrackingFilterDraft = new Set();
+  let poTrackingFilterCandidates = [];
+  let poTrackingFilterMatches = [];
+  let poTrackingFilterBackupState = undefined;
+
+  const PO_TRACKING_COLS = {
+    moNumber: 'เลขที่ Order (MO)',
+    productModel: 'รุ่นสินค้า (Model) & BOM',
+    orderQty: 'จำนวน Order',
+    transferStatus: '1. Direct Transfer',
+    barcodeScan: '2. ผลิตจริง (วันจบ Scan)',
+    reportQty: '3. Report (ERP)',
+    qcConfirm: '4. QC Confirm',
+    warehouseReceived: '5. รับเข้าคลัง',
+    stuckTitle: 'ติดตรงไหน / ต้องตามใคร'
+  };
+
+  function getPoTrackingRowValues(mo) {
+    const isDone = (mo.actualBarcodeQty >= mo.orderQty && mo.orderQty > 0) || /^closed$/i.test(mo.barcodeStatus);
+    let barcodeVal = 'ไม่มีสแกน';
+    if (mo.hasBarcodeRecord) {
+      if (mo.barcodeEndDate) {
+        barcodeVal = `${fmt(mo.actualBarcodeQty)} ตัว (${isDone || mo.barcodeCompleteDate ? '🏁 จบ' : '🕒 ล่าสุด'} ${mo.barcodeEndDate})`;
+      } else if (mo.actualBarcodeQty > 0) {
+        barcodeVal = `${fmt(mo.actualBarcodeQty)} ตัว (⏳ กำลังผลิต)`;
+      } else {
+        barcodeVal = `0 ตัว (⏳ รอสแกน)`;
+      }
+    }
+    let reportVal = `${fmt(mo.reportQty)} ตัว`;
+    if (mo.hasBarcodeRecord) {
+      if (mo.unreportedBarcodeQty > 0) reportVal += ` (⚠️ ขาด Report ${fmt(mo.unreportedBarcodeQty)})`;
+      else if (mo.actualBarcodeQty > 0 && mo.reportQty === mo.actualBarcodeQty) reportVal += ` (✓ ตรงงานจริง)`;
+      else if (mo.reportQty > mo.actualBarcodeQty && mo.actualBarcodeQty > 0) reportVal += ` (+${fmt(mo.reportQty - mo.actualBarcodeQty)} ตัว)`;
+    }
+    return {
+      moNumber: String(mo.moNumber || '—'),
+      productModel: `${mo.productCode || '—'} · ${mo.productName || '—'} (BOM ${mo.totalParts} Part)`,
+      orderQty: `${fmt(mo.orderQty)} ตัว`,
+      transferStatus: mo.isTransferComplete
+        ? `✅ ครบ ${mo.totalParts}/${mo.totalParts} Part (พร้อมทำ ${fmt(mo.orderQty)} ตัว)`
+        : `🔴 ขาด ${mo.transferMissingParts}/${mo.totalParts} Part (จ่ายพอทำ ${fmt(mo.maxSetsFromIssued)} ตัว)`,
+      barcodeScan: barcodeVal,
+      reportQty: reportVal,
+      qcConfirm: `${fmt(mo.qcConformingQty)} ตัว${mo.qcScrapQty > 0 ? ` (เสีย ${fmt(mo.qcScrapQty)})` : ' (QC ผ่าน)'}`,
+      warehouseReceived: `${fmt(mo.warehouseReceivedQty)} ตัว (${mo.unreceivedQty > 0 ? `ค้าง ${fmt(mo.unreceivedQty)}` : 'รับครบ'})`,
+      stuckTitle: String(mo.stuckTitle || '—')
+    };
+  }
+
+  function positionPoTrackingFilter() {
+    const popup = el('poTrackingFilterPopup');
+    const anchor = poTrackingFilterAnchor;
+    if (!popup || popup.classList.contains('hidden') || !anchor?.isConnected) return;
+    const rect = anchor.getBoundingClientRect();
+    const viewHeight = window.visualViewport?.height || window.innerHeight;
+    const viewWidth = window.visualViewport?.width || window.innerWidth;
+    popup.style.left = '10px';
+    popup.style.top = '10px';
+    const width = popup.offsetWidth || 280;
+    const below = Math.max(0, viewHeight - rect.bottom - 10);
+    const above = Math.max(0, rect.top - 10);
+    const openBelow = below >= 180 || below >= above;
+    const space = Math.max(160, Math.min(440, openBelow ? below : above));
+    popup.style.maxHeight = `${space}px`;
+    popup.classList.toggle('compact', space < 300);
+    const height = popup.offsetHeight;
+    const left = Math.max(10, Math.min(rect.left, viewWidth - width - 10));
+    const top = openBelow ? Math.min(rect.bottom + 5, viewHeight - height - 10) : Math.max(10, rect.top - height - 5);
+    popup.style.left = `${left}px`;
+    popup.style.top = `${top}px`;
+  }
+
+  function renderPoTrackingFilterOptions() {
+    const search = (el('poTrackingFilterSearch')?.value || '').trim().toLowerCase();
+    const matches = poTrackingFilterCandidates.filter(val => String(val).toLowerCase().includes(search));
+    poTrackingFilterMatches = matches;
+    const selected = matches.filter(val => poTrackingFilterDraft.has(val)).length;
+    const selectAll = el('poTrackingFilterSelectAll');
+    if (selectAll) {
+      selectAll.checked = matches.length > 0 && selected === matches.length;
+      selectAll.indeterminate = selected > 0 && selected < matches.length;
+      selectAll.disabled = !matches.length;
+    }
+    if (el('poTrackingFilterCount')) {
+      if (search) {
+        el('poTrackingFilterCount').textContent = `เลือก ${fmt(selected)} · พบ ${fmt(matches.length)} จาก ${fmt(poTrackingFilterCandidates.length)} ค่า${matches.length > 250 ? ' · แสดง 250 ค่าแรก' : ''}`;
+      } else {
+        el('poTrackingFilterCount').textContent = `เลือก ${fmt(poTrackingFilterDraft.size)} · ทั้งหมด ${fmt(poTrackingFilterCandidates.length)} ค่า${matches.length > 250 ? ' · แสดง 250 ค่าแรก' : ''}`;
+      }
+    }
+    if (el('poTrackingFilterOptions')) {
+      el('poTrackingFilterOptions').innerHTML = matches.length
+        ? matches.slice(0, 250).map(val => `<label class="stock-filter-option">
+            <input type="checkbox" data-value="${esc(val)}" ${poTrackingFilterDraft.has(val) ? 'checked' : ''}>
+            <span>${esc(val)}</span>
+          </label>`).join('')
+        : '<div class="stock-filter-empty">ไม่พบค่าที่ค้นหา</div>';
+    }
+    positionPoTrackingFilter();
+  }
+
+  function syncPoTrackingFilterSelection() {
+    const search = (el('poTrackingFilterSearch')?.value || '').trim().toLowerCase();
+    const selected = poTrackingFilterMatches.filter(val => poTrackingFilterDraft.has(val)).length;
+    const selectAll = el('poTrackingFilterSelectAll');
+    if (selectAll) {
+      selectAll.checked = poTrackingFilterMatches.length > 0 && selected === poTrackingFilterMatches.length;
+      selectAll.indeterminate = selected > 0 && selected < poTrackingFilterMatches.length;
+      selectAll.disabled = !poTrackingFilterMatches.length;
+    }
+    if (el('poTrackingFilterCount')) {
+      if (search) {
+        el('poTrackingFilterCount').textContent = `เลือก ${fmt(selected)} · พบ ${fmt(poTrackingFilterMatches.length)} จาก ${fmt(poTrackingFilterCandidates.length)} ค่า${poTrackingFilterMatches.length > 250 ? ' · แสดง 250 ค่าแรก' : ''}`;
+      } else {
+        el('poTrackingFilterCount').textContent = `เลือก ${fmt(poTrackingFilterDraft.size)} · ทั้งหมด ${fmt(poTrackingFilterCandidates.length)} ค่า${poTrackingFilterMatches.length > 250 ? ' · แสดง 250 ค่าแรก' : ''}`;
+      }
+    }
+    el('poTrackingFilterOptions')?.querySelectorAll('input[data-value]').forEach(input => {
+      input.checked = poTrackingFilterDraft.has(input.dataset.value);
+    });
+  }
+
+  function openPoTrackingFilter(key, button) {
+    const colName = PO_TRACKING_COLS[key];
+    if (!colName) return;
+    const data = computePoTracking();
+    const search = (el('poTrackingSearch')?.value || '').trim().toLowerCase();
+    const deptFilter = el('poTrackingDeptFilter')?.value || '';
+    const statusFilter = el('poTrackingStatusFilter')?.value || 'all';
+
+    // Scope candidates to current top filters and other active column filters
+    const scopedRows = data.moList.filter(mo => {
+      if (deptFilter && mo.department !== deptFilter) return false;
+      if (statusFilter === 'has_barcode' && !mo.hasBarcodeRecord) return false;
+      if ((statusFilter === 'stuck_transfer' || statusFilter === 'transfer_incomplete') && mo.isTransferComplete) return false;
+      if (statusFilter === 'transfer_complete' && !mo.isTransferComplete) return false;
+      if ((statusFilter === 'stuck_report' || statusFilter === 'report_diff') && mo.unreportedBarcodeQty <= 0 && mo.stuckStage !== 'unreported') return false;
+      if ((statusFilter === 'stuck_qc' || statusFilter === 'waiting_qc_wh') && mo.stuckStage !== 'qc_wait' && mo.stuckStage !== 'wh_wait' && mo.stuckStage !== 'prod_wip') return false;
+      if (statusFilter === 'completed' && mo.stuckStage !== 'completed') return false;
+      if (search) {
+        const hay = `${mo.moNumber} ${mo.productCode} ${mo.productName} ${mo.department} ${mo.bcInfo?.orderModel || ''} ${mo.barcodeEndDate || ''} ${mo.stuckTitle}`.toLowerCase();
+        if (!hay.includes(search)) return false;
+      }
+      const rowVals = getPoTrackingRowValues(mo);
+      for (const [k, chosen] of Object.entries(poTrackingColumnFilters)) {
+        if (k === key) continue;
+        if (!chosen.includes(rowVals[k])) return false;
+      }
+      return true;
+    });
+
+    poTrackingFilterKey = key;
+    poTrackingFilterAnchor = button;
+
+    const allValues = scopedRows.map(mo => getPoTrackingRowValues(mo)[key]);
+    poTrackingFilterCandidates = [...new Set(allValues)].sort((a, b) => {
+      const numA = Number(String(a).replace(/,/g, '').replace(/\s*ตัว.*$/, ''));
+      const numB = Number(String(b).replace(/,/g, '').replace(/\s*ตัว.*$/, ''));
+      if (!isNaN(numA) && !isNaN(numB) && /^\d/.test(String(a)) && /^\d/.test(String(b))) return numA - numB;
+      return String(a).localeCompare(String(b), 'th', { numeric: true, sensitivity: 'base' });
+    });
+
+    poTrackingFilterBackupState = poTrackingColumnFilters[key] ? structuredClone(poTrackingColumnFilters[key]) : undefined;
+    const active = poTrackingColumnFilters[key];
+    poTrackingFilterDraft = new Set(active === undefined ? poTrackingFilterCandidates : active.filter(v => poTrackingFilterCandidates.includes(v)));
+
+    if (el('poTrackingFilterTitle')) el('poTrackingFilterTitle').textContent = `กรอง ${colName}`;
+    if (el('poTrackingFilterSearch')) el('poTrackingFilterSearch').value = '';
+    el('poTrackingFilterPopup')?.classList.remove('hidden');
+    renderPoTrackingFilterOptions();
+    positionPoTrackingFilter();
+    el('poTrackingFilterSearch')?.focus({ preventScroll: true });
+  }
+
+  function applyPoTrackingFilter() {
+    const key = poTrackingFilterKey;
+    if (!key) return;
+    const search = (el('poTrackingFilterSearch')?.value || '').trim();
+    const chosen = search
+      ? poTrackingFilterMatches.filter(v => poTrackingFilterDraft.has(v))
+      : [...poTrackingFilterDraft].filter(v => poTrackingFilterCandidates.includes(v));
+
+    if (chosen.length === poTrackingFilterCandidates.length && !search) {
+      delete poTrackingColumnFilters[key];
+    } else {
+      poTrackingColumnFilters[key] = chosen;
+    }
+    closePoTrackingFilter();
+    poTrackingPage = 1;
+    renderPoTrackingPage();
+    toast(`กรอง ${PO_TRACKING_COLS[key] || ''} สำเร็จ (${fmt(chosen.length)} ค่า)`);
+  }
+
+  function cancelPoTrackingFilter() {
+    if (poTrackingFilterKey) {
+      if (poTrackingFilterBackupState === undefined) {
+        delete poTrackingColumnFilters[poTrackingFilterKey];
+      } else {
+        poTrackingColumnFilters[poTrackingFilterKey] = poTrackingFilterBackupState;
+      }
+    }
+    closePoTrackingFilter();
+    poTrackingPage = 1;
+    renderPoTrackingPage();
+  }
+
+  function resetCurrentPoTrackingFilter() {
+    if (poTrackingFilterKey) {
+      const colLabel = PO_TRACKING_COLS[poTrackingFilterKey] || '';
+      delete poTrackingColumnFilters[poTrackingFilterKey];
+      toast(`ล้างตัวกรอง ${colLabel} แล้ว`);
+    }
+    closePoTrackingFilter();
+    poTrackingPage = 1;
+    renderPoTrackingPage();
+  }
+
+  function closePoTrackingFilter() {
+    el('poTrackingFilterPopup')?.classList.add('hidden');
+    poTrackingFilterKey = '';
+    poTrackingFilterAnchor = null;
+    poTrackingFilterDraft = new Set();
+    poTrackingFilterBackupState = undefined;
+  }
 
   function normalizeMoKey(raw) {
     return String(raw || '').trim().toUpperCase().replace(/^M0-/, 'MO-');
@@ -6497,6 +6726,72 @@
               unissuedQty: isDone ? 0 : dQty,
               consumedQty: isDone ? dQty : 0,
               wipQty: 0,
+              issuingWarehouse: 'H9 Assembly-Workshop Warehouse',
+              sourceType: 'BOM'
+            });
+          }
+        }
+        moMap.set(moNum, mo);
+      }
+    }
+
+    // Also ensure any MO in H9-barcode-record (e.g. newest MO-20261023-002517) not yet in PML/Execution is included
+    const barcodeModelMap = new Map([
+      ['QO3-100EZ18G/SNE', { productCode: '6001ZZ00255', productName: 'LOAD CENTER EZ 100A 18WAYS S/A', department: 'H9 Assembly Production Line' }],
+      ['SDEL124T', { productCode: '6001ZZ00191', productName: 'Classic + CU 24 way', department: 'H9 Assembly Production Line' }],
+      ['QWKDE3100LU18', { productCode: '6001ZZ00109', productName: 'LC DIFFUSE 100A LU 18 WAYS', department: 'H9 Assembly Production Line' }]
+    ]);
+    for (const existingMo of moMap.values()) {
+      const mKey = String(existingMo.bcInfo?.orderModel || existingMo.bcInfo?.scanModel || '').trim();
+      if (mKey && existingMo.productCode) {
+        barcodeModelMap.set(mKey, {
+          productCode: existingMo.productCode,
+          productName: existingMo.productName,
+          department: existingMo.department
+        });
+      }
+    }
+    for (const [moNum, bcInfo] of Object.entries(barcodeByMo)) {
+      if (!moMap.has(moNum) && /^MO-/i.test(moNum)) {
+        const mKey = String(bcInfo.orderModel || bcInfo.scanModel || '').trim();
+        const mapped = barcodeModelMap.get(mKey);
+        const prodCode = mapped?.productCode || mKey || '';
+        const pOv = overrides.get(prodCode);
+        const orderQty = n(bcInfo.planQty) || n(bcInfo.actualProducedQty) || 0;
+        const isClosedScan = /closed|complete/i.test(bcInfo.planStatus || '') || (orderQty > 0 && n(bcInfo.actualProducedQty) >= orderQty);
+        const mo = {
+          moNumber: moNum,
+          productCode: prodCode,
+          productName: pOv?.materialName || mapped?.productName || mKey || prodCode,
+          department: normalizeDepartmentName(mapped?.department || 'H9 Assembly Production Line'),
+          orderQty,
+          pmlStatus: isClosedScan ? 'Complete' : 'Start',
+          itemsMap: new Map(),
+          items: [],
+          execInfo: null,
+          bcInfo
+        };
+        const modelBom = bomByModel.get(prodCode);
+        if (modelBom) {
+          const producedRatio = orderQty > 0 ? Math.min(1, n(bcInfo.actualProducedQty) / orderQty) : 0;
+          const hasStarted = n(bcInfo.actualProducedQty) > 0 || isClosedScan;
+          for (const [matCode, bomComp] of modelBom.entries()) {
+            const mOv = overrides.get(matCode);
+            const invMeta = invMetaMap.get(matCode);
+            const dQty = +(bomComp.qtyPer * mo.orderQty).toFixed(4);
+            const issQty = hasStarted ? dQty : 0;
+            const consQty = +(dQty * producedRatio).toFixed(4);
+            mo.itemsMap.set(matCode, {
+              materialCode: matCode,
+              materialName: mOv?.materialName || bomComp.materialName || invMeta?.materialName || '',
+              specification: mOv?.specification || invMeta?.specification || '',
+              unit: bomComp.unit || invMeta?.unit || 'Pcs',
+              qtyPer: bomComp.qtyPer,
+              demandQty: dQty,
+              issuedQty: issQty,
+              unissuedQty: Math.max(0, +(dQty - issQty).toFixed(4)),
+              consumedQty: consQty,
+              wipQty: Math.max(0, +(issQty - consQty).toFixed(4)),
               issuingWarehouse: 'H9 Assembly-Workshop Warehouse',
               sourceType: 'BOM'
             });
@@ -6787,6 +7082,20 @@
       return true;
     });
 
+    const activeColFilters = Object.entries(poTrackingColumnFilters);
+    if (activeColFilters.length > 0) {
+      filtered = filtered.filter(mo => {
+        const vals = getPoTrackingRowValues(mo);
+        return activeColFilters.every(([k, chosen]) => chosen.includes(vals[k]));
+      });
+    }
+
+    if (el('poTrackingResetBtn')) {
+      el('poTrackingResetBtn').textContent = activeColFilters.length > 0
+        ? `ล้างตัวกรอง (${activeColFilters.length} คอลัมน์)`
+        : 'ล้างตัวกรอง';
+    }
+
     poTrackingFilteredCount = filtered.length;
     const totalPages = Math.max(1, Math.ceil(poTrackingFilteredCount / poTrackingPageSize));
     if (poTrackingPage > totalPages) poTrackingPage = totalPages;
@@ -6805,12 +7114,11 @@
     if (el('poTrackingPrevPage')) el('poTrackingPrevPage').disabled = poTrackingPage <= 1;
     if (el('poTrackingNextPage')) el('poTrackingNextPage').disabled = poTrackingPage >= totalPages;
 
-    if (!pageRows.length) {
-      el('poTrackingTableWrap').innerHTML = `<div class="empty" style="margin:18px"><b>ไม่พบรายการ Production Order ตามตัวกรองที่เลือก</b>ลองเปลี่ยนตัวกรองสถานะ หรือค้นหาด้วยเลข MO อื่น</div>`;
-      return;
-    }
+    const fActive = k => Boolean(poTrackingColumnFilters[k]);
 
-    const rowsHtml = pageRows.map(mo => {
+    const rowsHtml = !pageRows.length
+      ? `<tr><td colspan="10" style="padding:28px"><div class="empty" style="margin:0"><b>ไม่พบรายการ Production Order ตามตัวกรองที่เลือก</b>ลองเปลี่ยนตัวกรองคอลัมน์ หรือกดปุ่ม "ล้างตัวกรอง"</div></td></tr>`
+      : pageRows.map(mo => {
       const transferBadge = mo.isTransferComplete
         ? `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:1px">
              <span class="badge green" style="font-size:11.5px;padding:2px 8px;font-weight:800">✅ ครบ ${mo.totalParts}/${mo.totalParts} Part</span>
@@ -6920,17 +7228,62 @@
           <col style="width:14%">
           <col style="width:8%">
         </colgroup>
-        <thead>
+        <thead style="position:sticky;top:0;z-index:3;background:#f8fafc;box-shadow:0 1px 2px rgba(0,0,0,0.06)">
           <tr style="background:#f8fafc;border-bottom:2px solid #cbd5e1;color:#1e293b">
-            <th style="padding:10px 7px;text-align:left;font-size:11.5px">เลขที่ Order (MO)</th>
-            <th style="padding:10px 7px;text-align:left;font-size:11.5px">รุ่นสินค้า (Model) & BOM</th>
-            <th class="num" style="padding:10px 6px;font-size:11.5px">จำนวน Order</th>
-            <th style="padding:10px 5px;text-align:center;font-size:11.5px">1. Direct Transfer</th>
-            <th class="num" style="padding:10px 6px;font-size:11.5px;background:#dcfce7;color:#166534">2. ผลิตจริง (วันจบ Scan)</th>
-            <th class="num" style="padding:10px 6px;font-size:11.5px;background:#fef3c7;color:#92400e">3. Report (ERP)</th>
-            <th class="num" style="padding:10px 6px;font-size:11.5px">4. QC Confirm</th>
-            <th class="num" style="padding:10px 6px;font-size:11.5px">5. รับเข้าคลัง</th>
-            <th style="padding:10px 7px;text-align:left;font-size:11.5px">ติดตรงไหน / ต้องตามใคร</th>
+            <th style="padding:10px 7px;text-align:left;font-size:11.5px">
+              <div class="orders-th-cell">
+                <span>เลขที่ Order (MO)</span>
+                <button class="orders-filter-toggle po-filter-toggle ${fActive('moNumber') ? 'active' : ''}" data-filter-key="moNumber" type="button" title="กรองเลขที่ Order (MO)">▾</button>
+              </div>
+            </th>
+            <th style="padding:10px 7px;text-align:left;font-size:11.5px">
+              <div class="orders-th-cell">
+                <span>รุ่นสินค้า (Model) &amp; BOM</span>
+                <button class="orders-filter-toggle po-filter-toggle ${fActive('productModel') ? 'active' : ''}" data-filter-key="productModel" type="button" title="กรองรุ่นสินค้า (Model)">▾</button>
+              </div>
+            </th>
+            <th class="num" style="padding:10px 6px;font-size:11.5px">
+              <div class="orders-th-cell" style="justify-content:flex-end">
+                <span>จำนวน Order</span>
+                <button class="orders-filter-toggle po-filter-toggle ${fActive('orderQty') ? 'active' : ''}" data-filter-key="orderQty" type="button" title="กรองจำนวน Order">▾</button>
+              </div>
+            </th>
+            <th style="padding:10px 5px;text-align:center;font-size:11.5px">
+              <div class="orders-th-cell" style="justify-content:center">
+                <span>1. Direct Transfer</span>
+                <button class="orders-filter-toggle po-filter-toggle ${fActive('transferStatus') ? 'active' : ''}" data-filter-key="transferStatus" type="button" title="กรองสถานะ Direct Transfer">▾</button>
+              </div>
+            </th>
+            <th class="num" style="padding:10px 6px;font-size:11.5px;background:#dcfce7;color:#166534">
+              <div class="orders-th-cell" style="justify-content:flex-end">
+                <span>2. ผลิตจริง (วันจบ Scan)</span>
+                <button class="orders-filter-toggle po-filter-toggle ${fActive('barcodeScan') ? 'active' : ''}" data-filter-key="barcodeScan" type="button" title="กรองยอดผลิตจริงและวันจบ Scan">▾</button>
+              </div>
+            </th>
+            <th class="num" style="padding:10px 6px;font-size:11.5px;background:#fef3c7;color:#92400e">
+              <div class="orders-th-cell" style="justify-content:flex-end">
+                <span>3. Report (ERP)</span>
+                <button class="orders-filter-toggle po-filter-toggle ${fActive('reportQty') ? 'active' : ''}" data-filter-key="reportQty" type="button" title="กรองยอด Production Report (ERP)">▾</button>
+              </div>
+            </th>
+            <th class="num" style="padding:10px 6px;font-size:11.5px">
+              <div class="orders-th-cell" style="justify-content:flex-end">
+                <span>4. QC Confirm</span>
+                <button class="orders-filter-toggle po-filter-toggle ${fActive('qcConfirm') ? 'active' : ''}" data-filter-key="qcConfirm" type="button" title="กรองยอด QC Confirm">▾</button>
+              </div>
+            </th>
+            <th class="num" style="padding:10px 6px;font-size:11.5px">
+              <div class="orders-th-cell" style="justify-content:flex-end">
+                <span>5. รับเข้าคลัง</span>
+                <button class="orders-filter-toggle po-filter-toggle ${fActive('warehouseReceived') ? 'active' : ''}" data-filter-key="warehouseReceived" type="button" title="กรองยอดรับเข้าคลัง">▾</button>
+              </div>
+            </th>
+            <th style="padding:10px 7px;text-align:left;font-size:11.5px">
+              <div class="orders-th-cell">
+                <span>ติดตรงไหน / ต้องตามใคร</span>
+                <button class="orders-filter-toggle po-filter-toggle ${fActive('stuckTitle') ? 'active' : ''}" data-filter-key="stuckTitle" type="button" title="กรองสถานะติดตรงไหน / ต้องตามใคร">▾</button>
+              </div>
+            </th>
             <th style="padding:10px 6px;text-align:center;font-size:11.5px">เช็ค BOM</th>
           </tr>
         </thead>
@@ -8208,10 +8561,54 @@
     if (el('poTrackingSearch')) el('poTrackingSearch').value = '';
     if (el('poTrackingDeptFilter')) el('poTrackingDeptFilter').value = '';
     if (el('poTrackingStatusFilter')) el('poTrackingStatusFilter').value = 'all';
+    poTrackingColumnFilters = {};
     poTrackingPage = 1;
     renderPoTrackingPage();
     toast('ล้างตัวกรองหน้าติดตาม Order ผลิตแล้ว');
   });
+  el('poTrackingTableWrap')?.addEventListener('click', event => {
+    const button = event.target.closest('.po-filter-toggle');
+    if (button) {
+      event.stopPropagation();
+      openPoTrackingFilter(button.dataset.filterKey, button);
+    }
+  });
+  el('poTrackingFilterSearch')?.addEventListener('input', () => {
+    const search = (el('poTrackingFilterSearch').value || '').trim().toLowerCase();
+    const matches = poTrackingFilterCandidates.filter(val => String(val).toLowerCase().includes(search));
+    poTrackingFilterMatches = matches;
+    if (search) {
+      poTrackingFilterDraft = new Set(matches);
+    } else {
+      poTrackingFilterDraft = new Set(poTrackingFilterBackupState === undefined ? poTrackingFilterCandidates : poTrackingFilterBackupState);
+    }
+    syncPoTrackingFilterSelection();
+    renderPoTrackingFilterOptions();
+  });
+  el('poTrackingFilterSearch')?.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      applyPoTrackingFilter();
+    }
+  });
+  el('poTrackingFilterSelectAll')?.addEventListener('change', event => {
+    for (const val of poTrackingFilterMatches) {
+      if (event.target.checked) poTrackingFilterDraft.add(val);
+      else poTrackingFilterDraft.delete(val);
+    }
+    syncPoTrackingFilterSelection();
+  });
+  el('poTrackingFilterOptions')?.addEventListener('change', event => {
+    const input = event.target.closest('input[data-value]');
+    if (!input) return;
+    if (input.checked) poTrackingFilterDraft.add(input.dataset.value);
+    else poTrackingFilterDraft.delete(input.dataset.value);
+    syncPoTrackingFilterSelection();
+  });
+  el('poTrackingFilterApply')?.addEventListener('click', applyPoTrackingFilter);
+  el('poTrackingFilterReset')?.addEventListener('click', resetCurrentPoTrackingFilter);
+  el('poTrackingFilterCancel')?.addEventListener('click', cancelPoTrackingFilter);
+  el('poTrackingFilterClose')?.addEventListener('click', cancelPoTrackingFilter);
   el('poTrackingPrevPage')?.addEventListener('click', () => { if (poTrackingPage > 1) { poTrackingPage--; renderPoTrackingPage(); } });
   el('poTrackingNextPage')?.addEventListener('click', () => { const total = Math.ceil(poTrackingFilteredCount / poTrackingPageSize); if (poTrackingPage < total) { poTrackingPage++; renderPoTrackingPage(); } });
   el('poTrackingPageSize')?.addEventListener('change', e => { poTrackingPageSize = Number(e.target.value) || 50; poTrackingPage = 1; renderPoTrackingPage(); });
@@ -8326,6 +8723,11 @@
         applySafetyFilter();
       }
     }
+    if (el('poTrackingFilterPopup') && !el('poTrackingFilterPopup').classList.contains('hidden')) {
+      if (!el('poTrackingFilterPopup').contains(event.target) && !event.target.closest('.po-filter-toggle')) {
+        applyPoTrackingFilter();
+      }
+    }
   });
 
   document.addEventListener('keydown', event => {
@@ -8336,17 +8738,23 @@
       if (el('safetyFilterPopup') && !el('safetyFilterPopup').classList.contains('hidden')) {
         cancelSafetyFilter();
       }
+      if (el('poTrackingFilterPopup') && !el('poTrackingFilterPopup').classList.contains('hidden')) {
+        cancelPoTrackingFilter();
+      }
     }
   });
   window.addEventListener('scroll', () => { 
     if (el('ordersFilterPopup') && !el('ordersFilterPopup').classList.contains('hidden')) positionOrdersFilter(); 
     if (el('safetyFilterPopup') && !el('safetyFilterPopup').classList.contains('hidden')) positionSafetyFilter(); 
+    if (el('poTrackingFilterPopup') && !el('poTrackingFilterPopup').classList.contains('hidden')) positionPoTrackingFilter(); 
   }, { passive: true });
   window.addEventListener('resize', () => { 
     if (el('ordersFilterPopup') && !el('ordersFilterPopup').classList.contains('hidden')) positionOrdersFilter(); 
     if (el('safetyFilterPopup') && !el('safetyFilterPopup').classList.contains('hidden')) positionSafetyFilter(); 
+    if (el('poTrackingFilterPopup') && !el('poTrackingFilterPopup').classList.contains('hidden')) positionPoTrackingFilter(); 
   });
   el('ordersTableWrap').addEventListener('scroll', () => { if (el('ordersFilterPopup') && !el('ordersFilterPopup').classList.contains('hidden')) positionOrdersFilter(); }, { passive: true });
+  el('poTrackingTableWrap')?.addEventListener('scroll', () => { if (el('poTrackingFilterPopup') && !el('poTrackingFilterPopup').classList.contains('hidden')) positionPoTrackingFilter(); }, { passive: true });
 
    el('reloadBtn').addEventListener('click',async()=>{const pulled=await loadData();toast(pulled?`โหลดจาก Google Sheets เมื่อ ${time(lastSheetPullAt)}`:db.inventory.length?'กำลังแสดงข้อมูล On-Hand ในเครื่อง':'ยังไม่มี snapshot · กด “นำเข้า Kingdee” แล้วเลือกไฟล์ On-Hand')});el('overviewDept').addEventListener('change',renderOverview);el('compareDept').addEventListener('change',()=>{const selectedDept=el('compareDept').value;if(selectedDept){db.plans.forEach(p=>{if(!p.department)p.department=selectedDept;});}renderPlanList();renderAnalysis()});el('stockDept').addEventListener('change',()=>{stockPage=1;renderStock()});el('warehouseFilter').addEventListener('change',()=>{stockPage=1;renderStock()});el('stockSearch').addEventListener('input',()=>{stockPage=1;renderStock()});el('clearStockColumnFilters').addEventListener('click',()=>{stockValueFilters={};stockCodeQuickSearch='';stockPage=1;renderStock()});el('stockPageSize').addEventListener('change',event=>{stockPageSize=Number(event.target.value)||100;stockPage=1;renderStock()});el('stockPrevPage').addEventListener('click',()=>{if(stockPage>1){stockPage--;renderStock()}});el('stockNextPage').addEventListener('click',()=>{const total=Math.ceil(stockFilteredCount/stockPageSize);if(stockPage<total){stockPage++;renderStock()}});
   el('safetySearch')?.addEventListener('input',()=>{safetyPage=1;renderSafety()});
