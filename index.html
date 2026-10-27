@@ -6694,7 +6694,31 @@
       : (window.BOM_SEED?.rows || []);
     const execState = getExecutionSeedState();
     const executionByMo = execState.executionByMo || {};
-    const barcodeByMo = execState.barcodeByMo || {};
+    const rawBarcodeByMo = execState.barcodeByMo || {};
+    const knownOrderMoKeys = new Set([
+      ...transferRows.map(r => normalizeMoKey(r.moNumber)).filter(Boolean),
+      ...Object.keys(executionByMo).map(normalizeMoKey).filter(Boolean)
+    ]);
+    const barcodeByMo = {};
+    for (const [rawMo, info] of Object.entries(rawBarcodeByMo)) {
+      let moNum = normalizeMoKey(rawMo);
+      // Barcode exports can contain a malformed MO date while keeping the
+      // correct work date and sequence. Reattach only when that exact dated
+      // sequence exists in Production Order / PPBOM data.
+      if (!knownOrderMoKeys.has(moNum)) {
+        const seq = moNum.match(/-(\d{6})$/)?.[1];
+        const dateParts = String(info?.dateStr || '').match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+        if (seq && dateParts) {
+          const [, day, month, year] = dateParts;
+          const datedMo = `MO-${year}${month.padStart(2, '0')}${day.padStart(2, '0')}-${seq}`;
+          if (knownOrderMoKeys.has(datedMo)) moNum = datedMo;
+        }
+      }
+      const existing = barcodeByMo[moNum];
+      barcodeByMo[moNum] = existing
+        ? { ...existing, ...info, moNumber: moNum }
+        : { ...info, moNumber: moNum };
+    }
     const overrides = getDepartmentOverridesMap();
 
     // 1. Build current Stock Lookup (Main Stock excluding H9 vs H9 Stock)
