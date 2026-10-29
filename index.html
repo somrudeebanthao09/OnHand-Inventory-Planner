@@ -16,6 +16,7 @@
   <script src="./DepartmentMapSeed.js?v=20261027v7"></script>
   <script src="./ProductionOrdersSeed.js?v=20261027v8"></script>
   <script src="./ProductionExecutionSeed.js?v=20261027v7"></script>
+  <script src="./ProductionMaterialIssueSeed.js?v=20261029v2"></script>
   <script src="./BomSeed.js?v=20261027v7"></script>
   <style>
     :root{--ink:#17252d;--muted:#718087;--line:#e4e9ea;--paper:#fff;--canvas:#f4f6f8;--teal:#087e78;--teal2:#e6f5f3;--red:#c94848;--redbg:#fff0ef;--amber:#a66b08;--amberbg:#fff6df;--green:#287a55;--greenbg:#eaf6ef;--purple:#6d28d9;--purplebg:#f5f3ff;--nav:#18333a;--shadow:0 6px 24px #23363b0c}
@@ -1703,6 +1704,8 @@
             <button class="btn soft" id="uploadExecFileBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700" title="นำเข้าไฟล์ Production Order Execution Details (.xlsx) จาก Kingdee">📥 อัปเดต Execution Details</button>
             <input type="file" id="execFileInput" accept=".xlsx,.xls,.csv" class="hidden">
             <button class="btn soft" id="uploadPoPmlBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700" title="นำเข้ารายการ Part และจำนวนตาม Production Order จาก Production Material List / Issue (PPBOM) ของ Kingdee">📥 อัปเดต BOM/เบิก PPBOM</button>
+            <button class="btn soft" id="uploadFgReceiptBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700" title="นำเข้า Finished Goods Receipt จาก Kingdee เพื่อตรวจ Lot, จำนวน, สถานะ และผู้รับผิดชอบ">📥 อัปเดต FG Receipt (Lot)</button>
+            <input type="file" id="fgReceiptFileInput" accept=".xlsx,.xls,.csv" class="hidden">
             <button class="btn" id="exportPoTrackingCsvBtn" type="button" style="font-size:13.5px;padding:9px 14px">📤 ส่งออก CSV</button>
           </div>
         </div>
@@ -2386,6 +2389,11 @@
       <!-- Populated dynamically -->
     </div>
 
+    <details id="poModalFgReceiptDetails" style="margin-bottom:9px;border:1px solid #cbd5e1;border-radius:9px;background:#f8fafc;flex-shrink:0">
+      <summary id="poModalFgReceiptSummary" style="padding:8px 11px;cursor:pointer;color:#075985;font-size:12.5px;font-weight:750">📦 Finished Goods Receipt · ยังไม่มีข้อมูล Lot</summary>
+      <div id="poModalFgReceiptBody" style="padding:0 9px 9px"></div>
+    </details>
+
     <!-- Filter Strip for BOM vs Direct Transfer Table -->
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap;flex-shrink:0">
       <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
@@ -2546,7 +2554,7 @@
       approvedAt: '2026-10-13T00:00:00.000Z'
     }
   ];
-  const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],productionMaterialIssues:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',lastMaterialIssueAt:'',security:{autoLockMinutes:15,passcode:'1234'}}};
+  const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],productionMaterialIssues:[],finishedGoodsReceipts:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',lastMaterialIssueAt:'',lastFinishedGoodsReceiptAt:'',security:{autoLockMinutes:15,passcode:'1234'}}};
   let db = structuredClone(initial), activePage='overview', firstPageLoad=true, pendingImport=null, currentAnalysis=[], sourceRemote=false, lastSheetPullAt=localStorage.getItem('onhandLastSheetPullAt')||'', remoteSaveTimer=null, remoteSaveQueue=Promise.resolve();
   const el = id => document.getElementById(id);
   const n = value => { const x=Number(String(value??'').replace(/,/g,'').trim()); return Number.isFinite(x)?x:0; };
@@ -2735,6 +2743,13 @@
     if(hasGoogle()){
       try{
         db=normalizeDb(await callGoogle('getAppData'));
+        try {
+          const localSaved = JSON.parse(localStorage.getItem('onhandPlannerData') || 'null');
+          if (Array.isArray(localSaved?.finishedGoodsReceipts) && localSaved.finishedGoodsReceipts.length) {
+            db.finishedGoodsReceipts = localSaved.finishedGoodsReceipts;
+            db.settings.lastFinishedGoodsReceiptAt = localSaved.settings?.lastFinishedGoodsReceiptAt || db.settings.lastFinishedGoodsReceiptAt || '';
+          }
+        } catch (_) {}
         sourceRemote=true;
         lastSheetPullAt=new Date().toISOString();
         localStorage.setItem('onhandLastSheetPullAt',lastSheetPullAt);
@@ -6302,6 +6317,161 @@
     }
   }
 
+  function isFgReceiptPending(row) {
+    const text = `${row.documentStatus || ''} ${row.processNode || ''}`;
+    if (/unapproved|not approved|pending|draft|submitted|awaiting|review|รอ|ค้าง|กำลัง/i.test(text)) return true;
+    if (/approved|rejected|completed|posted|อนุมัติแล้ว|ยกเลิก/i.test(text)) return false;
+    return /approv/i.test(text);
+  }
+
+  function getFinishedGoodsReceiptsForMo(moNumber) {
+    const moKey = normalizeMoKey(moNumber);
+    return (Array.isArray(db.finishedGoodsReceipts) ? db.finishedGoodsReceipts : [])
+      .filter(row => normalizeMoKey(row.moNumber) === moKey);
+  }
+
+  function renderPoModalFgReceipts(moNumber, resetOpen = true) {
+    const details = el('poModalFgReceiptDetails');
+    const summary = el('poModalFgReceiptSummary');
+    const body = el('poModalFgReceiptBody');
+    if (!details || !summary || !body) return;
+    const rows = getFinishedGoodsReceiptsForMo(moNumber).slice().sort((a, b) => Number(isFgReceiptPending(b)) - Number(isFgReceiptPending(a)));
+    const pendingRows = rows.filter(isFgReceiptPending);
+    const lotCount = new Set(rows.map(row => String(row.lotNumber || '').trim()).filter(Boolean)).size;
+    const totalQty = rows.reduce((sum, row) => sum + n(row.receiptQty), 0);
+    summary.textContent = rows.length
+      ? `📦 Finished Goods Receipt · ${rows.length} รายการ · ${lotCount} Lot · รับเข้า ${fmtQty(totalQty)} · ค้างดำเนินการ ${pendingRows.length} รายการ`
+      : '📦 Finished Goods Receipt · ยังไม่มีข้อมูล Lot (นำเข้าไฟล์ Receipt จาก Kingdee)';
+    if (resetOpen) details.open = false;
+    if (!rows.length) {
+      body.innerHTML = '<div style="padding:5px 2px;color:#64748b;font-size:12px">นำเข้าไฟล์ Finished Goods Receipt ที่มี Production Order, Lot/Batch และจำนวน เพื่อดูรายการตาม Order นี้ (ข้อมูลเก็บในเบราว์เซอร์นี้) <button id="poModalFgReceiptUploadBtn" class="btn soft" type="button" style="font-size:11.5px;padding:4px 8px">เลือกไฟล์ Kingdee</button></div>';
+      return;
+    }
+    body.innerHTML = `<div class="table-wrap" style="max-height:230px;overflow:auto;border-radius:7px;background:#fff">
+      <table style="width:100%;min-width:1060px;border-collapse:collapse;font-size:12px;white-space:normal">
+        <thead><tr>
+          <th style="padding:7px 8px;font-size:11.5px">วันที่</th>
+          <th style="padding:7px 8px;font-size:11.5px">เลขที่ Receipt</th>
+          <th style="padding:7px 8px;font-size:11.5px">รหัสสินค้า FG</th>
+          <th style="padding:7px 8px;font-size:11.5px">Lot / Batch</th>
+          <th class="num" style="padding:7px 8px;font-size:11.5px">จำนวนรับ</th>
+          <th style="padding:7px 8px;font-size:11.5px">คลังรับเข้า</th>
+          <th style="padding:7px 8px;font-size:11.5px">สถานะเอกสาร</th>
+          <th style="padding:7px 8px;font-size:11.5px">ขั้นตอน / ผู้รับผิดชอบ</th>
+        </tr></thead><tbody>${rows.map(row => {
+          const pending = isFgReceiptPending(row);
+          const ownerText = [row.processNode, row.currentOwner].filter(Boolean).join(' · ');
+          return `<tr>
+            <td style="padding:7px 8px;white-space:nowrap">${esc(row.receiptDate || '—')}</td>
+            <td style="padding:7px 8px">${esc(row.receiptNumber || '—')}</td>
+            <td style="padding:7px 8px">${esc(row.materialCode || '—')}<div style="font-size:10.5px;color:#64748b">${esc(row.materialName || '')}</div></td>
+            <td style="padding:7px 8px;overflow-wrap:anywhere;font-weight:700;color:#075985">${esc(row.lotNumber || '—')}</td>
+            <td class="num" style="padding:7px 8px;font-weight:750">${fmtQty(row.receiptQty)} ${esc(row.unit || '')}</td>
+            <td style="padding:7px 8px">${esc(row.warehouse || '—')}</td>
+            <td style="padding:7px 8px;color:${pending ? '#b45309' : '#334155'};font-weight:650">${esc(row.documentStatus || 'ไม่ระบุในไฟล์')}</td>
+            <td style="padding:7px 8px;color:${pending ? '#b45309' : '#475569'}">${esc(ownerText || 'ไม่มีข้อมูลขั้นตอน/ผู้รับผิดชอบในไฟล์')}</td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table></div><div style="padding:5px 2px 0;color:#64748b;font-size:10.5px">ข้อมูลจากไฟล์ Kingdee ที่นำเข้าในเบราว์เซอร์นี้ · หากไฟล์ไม่มีขั้นตอนหรือผู้รับผิดชอบ จะแสดงว่าไม่มีข้อมูล</div>`;
+  }
+
+  async function handleFgReceiptFileImport(file) {
+    if (!file || !window.XLSX) return;
+    try {
+      const wb = XLSX.read(await file.arrayBuffer(), { type: 'array', cellDates: true });
+      let matrix = [];
+      let headerIdx = -1;
+      for (const sheetName of wb.SheetNames) {
+        const candidate = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { header: 1, defval: '' });
+        const candidateHeader = candidate.findIndex(row => {
+          const labels = row.map(value => String(value || '').trim());
+          return labels.some(value => /production order|\bmo\b/i.test(value)) && labels.some(value => /lot|batch/i.test(value));
+        });
+        if (candidateHeader >= 0) {
+          matrix = candidate;
+          headerIdx = candidateHeader;
+          break;
+        }
+      }
+      if (headerIdx < 0) {
+        toast('นำเข้าไม่ได้: ต้องมีคอลัมน์ Production Order และ Lot/Batch');
+        return;
+      }
+      const headers = matrix[headerIdx].map(value => String(value || '').trim());
+      const col = patterns => headers.findIndex(header => patterns.some(pattern => pattern.test(header)));
+      const columns = {
+        mo: col([/production order.*(no\.?|number)/i, /^production order$/i, /^mo no\.?$/i, /^mo number$/i]),
+        receipt: col([/finished goods receipt/i, /receipt no\.?/i, /receipt number/i, /document no\.?/i, /document number/i, /bill no\.?/i, /bill number/i]),
+        materialCode: col([/material code/i, /product material code/i, /finished goods code/i, /product code/i, /item code/i, /material number/i]),
+        materialName: col([/material name/i, /product name/i, /item name/i, /material description/i]),
+        lot: col([/lot.?number/i, /lot.?no\.?/i, /lot.?code/i, /batch.?number/i, /batch.?no\.?/i, /batch.?code/i, /lot.?batch/i]),
+        qty: col([/stock.?in qty/i, /\breceipt qty\b/i, /\breceived qty\b/i, /actual receipt qty/i, /receipt quantity/i, /\breceived quantity\b/i, /base qty/i, /^qty$/i, /^quantity$/i]),
+        unit: col([/unit/i, /uom/i]),
+        warehouse: col([/receiving warehouse/i, /stock.?in warehouse/i, /^warehouse$/i]),
+        status: col([/document status/i, /bill status/i, /approval status/i, /approve status/i, /^status$/i]),
+        processNode: col([/current node/i, /process node/i, /workflow node/i, /current process/i, /pending step/i, /approval node/i]),
+        owner: col([/current handler/i, /current approver/i, /responsible person/i, /assigned to/i, /approver/i, /handler/i, /^owner$/i, /person in charge/i]),
+        date: col([/business date/i, /receipt date/i, /document date/i, /^date$/i])
+      };
+      if (columns.mo < 0 || columns.lot < 0 || columns.qty < 0) {
+        toast('นำเข้าไม่ได้: ไฟล์ต้องมี Production Order, Lot/Batch และ Receipt Quantity');
+        return;
+      }
+      const read = (row, index) => index >= 0 ? row[index] : '';
+      const text = (row, index) => String(read(row, index) ?? '').trim();
+      const parsedRows = [];
+      let lastMo = '';
+      for (const row of matrix.slice(headerIdx + 1)) {
+        const rowHasData = row.some(value => String(value ?? '').trim() !== '');
+        if (!rowHasData) continue;
+        const rowMo = text(row, columns.mo);
+        if (rowMo) lastMo = normalizeMoKey(rowMo);
+        const lot = text(row, columns.lot);
+        const qtyRaw = read(row, columns.qty);
+        if (!lastMo || !lot || qtyRaw === '') continue;
+        const dateRaw = read(row, columns.date);
+        const date = dateRaw instanceof Date ? formatScanDateText(dateRaw.toISOString()) : (formatScanDateText(dateRaw) || text(row, columns.date));
+        parsedRows.push({
+          moNumber: lastMo,
+          receiptNumber: text(row, columns.receipt),
+          materialCode: text(row, columns.materialCode),
+          materialName: text(row, columns.materialName),
+          lotNumber: lot,
+          receiptQty: n(qtyRaw),
+          unit: text(row, columns.unit),
+          warehouse: text(row, columns.warehouse),
+          documentStatus: text(row, columns.status),
+          processNode: text(row, columns.processNode),
+          currentOwner: text(row, columns.owner),
+          receiptDate: date
+        });
+      }
+      if (!parsedRows.length) {
+        toast('ไม่พบรายการ Finished Goods Receipt ที่มี Lot และจำนวน');
+        return;
+      }
+      const replacedMoKeys = new Set(parsedRows.map(row => row.moNumber));
+      db.finishedGoodsReceipts = [
+        ...(Array.isArray(db.finishedGoodsReceipts) ? db.finishedGoodsReceipts.filter(row => !replacedMoKeys.has(normalizeMoKey(row.moNumber))) : []),
+        ...parsedRows
+      ];
+      db.settings.lastFinishedGoodsReceiptAt = new Date().toISOString();
+      saveLocalDb(db);
+      renderPoTrackingPage();
+      if (el('poTrackingDetailModal')?.classList.contains('show')) {
+        renderPoModalFgReceipts(el('poModalMoBadge')?.textContent || '', false);
+      }
+      const noWorkflowOwner = parsedRows.filter(row => !row.processNode || !row.currentOwner).length;
+      toast(`✅ นำเข้า Finished Goods Receipt ${fmt(parsedRows.length)} แถวในเบราว์เซอร์นี้ (${new Set(parsedRows.map(row => row.moNumber)).size} Order${noWorkflowOwner ? ` · ${fmt(noWorkflowOwner)} แถวไม่มีขั้นตอนหรือผู้รับผิดชอบในไฟล์` : ''})`);
+    } catch (err) {
+      console.error(err);
+      toast('เกิดข้อผิดพลาดในการอ่านไฟล์ Finished Goods Receipt');
+    } finally {
+      const input = el('fgReceiptFileInput');
+      if (input) input.value = '';
+    }
+  }
+
   window.appOpenOrderDetail = openOrderDetailModal;
   window.appOpenMoDetail = openMoDetailModal;
   window.appSimulateBuildableModel = simulateBuildableModel;
@@ -7207,6 +7377,10 @@
       mo.warehouseReceivedQty = warehouseReceivedQty;
       mo.unreceivedQty = Math.max(0, mo.orderQty - warehouseReceivedQty);
       mo.execSourceLabel = execSourceLabel;
+      mo.fgReceiptRows = getFinishedGoodsReceiptsForMo(mo.moNumber);
+      mo.fgReceiptQty = mo.fgReceiptRows.reduce((sum, row) => sum + n(row.receiptQty), 0);
+      mo.fgReceiptLotCount = new Set(mo.fgReceiptRows.map(row => String(row.lotNumber || '').trim()).filter(Boolean)).size;
+      mo.fgReceiptDocCount = new Set(mo.fgReceiptRows.map(row => String(row.receiptNumber || '').trim()).filter(Boolean)).size;
 
       // Compare ERP Report vs H9-barcode-record Actual Scan
       mo.unreportedBarcodeQty = hasBarcodeRecord ? Math.max(0, actualBarcodeQty - reportQty) : 0;
@@ -7309,8 +7483,10 @@
       const issueRows = getProductionMaterialIssueRows();
       const issueAtValue = db.settings.lastMaterialIssueAt || window.PRODUCTION_MATERIAL_ISSUE_SEED?.snapshotAt || '';
       const issueAt = issueRows.length ? ` · PPBOM ${fmt(issueRows.length)} รายการ${issueAtValue ? ` (${time(issueAtValue)})` : ''}` : ` · ไม่มีข้อมูล PPBOM`;
-      const issueCount = issueRows.length;
-      el('poTrackingSyncInfo').innerHTML = `🟢 Direct Transfer ${fmt(db.productionOrders?.length || 0)} รายการ · H9-barcode-record ${fmt(bcCount)} Job + Execution Details${issueAt}`;
+      const fgReceiptCount = Array.isArray(db.finishedGoodsReceipts) ? db.finishedGoodsReceipts.length : 0;
+      const fgReceiptAt = db.settings.lastFinishedGoodsReceiptAt ? ` (${time(db.settings.lastFinishedGoodsReceiptAt)})` : '';
+      const fgReceiptInfo = fgReceiptCount ? ` · FG Receipt ${fmt(fgReceiptCount)} แถว${fgReceiptAt}` : ' · ยังไม่มีข้อมูล FG Receipt Lot';
+      el('poTrackingSyncInfo').innerHTML = `🟢 Direct Transfer ${fmt(db.productionOrders?.length || 0)} รายการ · H9-barcode-record ${fmt(bcCount)} Job + Execution Details${issueAt}${fgReceiptInfo}`;
     }
 
     // Populate Department filter
@@ -7615,6 +7791,9 @@
         : (mo.hasBarcodeRecord
           ? (mo.actualBarcodeQty > 0 ? '⏳ กำลังสแกนผลิต (ยังไม่จบ Order)' : '⏳ รอเริ่มสแกนผลิตจริง')
           : 'ไม่อยู่ในชีต H9 Barcode');
+      const fgReceiptSubText = mo.fgReceiptRows?.length
+        ? `📦 Receipt ${fmt(mo.fgReceiptDocCount || mo.fgReceiptRows.length)} เอกสาร · ${fmt(mo.fgReceiptLotCount)} Lot · ${fmtQty(mo.fgReceiptQty)} ${esc(mo.fgReceiptRows.find(row => row.unit)?.unit || '')}`
+        : (mo.unreceivedQty > 0 ? `ค้างรับเข้าคลังอีก ${fmt(mo.unreceivedQty)} ตัว` : '✅ คลัง FG รับเข้าครบ 100%');
 
       grid.innerHTML = `
         <div style="background:${mo.isTransferComplete ? '#f0fdf4' : '#fef2f2'};border:1px solid ${mo.isTransferComplete ? '#bbf7d0' : '#fecdd3'};padding:10px 12px;border-radius:10px">
@@ -7640,10 +7819,12 @@
         <div style="background:#f0f9ff;border:1px solid #bae6fd;padding:10px 12px;border-radius:10px">
           <div style="font-size:11.5px;color:#0369a1;font-weight:700">5. Warehouse รับเข้าคลัง FG</div>
           <div style="font-size:15px;font-weight:850;color:#0284c7;margin-top:3px" id="poStep5WhVal">${fmt(mo.warehouseReceivedQty)} / ${fmt(mo.orderQty)} ตัว</div>
-          <div style="font-size:11px;color:#0369a1;margin-top:2px">${mo.unreceivedQty > 0 ? `ค้างรับเข้าคลังอีก ${fmt(mo.unreceivedQty)} ตัว` : '✅ คลัง FG รับเข้าครบ 100%'}</div>
+          <div style="font-size:11px;color:#0369a1;margin-top:2px">${fgReceiptSubText}</div>
         </div>
       `;
     }
+
+    renderPoModalFgReceipts(mo.moNumber);
 
     const banner = el('poModalDiagnosisBanner');
     if (banner) {
@@ -8884,6 +9065,11 @@
   el('uploadExecFileBtn')?.addEventListener('click', () => el('execFileInput')?.click());
   el('execFileInput')?.addEventListener('change', e => { if (e.target.files[0]) handleExecutionFileImport(e.target.files[0]); });
   el('uploadPoPmlBtn')?.addEventListener('click', () => el('pmlFileInput')?.click());
+  el('uploadFgReceiptBtn')?.addEventListener('click', () => el('fgReceiptFileInput')?.click());
+  el('fgReceiptFileInput')?.addEventListener('change', e => { if (e.target.files[0]) handleFgReceiptFileImport(e.target.files[0]); });
+  el('poModalFgReceiptDetails')?.addEventListener('click', e => {
+    if (e.target.closest('#poModalFgReceiptUploadBtn')) el('fgReceiptFileInput')?.click();
+  });
   el('exportPoTrackingCsvBtn')?.addEventListener('click', exportPoTrackingCsv);
   el('poTrackingSearch')?.addEventListener('input', () => { poTrackingPage = 1; renderPoTrackingPage(); });
   el('poTrackingDeptFilter')?.addEventListener('change', () => { poTrackingPage = 1; renderPoTrackingPage(); });
