@@ -1497,7 +1497,7 @@
           <span id="syncState">เชื่อมต่อ Google Sheets</span>
         </div>
         
-        <button class="btn-clean btn-clean-primary" id="autoFetchKingdeeBtn" title="ดึงข้อมูล On-Hand สดจาก Kingdee ERP อัตโนมัติ">
+        <button class="btn-clean btn-clean-primary" id="autoFetchKingdeeBtn" title="ส่งออกรายงาน On-Hand จากแท็บ Kingdee ที่เข้าสู่ระบบอยู่">
           <span>⚡</span> ดึง Kingdee
         </button>
         <button class="btn-clean" id="reloadBtn" title="โหลดข้อมูลซ้ำ">
@@ -1576,7 +1576,7 @@
         <div class="cards" id="overviewMetrics"></div>
         <div class="two-col">
           <div class="panel"><div class="panel-head"><div><h2>Part ที่ต้องเรียกงานเข้า</h2><p id="riskCaption">คำนวณจากแผนผลิตปัจจุบัน รวม Safety stock</p></div><button class="btn" data-goto="compare">ดูแผนผลิต</button></div><div id="riskTable"></div></div>
-          <div class="panel"><div class="panel-head"><div><h2>สถานะข้อมูล</h2><p>แสดงเวลาอัปเดตล่าสุดและสถานะการดึงข้อมูลอัตโนมัติจาก Kingdee ERP</p></div><span class="badge gray" id="dataStatus">ยังไม่มีข้อมูล</span></div><div id="sourceSummary"></div><div class="section-label">การอัปเดตอัตโนมัติ (Auto-Sync)</div><div class="switch-row"><div><strong>ดึงข้อมูลสดจาก Kingdee ทุก 10 นาที</strong><div class="helper" id="autoSyncCountdownText">อัปเดตยอดสต็อก On-Hand อัตโนมัติแบบเรียลไทม์ทุก 10 นาที</div></div><button class="switch on" id="autoSwitch" aria-label="เปิดดึงข้อมูลอัตโนมัติทุก 10 นาที"></button></div><p class="footnote" style="margin-top:12px">ระบบเชื่อมตรงกับ Kingdee ERP (On-Hand Inventory) ดึงข้อมูลและอัปเดตตารางอัตโนมัติทุกๆ 10 นาที</p></div>
+          <div class="panel"><div class="panel-head"><div><h2>สถานะข้อมูล</h2><p>แสดงเวลาและไฟล์ต้นทางที่นำเข้าล่าสุดของแต่ละชุดข้อมูล</p></div><span class="badge gray" id="dataStatus">ยังไม่มีข้อมูล</span></div><div id="sourceSummary"></div><div class="section-label">การอัปเดตจาก Kingdee</div><div class="switch-row"><div><strong>On-Hand จากแท็บ Kingdee ที่เข้าสู่ระบบอยู่</strong><div class="helper" id="autoSyncCountdownText">กด “ดึง Kingdee” เพื่อส่งออกรายงาน On-Hand ใหม่จากแท็บ Kingdee ใน Chrome</div></div><button class="switch" id="autoSwitch" disabled aria-label="ปิด Auto-Sync"></button></div><p class="footnote" style="margin-top:12px">ปุ่มนี้อัปเดตเฉพาะ On-Hand ส่วน PPBOM และ Finished Goods Receipt ใช้รายงานแยก หน้าเว็บจะแสดงเวลาและแหล่งข้อมูลของแต่ละส่วน</p></div>
         </div>
       </section>
       <section class="page" id="page-compare">
@@ -1724,8 +1724,8 @@
             <button class="btn primary" id="syncBarcodeLiveBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700">🔄 ซิงค์งานจริง H9-barcode-record</button>
             <button class="btn soft" id="uploadExecFileBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700" title="นำเข้าไฟล์ Production Order Execution Details (.xlsx) จาก Kingdee">📥 อัปเดต Execution Details</button>
             <input type="file" id="execFileInput" accept=".xlsx,.xls,.csv" class="hidden">
-            <button class="btn soft" id="uploadPoPmlBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700" title="นำเข้ารายการ Part และจำนวนตาม Production Order จาก Production Material List / Issue (PPBOM) ของ Kingdee">📥 อัปเดต BOM/เบิก PPBOM</button>
-            <button class="btn soft" id="uploadFgReceiptBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700" title="นำเข้า Finished Goods Receipt จาก Kingdee เพื่อตรวจ Lot, จำนวน, สถานะ และผู้รับผิดชอบ">📥 อัปเดต FG Receipt (Lot)</button>
+            <button class="btn soft" id="uploadPoPmlBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700" title="นำเข้าไฟล์ Production Material List / Issue (PPBOM) จาก Kingdee; ใช้เวลาในไฟล์เป็นเวลาข้อมูล">📥 นำเข้า PPBOM</button>
+            <button class="btn soft" id="uploadFgReceiptBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700" title="นำเข้าไฟล์ Finished Goods Receipt จาก Kingdee เพื่อดู Lot จำนวน สถานะ และผู้รับผิดชอบ">📥 นำเข้า FG Receipt (Lot)</button>
             <input type="file" id="fgReceiptFileInput" accept=".xlsx,.xls,.csv" class="hidden">
             <button class="btn" id="exportPoTrackingCsvBtn" type="button" style="font-size:13.5px;padding:9px 14px">📤 ส่งออก CSV</button>
           </div>
@@ -1924,14 +1924,14 @@
         <div class="import-grid">
           <div class="import-box"><h3>① On-Hand Inventory</h3><p>เลือกไฟล์ที่ดาวน์โหลดจาก Kingdee · ถ้าหัวคอลัมน์ตรง ระบบจะส่งเข้า Google Sheets และโหลดกลับมาแสดงอัตโนมัติ</p><div class="file-drop"><div style="display:flex;gap:12px;align-items:center"><div class="file-icon">▤</div><div><strong>เลือกไฟล์ On-Hand</strong><small>.xlsx, .xls หรือ .csv</small></div></div><button class="btn" id="stockFileBtn">เลือกไฟล์</button><input id="stockFile" type="file" accept=".xlsx,.xls,.csv,.tsv" hidden></div><div class="progress hidden" id="stockProgress"><span></span></div></div>
           <div class="import-box"><h3>② BOM Explosion</h3><p>ใช้รายงานจาก Kingdee ที่มีแผนก, Model, Part, จำนวนใช้ และหน่วย เพื่อแสดงแผนกที่ใช้ Part</p><div class="file-drop"><div style="display:flex;gap:12px;align-items:center"><div class="file-icon">▦</div><div><strong>เลือกไฟล์ BOM Explosion</strong><small>.xlsx, .xls หรือ .csv</small></div></div><button class="btn" id="bomFileBtn">เลือกไฟล์</button><input id="bomFile" type="file" accept=".xlsx,.xls,.csv,.tsv" hidden></div><div class="progress hidden" id="bomProgress"><span></span></div></div>
-          <div class="import-box" style="grid-column:1/-1"><h3>③ Production Material List (แผน/Order ที่เปิดใน Kingdee)</h3><p>รายงานแผนการผลิตและรายการเบิกวัตถุดิบจาก Kingdee (Export list_Production Material List_*.xlsx) เพื่อคำนวณ Part ขาดเทียบกับ On-Hand แบบ Real-time</p><div class="file-drop"><div style="display:flex;gap:12px;align-items:center"><div class="file-icon" style="background:#eaf2fb;color:#1a73e8">📋</div><div><strong>เลือกไฟล์ Production Material List</strong><small>.xlsx, .xls หรือ .csv (กรองตัด Order ที่ Complete แล้วให้อัตโนมัติ)</small></div></div><button class="btn" id="importsPmlFileBtn" type="button">เลือกไฟล์ PML</button><input id="importsPmlFileInput" type="file" accept=".xlsx,.xls,.csv,.tsv" hidden></div><div class="progress hidden" id="pmlProgress"><span></span></div></div>
+          <div class="import-box" style="grid-column:1/-1"><h3>③ Production Material List (แผน/Order ที่เปิดใน Kingdee)</h3><p>รายงานแผนการผลิตและรายการเบิกวัตถุดิบจากไฟล์ส่งออก Kingdee เพื่อคำนวณ Part ขาดเทียบกับ On-Hand ตามเวลาที่ส่งออกรายงาน</p><div class="file-drop"><div style="display:flex;gap:12px;align-items:center"><div class="file-icon" style="background:#eaf2fb;color:#1a73e8">📋</div><div><strong>เลือกไฟล์ Production Material List</strong><small>.xlsx, .xls หรือ .csv (กรองตัด Order ที่ Complete แล้วให้อัตโนมัติ)</small></div></div><button class="btn" id="importsPmlFileBtn" type="button">เลือกไฟล์ PML</button><input id="importsPmlFileInput" type="file" accept=".xlsx,.xls,.csv,.tsv" hidden></div><div class="progress hidden" id="pmlProgress"><span></span></div></div>
         </div>
         <div id="mappingPanel" class="panel hidden" style="margin-top:14px"><div class="panel-head"><div><h2 id="mappingTitle">ตรวจคอลัมน์ก่อนนำเข้า</h2><p id="mappingSub"></p></div><button class="btn" id="cancelMappingBtn">ยกเลิก</button></div><div class="toolbar"><label class="helper">ชีตในไฟล์ <select id="sheetPicker" class="field"></select></label><span class="helper" id="mappingCount"></span></div><div class="mapping" id="mappingFields"></div><div class="toolbar"><span class="footnote">ตรวจตัวอย่างแถวก่อนกดบันทึก ข้อมูล On-Hand จะใช้แทน snapshot เดิม ส่วน BOM จะอัปเดตเฉพาะแผนกในไฟล์</span><button class="btn primary" id="commitImportBtn">บันทึกข้อมูล</button></div><div class="import-preview" id="importPreview"></div></div>
         <div class="panel" style="margin-top:14px"><div class="panel-head"><div><h2>ประวัติการนำเข้า</h2><p>วันที่และเวลาที่บันทึกไฟล์แต่ละครั้ง</p></div></div><div id="importHistory"></div></div>
       </section>
       <section class="page" id="page-settings">
         <div class="title-row"><div><h1>ตั้งค่าระบบ</h1><p>ควบคุมแผนกที่ติดตามและรอบตรวจข้อมูล</p></div></div>
-        <div class="panel"><h2 style="margin-bottom:14px">แผนกจาก BOM Explosion</h2><div class="settings-grid"><div class="setting"><h3>H9 Assembly Production Line</h3><p>แผนกที่ใช้วิเคราะห์ความต้องการ Part</p><div class="switch-row"><span>ใช้งาน</span><button class="switch on deptToggle" data-dept="H9 Assembly Production Line"></button></div></div><div class="setting"><h3>H1 Assembly Production Line</h3><p>แผนกในส่วนของคลัง H9 (วิเคราะห์ความต้องการ Part)</p><div class="switch-row"><span>ใช้งาน</span><button class="switch on deptToggle" data-dept="H1 Assembly Production Line"></button></div></div><div class="setting"><h3>Assembly Production Line</h3><p>แผนกที่ใช้วิเคราะห์ความต้องการ Part</p><div class="switch-row"><span>ใช้งาน</span><button class="switch on deptToggle" data-dept="Assembly Production Line"></button></div></div></div><div class="section-label">การซิงก์ข้อมูล Kingdee อัตโนมัติ (Auto-Sync)</div><div class="setting"><h3>ดึงข้อมูลสดจาก Kingdee อัตโนมัติ (ทุก 10 นาที)</h3><p>เมื่อเปิดใช้งาน ระบบจะเชื่อมต่อ Kingdee ERP และอัปเดตยอดคงเหลือ On-Hand ล่าสุดเข้าสู่หน้าเว็บและ Google Sheets ทุก 10 นาทีโดยอัตโนมัติ</p><div class="switch-row"><span>ดึง Kingdee อัตโนมัติทุก 10 นาที</span><button class="switch on" id="autoSwitchSettings"></button></div></div><div class="notice info" style="margin-top:15px;border-color:#087e78;background:#f0fdf4;color:#166534"><strong>⚡ ระบบ Auto-Sync ทำงานเบื้องหลัง:</strong> เซิร์ฟเวอร์ Local Helper จะดึงรายงาน On-Hand สดจาก Kingdee ERP ทุก 10 นาที และหน้าเว็บจะอัปเดตยอดคงเหลือให้อัตโนมัติโดยไม่ต้องกดปุ่มเอง</div></div>
+        <div class="panel"><h2 style="margin-bottom:14px">แผนกจาก BOM Explosion</h2><div class="settings-grid"><div class="setting"><h3>H9 Assembly Production Line</h3><p>แผนกที่ใช้วิเคราะห์ความต้องการ Part</p><div class="switch-row"><span>ใช้งาน</span><button class="switch on deptToggle" data-dept="H9 Assembly Production Line"></button></div></div><div class="setting"><h3>H1 Assembly Production Line</h3><p>แผนกในส่วนของคลัง H9 (วิเคราะห์ความต้องการ Part)</p><div class="switch-row"><span>ใช้งาน</span><button class="switch on deptToggle" data-dept="H1 Assembly Production Line"></button></div></div><div class="setting"><h3>Assembly Production Line</h3><p>แผนกที่ใช้วิเคราะห์ความต้องการ Part</p><div class="switch-row"><span>ใช้งาน</span><button class="switch on deptToggle" data-dept="Assembly Production Line"></button></div></div></div><div class="section-label">การอัปเดตข้อมูล Kingdee</div><div class="setting"><h3>ดึงข้อมูล On-Hand เมื่อกดปุ่ม</h3><p>ต้องเปิดแท็บ Kingdee ที่เข้าสู่ระบบใน Chrome และส่งออกรายงาน On-Hand ใหม่ ข้อมูล PPBOM และ Finished Goods Receipt ใช้รายงานแยกและมีเวลาอัปเดตของตัวเอง</p><div class="switch-row"><span>สถานะ Auto-Sync</span><span class="badge gray">ปิดใช้งาน</span></div></div><div class="notice info" style="margin-top:15px;border-color:#087e78;background:#f0fdf4;color:#166534"><strong>แหล่งข้อมูล:</strong> ปุ่ม “ดึง On-Hand” ส่งออกเฉพาะรายงาน On-Hand จากแท็บ Kingdee ส่วน PPBOM/Production Material List และ FG Receipt (Lot) ต้องอัปเดตจากไฟล์รายงานของแต่ละส่วน</div></div>
         <div class="panel" id="securitySettingsPanel">
           <div class="panel-head">
             <div>
@@ -6338,13 +6338,14 @@
         toast(`นำเข้ายกเลิก: พบ ${fmt(missingDemandRows)} รายการที่ไม่มีคอลัมน์ Demand/Required/Standard Quantity · ตรวจหัวคอลัมน์ไฟล์ก่อน`);
         return;
       }
-      parsedOrders.forEach(row => { delete row._hasDemandQty; });
+      const sourceAt = file.lastModified ? new Date(file.lastModified).toISOString() : new Date().toISOString();
+      parsedOrders.forEach(row => { delete row._hasDemandQty; row.sourceAt = sourceAt; });
       const replacedMoKeys = new Set(parsedOrders.map(row => normalizeMoKey(row.moNumber)).filter(Boolean));
       db.productionMaterialIssues = [
         ...(Array.isArray(db.productionMaterialIssues) ? db.productionMaterialIssues.filter(row => !replacedMoKeys.has(normalizeMoKey(row.moNumber))) : []),
         ...parsedOrders
       ];
-      db.settings.lastMaterialIssueAt = file.lastModified ? new Date(file.lastModified).toISOString() : new Date().toISOString();
+      db.settings.lastMaterialIssueAt = sourceAt;
       db.settings.lastMaterialIssueFilename = file.name || '';
       saveLocalDb(db);
       computeOrderShortages();
@@ -6499,7 +6500,7 @@
         ...(Array.isArray(db.finishedGoodsReceipts) ? db.finishedGoodsReceipts.filter(row => !replacedMoKeys.has(normalizeMoKey(row.moNumber))) : []),
         ...parsedRows
       ];
-      db.settings.lastFinishedGoodsReceiptAt = new Date().toISOString();
+      db.settings.lastFinishedGoodsReceiptAt = file.lastModified ? new Date(file.lastModified).toISOString() : new Date().toISOString();
       saveLocalDb(db);
       renderPoTrackingPage();
       if (el('poTrackingDetailModal')?.classList.contains('show')) {
@@ -6849,17 +6850,34 @@
     const importedRows = Array.isArray(db.productionMaterialIssues) ? db.productionMaterialIssues : [];
     if (!importedRows.length) return seedRows;
     const seedAt = Date.parse(seed?.snapshotAt || '');
-    const importedAt = Date.parse(db.settings?.lastMaterialIssueFilename ? db.settings?.lastMaterialIssueAt : '');
-    const importIsNewer = !seedRows.length || !Number.isFinite(seedAt) || (Number.isFinite(importedAt) && importedAt >= seedAt);
-    if (!importIsNewer) {
-      // A saved browser/Sheet import must not replace a newer order-level PPBOM snapshot.
-      // Keep imported orders only when they are absent from the snapshot.
-      const seedMoKeys = new Set(seedRows.map(row => normalizeMoKey(row.moNumber)).filter(Boolean));
-      const importedOnlyOrders = importedRows.filter(row => !seedMoKeys.has(normalizeMoKey(row.moNumber)));
-      return seedRows.concat(importedOnlyOrders);
+    const legacyImportedAt = Date.parse(db.settings?.lastMaterialIssueFilename ? db.settings?.lastMaterialIssueAt : '');
+    const groupByOrder = rows => {
+      const groups = new Map();
+      for (const row of rows) {
+        const key = normalizeMoKey(row.moNumber);
+        if (!key) continue;
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(row);
+      }
+      return groups;
+    };
+    const seedByOrder = groupByOrder(seedRows);
+    const importedByOrder = groupByOrder(importedRows);
+    const result = [];
+    const keys = new Set([...seedByOrder.keys(), ...importedByOrder.keys()]);
+    for (const key of keys) {
+      const fromSeed = seedByOrder.get(key) || [];
+      const fromImport = importedByOrder.get(key) || [];
+      const importedAt = fromImport.reduce((latest, row) => {
+        const at = Date.parse(row.sourceAt || '');
+        return Number.isFinite(at) ? Math.max(latest, at) : latest;
+      }, Number.isFinite(legacyImportedAt) ? legacyImportedAt : 0);
+      const importIsNewer = fromImport.length > 0 && (
+        !fromSeed.length || !Number.isFinite(seedAt) || (importedAt > 0 && importedAt >= seedAt)
+      );
+      result.push(...(importIsNewer ? fromImport : fromSeed));
     }
-    const replacedMoKeys = new Set(importedRows.map(row => normalizeMoKey(row.moNumber)).filter(Boolean));
-    return seedRows.filter(row => !replacedMoKeys.has(normalizeMoKey(row.moNumber))).concat(importedRows);
+    return result;
   }
 
   function computePoTracking() {
@@ -8945,6 +8963,9 @@
   }
 
   function applySilentSyncData(data, sourceLabel = 'Auto-Sync 10 นาที'){
+    if(data?.liveKingdeeExport !== true || !data.filename || !Number.isFinite(Date.parse(data.snapshotAt || ''))){
+      return false;
+    }
     const rows = Array.isArray(data?.rows) ? data.rows : null;
     if(!rows || !rows.length) return false;
     const stamp = data.snapshotAt || data.lastAutoSyncAt || data.lastUpdated || data.modifiedAt || new Date().toISOString();
@@ -8995,16 +9016,8 @@
   }
 
   async function toggleAuto(){
-    const nextVal = !isAutoSyncEnabled();
-    db.settings.autoLoginKingdee10m = nextVal;
-    db.settings.autoSync10m = nextVal;
-    db.settings.autoRefresh08 = nextVal;
-    if(nextVal){
-      nextAutoSyncAtMs = Date.now() + AUTO_SYNC_INTERVAL_MS;
-    }
-    await persist();
     syncSwitches();
-    toast(nextVal ? '⚡ เปิดดึงข้อมูลจาก Kingdee อัตโนมัติทุก 10 นาทีแล้ว (ข้อควรระวัง: ระบบจะล็อกอิน Kingdee เบื้องหลัง)' : '⏸️ ปิดล็อกอิน Kingdee อัตโนมัติแล้ว (เข้าใช้งาน Kingdee ได้โดยไม่เด้งหลุด)');
+    toast('ระบบไม่ได้ดึง Kingdee อัตโนมัติเป็นรอบ ใช้ปุ่ม “ดึง On-Hand” เพื่อส่งออกรายงานใหม่จากแท็บ Kingdee');
   }
 
   async function runSilentAutoSyncCycle(forceRun = false){
@@ -9477,7 +9490,7 @@
   document.querySelectorAll('.safety-status-tabs .safety-pill').forEach(btn=>{
     btn.addEventListener('click',()=>{setSafetyStatusFilter(btn.dataset.status);});
   });
-  el('stockFileBtn').addEventListener('click',()=>el('stockFile').click());el('bomFileBtn').addEventListener('click',()=>el('bomFile').click());el('stockFile').addEventListener('change',e=>chooseImport('inventory',e.target.files[0]));el('bomFile').addEventListener('change',e=>chooseImport('bom',e.target.files[0]));el('cancelMappingBtn').addEventListener('click',()=>{pendingImport=null;el('mappingPanel').classList.add('hidden')});el('commitImportBtn').addEventListener('click',commitImport);el('modalClose').addEventListener('click',()=>el('fileErrorModal').classList.remove('show'));el('fileErrorModal').addEventListener('click',e=>{if(e.target===el('fileErrorModal'))el('fileErrorModal').classList.remove('show')});el('autoSwitch').addEventListener('click',toggleAuto);el('autoSwitchSettings').addEventListener('click',toggleAuto);
+  el('stockFileBtn').addEventListener('click',()=>el('stockFile').click());el('bomFileBtn').addEventListener('click',()=>el('bomFile').click());el('stockFile').addEventListener('change',e=>chooseImport('inventory',e.target.files[0]));el('bomFile').addEventListener('change',e=>chooseImport('bom',e.target.files[0]));el('cancelMappingBtn').addEventListener('click',()=>{pendingImport=null;el('mappingPanel').classList.add('hidden')});el('commitImportBtn').addEventListener('click',commitImport);el('modalClose').addEventListener('click',()=>el('fileErrorModal').classList.remove('show'));el('fileErrorModal').addEventListener('click',e=>{if(e.target===el('fileErrorModal'))el('fileErrorModal').classList.remove('show')});el('autoSwitch')?.addEventListener('click',toggleAuto);el('autoSwitchSettings')?.addEventListener('click',toggleAuto);
   document.querySelectorAll('.deptToggle').forEach(b=>b.addEventListener('click',async()=>{const d=b.dataset.dept;const set=new Set(db.settings.activeDepts||DEPTS);if(set.has(d))set.delete(d);else set.add(d);db.settings.activeDepts=DEPTS.filter(x=>set.has(x));await persist();renderAll()}));
   el('clearLocalBtn').addEventListener('click',()=>{if(!confirm('ลบข้อมูลที่เก็บไว้ใน browser เครื่องนี้หรือไม่? การลบนี้ไม่ลบข้อมูลจาก Google Sheets'))return;localStorage.removeItem('onhandPlannerData');localStorage.setItem('onhandSeedDismissed','true');db=normalizeDb(null);updateConnectionNotice();renderAll();toast('ล้างข้อมูลที่เก็บไว้ใน browser แล้ว')});
   // Security lock event listeners
@@ -9673,22 +9686,24 @@
   }
 
   async function applyNewSyncData(data) {
+    const snapshotMs = Date.parse(data?.snapshotAt || '');
+    if (data?.liveKingdeeExport !== true || !data.filename || !Number.isFinite(snapshotMs) || snapshotMs > Date.now() + 30000) {
+      setSyncStep(3, 'error', 'ยังยืนยันไฟล์ส่งออกใหม่จาก Kingdee ไม่ได้ จึงไม่อัปเดตข้อมูลจาก snapshot เดิม');
+      el('syncSpinIcon').classList.remove('spinning');
+      const button = el('autoFetchKingdeeBtn');
+      if (button) { button.disabled = false; button.innerHTML = '⚡ ดึงจาก Kingdee (Auto)'; }
+      return false;
+    }
     el('syncProgressBar').style.width = '75%';
-    setSyncStep(2, 'done', 'ส่งออกไฟล์จาก Kingdee เรียบร้อยแล้ว');
+    setSyncStep(2, 'done', `รับไฟล์ส่งออกใหม่จาก Kingdee แล้ว (${data.filename})`);
     const estimatedCount = data.actualRows || data.count || data.rows?.length || 0;
     setSyncStep(3, 'working', `กำลังประมวลผลข้อมูล ${fmt(estimatedCount)} รายการ...`);
 
     let rows = Array.isArray(data.rows) && data.rows.length ? data.rows : null;
-    if (!rows) {
-      try {
-        const inv = await fetch(getHelperUrl('/latest-inventory'), { cache: 'no-store' }).then(r => r.json());
-        if (inv.ok && Array.isArray(inv.rows)) rows = inv.rows;
-      } catch (_) {}
-    }
-
     if (!rows || !rows.length) {
-      setSyncStep(3, 'error', 'ไม่สามารถอ่านแถวข้อมูลจากไฟล์ snapshot ได้');
-      return;
+      setSyncStep(3, 'error', 'ไฟล์ส่งออกใหม่ไม่มีแถวข้อมูล จึงไม่อัปเดตข้อมูลเดิม');
+      el('syncSpinIcon').classList.remove('spinning');
+      return false;
     }
 
     let pmlLookupMessage = 'ไม่พบไฟล์ Production Material List ล่าสุดในเครื่อง';
@@ -9716,25 +9731,47 @@
       const currentAt = Date.parse(db.settings.lastMaterialIssueFilename ? db.settings.lastMaterialIssueAt : '');
       const seedAt = Date.parse(window.PRODUCTION_MATERIAL_ISSUE_SEED?.snapshotAt || '');
       const knownAt = Math.max(Number.isFinite(currentAt) ? currentAt : 0, Number.isFinite(seedAt) ? seedAt : 0);
-      if (Number.isFinite(snapshotAt) && snapshotAt > knownAt + 1000) {
-        db.productionMaterialIssues = pmlSnapshot.rows;
+      const snapshotAgeMs = Date.now() - snapshotAt;
+      const pmlFreshnessLimitMs = 30 * 60 * 1000;
+      if (Number.isFinite(snapshotAt) && snapshotAgeMs >= -30000 && snapshotAgeMs <= pmlFreshnessLimitMs && snapshotAt > knownAt + 1000) {
+        const incomingOrderKeys = new Set(pmlSnapshot.rows.map(row => normalizeMoKey(row.moNumber)).filter(Boolean));
+        const previousImportAt = db.settings.lastMaterialIssueAt || '';
+        const retainedRows = (Array.isArray(db.productionMaterialIssues) ? db.productionMaterialIssues : [])
+          .filter(row => !incomingOrderKeys.has(normalizeMoKey(row.moNumber)))
+          .map(row => row.sourceAt ? row : { ...row, sourceAt: previousImportAt });
+        const retainedOrderCount = new Set(retainedRows.map(row => normalizeMoKey(row.moNumber)).filter(Boolean)).size;
+        const incomingRows = pmlSnapshot.rows.map(row => ({ ...row, sourceAt: pmlSnapshot.snapshotAt }));
+        db.productionMaterialIssues = [...retainedRows, ...incomingRows];
         db.settings.lastMaterialIssueAt = pmlSnapshot.snapshotAt || new Date().toISOString();
         db.settings.lastMaterialIssueFilename = pmlSnapshot.filename || '';
         pmlUpdatedCount = pmlSnapshot.rows.length;
-        pmlSyncMessage = `อัปเดต PPBOM ${fmt(pmlUpdatedCount)} แถว`;
+        const knownOrderRows = hasGoogle() && db.productionOrders?.length
+          ? db.productionOrders
+          : (window.PRODUCTION_ORDERS_SEED?.orders?.length ? window.PRODUCTION_ORDERS_SEED.orders : (db.productionOrders || []));
+        const knownOrderKeys = new Set(knownOrderRows.map(row => normalizeMoKey(row.moNumber)).filter(Boolean));
+        const matchedOrderCount = [...incomingOrderKeys].filter(key => knownOrderKeys.has(key)).length;
+        const coverageMessage = knownOrderKeys.size && matchedOrderCount < knownOrderKeys.size
+          ? `ไฟล์ครอบคลุม ${fmt(matchedOrderCount)}/${fmt(knownOrderKeys.size)} Order ที่ติดตาม จึงยังยืนยันความครบทั้งหมดไม่ได้`
+          : `ไฟล์ครอบคลุม ${fmt(matchedOrderCount)} Order ที่ติดตาม`;
+        pmlSyncMessage = `PPBOM ${fmt(pmlUpdatedCount)} แถวของ ${fmt(incomingOrderKeys.size)} Order จากไฟล์ ${pmlSnapshot.filename || 'Kingdee'} ณ ${time(pmlSnapshot.snapshotAt)}; ${coverageMessage}; เก็บข้อมูลเดิมอีก ${fmt(retainedOrderCount)} Order ที่ไม่อยู่ในไฟล์ไว้`;
+      } else if (Number.isFinite(snapshotAt) && (snapshotAgeMs < -30000 || snapshotAgeMs > pmlFreshnessLimitMs)) {
+        pmlSyncMessage = `PPBOM เป็น snapshot เก่า ณ ${time(pmlSnapshot.snapshotAt)} · ไม่ถือว่าอัปเดตสด`;
       } else {
         pmlSyncMessage = `PPBOM ยังเป็น snapshot เดิม ณ ${time(pmlSnapshot.snapshotAt || window.PRODUCTION_MATERIAL_ISSUE_SEED?.snapshotAt || '')}`;
       }
     }
 
-    setSyncStep(3, 'done', `ตรวจนับ On-Hand ${fmt(rows.length)} แถว · ${pmlSyncMessage}`);
+    const fgReceiptSourceMessage = db.settings.lastFinishedGoodsReceiptAt
+      ? `FG Receipt ยังใช้ข้อมูลนำเข้าถึง ${time(db.settings.lastFinishedGoodsReceiptAt)}`
+      : 'ยังไม่มีข้อมูล FG Receipt ที่นำเข้า';
+    setSyncStep(3, 'done', `On-Hand ${fmt(rows.length)} แถวจาก Export ใหม่ · ${pmlSyncMessage} · ${fgReceiptSourceMessage}`);
     el('syncProgressBar').style.width = '95%';
     setSyncStep(4, 'working', 'กำลังบันทึกลงตารางและ Google Sheets...');
 
-    const stamp = new Date().toISOString();
+    const stamp = new Date(snapshotMs).toISOString();
     db.inventory = rows;
     db.settings.lastInventoryAt = stamp;
-    const fname = data.filename || 'Kingdee Auto-Sync (Real-time)';
+    const fname = data.filename;
     db.imports.unshift({
       type: 'inventory',
       filename: fname,
@@ -9770,9 +9807,9 @@
     el('syncPromptBox').style.display = 'none';
     el('syncSuccessBox').style.display = 'block';
     el('syncSuccessMsg').innerHTML = barcodeSync.ok
-      ? `🎉 ดึงข้อมูล On-Hand สำเร็จ ${fmt(rows.length)} รายการ · ${pmlSyncMessage} · ยอดผลิตจริง/วันจบ Scan จาก H9 Barcode ${fmt(barcodeSync.count)} Order แล้ว`
-      : `🎉 ดึงข้อมูล On-Hand สำเร็จ ${fmt(rows.length)} รายการ · ${pmlSyncMessage} · แต่ซิงก์ยอดผลิตจริง/วันจบ Scan จาก H9 Barcode ไม่สำเร็จ`;
-    el('syncSuccessTime').textContent = `อัปเดตเรียลไทม์: ${time(stamp)} (ยอดคงเหลือสดจาก Kingdee)`;
+      ? `🎉 อัปเดต On-Hand จากไฟล์ส่งออก Kingdee ${fmt(rows.length)} รายการ · ${pmlSyncMessage} · ${fgReceiptSourceMessage} · H9 Barcode ${fmt(barcodeSync.count)} Order (คำสั่งนี้ไม่ได้ดึง PPBOM หรือ FG Receipt จาก Kingdee)`
+      : `🎉 อัปเดต On-Hand จากไฟล์ส่งออก Kingdee ${fmt(rows.length)} รายการ · ${pmlSyncMessage} · ${fgReceiptSourceMessage} · ซิงก์ H9 Barcode ไม่สำเร็จ (คำสั่งนี้ไม่ได้ดึง FG Receipt จาก Kingdee)`;
+    el('syncSuccessTime').textContent = `ไฟล์ส่งออกจาก Kingdee: ${fname} · เวลา ${time(stamp)}`;
     el('syncModalDoneBtn').style.display = 'inline-block';
     el('syncModalCancelBtn').style.display = 'none';
 
@@ -9780,7 +9817,7 @@
     btn.disabled = false;
     btn.innerHTML = '⚡ ดึงจาก Kingdee (Auto)';
 
-    toast(`✅ ดึงข้อมูล On-Hand เรียลไทม์สำเร็จ ${fmt(rows.length)} รายการ (${time(stamp)})`);
+    toast(`✅ รับข้อมูล On-Hand จากไฟล์ส่งออก Kingdee ${fmt(rows.length)} รายการ (${time(stamp)})`);
     if (!barcodeSync.ok) toast('⚠️ ข้อมูล Kingdee อัปเดตแล้ว แต่ข้อมูลวันจบ Scan ยังไม่ได้ซิงก์ โปรดลองกด “ซิงค์งานจริง H9-barcode-record”');
 
     setTimeout(() => {
@@ -9936,24 +9973,21 @@
     el('syncModalDoneBtn').style.display = 'none';
     el('syncModalCancelBtn').style.display = 'inline-block';
     el('syncModalTitle').textContent = 'ดึงข้อมูล On-Hand จาก Kingdee';
-    el('syncModalSubtitle').textContent = 'กำลังเชื่อมต่อเพื่อส่งออกและดึงยอดคงเหลือสต็อกล่าสุดแบบเรียลไทม์';
-    el('syncStep1Title').textContent = 'เชื่อมต่อระบบตัวช่วยในเครื่อง';
-    el('syncStep2Title').textContent = 'ส่งออกรายงาน On-Hand จาก Kingdee';
+    el('syncModalSubtitle').textContent = 'อัปเดตเฉพาะ On-Hand โดยส่งออกรายงานจากแท็บ Kingdee ใน Chrome; PPBOM และ FG Receipt ใช้รายงานแยก';
+    el('syncStep1Title').textContent = 'เชื่อมต่อ Chrome Extension และ Local Helper';
+    el('syncStep2Title').textContent = 'สั่ง Export On-Hand ใน Kingdee';
     el('syncStep3Title').textContent = 'ประมวลผลข้อมูลและตรวจนับแถว';
     el('syncStep4Title').textContent = 'อัปเดตหน้าเว็บและบันทึก Google Sheets';
 
     setSyncStep(1, 'working', 'กำลังตรวจสอบการเชื่อมต่อระบบ...');
-    setSyncStep(2, 'pending', 'ล็อกอิน Kingdee (บัญชี Admin)...');
+    setSyncStep(2, 'pending', 'ตรวจแท็บ Kingdee ที่เข้าสู่ระบบอยู่...');
     setSyncStep(3, 'pending', 'ประมวลผล Query & Export...');
     setSyncStep(4, 'pending', 'ดาวน์โหลดและคำนวณคลัง...');
 
     const helperBase = await checkHelperHealth();
 
     if (!helperBase) {
-      if (hasGoogle()) {
-        return startRemoteAdminSync();
-      }
-      setSyncStep(1, 'error', 'Local Helper ยังไม่ได้เริ่มทำงาน (ตรวจสอบ IP หรือเปิดเซิร์ฟเวอร์)');
+      setSyncStep(1, 'error', 'เชื่อม Local Helper ไม่ได้ จึงยังตรวจและนำเข้าไฟล์ส่งออกใหม่ไม่ได้');
       btn.disabled = false;
       btn.innerHTML = '⚡ ดึงจาก Kingdee (Auto)';
       return;
@@ -9962,22 +9996,22 @@
     setSyncStep(1, 'done', `เชื่อมต่อ Local Helper สำเร็จ (${helperBase})`);
     el('syncProgressBar').style.width = '25%';
 
-    setSyncStep(2, 'working', 'กำลังส่งคำขอให้ระบบล็อกอิน Kingdee ERP อัตโนมัติ...');
+    setSyncStep(2, 'working', 'กำลังขอไฟล์ส่งออกใหม่จากแท็บ Kingdee ที่เปิดอยู่...');
 
     // Responsive progress updates while backend executes
     let stepTimer1 = setTimeout(() => {
-      setSyncStep(2, 'working', 'กำลังเปิดรายงาน On-Hand และประมวลผล...');
+      setSyncStep(2, 'working', 'กำลังตรวจรายงาน On-Hand ในแท็บ Kingdee...');
       el('syncProgressBar').style.width = '45%';
     }, 1500);
 
     let stepTimer2 = setTimeout(() => {
-      setSyncStep(2, 'done', 'เปิดรายงาน On-Hand สำเร็จ');
+      setSyncStep(2, 'done', 'Kingdee ยืนยันรายงาน On-Hand');
       setSyncStep(3, 'working', 'กำลัง Query และส่งออกไฟล์ Excel...');
       el('syncProgressBar').style.width = '70%';
     }, 4500);
 
     let stepTimer3 = setTimeout(() => {
-      setSyncStep(3, 'done', 'Kingdee ส่งออกไฟล์สำเร็จ');
+      setSyncStep(3, 'done', 'ได้รับไฟล์ส่งออกใหม่จาก Kingdee');
       setSyncStep(4, 'working', 'กำลังดาวน์โหลดและอ่านข้อมูล...');
       el('syncProgressBar').style.width = '90%';
     }, 9000);
@@ -10014,17 +10048,10 @@
       clearTimeout(stepTimer1);
       clearTimeout(stepTimer2);
       clearTimeout(stepTimer3);
-      console.warn('Direct admin sync error, checking local download fallback:', err);
-      
-      const chk = await fetch(getHelperUrl('/latest-inventory'), { cache: 'no-store' }).then(r => r.json()).catch(() => ({}));
-      if (chk.ok && Array.isArray(chk.rows) && chk.rows.length > 0) {
-        setSyncStep(4, 'done', `ใช้ข้อมูลล่าสุดในเครื่อง (${fmt(chk.rows.length)} รายการ)`);
-        applyNewSyncData(chk);
-      } else {
-        setSyncStep(3, 'error', err.message || 'ดึงข้อมูลไม่สำเร็จ');
-        btn.disabled = false;
-        btn.innerHTML = '⚡ ดึงจาก Kingdee (Auto)';
-      }
+      console.warn('Kingdee export failed; existing snapshots are not used as fresh data:', err);
+      setSyncStep(3, 'error', `${err.message || 'ส่งออกจาก Kingdee ไม่สำเร็จ'} · ไม่มีการนำ snapshot เก่ามาแทน`);
+      btn.disabled = false;
+      btn.innerHTML = '⚡ ดึงจาก Kingdee (Auto)';
     }
   }
 
