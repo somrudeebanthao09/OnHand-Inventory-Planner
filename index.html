@@ -1310,6 +1310,16 @@
     .hidden, [hidden], .btn-clean.hidden, button.hidden, .sidebar .nav button.hidden, .sidebar .nav button[hidden] {
       display: none !important;
     }
+    #page-po-tracking .title-row h1{font-size:23px!important}
+    #page-po-tracking .title-row p{font-size:13.5px!important}
+    #page-po-tracking .metric-value{font-size:28px!important}
+    #page-po-tracking .btn{font-size:13.5px}
+    #poTrackingTableWrap table{font-size:12px!important}
+    #poTrackingTableWrap th{font-size:11px!important}
+    #poTrackingTableWrap td{font-size:13px!important}
+    #poTrackingTableWrap td .code,#poTrackingTableWrap td strong{font-size:12.5px!important}
+    #poTrackingTableWrap td .num{font-size:13.5px!important}
+    #poTrackingTableWrap td .badge{font-size:10.5px!important}
 </style>
 </head>
 <body>
@@ -2745,6 +2755,10 @@
         db=normalizeDb(await callGoogle('getAppData'));
         try {
           const localSaved = JSON.parse(localStorage.getItem('onhandPlannerData') || 'null');
+          if (Array.isArray(localSaved?.productionMaterialIssues) && localSaved.productionMaterialIssues.length) {
+            db.productionMaterialIssues = localSaved.productionMaterialIssues;
+            db.settings.lastMaterialIssueAt = localSaved.settings?.lastMaterialIssueAt || db.settings.lastMaterialIssueAt || '';
+          }
           if (Array.isArray(localSaved?.finishedGoodsReceipts) && localSaved.finishedGoodsReceipts.length) {
             db.finishedGoodsReceipts = localSaved.finishedGoodsReceipts;
             db.settings.lastFinishedGoodsReceiptAt = localSaved.settings?.lastFinishedGoodsReceiptAt || db.settings.lastFinishedGoodsReceiptAt || '';
@@ -7552,6 +7566,8 @@
 
     const fActive = k => Boolean(poTrackingColumnFilters[k]);
 
+    const ppbomSnapshotAt = db.settings.lastMaterialIssueAt || window.PRODUCTION_MATERIAL_ISSUE_SEED?.snapshotAt || '';
+    const ppbomSnapshotDate = ppbomSnapshotAt ? time(ppbomSnapshotAt) : 'ไม่ระบุวันที่';
     const rowsHtml = !pageRows.length
       ? `<tr><td colspan="11" style="padding:28px"><div class="empty" style="margin:0"><b>ไม่พบรายการ Production Order ตามตัวกรองที่เลือก</b>ลองเปลี่ยนตัวกรองคอลัมน์ หรือกดปุ่ม "ล้างตัวกรอง"</div></td></tr>`
       : pageRows.map(mo => {
@@ -7561,9 +7577,9 @@
              <span style="font-size:10px;color:#1d4ed8;font-weight:700;line-height:1.25">เบิกครบ ${mo.ppbomIssueCompleteParts}/${mo.ppbomIssueDataParts} Part</span>
              ${mo.ppbomIssueUnknownParts > 0 ? `<span style="font-size:9.5px;color:#b45309;font-weight:700">ไม่พบข้อมูล ${mo.ppbomIssueUnknownParts} Part</span>` : ''}
            </div>`
-        : `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:2px">
-             <span class="badge gray" style="font-size:10.5px;padding:2px 7px;font-weight:750">— ไม่มีข้อมูล PPBOM</span>
-             <span style="font-size:9.5px;color:#64748b;line-height:1.2">ยืนยันยอดเบิกไม่ได้</span>
+        : `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:2px" title="ไม่พบ Order นี้ในข้อมูล PPBOM ล่าสุด ณ ${esc(ppbomSnapshotDate)}">
+             <span class="badge gray" style="font-size:10.5px;padding:2px 7px;font-weight:750">— ไม่มีรายการใน PPBOM</span>
+             <span style="font-size:9.5px;color:#64748b;line-height:1.2">ข้อมูลถึง ${esc(ppbomSnapshotDate)} · นำเข้าไฟล์ล่าสุด</span>
            </div>`;
       const transferBadge = mo.isTransferComplete
         ? `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:2px">
@@ -9621,7 +9637,37 @@
       return;
     }
 
-    setSyncStep(3, 'done', `ตรวจนับข้อมูลสำเร็จ ${fmt(rows.length)} แถว`);
+    let pmlSnapshot = Array.isArray(data.productionMaterialIssues) && data.productionMaterialIssues.length
+      ? {
+          rows: data.productionMaterialIssues,
+          filename: data.productionMaterialIssueFilename || '',
+          snapshotAt: data.productionMaterialIssueSnapshotAt || ''
+        }
+      : null;
+    if (!pmlSnapshot) {
+      try {
+        const pml = await fetch(getHelperUrl('/latest-production-material-issues'), { cache: 'no-store' }).then(r => r.json());
+        if (pml.ok && Array.isArray(pml.rows) && pml.rows.length) pmlSnapshot = pml;
+      } catch (_) {}
+    }
+    let pmlUpdatedCount = 0;
+    let pmlSyncMessage = 'ไม่พบไฟล์ Production Material List ล่าสุดในเครื่อง';
+    if (pmlSnapshot?.rows?.length) {
+      const snapshotAt = Date.parse(pmlSnapshot.snapshotAt || '');
+      const currentAt = Date.parse(db.settings.lastMaterialIssueAt || '');
+      const seedAt = Date.parse(window.PRODUCTION_MATERIAL_ISSUE_SEED?.snapshotAt || '');
+      const knownAt = Math.max(Number.isFinite(currentAt) ? currentAt : 0, Number.isFinite(seedAt) ? seedAt : 0);
+      if (Number.isFinite(snapshotAt) && snapshotAt > knownAt + 1000) {
+        db.productionMaterialIssues = pmlSnapshot.rows;
+        db.settings.lastMaterialIssueAt = pmlSnapshot.snapshotAt || new Date().toISOString();
+        pmlUpdatedCount = pmlSnapshot.rows.length;
+        pmlSyncMessage = `อัปเดต PPBOM ${fmt(pmlUpdatedCount)} แถว`;
+      } else {
+        pmlSyncMessage = `PPBOM ยังเป็น snapshot เดิม ณ ${time(pmlSnapshot.snapshotAt || window.PRODUCTION_MATERIAL_ISSUE_SEED?.snapshotAt || '')}`;
+      }
+    }
+
+    setSyncStep(3, 'done', `ตรวจนับ On-Hand ${fmt(rows.length)} แถว · ${pmlSyncMessage}`);
     el('syncProgressBar').style.width = '95%';
     setSyncStep(4, 'working', 'กำลังบันทึกลงตารางและ Google Sheets...');
 
@@ -9652,8 +9698,8 @@
     setSyncStep(4, 'working', 'กำลังอัปเดตยอดผลิตจริงและวันจบ Scan จาก H9 Barcode...');
     const barcodeSync = await syncBarcodeRecordLive(true);
     setSyncStep(4, barcodeSync.ok ? 'done' : 'error', barcodeSync.ok
-      ? `อัปเดต Kingdee ${fmt(rows.length)} รายการ และ H9 Barcode ${fmt(barcodeSync.count)} Order แล้ว`
-      : `อัปเดต Kingdee ${fmt(rows.length)} รายการแล้ว แต่ซิงก์ H9 Barcode ไม่สำเร็จ`);
+      ? `อัปเดต Kingdee ${fmt(rows.length)} รายการ · ${pmlSyncMessage} · H9 Barcode ${fmt(barcodeSync.count)} Order แล้ว`
+      : `อัปเดต Kingdee ${fmt(rows.length)} รายการ · ${pmlSyncMessage} แล้ว แต่ซิงก์ H9 Barcode ไม่สำเร็จ`);
     el('syncProgressBar').style.width = '100%';
     el('syncSpinIcon').classList.remove('spinning');
 
@@ -9664,8 +9710,8 @@
     el('syncPromptBox').style.display = 'none';
     el('syncSuccessBox').style.display = 'block';
     el('syncSuccessMsg').innerHTML = barcodeSync.ok
-      ? `🎉 ดึงข้อมูล On-Hand สำเร็จ ${fmt(rows.length)} รายการ และอัปเดตยอดผลิตจริง/วันจบ Scan จาก H9 Barcode ${fmt(barcodeSync.count)} Order แล้ว`
-      : `🎉 ดึงข้อมูล On-Hand สำเร็จ ${fmt(rows.length)} รายการ แต่ซิงก์ยอดผลิตจริง/วันจบ Scan จาก H9 Barcode ไม่สำเร็จ`;
+      ? `🎉 ดึงข้อมูล On-Hand สำเร็จ ${fmt(rows.length)} รายการ · ${pmlSyncMessage} · ยอดผลิตจริง/วันจบ Scan จาก H9 Barcode ${fmt(barcodeSync.count)} Order แล้ว`
+      : `🎉 ดึงข้อมูล On-Hand สำเร็จ ${fmt(rows.length)} รายการ · ${pmlSyncMessage} · แต่ซิงก์ยอดผลิตจริง/วันจบ Scan จาก H9 Barcode ไม่สำเร็จ`;
     el('syncSuccessTime').textContent = `อัปเดตเรียลไทม์: ${time(stamp)} (ยอดคงเหลือสดจาก Kingdee)`;
     el('syncModalDoneBtn').style.display = 'inline-block';
     el('syncModalCancelBtn').style.display = 'none';
