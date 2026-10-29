@@ -1310,16 +1310,27 @@
     .hidden, [hidden], .btn-clean.hidden, button.hidden, .sidebar .nav button.hidden, .sidebar .nav button[hidden] {
       display: none !important;
     }
-    #page-po-tracking .title-row h1{font-size:23px!important}
-    #page-po-tracking .title-row p{font-size:13.5px!important}
-    #page-po-tracking .metric-value{font-size:28px!important}
-    #page-po-tracking .btn{font-size:13.5px}
+    #page-po-tracking .title-row h1{font-size:21px!important}
+    #page-po-tracking .title-row p{font-size:13px!important}
+    #page-po-tracking .metric-value{font-size:26px!important}
+    #page-po-tracking .btn{font-size:13px}
     #poTrackingTableWrap table{font-size:12px!important}
-    #poTrackingTableWrap th{font-size:11px!important}
-    #poTrackingTableWrap td{font-size:13px!important}
-    #poTrackingTableWrap td .code,#poTrackingTableWrap td strong{font-size:12.5px!important}
-    #poTrackingTableWrap td .num{font-size:13.5px!important}
-    #poTrackingTableWrap td .badge{font-size:10.5px!important}
+    #poTrackingTableWrap th{font-size:10.5px!important}
+    #poTrackingTableWrap td{font-size:12.5px!important}
+    #poTrackingTableWrap td .code,#poTrackingTableWrap td strong{font-size:12px!important}
+    #poTrackingTableWrap td .num{font-size:13px!important}
+    #poTrackingTableWrap td .badge{font-size:10px!important}
+    #poTrackingCountText,#poTrackingPageInfo,#poTrackingPageSize{font-size:12.5px!important}
+    #poTrackingDetailModal .modal{font-size:12px}
+    #poTrackingDetailModal #poModalTitle{font-size:16px!important}
+    #poTrackingDetailModal #poModalSubtitle{font-size:12px!important}
+    #poTrackingDetailModal #poModalPipelineGrid>div>div:nth-child(2){font-size:14.5px!important}
+    #poTrackingDetailModal #poModalPipelineGrid>div>div:nth-child(3){font-size:10.5px!important}
+    #poTrackingDetailModal #poModalDiagnosisBanner{font-size:12.5px!important}
+    #poTrackingDetailModal #poModalTableBody td{font-size:12px!important}
+    #poTrackingDetailModal #poModalTableBody td strong{font-size:12.5px!important}
+    #poTrackingDetailModal #poModalTableBody td.num{font-size:13px!important}
+    #poTrackingDetailModal #poModalTableSummary{font-size:12px!important}
 </style>
 </head>
 <body>
@@ -2564,7 +2575,7 @@
       approvedAt: '2026-10-13T00:00:00.000Z'
     }
   ];
-  const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],productionMaterialIssues:[],finishedGoodsReceipts:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',lastMaterialIssueAt:'',lastFinishedGoodsReceiptAt:'',security:{autoLockMinutes:15,passcode:'1234'}}};
+  const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],productionMaterialIssues:[],finishedGoodsReceipts:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',lastMaterialIssueAt:'',lastMaterialIssueFilename:'',lastFinishedGoodsReceiptAt:'',security:{autoLockMinutes:15,passcode:'1234'}}};
   let db = structuredClone(initial), activePage='overview', firstPageLoad=true, pendingImport=null, currentAnalysis=[], sourceRemote=false, lastSheetPullAt=localStorage.getItem('onhandLastSheetPullAt')||'', remoteSaveTimer=null, remoteSaveQueue=Promise.resolve();
   const el = id => document.getElementById(id);
   const n = value => { const x=Number(String(value??'').replace(/,/g,'').trim()); return Number.isFinite(x)?x:0; };
@@ -6247,8 +6258,22 @@
     try {
       const buf = await file.arrayBuffer();
       const wb = XLSX.read(buf, { type: 'array' });
-      const ws = wb.Sheets[wb.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+      let rows = [];
+      for (const sheetName of wb.SheetNames) {
+        const matrix = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { header: 1, defval: '' });
+        const headerIdx = matrix.findIndex(row => {
+          const headers = row.map(value => String(value || '').trim());
+          return headers.some(h => /production order number|production order no\.?|mo number|mo no\.?/i.test(h)) &&
+            headers.some(h => /\*?material code|component material code|material no\.?/i.test(h)) &&
+            headers.some(h => /demand quantity|demand qty|required quantity|required qty|\*?standard quantity/i.test(h));
+        });
+        if (headerIdx < 0) continue;
+        const headers = matrix[headerIdx].map(value => String(value || '').trim());
+        rows = matrix.slice(headerIdx + 1).map(row => Object.fromEntries(
+          headers.map((header, index) => [header, row[index] ?? '']).filter(([header]) => header)
+        ));
+        break;
+      }
       if (!rows.length) {
         toast('ไม่พบข้อมูลในไฟล์ Production Material List');
         return;
@@ -6271,11 +6296,11 @@
         docStatus: ['Document Status', 'PPBOM Status'],
         productCode: ['Product Code', 'Production Product Code', 'Finished Good Code'],
         productName: ['Product Name', 'Production Product Name', 'Finished Good Name'],
-        orderQty: ['Production Order Quantity', 'Production Order Qty', 'Order Quantity', 'Order Qty', 'Planned Production Quantity'],
+        orderQty: ['Production Order Quantity', 'Production Order Qty', 'Order Quantity', 'Order Qty', 'Planned Production Quantity', 'Quantity'],
         status: ['Production Order Task Status', 'Production Order Status', 'Task Status', 'Status'],
         department: ['Production Department', 'Workshop/Production Department', 'Production Workshop', 'Workshop']
       };
-      const demandQtyFields = ['Demand Quantity', 'Demand Qty', 'Required Quantity', 'Required Qty', 'Standard Quantity', 'Standard Qty', 'Material Required Quantity', 'Material Quantity', 'Required Qty.'];
+      const demandQtyFields = ['Demand Quantity', 'Demand Qty', 'Required Quantity', 'Required Qty', 'Standard Quantity', '*Standard Quantity', 'Standard Qty', 'Material Required Quantity', 'Material Quantity', 'Required Qty.'];
       for (const r of rows) {
         const moRaw = readText(r, ['Production Order Number', 'Production Order No.', 'MO No.', 'MO Number', 'Production Order']);
         if (moRaw && normalizeMoKey(moRaw) !== normalizeMoKey(currentOrder.moNumber || '')) currentOrder = {};
@@ -6284,7 +6309,7 @@
           const value = readCell(r, aliases);
           if (value !== undefined) currentOrder[field] = field === 'orderQty' ? n(value) : String(value).trim();
         }
-        const matCode = readText(r, ['Material Code', 'Component Material Code', 'Material No.', 'Component Code']);
+        const matCode = readText(r, ['Material Code', '*Material Code', 'Component Material Code', 'Material No.', 'Component Code']);
         if (!currentOrder.moNumber || !matCode) continue;
         const demandRaw = readCell(r, demandQtyFields);
         const issuedRaw = readCell(r, ['Issued Quantity', 'Actual Issued Quantity', 'Issued Qty', 'Actual Issued Qty']);
@@ -6293,7 +6318,7 @@
           materialCode: matCode,
           materialName: readText(r, ['Material Name', 'Component Material Name', 'Material Description']),
           specification: readText(r, ['Specification', 'Specifications', 'Material Specification']),
-          unit: readText(r, ['Component UoM', 'Component Unit', 'Material Unit', 'UoM', 'Unit', 'Numerator / Denominator']) || 'Pcs',
+          unit: readText(r, ['Component UoM', '*Component UoM', 'Component Unit', 'Material Unit', 'UoM', 'Unit', 'Numerator / Denominator']) || 'Pcs',
           demandQty: n(demandRaw),
           _hasDemandQty: demandRaw !== undefined,
           ppbomIssuedQty: n(issuedRaw),
@@ -6319,7 +6344,8 @@
         ...(Array.isArray(db.productionMaterialIssues) ? db.productionMaterialIssues.filter(row => !replacedMoKeys.has(normalizeMoKey(row.moNumber))) : []),
         ...parsedOrders
       ];
-      db.settings.lastMaterialIssueAt = new Date().toISOString();
+      db.settings.lastMaterialIssueAt = file.lastModified ? new Date(file.lastModified).toISOString() : new Date().toISOString();
+      db.settings.lastMaterialIssueFilename = file.name || '';
       saveLocalDb(db);
       computeOrderShortages();
       if (typeof renderOrdersPage === 'function') renderOrdersPage();
@@ -6351,10 +6377,11 @@
     if (!details || !summary || !body) return;
     const rows = getFinishedGoodsReceiptsForMo(moNumber).slice().sort((a, b) => Number(isFgReceiptPending(b)) - Number(isFgReceiptPending(a)));
     const pendingRows = rows.filter(isFgReceiptPending);
+    const pendingDocCount = new Set(pendingRows.map(row => row.receiptNumber || `${row.moNumber}::${row.lotNumber || row.receiptDate || 'pending'}`)).size;
     const lotCount = new Set(rows.map(row => String(row.lotNumber || '').trim()).filter(Boolean)).size;
     const totalQty = rows.reduce((sum, row) => sum + n(row.receiptQty), 0);
     summary.textContent = rows.length
-      ? `📦 Finished Goods Receipt · ${rows.length} รายการ · ${lotCount} Lot · รับเข้า ${fmtQty(totalQty)} · ค้างดำเนินการ ${pendingRows.length} รายการ`
+      ? `📦 Finished Goods Receipt · ${rows.length} รายการ · ${lotCount} Lot · รับเข้า ${fmtQty(totalQty)} · ค้างดำเนินการ ${pendingDocCount} เอกสาร`
       : '📦 Finished Goods Receipt · ยังไม่มีข้อมูล Lot (นำเข้าไฟล์ Receipt จาก Kingdee)';
     if (resetOpen) details.open = false;
     if (!rows.length) {
@@ -6371,10 +6398,11 @@
           <th class="num" style="padding:7px 8px;font-size:11.5px">จำนวนรับ</th>
           <th style="padding:7px 8px;font-size:11.5px">คลังรับเข้า</th>
           <th style="padding:7px 8px;font-size:11.5px">สถานะเอกสาร</th>
-          <th style="padding:7px 8px;font-size:11.5px">ขั้นตอน / ผู้รับผิดชอบ</th>
+          <th style="padding:7px 8px;font-size:11.5px">ค้างที่ขั้นตอน / ผู้รับผิดชอบ</th>
         </tr></thead><tbody>${rows.map(row => {
           const pending = isFgReceiptPending(row);
           const ownerText = [row.processNode, row.currentOwner].filter(Boolean).join(' · ');
+          const statusLabel = pending ? `⏳ ค้าง: ${row.processNode || row.documentStatus || 'รอดำเนินการ'}` : (row.documentStatus || 'ไม่ระบุในไฟล์');
           return `<tr>
             <td style="padding:7px 8px;white-space:nowrap">${esc(row.receiptDate || '—')}</td>
             <td style="padding:7px 8px">${esc(row.receiptNumber || '—')}</td>
@@ -6382,7 +6410,7 @@
             <td style="padding:7px 8px;overflow-wrap:anywhere;font-weight:700;color:#075985">${esc(row.lotNumber || '—')}</td>
             <td class="num" style="padding:7px 8px;font-weight:750">${fmtQty(row.receiptQty)} ${esc(row.unit || '')}</td>
             <td style="padding:7px 8px">${esc(row.warehouse || '—')}</td>
-            <td style="padding:7px 8px;color:${pending ? '#b45309' : '#334155'};font-weight:650">${esc(row.documentStatus || 'ไม่ระบุในไฟล์')}</td>
+            <td style="padding:7px 8px;color:${pending ? '#b45309' : '#334155'};font-weight:650">${esc(statusLabel)}</td>
             <td style="padding:7px 8px;color:${pending ? '#b45309' : '#475569'}">${esc(ownerText || 'ไม่มีข้อมูลขั้นตอน/ผู้รับผิดชอบในไฟล์')}</td>
           </tr>`;
         }).join('')}</tbody>
@@ -6399,7 +6427,9 @@
         const candidate = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { header: 1, defval: '' });
         const candidateHeader = candidate.findIndex(row => {
           const labels = row.map(value => String(value || '').trim());
-          return labels.some(value => /production order|\bmo\b/i.test(value)) && labels.some(value => /lot|batch/i.test(value));
+          return labels.some(value => /production order|\bmo\b/i.test(value)) &&
+            labels.some(value => /lot|batch|receipt no|receipt number|document no|document number/i.test(value)) &&
+            labels.some(value => /qty|quantity/i.test(value));
         });
         if (candidateHeader >= 0) {
           matrix = candidate;
@@ -6408,7 +6438,7 @@
         }
       }
       if (headerIdx < 0) {
-        toast('นำเข้าไม่ได้: ต้องมีคอลัมน์ Production Order และ Lot/Batch');
+        toast('นำเข้าไม่ได้: ต้องมี Production Order, Lot/Batch หรือเลขที่ Receipt และจำนวน');
         return;
       }
       const headers = matrix[headerIdx].map(value => String(value || '').trim());
@@ -6424,11 +6454,11 @@
         warehouse: col([/receiving warehouse/i, /stock.?in warehouse/i, /^warehouse$/i]),
         status: col([/document status/i, /bill status/i, /approval status/i, /approve status/i, /^status$/i]),
         processNode: col([/current node/i, /process node/i, /workflow node/i, /current process/i, /pending step/i, /approval node/i]),
-        owner: col([/current handler/i, /current approver/i, /responsible person/i, /assigned to/i, /approver/i, /handler/i, /^owner$/i, /person in charge/i]),
+        owner: col([/current handler/i, /current approver/i, /current processor/i, /current responsible/i, /responsible person/i, /assigned to/i, /assigned user/i, /approver/i, /handler/i, /^owner( name)?$/i, /person in charge/i]),
         date: col([/business date/i, /receipt date/i, /document date/i, /^date$/i])
       };
-      if (columns.mo < 0 || columns.lot < 0 || columns.qty < 0) {
-        toast('นำเข้าไม่ได้: ไฟล์ต้องมี Production Order, Lot/Batch และ Receipt Quantity');
+      if (columns.mo < 0 || columns.qty < 0 || (columns.lot < 0 && columns.receipt < 0)) {
+        toast('นำเข้าไม่ได้: ไฟล์ต้องมี Production Order, เลขที่ Receipt หรือ Lot/Batch และ Receipt Quantity');
         return;
       }
       const read = (row, index) => index >= 0 ? row[index] : '';
@@ -6442,7 +6472,7 @@
         if (rowMo) lastMo = normalizeMoKey(rowMo);
         const lot = text(row, columns.lot);
         const qtyRaw = read(row, columns.qty);
-        if (!lastMo || !lot || qtyRaw === '') continue;
+        if (!lastMo || qtyRaw === '') continue;
         const dateRaw = read(row, columns.date);
         const date = dateRaw instanceof Date ? formatScanDateText(dateRaw.toISOString()) : (formatScanDateText(dateRaw) || text(row, columns.date));
         parsedRows.push({
@@ -6819,7 +6849,7 @@
     const importedRows = Array.isArray(db.productionMaterialIssues) ? db.productionMaterialIssues : [];
     if (!importedRows.length) return seedRows;
     const seedAt = Date.parse(seed?.snapshotAt || '');
-    const importedAt = Date.parse(db.settings?.lastMaterialIssueAt || '');
+    const importedAt = Date.parse(db.settings?.lastMaterialIssueFilename ? db.settings?.lastMaterialIssueAt : '');
     const importIsNewer = !seedRows.length || !Number.isFinite(seedAt) || (Number.isFinite(importedAt) && importedAt >= seedAt);
     if (!importIsNewer) {
       // A saved browser/Sheet import must not replace a newer order-level PPBOM snapshot.
@@ -7481,6 +7511,22 @@
     return poTrackingCache;
   }
 
+  function getPpBomSnapshotAt() {
+    return db.settings.lastMaterialIssueFilename
+      ? (db.settings.lastMaterialIssueAt || '')
+      : (window.PRODUCTION_MATERIAL_ISSUE_SEED?.snapshotAt || '');
+  }
+
+  function isOrderNewerThanPpBomSnapshot(mo) {
+    const match = normalizeMoKey(mo?.moNumber || '').match(/^MO-(\d{4})(\d{2})(\d{2})-/);
+    const snapshotMs = Date.parse(getPpBomSnapshotAt());
+    if (!match || !Number.isFinite(snapshotMs)) return false;
+    const orderDateMs = Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+    const snapshotDate = new Date(snapshotMs);
+    const snapshotDateMs = Date.UTC(snapshotDate.getUTCFullYear(), snapshotDate.getUTCMonth(), snapshotDate.getUTCDate());
+    return orderDateMs > snapshotDateMs;
+  }
+
   function renderPoTrackingPage() {
     if (!el('poTrackingTableWrap')) return;
     const data = computePoTracking();
@@ -7495,7 +7541,7 @@
     if (el('poTrackingSyncInfo')) {
       const bcCount = Object.keys(window.PRODUCTION_EXECUTION_SEED?.barcodeByMo || {}).length;
       const issueRows = getProductionMaterialIssueRows();
-      const issueAtValue = db.settings.lastMaterialIssueAt || window.PRODUCTION_MATERIAL_ISSUE_SEED?.snapshotAt || '';
+      const issueAtValue = db.settings.lastMaterialIssueFilename ? db.settings.lastMaterialIssueAt : (window.PRODUCTION_MATERIAL_ISSUE_SEED?.snapshotAt || '');
       const issueAt = issueRows.length ? ` · PPBOM ${fmt(issueRows.length)} รายการ${issueAtValue ? ` (${time(issueAtValue)})` : ''}` : ` · ไม่มีข้อมูล PPBOM`;
       const fgReceiptCount = Array.isArray(db.finishedGoodsReceipts) ? db.finishedGoodsReceipts.length : 0;
       const fgReceiptAt = db.settings.lastFinishedGoodsReceiptAt ? ` (${time(db.settings.lastFinishedGoodsReceiptAt)})` : '';
@@ -7566,20 +7612,26 @@
 
     const fActive = k => Boolean(poTrackingColumnFilters[k]);
 
-    const ppbomSnapshotAt = db.settings.lastMaterialIssueAt || window.PRODUCTION_MATERIAL_ISSUE_SEED?.snapshotAt || '';
+    const ppbomSnapshotAt = getPpBomSnapshotAt();
     const ppbomSnapshotDate = ppbomSnapshotAt ? time(ppbomSnapshotAt) : 'ไม่ระบุวันที่';
     const rowsHtml = !pageRows.length
       ? `<tr><td colspan="11" style="padding:28px"><div class="empty" style="margin:0"><b>ไม่พบรายการ Production Order ตามตัวกรองที่เลือก</b>ลองเปลี่ยนตัวกรองคอลัมน์ หรือกดปุ่ม "ล้างตัวกรอง"</div></td></tr>`
       : pageRows.map(mo => {
+      const ppbomSnapshotBehind = mo.ppbomIssueDataParts === 0 && isOrderNewerThanPpBomSnapshot(mo);
       const ppbomIssueCell = mo.ppbomIssueDataParts > 0
         ? `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:3px">
              <span class="badge ${mo.ppbomIssuePendingParts > 0 || mo.ppbomIssueUnknownParts > 0 ? 'amber' : 'green'}" style="font-size:11px;padding:2px 7px;font-weight:800">${mo.ppbomIssuePendingParts > 0 ? `⚠️ ค้างเบิก ${mo.ppbomIssuePendingParts} Part` : (mo.ppbomIssueUnknownParts > 0 ? '⚠️ ข้อมูลไม่ครบ' : '✅ เบิกครบ')}</span>
              <span style="font-size:10px;color:#1d4ed8;font-weight:700;line-height:1.25">เบิกครบ ${mo.ppbomIssueCompleteParts}/${mo.ppbomIssueDataParts} Part</span>
              ${mo.ppbomIssueUnknownParts > 0 ? `<span style="font-size:9.5px;color:#b45309;font-weight:700">ไม่พบข้อมูล ${mo.ppbomIssueUnknownParts} Part</span>` : ''}
            </div>`
-        : `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:2px" title="ไม่พบ Order นี้ในข้อมูล PPBOM ล่าสุด ณ ${esc(ppbomSnapshotDate)}">
-             <span class="badge gray" style="font-size:10.5px;padding:2px 7px;font-weight:750">— ไม่มีรายการใน PPBOM</span>
-             <span style="font-size:9.5px;color:#64748b;line-height:1.2">ข้อมูลถึง ${esc(ppbomSnapshotDate)} · นำเข้าไฟล์ล่าสุด</span>
+        : mo.hasOrderBomData
+          ? `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:2px" title="พบ BOM ตาม Order แต่ไฟล์ที่นำเข้ายังไม่มีข้อมูลยอดจ่าย Production Material Issue">
+               <span class="badge amber" style="font-size:10.5px;padding:2px 7px;font-weight:750">🧾 พบ BOM Order · ไม่มีข้อมูลยอดเบิก</span>
+               <span style="font-size:9.5px;color:#b45309;line-height:1.2">${mo.totalParts} Part · ตรวจรายงาน Issue ล่าสุด</span>
+             </div>`
+        : `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:2px" title="${ppbomSnapshotBehind ? 'Order นี้ใหม่กว่าวันที่ของ snapshot PPBOM จึงยังใช้ยืนยันสถานะไม่ได้' : `ไม่พบแถวของ Order นี้ใน snapshot PPBOM ณ ${esc(ppbomSnapshotDate)}`}\">
+             <span class="badge ${ppbomSnapshotBehind ? 'amber' : 'gray'}" style="font-size:10.5px;padding:2px 7px;font-weight:750">${ppbomSnapshotBehind ? '⚠ ข้อมูล PPBOM เก่ากว่า Order' : '— ไม่พบแถวใน Snapshot'}</span>
+             <span style="font-size:9.5px;color:${ppbomSnapshotBehind ? '#b45309' : '#64748b'};line-height:1.2">${ppbomSnapshotBehind ? 'ต้องนำเข้ารายงาน PPBOM ล่าสุดจาก Kingdee' : `ข้อมูลถึง ${esc(ppbomSnapshotDate)} · นำเข้าไฟล์ล่าสุด`}</span>
            </div>`;
       const transferBadge = mo.isTransferComplete
         ? `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:2px">
@@ -7642,7 +7694,7 @@
           <div style="font-weight:800;font-size:12.5px;color:#0f172a;line-height:1.25">${esc(mo.productName)}</div>
           <div style="font-size:10.5px;color:#475569;margin-top:3px;display:flex;align-items:center;gap:4px;flex-wrap:wrap">
             <span class="code" style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-weight:700">${esc(mo.productCode)}</span>
-            <span style="color:${mo.hasOrderBomData ? '#0369a1' : '#b45309'};font-weight:700" title="${mo.hasOrderBomData ? 'รายการ Part จาก BOM/PPBOM ของ Order นี้โดยตรง' : 'ไม่พบ BOM ของ Order นี้; ตัวเลข Part มาจาก BOM มาตรฐานของรุ่น'}">${mo.hasOrderBomData ? '🧾 Order BOM' : '⚠️ BOM รุ่น'} ${mo.totalParts} Part</span>
+            <span style="color:${mo.hasOrderBomData ? '#0369a1' : '#b45309'};font-weight:700" title="${mo.hasOrderBomData ? 'รายการ Part จาก BOM/PPBOM ของ Order นี้โดยตรง' : (isOrderNewerThanPpBomSnapshot(mo) ? 'ยังไม่พบ BOM ของ Order ใน snapshot ที่นำเข้า; ใช้ BOM รุ่นชั่วคราวซึ่งอาจไม่ตรงกับ Order' : 'ไม่พบ BOM ของ Order ในข้อมูลที่นำเข้า; ตัวเลข Part มาจาก BOM มาตรฐานของรุ่น')}">${mo.hasOrderBomData ? '🧾 Order BOM' : (isOrderNewerThanPpBomSnapshot(mo) ? '⚠️ BOM รุ่นชั่วคราว' : '⚠️ BOM รุ่น')} ${mo.totalParts} Part</span>
           </div>
         </td>
         <td class="num" style="padding:9px 6px">
@@ -7888,7 +7940,9 @@
         : '';
       const bomSourceNote = mo.hasOrderBomData
         ? `<strong style="color:#0369a1">Part จาก BOM ของ Order${mo.ppbomNumber ? ` (${esc(mo.ppbomNumber)})` : ''}</strong>`
-        : `<strong style="color:#b45309">ไม่พบ BOM ของ Order · ใช้ BOM รุ่นชั่วคราว; นำเข้า PPBOM เพื่อยืนยัน</strong>`;
+        : (isOrderNewerThanPpBomSnapshot(mo)
+          ? `<strong style="color:#b45309">ยังยืนยัน BOM ของ Order ไม่ได้ · ข้อมูล PPBOM เก่ากว่าวัน Order</strong>`
+          : `<strong style="color:#b45309">ไม่พบ BOM ของ Order ในข้อมูลที่นำเข้า · ใช้ BOM รุ่นชั่วคราว</strong>`);
       el('poModalTableSummary').innerHTML = `${bomSourceNote} · แสดง <strong>${allItems.length} Part</strong> · Direct Transfer ครบ <strong style="color:#15803d">${mo.transferReadyParts} Part</strong> · ค้างโอน <strong style="color:${mo.transferMissingParts > 0 ? '#dc2626' : '#15803d'}">${mo.transferMissingParts} Part</strong> · PPBOM ค้างเบิก <strong style="color:${ppbomPendingParts > 0 ? '#b45309' : '#1d4ed8'}">${ppbomPendingParts} Part</strong>${ppbomUnknownParts ? ` · ไม่พบ PPBOM ${ppbomUnknownParts} Part` : ''}${labelNote}`;
     }
 
@@ -9585,7 +9639,7 @@
     }
   }
 
-  let activeHelperBaseUrl = 'http://127.0.0.1:49371';
+  let activeHelperBaseUrl = 'http://127.0.0.1:49372';
 
   function getHelperUrl(path = '') {
     return `${activeHelperBaseUrl}${path}`;
@@ -9598,12 +9652,12 @@
       if (orig && !orig.includes('google.com')) {
         candidates.push(orig);
       }
-      candidates.push(`http://${window.location.hostname}:49371`);
+      candidates.push(`http://${window.location.hostname}:49372`);
     }
     const saved = localStorage.getItem('onhandHelperHost');
-    if (saved) candidates.push(`http://${saved}:49371`);
-    candidates.push('http://127.0.0.1:49371');
-    candidates.push('http://10.10.50.151:49371');
+    if (saved) candidates.push(`http://${saved}:49372`);
+    candidates.push('http://127.0.0.1:49372');
+    candidates.push('http://10.10.50.151:49372');
 
     const unique = [...new Set(candidates)];
     for (const base of unique) {
@@ -9659,12 +9713,13 @@
     let pmlSyncMessage = pmlSnapshot ? '' : pmlLookupMessage;
     if (pmlSnapshot?.rows?.length) {
       const snapshotAt = Date.parse(pmlSnapshot.snapshotAt || '');
-      const currentAt = Date.parse(db.settings.lastMaterialIssueAt || '');
+      const currentAt = Date.parse(db.settings.lastMaterialIssueFilename ? db.settings.lastMaterialIssueAt : '');
       const seedAt = Date.parse(window.PRODUCTION_MATERIAL_ISSUE_SEED?.snapshotAt || '');
       const knownAt = Math.max(Number.isFinite(currentAt) ? currentAt : 0, Number.isFinite(seedAt) ? seedAt : 0);
       if (Number.isFinite(snapshotAt) && snapshotAt > knownAt + 1000) {
         db.productionMaterialIssues = pmlSnapshot.rows;
         db.settings.lastMaterialIssueAt = pmlSnapshot.snapshotAt || new Date().toISOString();
+        db.settings.lastMaterialIssueFilename = pmlSnapshot.filename || '';
         pmlUpdatedCount = pmlSnapshot.rows.length;
         pmlSyncMessage = `อัปเดต PPBOM ${fmt(pmlUpdatedCount)} แถว`;
       } else {
