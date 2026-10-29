@@ -7735,7 +7735,7 @@
         : '';
 
       let zjdbDocTag = it.directTransferDocs
-        ? `<div style="font-size:10.5px;color:#059669;font-weight:700;margin-top:1px">${esc(it.directTransferDocs)}</div>`
+        ? `<div title="${esc(it.directTransferDocs)}" style="font-size:9.5px;color:#059669;font-weight:700;margin-top:2px;max-width:100%;white-space:normal;overflow-wrap:anywhere;word-break:break-word;line-height:1.15;text-align:right">${String(it.directTransferDocs).split(/[,;\n]+/).map(doc => esc(doc.trim())).filter(Boolean).join('<br>')}</div>`
         : '';
       if (!it.directTransferDocs && it.rollCoveredMode === 'h9_stock') {
         zjdbDocTag = `<div style="font-size:10.5px;color:#0284c7;font-weight:700;margin-top:1px">🏷️ ใช้ม้วนใน H9 (มี ${fmtQty(it.h9Stock)})</div>`;
