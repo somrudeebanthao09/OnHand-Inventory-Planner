@@ -8224,6 +8224,10 @@
         };
         updatedCount++;
       }
+      if (!updatedCount) {
+        toast('นำเข้า Execution Details ไม่สำเร็จ: ไม่พบเลข Order ในรูปแบบที่รองรับ จึงยังไม่เปลี่ยนเวลาอัปเดต');
+        return;
+      }
       try { localStorage.setItem('onhandCustomExecByMo', JSON.stringify(execState.executionByMo)); } catch (_) {}
       db.settings.lastExecutionAt = file.lastModified ? new Date(file.lastModified).toISOString() : new Date().toISOString();
       saveLocalDb(db);
