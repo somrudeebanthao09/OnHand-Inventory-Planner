@@ -7803,11 +7803,16 @@
         const res = await fetch(`${helperBase}/sync-barcode-record`, { method: 'POST', cache: 'no-store' }).then(r => r.json()).catch(() => null);
         if (res?.ok && res.barcodeByMo) {
           if (!window.PRODUCTION_EXECUTION_SEED) window.PRODUCTION_EXECUTION_SEED = {};
-          window.PRODUCTION_EXECUTION_SEED.barcodeByMo = res.barcodeByMo;
+          const mergedBarcode = {
+            ...(window.PRODUCTION_EXECUTION_SEED.barcodeByMo || {}),
+            ...res.barcodeByMo
+          };
+          window.PRODUCTION_EXECUTION_SEED.barcodeByMo = mergedBarcode;
           if (res.executionByMo) window.PRODUCTION_EXECUTION_SEED.executionByMo = res.executionByMo;
+          try { localStorage.setItem('onhandCustomBarcodeByMo', JSON.stringify(mergedBarcode)); } catch (_) {}
           renderPoTrackingPage();
           if (!silent) toast(`✅ ซิงค์ยอดผลิตจริงจาก H9-barcode-record สำเร็จ (${fmt(res.barcodeCount)} Order)`);
-          return;
+          return { ok: true, count: res.barcodeCount || Object.keys(res.barcodeByMo).length, source: 'local-helper' };
         }
       }
 
@@ -7837,24 +7842,19 @@
             const scanQty = n(r[colScan]);
             const compDate = formatScanDateText(colComplete >= 0 ? r[colComplete] : '') || formatScanDateText(colComplete0 >= 0 ? r[colComplete0] : '');
             const stText = colStatus >= 0 ? String(r[colStatus] || '').trim() : '';
-            if (!updatedBc[moKey]) {
-              updatedBc[moKey] = {
-                moNumber: moKey,
-                orderModel: String(r[colModel] || '').trim(),
-                planActualScan: scanQty,
-                barcodeLogCount: 0,
-                actualProducedQty: scanQty,
-                completeDate: compDate,
-                endDate: compDate,
-                planStatus: stText
-              };
-            } else {
-              updatedBc[moKey].planActualScan = Math.max(updatedBc[moKey].planActualScan || 0, scanQty);
-              updatedBc[moKey].actualProducedQty = Math.max(updatedBc[moKey].actualProducedQty || 0, scanQty);
-              if (compDate) updatedBc[moKey].completeDate = compDate;
-              if (stText) updatedBc[moKey].planStatus = stText;
-              updatedBc[moKey].endDate = updatedBc[moKey].completeDate || updatedBc[moKey].lastScanAt || updatedBc[moKey].endDate || '';
-            }
+            const previous = updatedBc[moKey] || {};
+            // The live sheet is authoritative for current scan quantity and completion date.
+            // Do not keep a larger or later-looking value from the previous snapshot.
+            updatedBc[moKey] = {
+              ...previous,
+              moNumber: moKey,
+              orderModel: String(r[colModel] || previous.orderModel || '').trim(),
+              planActualScan: scanQty,
+              actualProducedQty: scanQty,
+              completeDate: compDate,
+              endDate: compDate || previous.lastScanAt || '',
+              planStatus: stText || previous.planStatus || ''
+            };
             count++;
           }
           if (!window.PRODUCTION_EXECUTION_SEED) window.PRODUCTION_EXECUTION_SEED = { executionByMo: {}, barcodeByMo: {} };
@@ -7862,10 +7862,14 @@
           try { localStorage.setItem('onhandCustomBarcodeByMo', JSON.stringify(updatedBc)); } catch (_) {}
           renderPoTrackingPage();
           if (!silent) toast(`✅ ดึงยอดผลิตจริงและวันจบ Order จาก H9-barcode-record สำเร็จ (${fmt(count)} รายการ)`);
+          return { ok: true, count, source: 'google-sheet' };
         }
       }
+      if (!silent) toast('ซิงก์ H9 Barcode ไม่สำเร็จ: ไม่พบข้อมูล Sheet ที่อ่านได้');
+      return { ok: false, message: 'ไม่พบข้อมูล H9 Barcode ที่อ่านได้' };
     } catch (e) {
       if (!silent) toast('ไม่สามารถดึงข้อมูลออนไลน์ได้ กำลังใช้ฐานข้อมูล H9-barcode-record ล่าสุดในระบบ');
+      return { ok: false, message: e?.message || 'เชื่อมต่อ H9 Barcode ไม่สำเร็จ' };
     } finally {
       if (btn && !silent) {
         btn.disabled = false;
@@ -9459,7 +9463,11 @@
         });
     }
 
-    setSyncStep(4, 'done', `อัปเดตข้อมูลและคำนวณคลังเรียบร้อย (${fmt(rows.length)} รายการ)`);
+    setSyncStep(4, 'working', 'กำลังอัปเดตยอดผลิตจริงและวันจบ Scan จาก H9 Barcode...');
+    const barcodeSync = await syncBarcodeRecordLive(true);
+    setSyncStep(4, barcodeSync.ok ? 'done' : 'error', barcodeSync.ok
+      ? `อัปเดต Kingdee ${fmt(rows.length)} รายการ และ H9 Barcode ${fmt(barcodeSync.count)} Order แล้ว`
+      : `อัปเดต Kingdee ${fmt(rows.length)} รายการแล้ว แต่ซิงก์ H9 Barcode ไม่สำเร็จ`);
     el('syncProgressBar').style.width = '100%';
     el('syncSpinIcon').classList.remove('spinning');
 
@@ -9469,7 +9477,9 @@
 
     el('syncPromptBox').style.display = 'none';
     el('syncSuccessBox').style.display = 'block';
-    el('syncSuccessMsg').innerHTML = `🎉 ดึงข้อมูล On-Hand สำเร็จ ${fmt(rows.length)} รายการ!`;
+    el('syncSuccessMsg').innerHTML = barcodeSync.ok
+      ? `🎉 ดึงข้อมูล On-Hand สำเร็จ ${fmt(rows.length)} รายการ และอัปเดตยอดผลิตจริง/วันจบ Scan จาก H9 Barcode ${fmt(barcodeSync.count)} Order แล้ว`
+      : `🎉 ดึงข้อมูล On-Hand สำเร็จ ${fmt(rows.length)} รายการ แต่ซิงก์ยอดผลิตจริง/วันจบ Scan จาก H9 Barcode ไม่สำเร็จ`;
     el('syncSuccessTime').textContent = `อัปเดตเรียลไทม์: ${time(stamp)} (ยอดคงเหลือสดจาก Kingdee)`;
     el('syncModalDoneBtn').style.display = 'inline-block';
     el('syncModalCancelBtn').style.display = 'none';
@@ -9479,6 +9489,7 @@
     btn.innerHTML = '⚡ ดึงจาก Kingdee (Auto)';
 
     toast(`✅ ดึงข้อมูล On-Hand เรียลไทม์สำเร็จ ${fmt(rows.length)} รายการ (${time(stamp)})`);
+    if (!barcodeSync.ok) toast('⚠️ ข้อมูล Kingdee อัปเดตแล้ว แต่ข้อมูลวันจบ Scan ยังไม่ได้ซิงก์ โปรดลองกด “ซิงค์งานจริง H9-barcode-record”');
 
     setTimeout(() => {
       el('autoSyncModal').classList.remove('show');
