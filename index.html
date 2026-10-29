@@ -9731,7 +9731,7 @@
     return null;
   }
 
-  async function applyNewSyncData(data) {
+  async function applyNewSyncData(data, barcodePromise = null) {
     const snapshotMs = Date.parse(data?.snapshotAt || '');
     if (data?.liveKingdeeExport !== true || !data.filename || !Number.isFinite(snapshotMs) || snapshotMs > Date.now() + 30000) {
       setSyncStep(3, 'error', 'ยังยืนยันไฟล์ส่งออกใหม่จาก Kingdee ไม่ได้ จึงไม่อัปเดตข้อมูลจาก snapshot เดิม');
@@ -9839,7 +9839,7 @@
     }
 
     setSyncStep(4, 'working', 'กำลังอัปเดตยอดผลิตจริงและวันจบ Scan จาก H9 Barcode...');
-    const barcodeSync = await syncBarcodeRecordLive(true);
+    const barcodeSync = await (barcodePromise || syncBarcodeRecordLive(true));
     setSyncStep(4, barcodeSync.ok ? 'done' : 'error', barcodeSync.ok
       ? `อัปเดต Kingdee ${fmt(rows.length)} รายการ · ${pmlSyncMessage} · H9 Barcode ${fmt(barcodeSync.count)} Order แล้ว`
       : `อัปเดต Kingdee ${fmt(rows.length)} รายการ · ${pmlSyncMessage} แล้ว แต่ซิงก์ H9 Barcode ไม่สำเร็จ`);
@@ -10030,10 +10030,18 @@
     setSyncStep(3, 'pending', 'ประมวลผล Query & Export...');
     setSyncStep(4, 'pending', 'ดาวน์โหลดและคำนวณคลัง...');
 
+    // H9 Barcode is a separate source. Refresh it even if the Kingdee helper fails.
+    const barcodePromise = syncBarcodeRecordLive(true);
+
     const helperBase = await checkHelperHealth();
 
     if (!helperBase) {
       setSyncStep(1, 'error', 'เชื่อม Local Helper ไม่ได้ จึงยังตรวจและนำเข้าไฟล์ส่งออกใหม่ไม่ได้');
+      const barcode = await barcodePromise;
+      setSyncStep(4, barcode.ok ? 'done' : 'error', barcode.ok
+        ? `อัปเดต H9 Barcode ${fmt(barcode.count)} Order แล้ว · ข้อมูล Kingdee ยังไม่อัปเดต`
+        : 'อัปเดต H9 Barcode ไม่สำเร็จ · ข้อมูล Kingdee ยังไม่อัปเดต');
+      el('syncSpinIcon').classList.remove('spinning');
       btn.disabled = false;
       btn.innerHTML = '⚡ ดึงจาก Kingdee (Auto)';
       return;
@@ -10051,7 +10059,7 @@
       }).then(r => r.json());
 
       if (syncRes.ok && syncRes.liveKingdeeExport === true && syncRes.filename && Array.isArray(syncRes.rows) && syncRes.rows.length > 0) {
-        if (await applyNewSyncData(syncRes) === false) throw new Error('ตรวจสอบไฟล์ส่งออกใหม่ไม่ผ่าน');
+        if (await applyNewSyncData(syncRes, barcodePromise) === false) throw new Error('ตรวจสอบไฟล์ส่งออกใหม่ไม่ผ่าน');
 
         // Clear any pending queue
         if (hasGoogle()) {
@@ -10068,6 +10076,10 @@
     } catch (err) {
       console.warn('Kingdee export failed; existing snapshots are not used as fresh data:', err);
       setSyncStep(3, 'error', `${err.message || 'ส่งออกจาก Kingdee ไม่สำเร็จ'} · ไม่มีการนำ snapshot เก่ามาแทน`);
+      const barcode = await barcodePromise;
+      setSyncStep(4, barcode.ok ? 'done' : 'error', barcode.ok
+        ? `อัปเดต H9 Barcode ${fmt(barcode.count)} Order แล้ว · ข้อมูล Kingdee ยังไม่อัปเดต`
+        : 'อัปเดต H9 Barcode ไม่สำเร็จ · ข้อมูล Kingdee ยังไม่อัปเดต');
       el('syncSpinIcon').classList.remove('spinning');
       btn.disabled = false;
       btn.innerHTML = '⚡ ดึงจาก Kingdee (Auto)';
