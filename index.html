@@ -10044,39 +10044,14 @@
 
     setSyncStep(2, 'working', 'กำลังขอไฟล์ส่งออกใหม่จากแท็บ Kingdee ที่เปิดอยู่...');
 
-    // Responsive progress updates while backend executes
-    let stepTimer1 = setTimeout(() => {
-      setSyncStep(2, 'working', 'กำลังตรวจรายงาน On-Hand ในแท็บ Kingdee...');
-      el('syncProgressBar').style.width = '45%';
-    }, 1500);
-
-    let stepTimer2 = setTimeout(() => {
-      setSyncStep(2, 'done', 'Kingdee ยืนยันรายงาน On-Hand');
-      setSyncStep(3, 'working', 'กำลัง Query และส่งออกไฟล์ Excel...');
-      el('syncProgressBar').style.width = '70%';
-    }, 4500);
-
-    let stepTimer3 = setTimeout(() => {
-      setSyncStep(3, 'done', 'ได้รับไฟล์ส่งออกใหม่จาก Kingdee');
-      setSyncStep(4, 'working', 'กำลังดาวน์โหลดและอ่านข้อมูล...');
-      el('syncProgressBar').style.width = '90%';
-    }, 9000);
-
     try {
       const syncRes = await fetch(getHelperUrl('/run-admin-sync'), {
         method: 'POST',
         cache: 'no-store'
       }).then(r => r.json());
 
-      clearTimeout(stepTimer1);
-      clearTimeout(stepTimer2);
-      clearTimeout(stepTimer3);
-
-      if (syncRes.ok && Array.isArray(syncRes.rows) && syncRes.rows.length > 0) {
-        setSyncStep(2, 'done', 'ล็อกอิน Kingdee สำเร็จ');
-        setSyncStep(3, 'done', 'Export ข้อมูลเสร็จสิ้น');
-        setSyncStep(4, 'done', `ดาวน์โหลดและอัปเดตสต็อกสดใหม่ ${fmt(syncRes.rows.length)} รายการ!`);
-        applyNewSyncData(syncRes);
+      if (syncRes.ok && syncRes.liveKingdeeExport === true && syncRes.filename && Array.isArray(syncRes.rows) && syncRes.rows.length > 0) {
+        if (await applyNewSyncData(syncRes) === false) throw new Error('ตรวจสอบไฟล์ส่งออกใหม่ไม่ผ่าน');
 
         // Clear any pending queue
         if (hasGoogle()) {
@@ -10088,14 +10063,12 @@
           } catch (_) {}
         }
       } else {
-        throw new Error(syncRes.message || 'ไม่สามารถดึงข้อมูลสดจาก Kingdee ได้');
+        throw new Error(syncRes.message || 'ตัวช่วยไม่ได้ยืนยันไฟล์ส่งออกใหม่จาก Kingdee กรุณาตรวจส่วนเสริม Chrome');
       }
     } catch (err) {
-      clearTimeout(stepTimer1);
-      clearTimeout(stepTimer2);
-      clearTimeout(stepTimer3);
       console.warn('Kingdee export failed; existing snapshots are not used as fresh data:', err);
       setSyncStep(3, 'error', `${err.message || 'ส่งออกจาก Kingdee ไม่สำเร็จ'} · ไม่มีการนำ snapshot เก่ามาแทน`);
+      el('syncSpinIcon').classList.remove('spinning');
       btn.disabled = false;
       btn.innerHTML = '⚡ ดึงจาก Kingdee (Auto)';
     }
