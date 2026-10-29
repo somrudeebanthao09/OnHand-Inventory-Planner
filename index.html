@@ -7559,7 +7559,7 @@
       ['Direct Transfer / Order', db.settings.lastOrdersAt || window.PRODUCTION_ORDERS_SEED?.snapshotAt || ''],
       ['PPBOM', issueAt],
       ['Execution Details', db.settings.lastExecutionAt || executionSeedAt],
-      ['H9 Barcode', db.settings.lastBarcodeSyncAt || executionSeedAt],
+      ['ผลิตจริง (วันจบ Scan) · H9 Barcode', db.settings.lastBarcodeSyncAt || executionSeedAt],
       ['Finished Goods Receipt (Lot)', db.settings.lastFinishedGoodsReceiptAt]
     ];
     const windowMs = 5 * 60 * 1000;
