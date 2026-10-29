@@ -7377,7 +7377,7 @@
       mo.warehouseReceivedQty = warehouseReceivedQty;
       mo.unreceivedQty = Math.max(0, mo.orderQty - warehouseReceivedQty);
       mo.execSourceLabel = execSourceLabel;
-      mo.fgReceiptRows = getFinishedGoodsReceiptsForMo(moNum);
+      mo.fgReceiptRows = getFinishedGoodsReceiptsForMo(mo.moNumber);
       mo.fgReceiptQty = mo.fgReceiptRows.reduce((sum, row) => sum + n(row.receiptQty), 0);
       mo.fgReceiptLotCount = new Set(mo.fgReceiptRows.map(row => String(row.lotNumber || '').trim()).filter(Boolean)).size;
       mo.fgReceiptDocCount = new Set(mo.fgReceiptRows.map(row => String(row.receiptNumber || '').trim()).filter(Boolean)).size;
