@@ -9637,6 +9637,7 @@
       return;
     }
 
+    let pmlLookupMessage = 'ไม่พบไฟล์ Production Material List ล่าสุดในเครื่อง';
     let pmlSnapshot = Array.isArray(data.productionMaterialIssues) && data.productionMaterialIssues.length
       ? {
           rows: data.productionMaterialIssues,
@@ -9646,12 +9647,16 @@
       : null;
     if (!pmlSnapshot) {
       try {
-        const pml = await fetch(getHelperUrl('/latest-production-material-issues'), { cache: 'no-store' }).then(r => r.json());
+        const pmlResponse = await fetch(getHelperUrl('/latest-production-material-issues'), { cache: 'no-store' });
+        const pml = await pmlResponse.json();
         if (pml.ok && Array.isArray(pml.rows) && pml.rows.length) pmlSnapshot = pml;
-      } catch (_) {}
+        else pmlLookupMessage = pml.message || 'Local Helper ยังอ่านรายงาน PPBOM ไม่ได้';
+      } catch (_) {
+        pmlLookupMessage = 'เชื่อม Local Helper เพื่ออัปเดต PPBOM ไม่ได้';
+      }
     }
     let pmlUpdatedCount = 0;
-    let pmlSyncMessage = 'ไม่พบไฟล์ Production Material List ล่าสุดในเครื่อง';
+    let pmlSyncMessage = pmlSnapshot ? '' : pmlLookupMessage;
     if (pmlSnapshot?.rows?.length) {
       const snapshotAt = Date.parse(pmlSnapshot.snapshotAt || '');
       const currentAt = Date.parse(db.settings.lastMaterialIssueAt || '');
