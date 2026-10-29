@@ -1749,6 +1749,8 @@
           </div>
         </details>
 
+        <div id="poTrackingFreshness" role="status" aria-live="polite" style="margin:-5px 0 14px;padding:9px 11px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font-size:11.5px;line-height:1.55;color:#475569">กำลังตรวจเวลาอัปเดตของแต่ละแหล่ง...</div>
+
         <!-- 5 Clickable KPI Pipeline Filter Cards -->
         <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;margin-bottom:15px">
           <div class="card metric" id="poCardStuckTransfer" onclick="window.appSetPoTrackingStatus('stuck_transfer')" style="cursor:pointer;padding:14px 15px;border-top:3px solid #e11d48;transition:all .15s" title="คลิกเพื่อกรองเฉพาะ Order ที่ยังจ่าย Part (Direct Transfer) ไม่ครบตาม BOM">
@@ -2575,7 +2577,7 @@
       approvedAt: '2026-10-13T00:00:00.000Z'
     }
   ];
-  const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],productionMaterialIssues:[],finishedGoodsReceipts:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',lastMaterialIssueAt:'',lastMaterialIssueFilename:'',lastFinishedGoodsReceiptAt:'',security:{autoLockMinutes:15,passcode:'1234'}}};
+  const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],productionMaterialIssues:[],finishedGoodsReceipts:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',lastMaterialIssueAt:'',lastMaterialIssueFilename:'',lastExecutionAt:'',lastBarcodeSyncAt:'',lastFinishedGoodsReceiptAt:'',security:{autoLockMinutes:15,passcode:'1234'}}};
   let db = structuredClone(initial), activePage='overview', firstPageLoad=true, pendingImport=null, currentAnalysis=[], sourceRemote=false, lastSheetPullAt=localStorage.getItem('onhandLastSheetPullAt')||'', remoteSaveTimer=null, remoteSaveQueue=Promise.resolve();
   const el = id => document.getElementById(id);
   const n = value => { const x=Number(String(value??'').replace(/,/g,'').trim()); return Number.isFinite(x)?x:0; };
@@ -7545,6 +7547,43 @@
     return orderDateMs > snapshotDateMs;
   }
 
+  function renderPoTrackingFreshness() {
+    const host = el('poTrackingFreshness');
+    if (!host) return;
+    const executionSeedAt = window.PRODUCTION_EXECUTION_SEED?.snapshotAt || '';
+    const issueAt = db.settings.lastMaterialIssueFilename
+      ? db.settings.lastMaterialIssueAt
+      : (window.PRODUCTION_MATERIAL_ISSUE_SEED?.snapshotAt || db.settings.lastMaterialIssueAt || '');
+    const sources = [
+      ['On-Hand', db.settings.lastInventoryAt],
+      ['Direct Transfer / Order', db.settings.lastOrdersAt || window.PRODUCTION_ORDERS_SEED?.snapshotAt || ''],
+      ['PPBOM', issueAt],
+      ['Execution Details', db.settings.lastExecutionAt || executionSeedAt],
+      ['H9 Barcode', db.settings.lastBarcodeSyncAt || executionSeedAt],
+      ['Finished Goods Receipt (Lot)', db.settings.lastFinishedGoodsReceiptAt]
+    ];
+    const windowMs = 5 * 60 * 1000;
+    const now = Date.now();
+    const rows = sources.map(([label, stamp]) => {
+      const parsed = Date.parse(stamp || '');
+      const valid = Number.isFinite(parsed);
+      const fresh = valid && parsed <= now + 30000 && now - parsed <= windowMs;
+      return { label, detail: valid ? time(stamp) : 'ยังไม่มีเวลาอัปเดต', fresh };
+    });
+    const allFresh = rows.every(row => row.fresh);
+    const pending = rows.filter(row => !row.fresh);
+    const border = allFresh ? '#86efac' : '#fbbf24';
+    const bg = allFresh ? '#f0fdf4' : '#fffbeb';
+    const color = allFresh ? '#166534' : '#92400e';
+    const heading = allFresh
+      ? '✅ ทุกแหล่งมีเวลาอัปเดตอยู่ในรอบ 5 นาทีเดียวกัน'
+      : `⚠️ ข้อมูลยังไม่ครบในรอบเดียวกัน · ${pending.length} จาก ${rows.length} แหล่งยังเก่าหรือไม่มีเวลาอัปเดต`;
+    host.style.borderColor = border;
+    host.style.background = bg;
+    host.style.color = color;
+    host.innerHTML = `<strong>${heading}</strong><div style="display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px">${rows.map(row => `<span>${row.fresh ? '🟢' : '🔴'} ${esc(row.label)}: ${esc(row.detail)}</span>`).join('')}</div><div style="margin-top:4px;color:#64748b">เทียบเวลา Export/ดึงของแต่ละแหล่ง โดยใช้ช่วงไม่เกิน 5 นาทีเพื่อบอกว่าอยู่ในรอบเดียวกัน; รายงานแยกของ Kingdee ไม่รับประกัน snapshot ณ วินาทีเดียวกัน</div>`;
+  }
+
   function renderPoTrackingPage() {
     if (!el('poTrackingTableWrap')) return;
     const data = computePoTracking();
@@ -7566,6 +7605,7 @@
       const fgReceiptInfo = fgReceiptCount ? ` · FG Receipt ${fmt(fgReceiptCount)} แถว${fgReceiptAt}` : ' · ยังไม่มีข้อมูล FG Receipt Lot';
       el('poTrackingSyncInfo').innerHTML = `🟢 Direct Transfer ${fmt(db.productionOrders?.length || 0)} รายการ · H9-barcode-record ${fmt(bcCount)} Job + Execution Details${issueAt}${fgReceiptInfo}`;
     }
+    renderPoTrackingFreshness();
 
     // Populate Department filter
     const deptSelect = el('poTrackingDeptFilter');
@@ -8078,6 +8118,8 @@
           };
           window.PRODUCTION_EXECUTION_SEED.barcodeByMo = mergedBarcode;
           if (res.executionByMo) window.PRODUCTION_EXECUTION_SEED.executionByMo = res.executionByMo;
+          db.settings.lastBarcodeSyncAt = new Date().toISOString();
+          saveLocalDb(db);
           try { localStorage.setItem('onhandCustomBarcodeByMo', JSON.stringify(mergedBarcode)); } catch (_) {}
           renderPoTrackingPage();
           if (!silent) toast(`✅ ซิงค์ยอดผลิตจริงจาก H9-barcode-record สำเร็จ (${fmt(res.barcodeCount)} Order)`);
@@ -8128,6 +8170,8 @@
           }
           if (!window.PRODUCTION_EXECUTION_SEED) window.PRODUCTION_EXECUTION_SEED = { executionByMo: {}, barcodeByMo: {} };
           window.PRODUCTION_EXECUTION_SEED.barcodeByMo = updatedBc;
+          db.settings.lastBarcodeSyncAt = new Date().toISOString();
+          saveLocalDb(db);
           try { localStorage.setItem('onhandCustomBarcodeByMo', JSON.stringify(updatedBc)); } catch (_) {}
           renderPoTrackingPage();
           if (!silent) toast(`✅ ดึงยอดผลิตจริงและวันจบ Order จาก H9-barcode-record สำเร็จ (${fmt(count)} รายการ)`);
@@ -8181,6 +8225,8 @@
         updatedCount++;
       }
       try { localStorage.setItem('onhandCustomExecByMo', JSON.stringify(execState.executionByMo)); } catch (_) {}
+      db.settings.lastExecutionAt = file.lastModified ? new Date(file.lastModified).toISOString() : new Date().toISOString();
+      saveLocalDb(db);
       renderPoTrackingPage();
       toast(`✅ นำเข้า Production Order Execution Details สำเร็จ (${fmt(updatedCount)} Order)`);
     } catch (err) {
