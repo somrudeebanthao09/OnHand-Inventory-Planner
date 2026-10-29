@@ -1548,7 +1548,7 @@
         </div>
         <div class="mobile-dropdown-divider"></div>
         <button type="button" class="mobile-dropdown-item" id="mobileActionKingdeeBtn" style="color:var(--teal);font-weight:700">
-          <span>⚡</span> <span>ดึงข้อมูลสดจาก Kingdee (Auto)</span>
+          <span>⚡</span> <span>ส่งออก On-Hand จาก Kingdee</span>
         </button>
         <button type="button" class="mobile-dropdown-item" id="mobileActionReloadBtn">
           <span>↻</span> <span>โหลดข้อมูลซ้ำ</span>
@@ -2144,7 +2144,7 @@
       <button id="closeSyncModalBtn" class="btn" type="button" style="padding:4px 9px;font-size:13px" aria-label="ปิด">✕</button>
     </div>
     <p id="syncModalSubtitle" style="color:var(--muted);font-size:12px;margin:0 0 16px;line-height:1.5">
-      กำลังเชื่อมต่อเพื่อส่งออกและดึงยอดคงเหลือสต็อกล่าสุดแบบเรียลไทม์
+      ส่งออกรายงาน On-Hand จากแท็บ Kingdee ที่เข้าสู่ระบบอยู่ ข้อมูลจะแสดงเวลาของไฟล์ส่งออก
     </p>
 
     <div class="sync-progress-bar-wrap" style="height:6px;background:#eaf2f2;border-radius:4px;overflow:hidden;margin-bottom:18px">
@@ -2194,7 +2194,7 @@
     </div>
 
     <div id="syncSuccessBox" style="display:none;background:#eaf6ef;border:1px solid #c2e5d0;border-radius:8px;padding:12px;font-size:13px;color:#18794e;margin-bottom:14px;font-weight:600">
-      <div id="syncSuccessMsg">✅ ดึงข้อมูลเรียลไทม์สำเร็จเรียบร้อยแล้ว!</div>
+      <div id="syncSuccessMsg">✅ รับไฟล์ส่งออก Kingdee แล้ว</div>
       <div id="syncSuccessTime" style="font-size:11px;color:#287a55;font-weight:400;margin-top:2px"></div>
     </div>
 
@@ -2754,7 +2754,7 @@
       notice.style.borderColor = '#087e78';
       notice.style.background = '#f0fdf4';
       notice.style.color = '#166534';
-      notice.innerHTML = `<strong>📦 ข้อมูล On-Hand จาก Kingdee ERP</strong> — ${fmt(db.inventory.length)} แถว · ดึงข้อมูลตรงจาก Kingdee ERP ล่าสุดเมื่อ ${esc(lastTime)}${autoBadge}`;
+      notice.innerHTML = `<strong>📦 On-Hand จากไฟล์ส่งออก Kingdee</strong> — ${fmt(db.inventory.length)} แถว · ข้อมูล ณ ${esc(lastTime)}${autoBadge}`;
     } else {
       notice.className = 'notice warn';
       notice.innerHTML = '<strong>ยังไม่มีข้อมูล On-Hand</strong> — กดปุ่ม ⚡ ดึงจาก Kingdee เพื่อโหลดสต็อกล่าสุด';
@@ -2863,7 +2863,7 @@
           const inv = await fetch(getHelperUrl('/latest-inventory'), { cache: 'no-store' }).then(r => r.json()).catch(() => null);
           if (inv?.ok && Array.isArray(inv.rows) && inv.rows.length) {
             const stamp = inv.snapshotAt || srvStamp;
-            const fname = inv.filename || info?.filename || 'Kingdee Auto-Sync (ทุก 10 นาที)';
+            const fname = inv.filename || info?.filename || 'ไฟล์ On-Hand ในเครื่อง';
             db.inventory = inv.rows;
             db.settings.lastInventoryAt = stamp;
             db.imports = (db.imports || []).filter(x => !(x.type === 'inventory' && (x.at === stamp || x.filename === fname)));
@@ -4001,8 +4001,8 @@
         <span style="font-size:11.5px;color:var(--muted)">สต็อกล้น / ทุนจม ${isFilteredOver?'<b style="color:#6d28d9">(กรองอยู่ ✕)</b>':''}</span>
       </div>
       <div class="stock-summary-card">
-        <strong style="font-size:15px;color:#087e78">${esc(time(snapshotAt))} <span class="badge green" style="vertical-align:middle;font-size:10px;margin-left:4px">เรียลไทม์</span></strong>
-        <span>นำเข้า On-Hand ล่าสุด${lastInventoryImport?.filename?` · ${esc(lastInventoryImport.filename)}`:''}</span>
+        <strong style="font-size:15px;color:#087e78">${esc(time(snapshotAt))}</strong>
+        <span>เวลาในไฟล์ On-Hand ที่นำเข้าล่าสุด${lastInventoryImport?.filename?` · ${esc(lastInventoryImport.filename)}`:''}</span>
       </div>
     `;
 
@@ -8962,7 +8962,7 @@
     label.style.color = '#0f6a66';
   }
 
-  function applySilentSyncData(data, sourceLabel = 'Auto-Sync 10 นาที'){
+  function applySilentSyncData(data, sourceLabel = 'ไฟล์ On-Hand ใหม่'){
     if(data?.liveKingdeeExport !== true || !data.filename || !Number.isFinite(Date.parse(data.snapshotAt || ''))){
       return false;
     }
@@ -8996,7 +8996,7 @@
     }
     rebuildStockRowsCache();
     renderAll();
-    toast(`⚡ อัปเดตสต็อก Kingdee อัตโนมัติสำเร็จ (${fmt(rows.length)} รายการ · ${time(stamp)})`);
+    toast(`⚡ รับไฟล์ On-Hand ใหม่แล้ว (${fmt(rows.length)} รายการ · ${time(stamp)})`);
     return true;
   }
 
@@ -9835,12 +9835,12 @@
     el('syncModalSubtitle').textContent = 'กำลังส่งคำขอไปยังเครื่อง Admin ที่เปิด Kingdee อยู่ เพื่อดึงยอดคงเหลือสต็อกสดใหม่ให้คุณ';
     el('syncStep1Title').textContent = 'เชื่อมต่อระบบ Google Sheets';
     el('syncStep2Title').textContent = 'ส่งคำขอไปยังเครื่อง Admin';
-    el('syncStep3Title').textContent = 'เครื่อง Admin ดึงยอดสต็อกสดจาก Kingdee';
+    el('syncStep3Title').textContent = 'ตรวจรายงาน On-Hand ที่ส่งออกจาก Kingdee';
     el('syncStep4Title').textContent = 'อัปเดตข้อมูล On-Hand สู่หน้าจอของคุณ';
     setSyncStep(1, 'done', 'เครื่องผู้ใช้ทั่วไป (เชื่อมต่อระบบ Google Sheets สำเร็จ)');
     setSyncStep(2, 'working', 'กำลังส่งสัญญาณคำขอไปยังเครื่อง Admin...');
     setSyncStep(3, 'pending', 'เครื่อง Admin กำลังดึงข้อมูลและคำนวณคลังจาก Kingdee ERP...');
-    setSyncStep(4, 'pending', 'อัปเดตสต็อกเรียลไทม์เข้าสู่ Google Sheets และหน้าจอของคุณ...');
+    setSyncStep(4, 'pending', 'บันทึกข้อมูลพร้อมเวลาไฟล์ส่งออกลง Google Sheets และหน้าเว็บ...');
     el('syncProgressBar').style.width = '25%';
 
     try {
@@ -9850,7 +9850,7 @@
       }
       const reqId = reqRes.request.id;
       setSyncStep(2, 'done', reqRes.isExisting ? 'เชื่อมต่อคิวเดิมที่กำลังประมวลผลอยู่' : 'ส่งคำขอสำเร็จ! เครื่อง Admin ได้รับคิวงานแล้ว');
-      setSyncStep(3, 'working', 'กำลังรอเครื่อง Admin ดึงข้อมูลสดจาก Kingdee ERP...');
+      setSyncStep(3, 'working', 'กำลังรอไฟล์ On-Hand จากเครื่อง Admin...');
       el('syncProgressBar').style.width = '45%';
 
       let attempts = 0;
@@ -9887,18 +9887,18 @@
               rebuildStockRowsCache();
               renderAll();
 
-              setSyncStep(4, 'done', `อัปเดตเรียลไทม์สำเร็จ ${fmt(db.inventory.length)} รายการ!`);
+              setSyncStep(4, 'done', `โหลดข้อมูล On-Hand ${fmt(db.inventory.length)} รายการแล้ว`);
               el('syncProgressBar').style.width = '100%';
               el('syncSpinIcon').classList.remove('spinning');
               el('syncPromptBox').style.display = 'none';
               el('syncSuccessBox').style.display = 'block';
               el('syncSuccessMsg').innerHTML = `🎉 ดึงข้อมูล On-Hand สำเร็จ ${fmt(db.inventory.length)} รายการ!`;
-              el('syncSuccessTime').textContent = `อัปเดตเรียลไทม์: ${time(db.settings.lastInventoryAt)} (ดึงผ่านเครื่อง Admin)`;
+              el('syncSuccessTime').textContent = `ข้อมูลในระบบ ณ ${time(db.settings.lastInventoryAt)} (ผ่านเครื่อง Admin)`;
               el('syncModalDoneBtn').style.display = 'inline-block';
               el('syncModalCancelBtn').style.display = 'none';
               btn.disabled = false;
               btn.innerHTML = '⚡ ดึงจาก Kingdee (Auto)';
-              toast(`✅ อัปเดตข้อมูล On-Hand สดผ่านเครื่อง Admin สำเร็จ (${time(db.settings.lastInventoryAt)})`);
+              toast(`✅ โหลดข้อมูล On-Hand ผ่านเครื่อง Admin แล้ว (${time(db.settings.lastInventoryAt)})`);
               setTimeout(() => { el('autoSyncModal').classList.remove('show'); }, 3000);
             } else if (current.status === 'failed') {
               clearInterval(remotePollTimer);
@@ -9938,7 +9938,7 @@
 
       if (syncRes.ok && Array.isArray(syncRes.rows) && syncRes.rows.length > 0) {
         const stamp = new Date().toISOString();
-        const fname = syncRes.filename || 'Kingdee Auto-Sync (Remote Request)';
+        const fname = syncRes.filename || 'ไฟล์ On-Hand จากเครื่อง Admin';
         // 1. Save to Google Sheets
         await callGoogle('saveInventorySnapshot', syncRes.rows, { filename: fname, at: stamp });
         // 2. Mark request completed
