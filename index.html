@@ -2754,7 +2754,7 @@
       notice.style.borderColor = '#087e78';
       notice.style.background = '#f0fdf4';
       notice.style.color = '#166534';
-      notice.innerHTML = `<strong>📦 On-Hand จากไฟล์ส่งออก Kingdee</strong> — ${fmt(db.inventory.length)} แถว · ข้อมูล ณ ${esc(lastTime)}${autoBadge}`;
+      notice.innerHTML = `<strong>📦 On-Hand จากไฟล์ส่งออก/นำเข้า</strong> — ${fmt(db.inventory.length)} แถว · บันทึกเข้าเว็บเมื่อ ${esc(lastTime)}${autoBadge}`;
     } else {
       notice.className = 'notice warn';
       notice.innerHTML = '<strong>ยังไม่มีข้อมูล On-Hand</strong> — กดปุ่ม ⚡ ดึงจาก Kingdee เพื่อโหลดสต็อกล่าสุด';
@@ -4002,7 +4002,7 @@
       </div>
       <div class="stock-summary-card">
         <strong style="font-size:15px;color:#087e78">${esc(time(snapshotAt))}</strong>
-        <span>เวลาในไฟล์ On-Hand ที่นำเข้าล่าสุด${lastInventoryImport?.filename?` · ${esc(lastInventoryImport.filename)}`:''}</span>
+        <span>เวลาที่นำข้อมูล On-Hand เข้าเว็บล่าสุด${lastInventoryImport?.filename?` · ${esc(lastInventoryImport.filename)}`:''}</span>
       </div>
     `;
 
