@@ -9737,7 +9737,10 @@
 
   async function applyNewSyncData(data, barcodePromise = null) {
     const snapshotMs = Date.parse(data?.snapshotAt || '');
-    if (data?.liveKingdeeExport !== true || !data.filename || !Number.isFinite(snapshotMs) || snapshotMs > Date.now() + 30000) {
+    const startedMs = Date.parse(data?.exportStartedAt || '');
+    const expectedRows = Number(data?.expectedRows);
+    const actualRows = Number(data?.actualRows);
+    if (data?.liveKingdeeExport !== true || !data.filename || !Number.isFinite(snapshotMs) || !Number.isFinite(startedMs) || snapshotMs < startedMs - 5000 || snapshotMs > Date.now() + 30000 || !Number.isSafeInteger(expectedRows) || expectedRows <= 0 || actualRows !== expectedRows || !Array.isArray(data.rows) || data.rows.length !== actualRows) {
       setSyncStep(3, 'error', 'ยังยืนยันไฟล์ส่งออกใหม่จาก Kingdee ไม่ได้ จึงไม่อัปเดตข้อมูลจาก snapshot เดิม');
       el('syncSpinIcon').classList.remove('spinning');
       const button = el('autoFetchKingdeeBtn');
@@ -9859,7 +9862,7 @@
     el('syncSuccessMsg').innerHTML = barcodeSync.ok
       ? `🎉 อัปเดต On-Hand จากไฟล์ส่งออก Kingdee ${fmt(rows.length)} รายการ · ${pmlSyncMessage} · ${fgReceiptSourceMessage} · H9 Barcode ${fmt(barcodeSync.count)} Order (คำสั่งนี้ไม่ได้ดึง PPBOM หรือ FG Receipt จาก Kingdee)`
       : `🎉 อัปเดต On-Hand จากไฟล์ส่งออก Kingdee ${fmt(rows.length)} รายการ · ${pmlSyncMessage} · ${fgReceiptSourceMessage} · ซิงก์ H9 Barcode ไม่สำเร็จ (คำสั่งนี้ไม่ได้ดึง FG Receipt จาก Kingdee)`;
-    el('syncSuccessTime').textContent = `ไฟล์ส่งออกจาก Kingdee: ${fname} · เวลา ${time(stamp)}`;
+    el('syncSuccessTime').textContent = `ไฟล์ส่งออกจาก Kingdee: ${fname} · เวลา ${time(stamp)} · จำนวนแถวตรงกับรายงานที่ส่งออก (หากรายงานมีตัวกรอง ข้อมูลอาจไม่ครบทั้งหมด)`;
     el('syncModalDoneBtn').style.display = 'inline-block';
     el('syncModalCancelBtn').style.display = 'none';
 
@@ -10009,8 +10012,43 @@
     }
   }
 
+  let activeExtensionSync = null;
+  function findKingdeeExtension(requestId) {
+    return new Promise(resolve => {
+      let timer;
+      const onMessage = event => {
+        if (event.source !== window || event.origin !== location.origin || event.data?.type !== 'H9_EXTENSION_READY' || event.data.requestId !== requestId) return;
+        clearTimeout(timer);
+        window.removeEventListener('message', onMessage);
+        resolve(true);
+      };
+      window.addEventListener('message', onMessage);
+      timer = setTimeout(() => { window.removeEventListener('message', onMessage); resolve(false); }, 2500);
+      window.postMessage({ type: 'H9_EXTENSION_PING', requestId }, location.origin === 'null' ? '*' : location.origin);
+    });
+  }
+
+  async function failExtensionSync(message) {
+    const run = activeExtensionSync;
+    if (!run) return;
+    activeExtensionSync = null;
+    clearTimeout(run.timer);
+    setSyncStep(2, 'error', message || 'ส่วนเสริมเริ่มส่งออกไม่สำเร็จ');
+    setSyncStep(3, 'error', 'ยังไม่มีไฟล์ Kingdee ใหม่ที่ตรวจผ่าน');
+    el('syncStep4Title').textContent = 'อัปเดต H9 Barcode';
+    const barcode = await run.barcodePromise;
+    setSyncStep(4, barcode.ok ? 'done' : 'error', barcode.ok
+      ? `อัปเดต H9 Barcode ${fmt(barcode.count)} Order แล้ว · ข้อมูล Kingdee ยังไม่อัปเดต`
+      : 'อัปเดต H9 Barcode ไม่สำเร็จ · ข้อมูล Kingdee ยังไม่อัปเดต');
+    el('syncSpinIcon').classList.remove('spinning');
+    const btn = el('autoFetchKingdeeBtn');
+    btn.disabled = false;
+    btn.innerHTML = '⚡ ดึง Kingdee';
+  }
+
   async function triggerAutoKingdeeSync() {
     const btn = el('autoFetchKingdeeBtn');
+    if (activeExtensionSync) return;
     btn.disabled = true;
     btn.innerHTML = '<span style="display:inline-block;animation:syncSpin 1s linear infinite">⏳</span> กำลังดึงข้อมูล...';
 
@@ -10051,43 +10089,27 @@
       return;
     }
 
-    setSyncStep(1, 'done', `เชื่อมต่อ Local Helper สำเร็จ (${helperBase})`);
-    el('syncProgressBar').style.width = '25%';
-
-    setSyncStep(2, 'working', 'กำลังขอไฟล์ส่งออกใหม่จากแท็บ Kingdee ที่เปิดอยู่...');
-
-    try {
-      const syncRes = await fetch(getHelperUrl('/run-admin-sync'), {
-        method: 'POST',
-        cache: 'no-store'
-      }).then(r => r.json());
-
-      if (syncRes.ok && syncRes.liveKingdeeExport === true && syncRes.filename && Array.isArray(syncRes.rows) && syncRes.rows.length > 0) {
-        if (await applyNewSyncData(syncRes, barcodePromise) === false) throw new Error('ตรวจสอบไฟล์ส่งออกใหม่ไม่ผ่าน');
-
-        // Clear any pending queue
-        if (hasGoogle()) {
-          try {
-            const curStatus = await callGoogle('getKingdeeSyncStatus');
-            if (curStatus?.request && (curStatus.request.status === 'pending' || curStatus.request.status === 'processing')) {
-              await callGoogle('updateKingdeeSyncStatus', curStatus.request.id, 'completed', 'ดึงข้อมูล On-Hand สำเร็จ', syncRes.rows.length);
-            }
-          } catch (_) {}
-        }
-      } else {
-        throw new Error(syncRes.message || 'ตัวช่วยไม่ได้ยืนยันไฟล์ส่งออกใหม่จาก Kingdee กรุณาตรวจส่วนเสริม Chrome');
-      }
-    } catch (err) {
-      console.warn('Kingdee export failed; existing snapshots are not used as fresh data:', err);
-      setSyncStep(3, 'error', `${err.message || 'ส่งออกจาก Kingdee ไม่สำเร็จ'} · ไม่มีการนำ snapshot เก่ามาแทน`);
+    const requestId = `h9-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const extensionReady = await findKingdeeExtension(requestId);
+    if (!extensionReady) {
+      setSyncStep(1, 'error', 'พบ Local Helper แต่ไม่พบส่วนเสริม Chrome ที่เชื่อมกับหน้านี้');
       const barcode = await barcodePromise;
+      el('syncStep4Title').textContent = 'อัปเดต H9 Barcode';
       setSyncStep(4, barcode.ok ? 'done' : 'error', barcode.ok
         ? `อัปเดต H9 Barcode ${fmt(barcode.count)} Order แล้ว · ข้อมูล Kingdee ยังไม่อัปเดต`
         : 'อัปเดต H9 Barcode ไม่สำเร็จ · ข้อมูล Kingdee ยังไม่อัปเดต');
       el('syncSpinIcon').classList.remove('spinning');
       btn.disabled = false;
-      btn.innerHTML = '⚡ ดึงจาก Kingdee (Auto)';
+      btn.innerHTML = '⚡ ดึง Kingdee';
+      return;
     }
+
+    setSyncStep(1, 'done', 'เชื่อมต่อส่วนเสริม Chrome และ Local Helper สำเร็จ');
+    el('syncProgressBar').style.width = '25%';
+
+    setSyncStep(2, 'working', 'กำลังขอไฟล์ส่งออกใหม่จากแท็บ Kingdee ที่เปิดอยู่...');
+    activeExtensionSync = { requestId, barcodePromise, timer: setTimeout(() => failExtensionSync('รอไฟล์ส่งออก Kingdee นานเกินกำหนด'), 10 * 60 * 1000) };
+    window.postMessage({ type: 'H9_RUN_NOW', requestId }, location.origin === 'null' ? '*' : location.origin);
   }
 
   el('autoFetchKingdeeBtn')?.addEventListener('click', triggerAutoKingdeeSync);
@@ -10102,15 +10124,28 @@
   });
 
   window.addEventListener('message', async event => {
+    if (event.source !== window || event.origin !== location.origin) return;
+    if (event.data?.type === 'H9_START_RESULT' && activeExtensionSync && event.data.requestId === activeExtensionSync.requestId && event.data.ok !== true) {
+      await failExtensionSync(event.data.message || 'ส่วนเสริมเริ่มส่งออกไม่สำเร็จ');
+      return;
+    }
     if (event.data?.type === 'H9_STATUS') {
       const msg = event.data.message || '';
       if (el('autoSyncModal')?.classList.contains('show')) {
         el('syncStep2Text').textContent = msg;
       }
+      if (event.data.kind === 'error' && activeExtensionSync) await failExtensionSync(msg);
     }
     if (event.data?.type === 'H9_SYNC_COMPLETED') {
       clearInterval(syncPollTimer);
-      applyNewSyncData(event.data);
+      const run = activeExtensionSync;
+      if (run && event.data.requestId !== run.requestId) return;
+      if (run) { clearTimeout(run.timer); activeExtensionSync = null; }
+      const applied = await applyNewSyncData(event.data, run?.barcodePromise || null);
+      if (applied === false && run) {
+        activeExtensionSync = run;
+        await failExtensionSync('ไฟล์ส่งออกใหม่ไม่ผ่านการตรวจสอบ');
+      }
     }
   });
 
