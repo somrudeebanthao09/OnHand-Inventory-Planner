@@ -2664,6 +2664,15 @@
       settings: mergedSettings
     };
   }
+  function shouldUseProductionOrdersSeed(rows, timestamp, seed) {
+    if (!Array.isArray(seed?.orders) || !seed.orders.length) return false;
+    if (!Array.isArray(rows) || !rows.length) return true;
+    const seedAt = Date.parse(seed.snapshotAt || '');
+    const currentAt = Date.parse(timestamp || '');
+    if (Number.isFinite(currentAt) && Number.isFinite(seedAt)) return seedAt > currentAt;
+    if (Number.isFinite(currentAt)) return false;
+    return Number.isFinite(seedAt) || rows[0]?.onlyZjdbMode !== true;
+  }
   function localDb(){
     let saved=null;
     try{saved=JSON.parse(localStorage.getItem('onhandPlannerData')||'null')}catch(err){console.error('Local data could not be parsed',err)}
@@ -2709,14 +2718,7 @@
     if(local.settings && (!local.settings.activeDepts || !local.settings.activeDepts.includes('H1 Assembly Production Line'))){
       local.settings.activeDepts = ['H9 Assembly Production Line', 'H1 Assembly Production Line', 'Assembly Production Line'];
     }
-    const seedOrdersTime=Date.parse(orderSeed?.snapshotAt||''), localOrdersTime=Date.parse(local.settings.lastOrdersAt||'');
-    const shouldReseedOrders=Array.isArray(orderSeed?.orders)&&orderSeed.orders.length&&(
-      !local.productionOrders?.length||
-      (Number.isFinite(seedOrdersTime)&&(!Number.isFinite(localOrdersTime)||seedOrdersTime>localOrdersTime))||
-      local.productionOrders.length!==orderSeed.orders.length||
-      local.productionOrders[0]?.consumedQty===undefined||
-      local.productionOrders[0]?.onlyZjdbMode!==true
-    );
+    const shouldReseedOrders=shouldUseProductionOrdersSeed(local.productionOrders, local.settings.lastOrdersAt, orderSeed);
     if(shouldReseedOrders){
       local.productionOrders=structuredClone(orderSeed.orders);
       local.settings.lastOrdersAt=orderSeed.snapshotAt||'';
@@ -2807,8 +2809,7 @@
             }
           });
         }
-        const oSeedTime=Date.parse(window.PRODUCTION_ORDERS_SEED?.snapshotAt||''), dLastOrdersTime=Date.parse(db.settings.lastOrdersAt||'');
-        if((!db.productionOrders?.length || (Number.isFinite(oSeedTime) && (!Number.isFinite(dLastOrdersTime) || oSeedTime > dLastOrdersTime)) || db.productionOrders.length !== window.PRODUCTION_ORDERS_SEED?.orders?.length || db.productionOrders[0]?.onlyZjdbMode !== true) && Array.isArray(window.PRODUCTION_ORDERS_SEED?.orders)){
+        if(shouldUseProductionOrdersSeed(db.productionOrders, db.settings.lastOrdersAt, window.PRODUCTION_ORDERS_SEED)){
           db.productionOrders = structuredClone(window.PRODUCTION_ORDERS_SEED.orders);
           db.settings.lastOrdersAt = window.PRODUCTION_ORDERS_SEED.snapshotAt || '';
         }
@@ -6883,10 +6884,9 @@
   }
 
   function computePoTracking() {
-    const orderSnapshotRows = window.PRODUCTION_ORDERS_SEED?.orders || [];
-    const transferRows = hasGoogle() && db.productionOrders?.length
-      ? db.productionOrders
-      : (orderSnapshotRows.length ? orderSnapshotRows : (db.productionOrders || []));
+    const orderSeed = window.PRODUCTION_ORDERS_SEED;
+    const transferRows = shouldUseProductionOrdersSeed(db.productionOrders, db.settings.lastOrdersAt, orderSeed)
+      ? orderSeed.orders : (db.productionOrders || []);
     const importedOrderBomRows = getProductionMaterialIssueRows();
     const pmlRows = importedOrderBomRows.length ? importedOrderBomRows : transferRows;
     const transferOrderByMo = new Map();
@@ -8117,7 +8117,8 @@
             ...res.barcodeByMo
           };
           window.PRODUCTION_EXECUTION_SEED.barcodeByMo = mergedBarcode;
-          if (res.executionByMo) window.PRODUCTION_EXECUTION_SEED.executionByMo = res.executionByMo;
+          // Barcode refresh does not verify when the helper's Execution file was exported.
+          // Keep the separately imported Execution data and its own source timestamp.
           db.settings.lastBarcodeSyncAt = new Date().toISOString();
           saveLocalDb(db);
           try { localStorage.setItem('onhandCustomBarcodeByMo', JSON.stringify(mergedBarcode)); } catch (_) {}
@@ -9798,9 +9799,8 @@
         db.settings.lastMaterialIssueAt = pmlSnapshot.snapshotAt || new Date().toISOString();
         db.settings.lastMaterialIssueFilename = pmlSnapshot.filename || '';
         pmlUpdatedCount = pmlSnapshot.rows.length;
-        const knownOrderRows = hasGoogle() && db.productionOrders?.length
-          ? db.productionOrders
-          : (window.PRODUCTION_ORDERS_SEED?.orders?.length ? window.PRODUCTION_ORDERS_SEED.orders : (db.productionOrders || []));
+        const knownOrderRows = shouldUseProductionOrdersSeed(db.productionOrders, db.settings.lastOrdersAt, window.PRODUCTION_ORDERS_SEED)
+          ? window.PRODUCTION_ORDERS_SEED.orders : (db.productionOrders || []);
         const knownOrderKeys = new Set(knownOrderRows.map(row => normalizeMoKey(row.moNumber)).filter(Boolean));
         const matchedOrderCount = [...incomingOrderKeys].filter(key => knownOrderKeys.has(key)).length;
         const coverageMessage = knownOrderKeys.size && matchedOrderCount < knownOrderKeys.size
