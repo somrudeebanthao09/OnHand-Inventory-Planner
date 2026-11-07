@@ -11555,9 +11555,96 @@
   const PART_REQ_CLOUD_TOPIC = 'h9_onhand_part_req_sync_v2_10430e51';
   const PART_REQ_NOTIFICATION_STORAGE_KEY = 'onhandPartReqNotifiedTransitions';
   const PART_REQ_NOTIFICATION_FRESHNESS_MS = 15 * 60 * 1000;
+  const PART_REQ_RELAY_OUTBOX_STORAGE_KEY = 'onhandPartReqRelayOutbox';
   const partReqNotifiedTransitions = new Set();
   let partReqBroadcastChannel = null;
   let partReqEventSource = null;
+  let partReqRelayOutbox = new Map();
+  let partReqRelayFlushTimer = null;
+  let partReqRelayFlushPromise = null;
+  let partReqRelayStartupReconciled = false;
+
+  function getPartReqRelayVersion(record) {
+    if (!record?.reqId) return '';
+    const status = record.status === 'issued' ? 'issued' : 'pending';
+    const stamp = record.updatedAt || record.issuedAt || record.requestedAt || '';
+    return `${record.reqId}:${status}:${stamp}`;
+  }
+
+  function loadPartReqRelayOutbox() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(PART_REQ_RELAY_OUTBOX_STORAGE_KEY) || '[]');
+      if (Array.isArray(saved)) {
+        partReqRelayOutbox = new Map(saved.filter(item => item?.key).map(item => [item.key, {
+          attempts: Math.max(0, Number(item.attempts) || 0),
+          nextAt: Math.max(0, Number(item.nextAt) || 0)
+        }]));
+      }
+    } catch (_) {}
+  }
+
+  function persistPartReqRelayOutbox() {
+    try {
+      localStorage.setItem(PART_REQ_RELAY_OUTBOX_STORAGE_KEY, JSON.stringify(
+        [...partReqRelayOutbox.entries()].map(([key, value]) => ({ key, ...value })).slice(-200)
+      ));
+    } catch (_) {}
+  }
+
+  function queuePartReqRelayRecord(record, delayMs = 0) {
+    const key = getPartReqRelayVersion(record);
+    if (!key) return;
+    if (!partReqRelayOutbox.has(key)) {
+      partReqRelayOutbox.set(key, { attempts: 0, nextAt: Date.now() + Math.max(0, delayMs) });
+      persistPartReqRelayOutbox();
+    }
+    schedulePartReqRelayFlush(delayMs);
+  }
+
+  function schedulePartReqRelayFlush(delayMs = 0) {
+    if (partReqRelayFlushTimer) clearTimeout(partReqRelayFlushTimer);
+    partReqRelayFlushTimer = setTimeout(() => {
+      partReqRelayFlushTimer = null;
+      flushPartReqRelayOutbox();
+    }, Math.max(0, delayMs));
+  }
+
+  async function flushPartReqRelayOutbox() {
+    if (partReqRelayFlushPromise) return partReqRelayFlushPromise;
+    partReqRelayFlushPromise = (async () => {
+      const now = Date.now();
+      let nextDelay = Infinity;
+      for (const [key, state] of [...partReqRelayOutbox.entries()]) {
+        const record = partRequisitionsList.find(item => getPartReqRelayVersion(item) === key);
+        if (!record) {
+          partReqRelayOutbox.delete(key);
+          continue;
+        }
+        if (state.nextAt > now) {
+          nextDelay = Math.min(nextDelay, state.nextAt - now);
+          continue;
+        }
+        const sent = await pushRecordToCloudRelay(record);
+        if (sent) {
+          partReqRelayOutbox.delete(key);
+        } else {
+          const attempts = state.attempts + 1;
+          const retryDelay = Math.min(60000, 5000 * (2 ** Math.min(attempts - 1, 4)));
+          partReqRelayOutbox.set(key, { attempts, nextAt: Date.now() + retryDelay });
+          nextDelay = Math.min(nextDelay, retryDelay);
+        }
+      }
+      persistPartReqRelayOutbox();
+      if (Number.isFinite(nextDelay) && partReqRelayOutbox.size) schedulePartReqRelayFlush(nextDelay);
+    })().finally(() => {
+      partReqRelayFlushPromise = null;
+      const hasDueRecord = [...partReqRelayOutbox.entries()].some(([key, state]) =>
+        state.nextAt <= Date.now() && partRequisitionsList.some(item => getPartReqRelayVersion(item) === key)
+      );
+      if (hasDueRecord && !partReqRelayFlushTimer) schedulePartReqRelayFlush();
+    });
+    return partReqRelayFlushPromise;
+  }
 
   function playWarehouseAlertBeep() {
     try {
@@ -11724,6 +11811,23 @@
   }
 
   function startPartReqRealtimeStream() {
+    if (!partReqRelayStartupReconciled) {
+      partReqRelayStartupReconciled = true;
+      loadPartReqRelayOutbox();
+      // Re-share locally saved outstanding requests and recent issues so missing relay events can recover after either account reconnects.
+      try {
+        const localItems = JSON.parse(localStorage.getItem('onhandPartRequisitions') || '[]');
+        if (Array.isArray(localItems)) {
+          const recentCutoff = Date.now() - (72 * 60 * 60 * 1000);
+          for (const record of localItems) {
+            const stamp = Date.parse(record?.updatedAt || record?.issuedAt || record?.requestedAt || '') || 0;
+            if (record?.status !== 'issued' || stamp >= recentCutoff) queuePartReqRelayRecord(record);
+          }
+        }
+      } catch (_) {}
+      window.addEventListener('online', () => flushPartReqRelayOutbox());
+    }
+
     // 1. Same-browser cross-tab instant sync
     try {
       if (typeof BroadcastChannel !== 'undefined' && !partReqBroadcastChannel) {
@@ -11878,6 +11982,7 @@
 
     // 1. Push immediately over HTTPS Cloud Relay so Warehouse on ANY mobile phone or PC receives it in < 0.5s!
     const relayNotified = await pushRecordToCloudRelay(record);
+    if (!relayNotified) queuePartReqRelayRecord(record, 5000);
 
     // 2. Save to local helper server in background (writes PartRequisitionsSeed.js + Part-Requisitions-Google-Sheet-Log.xlsx + GitHub sync)
     checkHelperHealth().then(helperBase => {
