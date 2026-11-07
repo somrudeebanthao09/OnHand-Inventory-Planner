@@ -2596,7 +2596,7 @@
             <div class="wh-issuer-grid">
               <div>
                 <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">ชื่อผู้จ่าย (Warehouse) <span style="color:#dc2626">*</span></label>
-                <input type="text" id="whIssuerNameInput" class="field" placeholder="ระบุชื่อผู้จ่าย Part" style="width:100%;height:40px;font-size:14px;font-weight:700" required>
+                <input type="text" id="whIssuerNameInput" class="field" placeholder="ดึงจากบัญชีผู้ใช้ปัจจุบัน" style="width:100%;height:40px;font-size:14px;font-weight:700" readonly required>
               </div>
               <div>
                 <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">หมายเหตุ (ผู้จ่าย / Warehouse)</label>
@@ -11552,8 +11552,10 @@
   let whActiveConfirmReqId = null;
   let whCameraStream = null;
   let capturedWhPhotoDataUrl = '';
-  let lastKnownPendingReqIds = new Set();
   const PART_REQ_CLOUD_TOPIC = 'h9_onhand_part_req_sync_v2_10430e51';
+  const PART_REQ_NOTIFICATION_STORAGE_KEY = 'onhandPartReqNotifiedTransitions';
+  const PART_REQ_NOTIFICATION_FRESHNESS_MS = 15 * 60 * 1000;
+  const partReqNotifiedTransitions = new Set();
   let partReqBroadcastChannel = null;
   let partReqEventSource = null;
 
@@ -11576,6 +11578,53 @@
     } catch (_) {}
   }
 
+  function notifyFreshPartReqTransition(record, existing) {
+    const user = getCurrentUser();
+    if (!user || !record?.reqId) return false;
+
+    const status = record.status === 'issued' ? 'issued' : (record.status === 'pending' ? 'pending' : '');
+    if (!status) return false;
+    if (status === 'pending' && user.role !== 'warehouse') return false;
+    if (status === 'issued' && user.role !== 'requester') return false;
+
+    if (status === 'issued') {
+      const targetUsername = String(record.requesterUsername || '').trim().toLowerCase();
+      const currentUsername = String(user.username || '').trim().toLowerCase();
+      const targetName = String(record.requesterName || '').trim().toLowerCase();
+      const currentName = String(user.name || user.username || '').trim().toLowerCase();
+      if (targetUsername ? targetUsername !== currentUsername : (!targetName || targetName !== currentName)) return false;
+    }
+
+    const eventStamp = record.updatedAt || record.issuedAt || record.requestedAt || '';
+    const eventTime = Date.parse(eventStamp);
+    if (!Number.isFinite(eventTime) || Date.now() - eventTime > PART_REQ_NOTIFICATION_FRESHNESS_MS || eventTime > Date.now() + 60000) return false;
+    const existingTime = Date.parse(existing?.updatedAt || existing?.issuedAt || existing?.requestedAt || '') || 0;
+    if (existingTime > eventTime + 1000) return false;
+
+    const identity = `${user.role}:${String(user.username || user.name || '').trim().toLowerCase()}`;
+    const version = `${record.reqId}:${status}:${eventStamp}`;
+    const notificationKey = `${identity}:${version}`;
+    if (partReqNotifiedTransitions.has(notificationKey)) return false;
+    let notified = {};
+    try {
+      notified = JSON.parse(localStorage.getItem(PART_REQ_NOTIFICATION_STORAGE_KEY) || '{}') || {};
+    } catch (_) {}
+    const userEvents = Array.isArray(notified[identity]) ? notified[identity] : [];
+    if (userEvents.includes(version)) return false;
+
+    partReqNotifiedTransitions.add(notificationKey);
+    notified[identity] = [...userEvents, version].slice(-200);
+    try { localStorage.setItem(PART_REQ_NOTIFICATION_STORAGE_KEY, JSON.stringify(notified)); } catch (_) {}
+
+    if (status === 'pending') {
+      playWarehouseAlertBeep();
+      toast(`🔔 แจ้งเตือน Warehouse: มีใบเบิก Part ใหม่ (${record.materialCode} · ${fmtQty(record.requestQty)} ${record.unit || 'PCS'} · MO: ${record.moNumber})`);
+    } else {
+      toast(`✅ คลังจ่าย Part ใบเบิก ${record.reqId} เรียบร้อยแล้ว (${record.materialCode} · ${fmtQty(record.requestQty)} ${record.unit || 'PCS'})`);
+    }
+    return true;
+  }
+
   function mergeIncomingPartRequisitions(incomingList, { silent = true } = {}) {
     if (!Array.isArray(incomingList) || !incomingList.length) return false;
     const map = new Map();
@@ -11583,18 +11632,11 @@
       if (item?.reqId) map.set(item.reqId, item);
     }
     let changed = false;
-    let newPendingArrived = null;
-    let newlyIssuedArrived = null;
 
     for (const srvItem of incomingList) {
       if (!srvItem?.reqId) continue;
       const existing = map.get(srvItem.reqId);
-      if (!existing && srvItem.status !== 'issued' && !lastKnownPendingReqIds.has(srvItem.reqId)) {
-        newPendingArrived = srvItem;
-      }
-      if (existing && existing.status !== 'issued' && srvItem.status === 'issued') {
-        newlyIssuedArrived = srvItem;
-      }
+      notifyFreshPartReqTransition(srvItem, existing);
       const srvTime = Date.parse(srvItem.updatedAt || srvItem.issuedAt || srvItem.requestedAt || '') || 0;
       const locTime = existing ? (Date.parse(existing.updatedAt || existing.issuedAt || existing.requestedAt || '') || 0) : -1;
       if (!existing || srvTime > locTime || (srvItem.status === 'issued' && existing.status !== 'issued') || (srvItem.issuePhotoDataUrl && !existing.issuePhotoDataUrl)) {
@@ -11609,21 +11651,13 @@
       }
     }
 
-    if (changed || newPendingArrived || newlyIssuedArrived) {
+    if (changed) {
       partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
-      lastKnownPendingReqIds = new Set(partRequisitionsList.filter(r => r.status !== 'issued').map(r => r.reqId));
       persistPartRequisitionsLocal();
       updatePartReqBadges();
       if (activePage === 'part-requisition' || activePage === 'part-issue') {
         renderPartReqWarehouseAlert();
         renderPartReqHistoryTable();
-      }
-      if (newPendingArrived && (getCurrentUser()?.role === 'warehouse' || activePage === 'part-issue')) {
-        playWarehouseAlertBeep();
-        toast(`🔔 แจ้งเตือนด่วน Warehouse: มีใบเบิก Part ใหม่เด้งเข้ามา! (${newPendingArrived.materialCode} · จำนวน ${fmtQty(newPendingArrived.requestQty)} ${newPendingArrived.unit || 'PCS'} · MO: ${newPendingArrived.moNumber})`);
-      }
-      if (newlyIssuedArrived && (getCurrentUser()?.role === 'requester' || activePage === 'part-requisition')) {
-        toast(`✅ คลังจ่าย Part เรียบร้อยแล้ว! (${newlyIssuedArrived.materialCode} · จำนวน ${fmtQty(newlyIssuedArrived.requestQty)} ${newlyIssuedArrived.unit || 'PCS'})`);
       }
       return true;
     }
@@ -11650,7 +11684,6 @@
     } catch (_) {}
     partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
     db.partRequisitions = partRequisitionsList;
-    lastKnownPendingReqIds = new Set(partRequisitionsList.filter(r => r.status !== 'issued').map(r => r.reqId));
     updatePartReqBadges();
   }
 
@@ -11816,11 +11849,11 @@
       const compactRecord = hasLargePhoto
         ? { ...record, issuePhotoDataUrl: '', photoAttachmentUrl, hasPhoto: true }
         : record;
-      await fetchWithTimeout(`https://ntfy.sh/${PART_REQ_CLOUD_TOPIC}`, {
+      const relayRes = await fetchWithTimeout(`https://ntfy.sh/${PART_REQ_CLOUD_TOPIC}`, {
         method: 'POST',
         body: JSON.stringify(compactRecord)
       }, 5000);
-      return true;
+      return Boolean(relayRes?.ok);
     } catch (e) {
       console.warn('[PartReq] Cloud relay push warn:', e);
       return false;
@@ -11835,7 +11868,6 @@
       partRequisitionsList.unshift(record);
     }
     partRequisitionsList.sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
-    lastKnownPendingReqIds = new Set(partRequisitionsList.filter(r => r.status !== 'issued').map(r => r.reqId));
     persistPartRequisitionsLocal();
     updatePartReqBadges();
 
@@ -11845,7 +11877,7 @@
     } catch (_) {}
 
     // 1. Push immediately over HTTPS Cloud Relay so Warehouse on ANY mobile phone or PC receives it in < 0.5s!
-    await pushRecordToCloudRelay(record);
+    const relayNotified = await pushRecordToCloudRelay(record);
 
     // 2. Save to local helper server in background (writes PartRequisitionsSeed.js + Part-Requisitions-Google-Sheet-Log.xlsx + GitHub sync)
     checkHelperHealth().then(helperBase => {
@@ -11862,6 +11894,7 @@
     if (hasGoogle()) {
       callGoogle('savePartRequisition', record).catch(() => {});
     }
+    return { relayNotified };
   }
 
   let activePartReqTab = 'all';
@@ -12540,16 +12573,12 @@
   }
 
   // Warehouse Location dynamic rows (starts with 1 location, click + to add more)
-  function createWhLocationRowHtml(index, locValue = '', qtyValue = '', suggestions = []) {
-    const datalistId = `whLocSuggestList_${index}`;
+  function createWhLocationRowHtml(index, locValue = '', qtyValue = '') {
     return `
       <div class="wh-location-row" data-idx="${index}">
         <div>
           <label style="font-size:12px;font-weight:800;color:#0f6a66;display:block;margin-bottom:3px">📍 Location / พื้นที่จัดเก็บที่ ${index + 1} <span style="color:#dc2626">*</span></label>
-          <input type="text" class="field wh-loc-name-input" list="${datalistId}" value="${esc(locValue)}" placeholder="ระบุ Location / Bin เช่น H9-A01, RM-B02..." required style="width:100%;font-weight:700;font-size:13.5px;height:40px">
-          <datalist id="${datalistId}">
-            ${suggestions.map(s => `<option value="${esc(s)}"></option>`).join('')}
-          </datalist>
+          <input type="text" class="field wh-loc-name-input" value="${esc(locValue)}" placeholder="พิมพ์ Location / พื้นที่จัดเก็บ" required style="width:100%;font-weight:700;font-size:13.5px;height:40px">
         </div>
         <div>
           <label style="font-size:12px;font-weight:700;color:#475569;display:block;margin-bottom:3px">จำนวนที่ดึง</label>
@@ -12560,25 +12589,6 @@
           : `<span></span>`}
       </div>
     `;
-  }
-
-  function getSuggestedBinsForMaterial(materialCode) {
-    const code = String(materialCode || '').trim().toUpperCase();
-    const suggestions = new Set();
-    const invRows = (Array.isArray(db.inventory) && db.inventory.length)
-      ? db.inventory
-      : (Array.isArray(window.ONHAND_SEED?.inventory) ? window.ONHAND_SEED.inventory : []);
-    for (const r of invRows) {
-      if (String(r.materialCode || '').trim().toUpperCase() !== code) continue;
-      if (!isUsableInventoryRow(r)) continue;
-      const bin = String(r.storage || '').trim();
-      const wh = String(r.warehouse || '').trim();
-      if (bin && wh) suggestions.add(`${bin} (${wh} · คงเหลือ ${fmtQty(r.onHand)})`);
-      else if (bin) suggestions.add(bin);
-      else if (wh) suggestions.add(wh);
-    }
-    ['H9 Assembly Line Store', 'Purchased Material Warehouse', 'Customer Material Warehouse', 'Semi-finished Goods Warehouse'].forEach(w => suggestions.add(w));
-    return [...suggestions];
   }
 
   function stopWhCameraStream() {
@@ -12624,7 +12634,7 @@
     if (el('whModalReqIdBadge')) el('whModalReqIdBadge').textContent = rec.reqId;
     if (el('whModalMoBadge')) el('whModalMoBadge').textContent = rec.moNumber;
     if (el('whModalZjdbBadge')) el('whModalZjdbBadge').textContent = `🔗 ZJDB: ${rec.directTransferDocs || '—'}`;
-    if (el('whIssuerNameInput')) el('whIssuerNameInput').value = rec.issuerName || (u ? (u.name || u.username) : '');
+    if (el('whIssuerNameInput')) el('whIssuerNameInput').value = u ? (u.name || u.username || '') : '';
     if (el('whIssuerNoteInput')) el('whIssuerNoteInput').value = rec.issuerNote || '';
 
     const desc = [rec.materialName, rec.specification].filter(Boolean).join(' · ') || '—';
@@ -12649,20 +12659,15 @@
     }
 
     // Populate initial Location(s): starts with 1 location row (or existing saved locations)
-    const suggestions = getSuggestedBinsForMaterial(rec.materialCode);
     const locListEl = el('whLocationsList');
     if (locListEl) {
       const initLocs = Array.isArray(rec.locations) && rec.locations.length
         ? rec.locations
-        : [{ location: suggestions[0] || '', qty: rec.requestQty }];
-      locListEl.innerHTML = initLocs.map((l, idx) => createWhLocationRowHtml(idx, l.location, l.qty, suggestions)).join('');
+        : [{ location: '', qty: rec.requestQty }];
+      locListEl.innerHTML = initLocs.map((l, idx) => createWhLocationRowHtml(idx, l.location, l.qty)).join('');
     }
     const hintEl = el('whSuggestedLocationsHint');
-    if (hintEl) {
-      hintEl.innerHTML = suggestions.length
-        ? `💡 <b>คลิกเลือก Location ในระบบ On-Hand ของ Part นี้:</b> ${suggestions.slice(0, 4).map(s => `<span class="badge gray" style="cursor:pointer;margin-right:4px" onclick="const inp=document.querySelector('#whLocationsList .wh-loc-name-input');if(inp)inp.value='${esc(s)}'">${esc(s)}</span>`).join('')}`
-        : '';
-    }
+    if (hintEl) hintEl.textContent = '';
 
     // Photo state: if already issued with photo, show existing photo; otherwise require new live camera capture
     capturedWhPhotoDataUrl = (rec.status === 'issued' && rec.issuePhotoDataUrl && rec.issuePhotoDataUrl.startsWith('data:image'))
@@ -12998,6 +13003,7 @@
         unit: ['PCS', 'Kg', 'Set'].includes(unit) ? unit : 'PCS',
         reason,
         requesterName,
+        requesterUsername: String(getCurrentUser()?.username || '').trim(),
         shift: shift === 'B' ? 'B' : 'A',
         requesterNote,
         status: 'pending',
@@ -13016,7 +13022,7 @@
         saveBtn.textContent = '⏳ กำลังบันทึกและส่งแจ้งเตือนไป Warehouse...';
       }
       try {
-        await savePartRequisitionEverywhere(newRec);
+        const saveResult = await savePartRequisitionEverywhere(newRec);
         renderPartRequisitionPage();
         if (el('reqMatCodeInput')) el('reqMatCodeInput').value = '';
         if (el('reqMatDescInput')) el('reqMatDescInput').value = '';
@@ -13024,7 +13030,9 @@
         if (el('reqQtyInput')) el('reqQtyInput').value = '';
         if (el('reqNoteInput')) el('reqNoteInput').value = '';
         if (el('reqSelectedPartStockHint')) el('reqSelectedPartStockHint').classList.add('hidden');
-        toast(`✅ บันทึกใบเบิก ${newRec.materialCode} (${fmtQty(qty)} ${newRec.unit}) สำเร็จ! ประทับเวลา ${time(nowStamp)} และเด้งแจ้งเตือนไปที่ Warehouse แล้ว`);
+        toast(saveResult?.relayNotified
+          ? `✅ บันทึกใบเบิก ${newRec.materialCode} (${fmtQty(qty)} ${newRec.unit}) และส่งแจ้งเตือนไป Warehouse แล้ว`
+          : `✅ บันทึกใบเบิก ${newRec.materialCode} แล้ว แต่ยังยืนยันการส่งแจ้งเตือนไป Warehouse ไม่ได้`);
       } finally {
         if (saveBtn) {
           saveBtn.disabled = false;
@@ -13091,11 +13099,9 @@
     el('whAddLocationBtn')?.addEventListener('click', () => {
       const listEl = el('whLocationsList');
       if (!listEl) return;
-      const rec = partRequisitionsList.find(x => x.reqId === whActiveConfirmReqId);
-      const suggestions = getSuggestedBinsForMaterial(rec?.materialCode || '');
       const nextIdx = listEl.querySelectorAll('.wh-location-row').length;
       const wrapper = document.createElement('div');
-      wrapper.innerHTML = createWhLocationRowHtml(nextIdx, '', '', suggestions).trim();
+      wrapper.innerHTML = createWhLocationRowHtml(nextIdx, '', '').trim();
       const newRow = wrapper.firstElementChild;
       if (newRow) {
         listEl.appendChild(newRow);
@@ -13166,9 +13172,10 @@
         return;
       }
 
-      const issuerName = (el('whIssuerNameInput')?.value || '').trim();
+      const issuer = getCurrentUser();
+      const issuerName = String(issuer?.name || issuer?.username || '').trim();
       if (!issuerName) {
-        alert('กรุณาระบุชื่อผู้จ่าย Part (Warehouse)');
+        alert('ไม่พบชื่อผู้ใช้ปัจจุบัน กรุณาเข้าสู่ระบบใหม่ก่อนยืนยันจ่าย Part');
         return;
       }
       const issuerNote = (el('whIssuerNoteInput')?.value || '').trim();
@@ -13181,6 +13188,7 @@
         locations,
         locationsSummary,
         issuerName,
+        issuerUsername: String(issuer?.username || '').trim(),
         issuedAt: issuedStamp,
         issuerNote,
         issuePhotoDataUrl: capturedWhPhotoDataUrl,
@@ -13193,10 +13201,12 @@
         saveBtn.textContent = '⏳ กำลังบันทึกการจ่าย Part...';
       }
       try {
-        await savePartRequisitionEverywhere(updated);
+        const saveResult = await savePartRequisitionEverywhere(updated);
         closeWhModal();
         renderPartRequisitionPage();
-        toast(`✅ ยืนยันจ่าย Part (${updated.materialCode}) สำเร็จ! บันทึก Location (${locations.length} จุด), รูปถ่ายจริง และประทับเวลาจ่าย ${time(issuedStamp)} ลง Google Sheet แล้ว`);
+        toast(saveResult?.relayNotified
+          ? `✅ ยืนยันจ่าย Part (${updated.materialCode}) พร้อม Location ${locations.length} จุดและรูปถ่ายแล้ว · แจ้งคนเบิกแล้ว`
+          : `✅ ยืนยันจ่าย Part (${updated.materialCode}) พร้อม Location ${locations.length} จุดและรูปถ่ายแล้ว · ยังยืนยันการส่งแจ้งเตือนให้คนเบิกไม่ได้`);
       } finally {
         if (saveBtn) {
           saveBtn.textContent = '💾 Save ยืนยันการจ่าย Part (Stamp เวลาจ่าย)';
