@@ -11077,20 +11077,36 @@
   }
 
   let activeHelperBaseUrl = 'http://127.0.0.1:49371';
+  let lastHelperCheckAt = 0;
+  let lastHelperResult = null;
 
   function getHelperUrl(path = '') {
     return `${activeHelperBaseUrl}${path}`;
   }
 
-  async function checkHelperHealth() {
+  async function fetchWithTimeout(url, options = {}, timeoutMs = 1200) {
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), timeoutMs);
+    try {
+      return await fetch(url, { ...options, signal: ctrl.signal });
+    } finally {
+      clearTimeout(tid);
+    }
+  }
+
+  async function checkHelperHealth(force = false) {
+    const now = Date.now();
+    if (!force && now - lastHelperCheckAt < 10000) {
+      return lastHelperResult;
+    }
     const candidates = [];
-    if (window.location.protocol !== 'file:' && window.location.hostname) {
+    const host = String(window.location.hostname || '').toLowerCase();
+    const isPublicCloudHost = host.endsWith('.github.io') || host.includes('google.com') || host.includes('googleusercontent.com');
+    if (window.location.protocol !== 'file:' && host && !isPublicCloudHost) {
       const orig = window.location.origin;
-      if (orig && !orig.includes('google.com')) {
-        candidates.push(orig);
-      }
-      candidates.push(`http://${window.location.hostname}:49371`);
-      candidates.push(`http://${window.location.hostname}:49372`);
+      if (orig) candidates.push(orig);
+      candidates.push(`http://${host}:49371`);
+      candidates.push(`http://${host}:49372`);
     }
     const saved = localStorage.getItem('onhandHelperHost');
     if (saved) {
@@ -11099,19 +11115,25 @@
     }
     candidates.push('http://127.0.0.1:49371');
     candidates.push('http://127.0.0.1:49372');
-    candidates.push('http://10.10.50.151:49371');
-    candidates.push('http://10.10.50.151:49372');
+    if (window.location.protocol !== 'https:') {
+      candidates.push('http://10.10.50.151:49371');
+      candidates.push('http://10.10.50.151:49372');
+    }
 
     const unique = [...new Set(candidates)];
     for (const base of unique) {
       try {
-        const res = await fetch(`${base}/health`, { cache: 'no-store' });
+        const res = await fetchWithTimeout(`${base}/health`, { cache: 'no-store' }, 1100);
         if (res.ok) {
           activeHelperBaseUrl = base;
+          lastHelperResult = base;
+          lastHelperCheckAt = Date.now();
           return base;
         }
       } catch (_) {}
     }
+    lastHelperResult = null;
+    lastHelperCheckAt = Date.now();
     return null;
   }
 
@@ -11531,6 +11553,82 @@
   let whCameraStream = null;
   let capturedWhPhotoDataUrl = '';
   let lastKnownPendingReqIds = new Set();
+  const PART_REQ_CLOUD_TOPIC = 'h9_onhand_part_req_sync_v2_10430e51';
+  let partReqBroadcastChannel = null;
+  let partReqEventSource = null;
+
+  function playWarehouseAlertBeep() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, ctx.currentTime);
+      osc.frequency.setValueAtTime(1174.66, ctx.currentTime + 0.14);
+      gain.gain.setValueAtTime(0.18, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.45);
+    } catch (_) {}
+  }
+
+  function mergeIncomingPartRequisitions(incomingList, { silent = true } = {}) {
+    if (!Array.isArray(incomingList) || !incomingList.length) return false;
+    const map = new Map();
+    for (const item of partRequisitionsList) {
+      if (item?.reqId) map.set(item.reqId, item);
+    }
+    let changed = false;
+    let newPendingArrived = null;
+    let newlyIssuedArrived = null;
+
+    for (const srvItem of incomingList) {
+      if (!srvItem?.reqId) continue;
+      const existing = map.get(srvItem.reqId);
+      if (!existing && srvItem.status !== 'issued' && !lastKnownPendingReqIds.has(srvItem.reqId)) {
+        newPendingArrived = srvItem;
+      }
+      if (existing && existing.status !== 'issued' && srvItem.status === 'issued') {
+        newlyIssuedArrived = srvItem;
+      }
+      const srvTime = Date.parse(srvItem.updatedAt || srvItem.issuedAt || srvItem.requestedAt || '') || 0;
+      const locTime = existing ? (Date.parse(existing.updatedAt || existing.issuedAt || existing.requestedAt || '') || 0) : -1;
+      if (!existing || srvTime > locTime || (srvItem.status === 'issued' && existing.status !== 'issued') || (srvItem.issuePhotoDataUrl && !existing.issuePhotoDataUrl)) {
+        map.set(srvItem.reqId, {
+          ...(existing || {}),
+          ...srvItem,
+          issuePhotoDataUrl: (srvItem.issuePhotoDataUrl && srvItem.issuePhotoDataUrl.startsWith('data:image'))
+            ? srvItem.issuePhotoDataUrl
+            : (existing?.issuePhotoDataUrl || srvItem.issuePhotoDataUrl || '')
+        });
+        changed = true;
+      }
+    }
+
+    if (changed || newPendingArrived || newlyIssuedArrived) {
+      partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
+      lastKnownPendingReqIds = new Set(partRequisitionsList.filter(r => r.status !== 'issued').map(r => r.reqId));
+      persistPartRequisitionsLocal();
+      updatePartReqBadges();
+      if (activePage === 'part-requisition' || activePage === 'part-issue') {
+        renderPartReqWarehouseAlert();
+        renderPartReqHistoryTable();
+      }
+      if (newPendingArrived && (getCurrentUser()?.role === 'warehouse' || activePage === 'part-issue')) {
+        playWarehouseAlertBeep();
+        toast(`🔔 แจ้งเตือนด่วน Warehouse: มีใบเบิก Part ใหม่เด้งเข้ามา! (${newPendingArrived.materialCode} · จำนวน ${fmtQty(newPendingArrived.requestQty)} ${newPendingArrived.unit || 'PCS'} · MO: ${newPendingArrived.moNumber})`);
+      }
+      if (newlyIssuedArrived && (getCurrentUser()?.role === 'requester' || activePage === 'part-requisition')) {
+        toast(`✅ คลังจ่าย Part เรียบร้อยแล้ว! (${newlyIssuedArrived.materialCode} · จำนวน ${fmtQty(newlyIssuedArrived.requestQty)} ${newlyIssuedArrived.unit || 'PCS'})`);
+      }
+      return true;
+    }
+    return false;
+  }
 
   function loadInitialPartRequisitions() {
     const map = new Map();
@@ -11570,69 +11668,163 @@
     saveLocalDb(db);
   }
 
-  async function syncPartRequisitionsFromServer(silent = true) {
+  async function parseCloudRelayEvent(evt) {
+    if (!evt || evt.event !== 'message') return null;
+    let rec = null;
+    if (evt.attachment?.url) {
+      const attRes = await fetch(evt.attachment.url, { cache: 'no-store' }).catch(() => null);
+      if (attRes?.ok) rec = await attRes.json().catch(() => null);
+    } else if (evt.message) {
+      try { rec = JSON.parse(evt.message); } catch (_) {}
+    }
+    if (!rec || !rec.reqId) return null;
+    if (rec.photoAttachmentUrl && (!rec.issuePhotoDataUrl || !rec.issuePhotoDataUrl.startsWith('data:image'))) {
+      try {
+        const pRes = await fetch(rec.photoAttachmentUrl, { cache: 'no-store' });
+        if (pRes.ok) {
+          const fullRec = await pRes.json();
+          if (fullRec?.issuePhotoDataUrl) rec.issuePhotoDataUrl = fullRec.issuePhotoDataUrl;
+        }
+      } catch (_) {}
+    }
+    return rec;
+  }
+
+  function startPartReqRealtimeStream() {
+    // 1. Same-browser cross-tab instant sync
     try {
+      if (typeof BroadcastChannel !== 'undefined' && !partReqBroadcastChannel) {
+        partReqBroadcastChannel = new BroadcastChannel('onhand_part_req_channel');
+        partReqBroadcastChannel.onmessage = (ev) => {
+          if (ev.data?.record) {
+            mergeIncomingPartRequisitions([ev.data.record], { silent: false });
+          } else if (Array.isArray(ev.data?.items)) {
+            mergeIncomingPartRequisitions(ev.data.items, { silent: false });
+          }
+        };
+      }
+    } catch (_) {}
+
+    window.addEventListener('storage', (ev) => {
+      if (ev.key === 'onhandPartRequisitions' && ev.newValue) {
+        try {
+          const arr = JSON.parse(ev.newValue);
+          if (Array.isArray(arr)) mergeIncomingPartRequisitions(arr, { silent: false });
+        } catch (_) {}
+      }
+    });
+
+    // 2. Cross-device (Mobile <-> Mobile <-> PC) instant HTTPS Server-Sent Events stream
+    try {
+      if (typeof EventSource !== 'undefined' && !partReqEventSource) {
+        partReqEventSource = new EventSource(`https://ntfy.sh/${PART_REQ_CLOUD_TOPIC}/sse?since=24h`);
+        partReqEventSource.onmessage = async (ev) => {
+          try {
+            const evt = JSON.parse(ev.data);
+            const rec = await parseCloudRelayEvent(evt);
+            if (rec) mergeIncomingPartRequisitions([rec], { silent: false });
+          } catch (_) {}
+        };
+        partReqEventSource.onerror = () => {
+          try { partReqEventSource.close(); } catch (_) {}
+          partReqEventSource = null;
+          setTimeout(startPartReqRealtimeStream, 6000);
+        };
+      }
+    } catch (_) {}
+  }
+
+  async function syncPartRequisitionsFromServer(silent = true) {
+    let anySuccess = false;
+    try {
+      // 1. Check localStorage first (for cross-tab updates)
+      try {
+        const localItems = JSON.parse(localStorage.getItem('onhandPartRequisitions') || '[]');
+        if (Array.isArray(localItems) && localItems.length) {
+          mergeIncomingPartRequisitions(localItems, { silent });
+        }
+      } catch (_) {}
+
+      // 2. Fetch from HTTPS Cloud Realtime Relay (works across all mobile phones, 4G/5G/Wi-Fi, and PCs!)
+      try {
+        const cloudRes = await fetchWithTimeout(`https://ntfy.sh/${PART_REQ_CLOUD_TOPIC}/json?poll=1&since=72h`, { cache: 'no-store' }, 4500).catch(() => null);
+        if (cloudRes?.ok) {
+          const text = await cloudRes.text();
+          const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+          const cloudItems = [];
+          for (const line of lines) {
+            try {
+              const evt = JSON.parse(line);
+              const rec = await parseCloudRelayEvent(evt);
+              if (rec) cloudItems.push(rec);
+            } catch (_) {}
+          }
+          if (cloudItems.length) {
+            mergeIncomingPartRequisitions(cloudItems, { silent });
+          }
+          anySuccess = true;
+        }
+      } catch (_) {}
+
+      // 3. Fetch from Local Helper Server (if on Admin PC)
       const helperBase = await checkHelperHealth();
       if (helperBase) {
-        const res = await fetch(`${helperBase}/part-requisitions`, { cache: 'no-store' }).then(r => r.json()).catch(() => null);
+        const res = await fetchWithTimeout(`${helperBase}/part-requisitions`, { cache: 'no-store' }, 2500).then(r => r.json()).catch(() => null);
         if (res?.ok && Array.isArray(res.items)) {
-          const map = new Map();
-          for (const item of partRequisitionsList) {
-            if (item?.reqId) map.set(item.reqId, item);
-          }
-          let newPendingArrived = null;
-          for (const srvItem of res.items) {
-            if (!srvItem?.reqId) continue;
-            const existing = map.get(srvItem.reqId);
-            if (!existing && srvItem.status !== 'issued' && !lastKnownPendingReqIds.has(srvItem.reqId)) {
-              newPendingArrived = srvItem;
-            }
-            const srvTime = Date.parse(srvItem.updatedAt || srvItem.issuedAt || srvItem.requestedAt || '') || 0;
-            const locTime = existing ? (Date.parse(existing.updatedAt || existing.issuedAt || existing.requestedAt || '') || 0) : -1;
-            if (!existing || srvTime >= locTime || (srvItem.status === 'issued' && existing.status !== 'issued')) {
-              map.set(srvItem.reqId, { ...(existing || {}), ...srvItem });
-            }
-          }
-          partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
-          lastKnownPendingReqIds = new Set(partRequisitionsList.filter(r => r.status !== 'issued').map(r => r.reqId));
-          persistPartRequisitionsLocal();
-          updatePartReqBadges();
-          if (activePage === 'part-requisition' || activePage === 'part-issue') {
-            renderPartReqWarehouseAlert();
-            renderPartReqHistoryTable();
-          }
-          if (newPendingArrived && (getCurrentUser()?.role === 'warehouse' || activePage === 'part-issue')) {
-            toast(`🔔 แจ้งเตือน Warehouse: มีใบเบิก Part ใหม่ (${newPendingArrived.materialCode} · จำนวน ${fmtQty(newPendingArrived.requestQty)} ${newPendingArrived.unit || 'PCS'} · MO: ${newPendingArrived.moNumber})`);
-          }
-          if (!silent) toast(`✅ ซิงค์ข้อมูลใบเบิก Part ล่าสุดเรียบร้อย (${fmt(partRequisitionsList.length)} รายการ)`);
-          return true;
+          mergeIncomingPartRequisitions(res.items, { silent });
+          anySuccess = true;
         }
       }
+
+      // 4. Fetch from Google Sheets (if inside Apps Script)
       if (hasGoogle()) {
         const rows = await callGoogle('listPartRequisitions').catch(() => null);
         if (Array.isArray(rows)) {
-          const map = new Map();
-          for (const item of partRequisitionsList) {
-            if (item?.reqId) map.set(item.reqId, item);
-          }
-          for (const r of rows) {
-            if (r?.reqId) map.set(r.reqId, { ...(map.get(r.reqId) || {}), ...r });
-          }
-          partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
-          persistPartRequisitionsLocal();
-          updatePartReqBadges();
-          if (activePage === 'part-requisition' || activePage === 'part-issue') {
-            renderPartReqWarehouseAlert();
-            renderPartReqHistoryTable();
-          }
-          if (!silent) toast(`✅ ดึงประวัติใบเบิกจาก Google Sheet สำเร็จ (${fmt(partRequisitionsList.length)} รายการ)`);
-          return true;
+          mergeIncomingPartRequisitions(rows, { silent });
+          anySuccess = true;
         }
       }
+
+      if (!silent) {
+        toast(`✅ ซิงค์ข้อมูลใบเบิก Part ล่าสุดเรียบร้อย (${fmt(partRequisitionsList.length)} รายการ)`);
+      }
+      return anySuccess;
     } catch (err) {
       console.warn('[PartReqSync] error:', err);
     }
-    return false;
+    return anySuccess;
+  }
+
+  async function pushRecordToCloudRelay(record) {
+    try {
+      const hasLargePhoto = Boolean(record.issuePhotoDataUrl && record.issuePhotoDataUrl.length > 1500);
+      let photoAttachmentUrl = record.photoAttachmentUrl || '';
+      if (hasLargePhoto) {
+        const putRes = await fetchWithTimeout(`https://ntfy.sh/${PART_REQ_CLOUD_TOPIC}`, {
+          method: 'PUT',
+          headers: { 'Filename': `${record.reqId || 'req'}.json` },
+          body: JSON.stringify(record)
+        }, 8000).catch(() => null);
+        if (putRes?.ok) {
+          const putJson = await putRes.json().catch(() => null);
+          if (putJson?.attachment?.url) {
+            photoAttachmentUrl = putJson.attachment.url;
+          }
+          return true;
+        }
+      }
+      const compactRecord = hasLargePhoto
+        ? { ...record, issuePhotoDataUrl: '', photoAttachmentUrl, hasPhoto: true }
+        : record;
+      await fetchWithTimeout(`https://ntfy.sh/${PART_REQ_CLOUD_TOPIC}`, {
+        method: 'POST',
+        body: JSON.stringify(compactRecord)
+      }, 5000);
+      return true;
+    } catch (e) {
+      console.warn('[PartReq] Cloud relay push warn:', e);
+      return false;
+    }
   }
 
   async function savePartRequisitionEverywhere(record) {
@@ -11647,27 +11839,28 @@
     persistPartRequisitionsLocal();
     updatePartReqBadges();
 
-    // 1. Save to local helper server (writes PartRequisitionsSeed.js + Part-Requisitions-Google-Sheet-Log.xlsx + GitHub sync)
+    // 0. Broadcast immediately to other open tabs in the same browser
     try {
-      const helperBase = await checkHelperHealth();
+      partReqBroadcastChannel?.postMessage({ record });
+    } catch (_) {}
+
+    // 1. Push immediately over HTTPS Cloud Relay so Warehouse on ANY mobile phone or PC receives it in < 0.5s!
+    await pushRecordToCloudRelay(record);
+
+    // 2. Save to local helper server in background (writes PartRequisitionsSeed.js + Part-Requisitions-Google-Sheet-Log.xlsx + GitHub sync)
+    checkHelperHealth().then(helperBase => {
       if (helperBase) {
-        await fetch(`${helperBase}/part-requisitions`, {
+        fetchWithTimeout(`${helperBase}/part-requisitions`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ record })
-        });
+        }, 4000).catch(() => {});
       }
-    } catch (e) {
-      console.warn('[PartReq] Helper save warn:', e);
-    }
+    }).catch(() => {});
 
-    // 2. Save to Google Sheets ("On-Hand Inventory Planner - H9 Assembly" -> tab "PartRequisitions")
+    // 3. Save to Google Sheets ("On-Hand Inventory Planner - H9 Assembly" -> tab "PartRequisitions")
     if (hasGoogle()) {
-      try {
-        await callGoogle('savePartRequisition', record);
-      } catch (e) {
-        console.warn('[PartReq] Google Sheet save warn:', e);
-      }
+      callGoogle('savePartRequisition', record).catch(() => {});
     }
   }
 
@@ -12343,6 +12536,7 @@
     }
     renderPartReqWarehouseAlert();
     renderPartReqHistoryTable();
+    syncPartRequisitionsFromServer(true);
   }
 
   // Warehouse Location dynamic rows (starts with 1 location, click + to add more)
@@ -12660,12 +12854,13 @@
 
   function initPartRequisitionListeners() {
     loadInitialPartRequisitions();
+    startPartReqRealtimeStream();
 
-    // Poll shared server every 5 seconds so Warehouse receives real-time popups when Requester clicks Save
+    // Poll shared cloud relay & helper server every 3.5 seconds so Warehouse receives real-time popups when Requester clicks Save
     setInterval(() => {
       syncPartRequisitionsFromServer(true);
-    }, 5000);
-    setTimeout(() => syncPartRequisitionsFromServer(true), 1200);
+    }, 3500);
+    setTimeout(() => syncPartRequisitionsFromServer(true), 600);
 
     // MO Autocomplete
     const moInp = el('reqMoInput');
