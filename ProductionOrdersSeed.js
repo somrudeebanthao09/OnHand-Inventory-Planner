@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-07T02:46:28.816Z",
+  "snapshotAt": "2026-11-07T02:48:29.197Z",
   "filename": "Export list_Production Material List_1104112051.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
   "count": 11719,
   "orders": [
@@ -3466,7 +3466,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "materialName": "Aluminium ingot",
       "specification": "ADC12",
       "unit": "KG",
-      "orderQty": 5000,
+      "orderQty": 1156.5,
       "demandQty": 1830,
       "issuedQty": 0,
       "unissuedQty": 1830,
@@ -15016,7 +15016,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "materialName": "Aluminium ingot",
       "specification": "ADC12",
       "unit": "KG",
-      "orderQty": 1600,
+      "orderQty": 1609.32,
       "demandQty": 1751.2,
       "issuedQty": 0,
       "unissuedQty": 1751.2,
