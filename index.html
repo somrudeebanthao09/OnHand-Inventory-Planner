@@ -1134,6 +1134,256 @@
       }
     }
 
+    /* ==========================================================
+       Part Requisition & Warehouse Issue Responsive Layout
+       รองรับทั้ง PC (Admin) และ Mobile Phone (พนักงานเบิก/คลังจ่าย)
+       ========================================================== */
+    .part-req-form-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .part-req-form-grid > div {
+      min-width: 0;
+    }
+    .pr-col-date      { grid-column: span 2; }
+    .pr-col-shift     { grid-column: span 2; }
+    .pr-col-mo        { grid-column: span 4; position: relative; }
+    .pr-col-code      { grid-column: span 4; position: relative; }
+    .pr-col-desc      { grid-column: span 6; }
+    .pr-col-qty       { grid-column: span 3; }
+    .pr-col-unit      { grid-column: span 3; }
+    .pr-col-reason    { grid-column: span 4; }
+    .pr-col-requester { grid-column: span 4; }
+    .pr-col-note      { grid-column: span 4; }
+
+    .part-req-cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .part-req-status-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .part-req-mobile-list {
+      display: none;
+    }
+    .wh-issuer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .wh-location-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 140px auto;
+      gap: 8px;
+      align-items: end;
+      background: #fff;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+    }
+
+    @media (max-width: 768px) {
+      /* Hide Admin-only Google Sheet notice & export actions on mobile */
+      .part-req-admin-only {
+        display: none !important;
+      }
+      #page-part-requisition .title-row {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        margin: 0 0 10px !important;
+      }
+      #page-part-requisition .title-row h1 {
+        font-size: 17px !important;
+        margin: 0 !important;
+      }
+      #page-part-requisition .title-row p,
+      #page-part-requisition .title-row .part-req-hero-badges {
+        display: none !important;
+      }
+      #page-part-requisition .title-row .row-actions {
+        width: auto !important;
+        flex-direction: row !important;
+      }
+      #page-part-requisition #refreshPartReqBtn {
+        width: auto !important;
+        padding: 6px 12px !important;
+        font-size: 12.5px !important;
+        height: 34px !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* 3 compact summary cards in 1 row on mobile */
+      .part-req-cards {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        margin-bottom: 10px !important;
+      }
+      .part-req-cards .metric {
+        padding: 8px 8px !important;
+      }
+      .part-req-cards .metric-top {
+        font-size: 10.5px !important;
+      }
+      .part-req-cards .metric-icon {
+        display: none !important;
+      }
+      .part-req-cards .metric-value {
+        font-size: 18px !important;
+        margin-top: 2px !important;
+      }
+      .part-req-cards .metric-note {
+        display: none !important;
+      }
+
+      /* Form header: keep Reset button compact on the right */
+      #partReqFormPanel .panel-head {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 8px !important;
+      }
+      #partReqFormPanel .panel-head p,
+      #partReqFormPanel .panel-head .badge {
+        display: none !important;
+      }
+      #partReqFormPanel #partReqResetFormBtn {
+        width: auto !important;
+        padding: 6px 11px !important;
+        font-size: 12px !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* Mobile Form Grid: Clean 2-col for short pairs, full-width for text fields - NO OVERLAP! */
+      .part-req-form-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 11px !important;
+      }
+      .pr-col-date      { grid-column: 1 / 2 !important; }
+      .pr-col-shift     { grid-column: 2 / 3 !important; }
+      .pr-col-mo        { grid-column: 1 / -1 !important; }
+      .pr-col-code      { grid-column: 1 / -1 !important; }
+      .pr-col-desc      { grid-column: 1 / -1 !important; }
+      .pr-col-qty       { grid-column: 1 / 2 !important; }
+      .pr-col-unit      { grid-column: 2 / 3 !important; }
+      .pr-col-reason    { grid-column: 1 / -1 !important; }
+      .pr-col-requester { grid-column: 1 / -1 !important; }
+      .pr-col-note      { grid-column: 1 / -1 !important; }
+
+      .part-req-form-grid label {
+        font-size: 13px !important;
+        line-height: 1.3 !important;
+        margin-bottom: 4px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+      .part-req-form-grid .field {
+        height: 42px !important;
+        font-size: 14.5px !important;
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+      #reqMoDropdown,
+      #reqMatDropdown {
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: 260px !important;
+      }
+      #reqSubmitSaveBtn {
+        width: 100% !important;
+        height: 46px !important;
+        font-size: 15px !important;
+        padding: 0 14px !important;
+        justify-content: center !important;
+      }
+      .part-req-submit-bar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+      }
+
+      /* History Panel Filters & Status Pills on Mobile */
+      #partReqHistoryPanel .filters {
+        width: 100% !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+      }
+      .part-req-status-tabs {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        width: 100% !important;
+      }
+      .part-req-status-tabs .safety-pill {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 7px 4px !important;
+        font-size: 12px !important;
+        white-space: nowrap !important;
+      }
+      .part-req-filter-inputs {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 6px !important;
+        width: 100% !important;
+      }
+      #partReqSearchInput {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      /* Show Mobile Card List instead of wide 1360px table on Mobile Phone */
+      #partReqDesktopTableWrap {
+        display: none !important;
+      }
+      .part-req-mobile-list {
+        display: grid !important;
+        gap: 10px !important;
+      }
+
+      /* Warehouse Confirm Modal on Mobile */
+      .wh-issuer-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+      .wh-location-row {
+        grid-template-columns: 1fr auto !important;
+        gap: 8px !important;
+      }
+      .wh-location-row > div:first-child {
+        grid-column: 1 / -1 !important;
+      }
+      #whConfirmIssueModal .modal-actions {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+      }
+      #whConfirmIssueModal .modal-actions > div {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: 1fr 2fr !important;
+        gap: 8px !important;
+      }
+      #whConfirmSaveBtn {
+        width: 100% !important;
+        font-size: 13.5px !important;
+        padding: 10px 8px !important;
+      }
+    }
+
     /* Security Auto-Lock Screen */
     .lock-screen-overlay {
       position: fixed;
@@ -2073,24 +2323,24 @@
       <section class="page" id="page-part-requisition">
         <div class="title-row" style="align-items:flex-start;margin-bottom:12px">
           <div>
-            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+            <div class="part-req-hero-badges" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
               <span class="badge" style="background:var(--teal);color:#fff;font-size:12.5px">📦 ระบบเบิก-จ่าย Part เพิ่มเติม (Production ➔ Warehouse)</span>
               <span class="badge green" id="partReqSyncStatusBadge" style="font-size:12px">🔗 เชื่อมต่อ Google Sheet &amp; ระบบกลางแล้ว</span>
             </div>
-            <h1>เบิก Part เพิ่มเติม &amp; ยืนยันการจ่ายคลัง (Warehouse Issue)</h1>
+            <h1>📦 เบิก Part เพิ่มเติม &amp; ยืนยันการจ่ายคลัง</h1>
             <p>บันทึกใบเบิกผูกเลข MO เชื่อมใบโอน Direct Transfer (ZJDB) ส่งแจ้งเตือนไปคลัง Warehouse ยืนยัน Location และถ่ายรูปสดก่อนจ่าย</p>
           </div>
           <div class="row-actions" style="align-items:center">
-            <a href="https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit" target="_blank" rel="noopener" class="btn soft" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-weight:700">
+            <a href="https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit" target="_blank" rel="noopener" id="openPartReqGoogleSheetBtn" class="btn soft part-req-admin-only" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-weight:700">
               <span>📊</span> <span>เปิด Google Sheet (On-Hand Inventory Planner - H9 Assembly)</span>
             </a>
-            <button class="btn" id="exportPartReqExcelBtn" type="button">📥 ส่งออกประวัติ (.xlsx)</button>
-            <button class="btn primary" id="refreshPartReqBtn" type="button">↻ รีเฟรชข้อมูล</button>
+            <button class="btn part-req-admin-only" id="exportPartReqExcelBtn" type="button">📥 ส่งออกประวัติ (.xlsx)</button>
+            <button class="btn primary" id="refreshPartReqBtn" type="button">↻ รีเฟรช</button>
           </div>
         </div>
 
-        <!-- Google Sheet Info Notice -->
-        <div class="notice" style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#f0fdf4;border-color:#bbf7d0;color:#14532d">
+        <!-- Google Sheet Info Notice (แสดงเฉพาะ Admin บนคอมพิวเตอร์) -->
+        <div id="partReqGoogleSheetNotice" class="notice part-req-admin-only" style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#f0fdf4;border-color:#bbf7d0;color:#14532d">
           <div>
             <strong>📄 ชื่อไฟล์ Google Sheet ที่ใช้บันทึกข้อมูล (ไฟล์เดียวกับที่อัปเดต On-Hand):</strong>
             <span style="font-weight:800;color:#0f766e;margin-left:6px;background:#fff;padding:2px 8px;border-radius:6px;border:1px solid #86efac">On-Hand Inventory Planner - H9 Assembly</span>
@@ -2102,167 +2352,149 @@
         <!-- Warehouse Live Alert Banner (pops up when there are pending requisitions) -->
         <div id="whPendingAlertBanner" class="notice warn hidden" style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:2px solid #f59e0b;background:#fffbeb;box-shadow:0 4px 14px rgba(245,158,11,0.18)">
           <div style="display:flex;align-items:center;gap:10px">
-            <span style="font-size:24px">🔔</span>
+            <span style="font-size:22px">🔔</span>
             <div>
-              <strong style="font-size:15.5px;color:#b45309;display:block">แจ้งเตือนคลัง (Warehouse): มีรายการขอเบิก Part เพิ่มเติม รอจ่าย <span id="whAlertCountText">0</span> รายการ!</strong>
-              <span style="font-size:13px;color:#92400e">กรุณาตรวจสอบรายการด้านล่าง กดปุ่ม <b>"📦 Confirm จ่าย Part (Warehouse)"</b> เพื่อระบุ Location และถ่ายรูปยืนยันการจ่าย</span>
+              <strong style="font-size:14.5px;color:#b45309;display:block">แจ้งเตือนคลัง (Warehouse): มีใบเบิก Part รอจ่าย <span id="whAlertCountText">0</span> รายการ!</strong>
+              <span style="font-size:12.5px;color:#92400e">กดปุ่ม <b>"📦 Confirm จ่าย Part"</b> ด้านล่างเพื่อระบุ Location และถ่ายรูปยืนยัน</span>
             </div>
           </div>
-          <button type="button" class="btn primary" id="whJumpToPendingBtn" style="background:#d97706;border-color:#d97706;font-weight:700">👇 ดูรายการรอจ่ายทันที</button>
+          <button type="button" class="btn primary" id="whJumpToPendingBtn" style="background:#d97706;border-color:#d97706;font-weight:700;padding:7px 14px;font-size:13px">👇 ดูรายการรอจ่าย</button>
         </div>
 
-        <!-- 4 Summary Cards -->
-        <div class="cards" style="margin-bottom:16px">
-          <div class="card metric" style="padding:14px 18px;cursor:pointer" id="partReqCardAll">
-            <div class="metric-top"><span>ใบเบิก Part ทั้งหมด</span><span class="metric-icon">📋</span></div>
-            <div class="metric-value" id="partReqMetricTotal" style="font-size:26px">0</div>
-            <div class="metric-note" id="partReqMetricTotalSub">บันทึกประวัติครบทุกรายการ</div>
+        <!-- 3 Clean Summary Cards -->
+        <div class="part-req-cards">
+          <div class="card metric" style="padding:12px 16px;cursor:pointer" id="partReqCardAll">
+            <div class="metric-top"><span>ใบเบิกทั้งหมด</span><span class="metric-icon">📋</span></div>
+            <div class="metric-value" id="partReqMetricTotal" style="font-size:24px">0</div>
+            <div class="metric-note" id="partReqMetricTotalSub">ประวัติทั้งหมด</div>
           </div>
-          <div class="card metric" style="padding:14px 18px;cursor:pointer;border-color:#fde68a;background:#fffdf5" id="partReqCardPending">
-            <div class="metric-top"><span style="color:#b45309;font-weight:700">⏳ รอคลังจ่าย (Warehouse)</span><span class="metric-icon" style="background:#fef3c7">🔔</span></div>
-            <div class="metric-value" id="partReqMetricPending" style="font-size:26px;color:#d97706">0</div>
-            <div class="metric-note" style="color:#92400e">คลิกเพื่อกรองเฉพาะรายการรอจ่าย</div>
+          <div class="card metric" style="padding:12px 16px;cursor:pointer;border-color:#fde68a;background:#fffdf5" id="partReqCardPending">
+            <div class="metric-top"><span style="color:#b45309;font-weight:700">⏳ รอคลังจ่าย</span><span class="metric-icon" style="background:#fef3c7">🔔</span></div>
+            <div class="metric-value" id="partReqMetricPending" style="font-size:24px;color:#d97706">0</div>
+            <div class="metric-note" style="color:#92400e">คลิกดูรายการรอจ่าย</div>
           </div>
-          <div class="card metric" style="padding:14px 18px;cursor:pointer;border-color:#bbf7d0;background:#f7fee7" id="partReqCardIssued">
-            <div class="metric-top"><span style="color:#15803d;font-weight:700">✅ คลังจ่ายแล้ว (Confirmed)</span><span class="metric-icon" style="background:#dcfce7">📸</span></div>
-            <div class="metric-value" id="partReqMetricIssued" style="font-size:26px;color:#16a34a">0</div>
-            <div class="metric-note" style="color:#166534">ยืนยัน Location + รูปถ่ายสดครบ</div>
-          </div>
-          <div class="card metric" style="padding:14px 18px" id="partReqCardLinkedZjdb">
-            <div class="metric-top"><span>🔗 เชื่อมเลข Direct Transfer (ZJDB)</span><span class="metric-icon">🔄</span></div>
-            <div class="metric-value" id="partReqMetricZjdb" style="font-size:26px;color:var(--teal)">0</div>
-            <div class="metric-note">ผูกกับ MO และใบโอน ZJDB ใน ERP</div>
+          <div class="card metric" style="padding:12px 16px;cursor:pointer;border-color:#bbf7d0;background:#f7fee7" id="partReqCardIssued">
+            <div class="metric-top"><span style="color:#15803d;font-weight:700">✅ จ่ายแล้ว</span><span class="metric-icon" style="background:#dcfce7">📸</span></div>
+            <div class="metric-value" id="partReqMetricIssued" style="font-size:24px;color:#16a34a">0</div>
+            <div class="metric-note" style="color:#166534">ยืนยัน Location + รูปถ่ายครบ</div>
           </div>
         </div>
 
         <!-- Step 1: Request Form Panel (ฝั่งผู้เบิก Part) -->
-        <div class="panel" id="partReqFormPanel" style="border:1.5px solid #cbd5e1;margin-bottom:18px">
+        <div class="panel" id="partReqFormPanel" style="border:1.5px solid #cbd5e1;margin-bottom:16px">
           <div class="panel-head" style="border-bottom:1px solid #e2e8f0;padding-bottom:10px;margin-bottom:14px">
             <div>
-              <h2 style="font-size:18px;color:#0f172a;display:flex;align-items:center;gap:8px">
-                <span>📝 1. แบบฟอร์มขอเบิก Part เพิ่มเติม (สำหรับผู้เบิก)</span>
-                <span class="badge" style="background:#e0f2fe;color:#0369a1;font-size:12px">ประทับเวลา Timestamp อัตโนมัติเมื่อกด Save</span>
+              <h2 style="font-size:17px;color:#0f172a;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <span>📝 1. แบบฟอร์มขอเบิก Part เพิ่มเติม</span>
+                <span class="badge" style="background:#e0f2fe;color:#0369a1;font-size:11.5px">Stamp เวลาอัตโนมัติเมื่อกด Save</span>
               </h2>
-              <p>เลือกหรือพิมพ์เลขที่ MO ระบบจะดึงเลข Direct Transfer (ZJDB) มาเชื่อมให้อัตโนมัติ และพิมพ์รหัส Part เพื่อกรองและแสดง Description ทันที</p>
+              <p>พิมพ์เลข MO และรหัส Part เพื่อกรองและดึง Description อัตโนมัติ (เชื่อมเลขใบโอน Direct Transfer ZJDB ให้อัตโนมัติ)</p>
             </div>
-            <button type="button" class="btn soft" id="partReqResetFormBtn" style="padding:6px 12px;font-size:13px">↺ ล้างฟอร์ม</button>
+            <button type="button" class="btn soft" id="partReqResetFormBtn" style="padding:6px 12px;font-size:12.5px">↺ ล้างฟอร์ม</button>
           </div>
 
           <form id="partRequisitionForm">
-            <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px;align-items:start">
+            <!-- Hidden auto-linked ZJDB & PPBOM inputs (เชื่อมอัตโนมัติเบื้องหลัง ไม่เกะกะหน้าจอมือถือ) -->
+            <input type="hidden" id="reqZjdbInput">
+            <input type="hidden" id="reqPpbomInput">
+
+            <div class="part-req-form-grid">
               <!-- 1. วันที่เบิก -->
-              <div style="grid-column:span 2;min-width:130px">
+              <div class="pr-col-date">
                 <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">วันที่เบิก <span style="color:#dc2626">*</span></label>
                 <input type="date" id="reqDateInput" class="field" style="width:100%;height:40px;font-size:13.5px" required>
               </div>
 
-              <!-- 2. เลขที่ใบเบิกที่เป็น MO (พร้อม Autocomplete) -->
-              <div style="grid-column:span 4;position:relative">
-                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">
-                  เลขที่ใบเบิก (MO Number) <span style="color:#dc2626">*</span>
-                  <span style="font-weight:500;color:#64748b;font-size:11.5px">(พิมพ์เพื่อค้นหา Order)</span>
-                </label>
-                <input type="text" id="reqMoInput" class="field" placeholder="เช่น MO-20261106-003100 (พิมพ์เลข MO หรือชื่อรุ่น)" autocomplete="off" style="width:100%;height:40px;font-size:14px;font-weight:700;color:#0f172a" required>
-                <div id="reqMoDropdown" class="hidden" style="position:absolute;left:0;right:0;top:68px;z-index:30;background:#fff;border:1px solid #94a3b8;border-radius:10px;max-height:270px;overflow:auto;box-shadow:0 12px 30px rgba(15,23,42,0.18)"></div>
+              <!-- 2. กะ (A/B) -->
+              <div class="pr-col-shift">
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">กะ (Shift) <span style="color:#dc2626">*</span></label>
+                <select id="reqShiftSelect" class="field" style="width:100%;height:40px;font-size:14px;font-weight:700">
+                  <option value="A" selected>กะ A</option>
+                  <option value="B">กะ B</option>
+                </select>
               </div>
 
-              <!-- 3. เลข Direct Transfer (ZJDB) & PPBOM ที่เชื่อมกับ MO อัตโนมัติ -->
-              <div style="grid-column:span 6">
-                <label style="display:block;font-size:12.5px;font-weight:700;color:#0f766e;margin-bottom:4px">
-                  🔗 เลขใบโอน Direct Transfer (ZJDB) &amp; PPBOM ที่เชื่อมกับ MO นี้
+              <!-- 3. เลขที่ใบเบิกที่เป็น MO (พร้อม Autocomplete & เชื่อม ZJDB อัตโนมัติ) -->
+              <div class="pr-col-mo">
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">
+                  เลขที่ใบเบิก (MO Number) <span style="color:#dc2626">*</span>
                 </label>
-                <div style="display:flex;gap:8px;align-items:center">
-                  <input type="text" id="reqZjdbInput" class="field" placeholder="จะดึงเลข ZJDB-... อัตโนมัติเมื่อเลือก MO (หรือระบุเพิ่มได้)" style="flex:1;height:40px;font-size:13.5px;background:#f0fdf4;border-color:#86efac;color:#166534;font-weight:700">
-                  <input type="hidden" id="reqPpbomInput">
-                  <span id="reqMoProductBadge" class="badge gray" style="height:40px;padding:0 12px;font-size:12px;white-space:nowrap;max-width:240px;overflow:hidden;text-overflow:ellipsis">ยังไม่ได้เลือก MO</span>
-                </div>
+                <input type="text" id="reqMoInput" class="field" placeholder="พิมพ์เลข MO เช่น MO-20261106-003100" autocomplete="off" style="width:100%;height:40px;font-size:14px;font-weight:700;color:#0f172a" required>
+                <div id="reqMoLinkedHint" class="hidden" style="margin-top:4px;font-size:11.5px;color:#047857;font-weight:700;line-height:1.35"></div>
+                <div id="reqMoDropdown" class="hidden" style="position:absolute;left:0;right:0;top:66px;z-index:30;background:#fff;border:1px solid #94a3b8;border-radius:10px;max-height:270px;overflow:auto;box-shadow:0 12px 30px rgba(15,23,42,0.18)"></div>
               </div>
 
               <!-- 4. รหัสรายการเบิก (Material Code) พร้อมระบบกรองอัตโนมัติ -->
-              <div style="grid-column:span 4;position:relative">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-                  <label style="font-size:12.5px;font-weight:700;color:#334155">
-                    รหัสรายการเบิก (Part Code) <span style="color:#dc2626">*</span>
-                  </label>
-                  <label style="font-size:11.5px;color:#0f766e;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:4px">
-                    <input type="checkbox" id="reqFilterByMoBomChk" checked> กรองเฉพาะ BOM ของ MO ก่อน
-                  </label>
-                </div>
-                <input type="text" id="reqMatCodeInput" class="field" placeholder="พิมพ์รหัส Part หรือชื่อ Part เช่น 1005QT00168..." autocomplete="off" style="width:100%;height:40px;font-size:14px;font-weight:700;color:#087e78" required>
-                <div id="reqMatDropdown" class="hidden" style="position:absolute;left:0;width:min(620px,92vw);top:68px;z-index:30;background:#fff;border:1px solid #94a3b8;border-radius:10px;max-height:300px;overflow:auto;box-shadow:0 12px 32px rgba(15,23,42,0.22)"></div>
+              <div class="pr-col-code">
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">
+                  รหัสรายการเบิก (Part Code) <span style="color:#dc2626">*</span>
+                </label>
+                <input type="text" id="reqMatCodeInput" class="field" placeholder="พิมพ์รหัสหรือชื่อ Part เช่น 1005QT00168" autocomplete="off" style="width:100%;height:40px;font-size:14px;font-weight:700;color:#087e78" required>
+                <div id="reqMatDropdown" class="hidden" style="position:absolute;left:0;width:min(560px,100%);top:66px;z-index:30;background:#fff;border:1px solid #94a3b8;border-radius:10px;max-height:290px;overflow:auto;box-shadow:0 12px 32px rgba(15,23,42,0.22)"></div>
               </div>
 
               <!-- 5. Description (ชื่อรายการ + Specification ขึ้นอัตโนมัติ) -->
-              <div style="grid-column:span 5">
+              <div class="pr-col-desc">
                 <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">
-                  Description (ชื่อรายการวัตถุดิบ / Specification) <span style="font-weight:500;color:#64748b;font-size:11.5px">(ขึ้นอัตโนมัติตามรหัส Part)</span>
+                  Description (ชื่อ Part / Specification)
                 </label>
-                <input type="text" id="reqMatDescInput" class="field" placeholder="Description จะขึ้นอัตโนมัติเมื่อเลือกรหัส Part" style="width:100%;height:40px;font-size:13.5px;background:#f8fafc;font-weight:600;color:#1e293b" required>
+                <input type="text" id="reqMatDescInput" class="field" placeholder="ขึ้นอัตโนมัติเมื่อเลือกรหัส Part" style="width:100%;height:40px;font-size:13.5px;background:#f8fafc;font-weight:600;color:#1e293b" required>
                 <input type="hidden" id="reqMatSpecInput">
               </div>
 
-              <!-- 6. จำนวนที่เบิก + 7. หน่วย (PCS เป็นหลัก / เปลี่ยนเป็น Kg, Set ได้) -->
-              <div style="grid-column:span 3;display:grid;grid-template-columns:1.25fr 1fr;gap:8px">
-                <div>
-                  <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">จำนวนที่เบิก <span style="color:#dc2626">*</span></label>
-                  <input type="number" id="reqQtyInput" class="field" min="0.0001" step="any" placeholder="0" style="width:100%;height:40px;font-size:15px;font-weight:800;text-align:right;color:#0f172a" required>
-                </div>
-                <div>
-                  <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">หน่วย <span style="color:#dc2626">*</span></label>
-                  <select id="reqUnitSelect" class="field" style="width:100%;height:40px;font-size:14px;font-weight:700;color:#087e78;background:#f0fdf4">
-                    <option value="PCS" selected>PCS (หลัก)</option>
-                    <option value="Kg">Kg</option>
-                    <option value="Set">Set</option>
-                  </select>
-                </div>
+              <!-- 6. จำนวนที่เบิก -->
+              <div class="pr-col-qty">
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">จำนวนที่เบิก <span style="color:#dc2626">*</span></label>
+                <input type="number" id="reqQtyInput" class="field" min="0.0001" step="any" placeholder="0" style="width:100%;height:40px;font-size:15px;font-weight:800;text-align:right;color:#0f172a" required>
+              </div>
+
+              <!-- 7. หน่วย (PCS เป็นหลัก / เปลี่ยนเป็น Kg, Set ได้) -->
+              <div class="pr-col-unit">
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">หน่วย <span style="color:#dc2626">*</span></label>
+                <select id="reqUnitSelect" class="field" style="width:100%;height:40px;font-size:14px;font-weight:700;color:#087e78;background:#f0fdf4">
+                  <option value="PCS" selected>PCS (หลัก)</option>
+                  <option value="Kg">Kg</option>
+                  <option value="Set">Set</option>
+                </select>
               </div>
 
               <!-- 8. สาเหตุการเบิก -->
-              <div style="grid-column:span 4">
+              <div class="pr-col-reason">
                 <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">สาเหตุการเบิก <span style="color:#dc2626">*</span></label>
-                <div style="display:flex;gap:6px">
-                  <select id="reqReasonSelect" class="field" style="flex:1;height:40px;font-size:13.5px" required>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <select id="reqReasonSelect" class="field" style="width:100%;height:40px;font-size:13.5px" required>
                     <option value="งานเสีย/NG ในไลน์ผลิต">งานเสีย/NG ในไลน์ผลิต</option>
                     <option value="ของไม่ครบตามถุง/Shortage">ของไม่ครบตามถุง/Shortage</option>
                     <option value="ชำรุด/ตกหล่นระหว่างประกอบ">ชำรุด/ตกหล่นระหว่างประกอบ</option>
                     <option value="เบิกเพิ่มตามใบสั่งผลิต (MO)">เบิกเพิ่มตามใบสั่งผลิต (MO)</option>
                     <option value="อื่นๆ">อื่นๆ (ระบุเอง)</option>
                   </select>
-                  <input type="text" id="reqReasonCustomInput" class="field hidden" placeholder="ระบุสาเหตุ..." style="flex:1;height:40px;font-size:13.5px">
+                  <input type="text" id="reqReasonCustomInput" class="field hidden" placeholder="ระบุสาเหตุเพิ่มเติม..." style="width:100%;height:40px;font-size:13.5px">
                 </div>
               </div>
 
-              <!-- 9. ผู้เบิก + 10. กะ (A/B) -->
-              <div style="grid-column:span 4;display:grid;grid-template-columns:1.5fr 1fr;gap:8px">
-                <div>
-                  <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">ผู้เบิก <span style="color:#dc2626">*</span></label>
-                  <input type="text" id="reqRequesterInput" class="field" placeholder="ชื่อผู้เบิก" style="width:100%;height:40px;font-size:13.5px;font-weight:600" required>
-                </div>
-                <div>
-                  <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">กะ (Shift) <span style="color:#dc2626">*</span></label>
-                  <select id="reqShiftSelect" class="field" style="width:100%;height:40px;font-size:14px;font-weight:700">
-                    <option value="A" selected>กะ A</option>
-                    <option value="B">กะ B</option>
-                  </select>
-                </div>
+              <!-- 9. ผู้เบิก -->
+              <div class="pr-col-requester">
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">ผู้เบิก <span style="color:#dc2626">*</span></label>
+                <input type="text" id="reqRequesterInput" class="field" placeholder="ชื่อผู้เบิก" style="width:100%;height:40px;font-size:13.5px;font-weight:600" required>
               </div>
 
-              <!-- 11. หมายเหตุของผู้เบิก -->
-              <div style="grid-column:span 4">
+              <!-- 10. หมายเหตุของผู้เบิก -->
+              <div class="pr-col-note">
                 <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">หมายเหตุ (ผู้เบิก)</label>
-                <input type="text" id="reqNoteInput" class="field" placeholder="ระบุหมายเหตุเพิ่มเติมของผู้เบิก (ถ้ามี)..." style="width:100%;height:40px;font-size:13.5px">
+                <input type="text" id="reqNoteInput" class="field" placeholder="ระบุหมายเหตุเพิ่มเติม (ถ้ามี)..." style="width:100%;height:40px;font-size:13.5px">
               </div>
             </div>
 
             <!-- Stock & Location hint bar for selected part -->
-            <div id="reqSelectedPartStockHint" class="hidden" style="margin-top:10px;padding:8px 12px;border-radius:8px;background:#f0f9ff;border:1px solid #bae6fd;font-size:12.5px;color:#0369a1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px"></div>
+            <div id="reqSelectedPartStockHint" class="hidden" style="margin-top:10px;padding:8px 12px;border-radius:8px;background:#f0f9ff;border:1px solid #bae6fd;font-size:12px;color:#0369a1;line-height:1.45"></div>
 
-            <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-              <div style="font-size:12.5px;color:#475569">
-                ⏱️ <b>เวลาเบิก (Timestamp):</b> ระบบจะประทับเวลาวินาทีที่กดปุ่ม <b>Save</b> อัตโนมัติ และส่งแจ้งเตือนเด้งไปที่หน้าจอ <b>Warehouse</b> ทันที
+            <div class="part-req-submit-bar" style="margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+              <div style="font-size:12px;color:#475569">
+                ⏱️ ประทับเวลาเบิก (Timestamp) อัตโนมัติเมื่อกด <b>Save</b> และแจ้งเตือนไปที่ <b>Warehouse</b> ทันที
               </div>
-              <button type="submit" class="btn primary" id="reqSubmitSaveBtn" style="height:42px;padding:0 24px;font-size:15px;font-weight:700;box-shadow:0 4px 12px rgba(8,126,120,0.25)">
-                💾 Save บันทึกใบเบิก Part (ส่งแจ้งเตือนไป Warehouse)
+              <button type="submit" class="btn primary" id="reqSubmitSaveBtn" style="height:44px;padding:0 24px;font-size:15px;font-weight:700;box-shadow:0 4px 12px rgba(8,126,120,0.25)">
+                💾 Save บันทึกใบเบิก Part
               </button>
             </div>
           </form>
@@ -2272,26 +2504,32 @@
         <div class="panel" id="partReqHistoryPanel">
           <div class="panel-head" style="flex-wrap:wrap;gap:10px">
             <div>
-              <h2 style="font-size:18px;color:#0f172a">📜 2. รายการรอคลังจ่าย (Warehouse Confirm) &amp; ประวัติการเบิก-จ่าย Part ทั้งหมด</h2>
+              <h2 style="font-size:17px;color:#0f172a">📜 2. รายการรอคลังจ่าย &amp; ประวัติการเบิก-จ่าย Part</h2>
               <p>คลังกดปุ่ม <b>"📦 Confirm จ่าย Part"</b> เพื่อระบุ Location (กด + เพิ่มได้หลายจุด) และถ่ายรูปสดจากกล้องเพื่อยืนยันการจ่ายจริง</p>
             </div>
             <div class="filters">
-              <div style="display:flex;gap:5px">
+              <div class="part-req-status-tabs">
                 <button type="button" class="safety-pill active" data-req-tab="all" id="partReqTabAllBtn">ทั้งหมด (<span id="partReqTabAllCount">0</span>)</button>
-                <button type="button" class="safety-pill" data-req-tab="pending" id="partReqTabPendingBtn" style="border-color:#f59e0b;color:#b45309">⏳ รอคลังจ่าย (<span id="partReqTabPendingCount">0</span>)</button>
+                <button type="button" class="safety-pill" data-req-tab="pending" id="partReqTabPendingBtn" style="border-color:#f59e0b;color:#b45309">⏳ รอจ่าย (<span id="partReqTabPendingCount">0</span>)</button>
                 <button type="button" class="safety-pill" data-req-tab="issued" id="partReqTabIssuedBtn" style="border-color:#22c55e;color:#15803d">✅ จ่ายแล้ว (<span id="partReqTabIssuedCount">0</span>)</button>
               </div>
-              <select id="partReqShiftFilter" class="field" style="min-height:36px;padding:5px 10px;font-size:13px">
-                <option value="">ทุกกะ (A/B)</option>
-                <option value="A">เฉพาะ กะ A</option>
-                <option value="B">เฉพาะ กะ B</option>
-              </select>
-              <input type="date" id="partReqDateFilter" class="field" style="min-height:36px;padding:5px 10px;font-size:13px" title="กรองตามวันที่เบิก">
-              <input type="text" id="partReqSearchInput" class="field search" placeholder="ค้นหา MO, ZJDB, รหัส Part, Description, ผู้เบิก, ผู้จ่าย..." style="min-height:36px;min-width:250px;font-size:13px">
+              <div class="part-req-filter-inputs" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+                <select id="partReqShiftFilter" class="field" style="min-height:36px;padding:5px 10px;font-size:13px">
+                  <option value="">ทุกกะ (A/B)</option>
+                  <option value="A">เฉพาะ กะ A</option>
+                  <option value="B">เฉพาะ กะ B</option>
+                </select>
+                <input type="date" id="partReqDateFilter" class="field" style="min-height:36px;padding:5px 10px;font-size:13px" title="กรองตามวันที่เบิก">
+                <input type="text" id="partReqSearchInput" class="field search" placeholder="ค้นหา MO, รหัส Part, ชื่อผู้เบิก/ผู้จ่าย..." style="min-height:36px;min-width:220px;font-size:13px">
+              </div>
             </div>
           </div>
 
-          <div class="table-wrap" style="max-height:620px;overflow:auto">
+          <!-- Mobile Card List (แสดงบนโทรศัพท์มือถือ อ่านง่าย กด Confirm จ่ายได้ทันที ไม่ต้องเลื่อนตารางซ้าย-ขวา) -->
+          <div id="partReqMobileList" class="part-req-mobile-list"></div>
+
+          <!-- Desktop Full Table (แสดงบนคอมพิวเตอร์สำหรับ Admin) -->
+          <div id="partReqDesktopTableWrap" class="table-wrap" style="max-height:620px;overflow:auto">
             <table style="width:100%;min-width:1360px;border-collapse:collapse;font-size:13px;white-space:normal">
               <thead style="position:sticky;top:0;z-index:2;background:#f8fafc;box-shadow:0 1px 2px rgba(0,0,0,0.06)">
                 <tr>
@@ -2321,49 +2559,49 @@
         <div class="modal" style="width:min(760px,96vw);max-height:92vh;overflow:auto;padding:22px 24px">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px">
             <div>
-              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-                <span class="badge amber" id="whModalReqIdBadge" style="font-size:12.5px">REQ-XXXX</span>
-                <span class="badge" id="whModalMoBadge" style="background:var(--teal);color:#fff;font-size:12.5px">MO-XXXX</span>
-                <span class="badge green" id="whModalZjdbBadge" style="font-size:12px">🔗 ZJDB: —</span>
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                <span class="badge amber" id="whModalReqIdBadge" style="font-size:12px">REQ-XXXX</span>
+                <span class="badge" id="whModalMoBadge" style="background:var(--teal);color:#fff;font-size:12px">MO-XXXX</span>
+                <span class="badge green" id="whModalZjdbBadge" style="font-size:11.5px">🔗 ZJDB: —</span>
               </div>
-              <h2 style="margin:6px 0 2px;font-size:19px;color:#0f172a">📦 ยืนยันการจ่าย Part (Warehouse Confirm Issue)</h2>
-              <p style="margin:0;font-size:13px;color:#64748b">ยืนยัน Location/พื้นที่ที่หยิบ Part และ <b>ถ่ายรูปสดจากกล้องเท่านั้น</b> เพื่อยืนยันการจ่ายจริง</p>
+              <h2 style="margin:6px 0 2px;font-size:18px;color:#0f172a">📦 ยืนยันการจ่าย Part (Warehouse Confirm)</h2>
+              <p style="margin:0;font-size:12.5px;color:#64748b">ยืนยัน Location ที่หยิบ Part และ <b>ถ่ายรูปสดจากกล้องเท่านั้น</b> เพื่อยืนยันการจ่ายจริง</p>
             </div>
-            <button type="button" class="btn" id="closeWhConfirmModalBtn" style="padding:5px 11px;font-size:16px">✕</button>
+            <button type="button" class="btn" id="closeWhConfirmModalBtn" style="padding:5px 11px;font-size:16px;flex-shrink:0">✕</button>
           </div>
 
           <!-- Summary of Request -->
-          <div id="whModalRequestSummary" style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:13px;line-height:1.55"></div>
+          <div id="whModalRequestSummary" style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:13px;line-height:1.5"></div>
 
           <form id="whConfirmIssueForm">
             <input type="hidden" id="whModalReqIdInput">
 
             <!-- 1. Confirm Location / พื้นที่ (ตอนแรกขึ้น 1 โลเคชั่น กด + เพิ่มได้) -->
-            <div style="margin-bottom:14px;padding:12px 14px;border:1px solid #fde68a;background:#fffdf5;border-radius:10px">
+            <div style="margin-bottom:12px;padding:12px;border:1px solid #fde68a;background:#fffdf5;border-radius:10px">
               <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
                 <div>
                   <label style="font-size:13.5px;font-weight:800;color:#92400e;display:block">
-                    📍 1. Confirm (Location / พื้นที่) ที่ดึง Part มาจ่าย <span style="color:#dc2626">*</span>
+                    📍 1. Confirm (Location / พื้นที่) ที่ดึง Part <span style="color:#dc2626">*</span>
                   </label>
-                  <small style="color:#b45309;font-size:12px">ตอนแรกแสดง 1 โลเคชั่น หากดึงมาจาก 2 ที่หรือมากกว่านั้น กดปุ่ม <b>"＋ เพิ่ม Location"</b> ด้านขวา</small>
+                  <small style="color:#b45309;font-size:11.5px">หากดึงมาจาก 2 ที่หรือมากกว่านั้น กดปุ่ม <b>"＋ เพิ่ม Location"</b></small>
                 </div>
-                <button type="button" class="btn soft" id="whAddLocationBtn" style="padding:5px 12px;font-size:12.5px;font-weight:700;background:#fef3c7;border-color:#f59e0b;color:#92400e">
-                  ＋ เพิ่ม Location / พื้นที่
+                <button type="button" class="btn soft" id="whAddLocationBtn" style="padding:6px 12px;font-size:12.5px;font-weight:700;background:#fef3c7;border-color:#f59e0b;color:#92400e">
+                  ＋ เพิ่ม Location
                 </button>
               </div>
-              <div id="whSuggestedLocationsHint" style="font-size:12px;color:#0369a1;margin-bottom:8px"></div>
+              <div id="whSuggestedLocationsHint" style="font-size:11.5px;color:#0369a1;margin-bottom:8px;line-height:1.6"></div>
               <div id="whLocationsList" style="display:grid;gap:8px"></div>
             </div>
 
             <!-- 2. ผู้จ่าย & หมายเหตุผู้จ่าย -->
-            <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin-bottom:14px">
+            <div class="wh-issuer-grid">
               <div>
                 <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">ชื่อผู้จ่าย (Warehouse) <span style="color:#dc2626">*</span></label>
-                <input type="text" id="whIssuerNameInput" class="field" placeholder="ระบุชื่อผู้จ่าย Part" style="width:100%;height:38px;font-size:13.5px;font-weight:700" required>
+                <input type="text" id="whIssuerNameInput" class="field" placeholder="ระบุชื่อผู้จ่าย Part" style="width:100%;height:40px;font-size:14px;font-weight:700" required>
               </div>
               <div>
                 <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">หมายเหตุ (ผู้จ่าย / Warehouse)</label>
-                <input type="text" id="whIssuerNoteInput" class="field" placeholder="หมายเหตุเพิ่มเติมของผู้จ่าย (ถ้ามี)..." style="width:100%;height:38px;font-size:13.5px">
+                <input type="text" id="whIssuerNoteInput" class="field" placeholder="หมายเหตุเพิ่มเติมของผู้จ่าย (ถ้ามี)..." style="width:100%;height:40px;font-size:14px">
               </div>
             </div>
 
@@ -5287,7 +5525,7 @@
       page = 'overview';
     }
     activePage=page;document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===`page-${page}`));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page||(page==='lot'&&x.dataset.page==='stock')));updatePageTitle();if(page==='compare'){renderPlanList();renderAnalysis()}if(page==='stock')renderStock();if(page==='safety')renderSafety();if(page==='lot')renderLotDetailPage();if(page==='orders')renderOrdersPage();if(page==='po-tracking'&&typeof renderPoTrackingPage==='function')renderPoTrackingPage();if(page==='part-requisition'&&typeof renderPartRequisitionPage==='function')renderPartRequisitionPage();if(page==='users')renderUsersPage();if(page==='imports')renderImports();updateStockHScroll();updateSafetyHScroll()}
-  function updatePageTitle(){const labels={overview:'ภาพรวม',compare:'จำลองแผนผลิต',orders:'วิเคราะห์รุ่นที่ขึ้นได้ (ไม่รวมคลัง H9)','po-tracking':'ติดตาม Order ผลิต (Direct Transfer / Report / QC / Barcode)','part-requisition':'เบิก Part เพิ่มเติม & Warehouse จ่าย Part (เชื่อม MO / Direct Transfer / Google Sheet)',stock:'คลังทั้งหมด',safety:'Safety stock',imports:'นำเข้าข้อมูล',settings:'ตั้งค่า',lot:'รายละเอียด Lot',users:'จัดการสมาชิกและอนุมัติ'};el('pageTitle').textContent=labels[activePage]||''}
+  function updatePageTitle(){const labels={overview:'ภาพรวม',compare:'จำลองแผนผลิต',orders:'วิเคราะห์รุ่นที่ขึ้นได้ (ไม่รวมคลัง H9)','po-tracking':'ติดตาม Order ผลิต (Direct Transfer / Report / QC / Barcode)','part-requisition':'เบิก-จ่าย Part เพิ่มเติม',stock:'คลังทั้งหมด',safety:'Safety stock',imports:'นำเข้าข้อมูล',settings:'ตั้งค่า',lot:'รายละเอียด Lot',users:'จัดการสมาชิกและอนุมัติ'};el('pageTitle').textContent=labels[activePage]||''}
   let currentLotMaterial='',lotReturnPage='stock',currentLotWarehouse='';
   function openLotDetailPage(materialCode,warehouse='',fromPage=activePage){if(!materialCode)return;if(fromPage!=='lot')lotReturnPage=fromPage;currentLotMaterial=String(materialCode).trim();currentLotWarehouse=String(warehouse||'').trim();renderLotDetailPage(currentLotMaterial,currentLotWarehouse);goto('lot');window.scrollTo({top:0,behavior:'smooth'})}
   window.openLotDetailPage = openLotDetailPage;
@@ -9665,6 +9903,11 @@
       el('mobileActionKingdeeBtn').classList.toggle('hidden', isPartReqOnly);
     }
 
+    // Hide Admin-only Google Sheet notices & Export buttons for Requester / Warehouse users
+    document.querySelectorAll('.part-req-admin-only').forEach(node => {
+      node.classList.toggle('hidden', isPartReqOnly);
+    });
+
     // Guard active page
     if(isPartReqOnly && activePage !== 'part-requisition'){
       goto('part-requisition');
@@ -11584,13 +11827,14 @@
 
     const zjdbInput = el('reqZjdbInput');
     const ppbomInput = el('reqPpbomInput');
-    const badgeEl = el('reqMoProductBadge');
+    const hintEl = el('reqMoLinkedHint');
 
     if (!moEntry) {
-      if (zjdbInput) zjdbInput.value = moKey ? 'ไม่พบเลข Direct Transfer ในฐานข้อมูล (ระบุเพิ่มได้)' : '';
+      if (zjdbInput) zjdbInput.value = '';
       if (ppbomInput) ppbomInput.value = '';
-      if (badgeEl) {
-        badgeEl.textContent = moKey ? `MO: ${moKey}` : 'ยังไม่ได้เลือก MO';
+      if (hintEl) {
+        hintEl.classList.add('hidden');
+        hintEl.textContent = '';
       }
       return;
     }
@@ -11602,16 +11846,15 @@
     const ppbomList = [...moEntry.ppbomSet];
 
     if (zjdbInput) {
-      zjdbInput.value = zjdbList.length
-        ? zjdbList.join(', ')
-        : 'ยังไม่มีใบโอน Direct Transfer (ZJDB) ในระบบ';
+      zjdbInput.value = zjdbList.length ? zjdbList.join(', ') : '';
     }
     if (ppbomInput) {
       ppbomInput.value = ppbomList.join(', ');
     }
-    if (badgeEl) {
-      badgeEl.className = 'badge teal';
-      badgeEl.textContent = `${moEntry.productCode || ''} · ${moEntry.productName || ''} (Order: ${fmt(moEntry.orderQty)})`;
+    if (hintEl) {
+      const zjdbTxt = zjdbList.length ? zjdbList.join(', ') : 'รอใบโอน ZJDB';
+      hintEl.classList.remove('hidden');
+      hintEl.innerHTML = `🔗 เชื่อม ZJDB: <b>${esc(zjdbTxt)}</b> · รุ่น: <b>${esc(moEntry.productCode || '')}</b>`;
     }
   }
 
@@ -11701,11 +11944,11 @@
     const matMap = getMaterialCatalogMap();
     const moKey = String(el('reqMoInput')?.value || '').trim().toUpperCase();
     const moEntry = getMoCatalogMap().get(moKey);
-    const filterByMo = Boolean(el('reqFilterByMoBomChk')?.checked) && moEntry && moEntry.partsMap.size > 0;
+    const hasMoBom = Boolean(moEntry && moEntry.partsMap.size > 0);
     const q = String(query || '').trim().toLowerCase();
 
     let candidates = [];
-    if (filterByMo) {
+    if (hasMoBom && !q) {
       for (const [code, mp] of moEntry.partsMap.entries()) {
         const full = matMap.get(code) || {};
         candidates.push({
@@ -11745,28 +11988,6 @@
         c.materialName.toLowerCase().includes(q) ||
         c.specification.toLowerCase().includes(q)
       );
-      if (!candidates.length && filterByMo) {
-        for (const m of matMap.values()) {
-          if (
-            m.materialCode.toLowerCase().includes(q) ||
-            m.materialName.toLowerCase().includes(q) ||
-            m.specification.toLowerCase().includes(q)
-          ) {
-            candidates.push({
-              materialCode: m.materialCode,
-              materialName: m.materialName,
-              specification: m.specification,
-              onHand: m.onHand,
-              available: m.available,
-              storageBins: [...m.storageBins],
-              inMoBom: false,
-              moRequiredQty: 0,
-              moTransferredQty: 0,
-              moZjdb: ''
-            });
-          }
-        }
-      }
     }
 
     candidates.sort((a, b) => Number(b.inMoBom) - Number(a.inMoBom) || a.materialCode.localeCompare(b.materialCode));
@@ -11780,25 +12001,25 @@
 
     drop.innerHTML = `
       <div style="padding:6px 10px;background:#f0f9ff;border-bottom:1px solid #bae6fd;font-size:11.5px;color:#0369a1;font-weight:700;display:flex;justify-content:space-between;position:sticky;top:0;z-index:2">
-        <span>พบ ${fmt(candidates.length)} รายการ Part ${filterByMo ? `(จาก BOM ของ ${esc(moKey)})` : '(ทั้งหมดในคลัง/BOM)'}</span>
-        <span>คลิกเพื่อเลือกรหัสและดึง Description</span>
+        <span>พบ ${fmt(candidates.length)} รายการ Part ${hasMoBom && !q ? `(BOM ของ ${esc(moKey)})` : ''}</span>
+        <span>แตะเพื่อเลือกรหัส</span>
       </div>
       ${topList.map(c => {
         const desc = [c.materialName, c.specification].filter(Boolean).join(' · ') || '—';
         const bins = c.storageBins.length ? c.storageBins.slice(0, 2).join(', ') : '—';
         return `
-          <div class="req-mat-opt" data-code="${esc(c.materialCode)}" style="padding:8px 12px;border-bottom:1px solid #f1f5f9;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f0f9ff'" onmouseout="this.style.background='#fff'">
+          <div class="req-mat-opt" data-code="${esc(c.materialCode)}" style="padding:9px 12px;border-bottom:1px solid #f1f5f9;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f0f9ff'" onmouseout="this.style.background='#fff'">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
               <div style="display:flex;align-items:center;gap:6px">
-                <strong style="font-size:13.5px;color:#087e78;font-family:ui-monospace,Consolas,monospace">${highlightMatch(c.materialCode, q)}</strong>
-                ${c.inMoBom ? `<span class="badge teal" style="font-size:10px;padding:1px 6px">อยู่ใน BOM ของ MO นี้</span>` : ''}
+                <strong style="font-size:14px;color:#087e78;font-family:ui-monospace,Consolas,monospace">${highlightMatch(c.materialCode, q)}</strong>
+                ${c.inMoBom ? `<span class="badge teal" style="font-size:10px;padding:1px 6px">BOM ของ MO นี้</span>` : ''}
               </div>
               <span style="font-size:11.5px;font-weight:700;color:${c.available > 0 ? '#15803d' : '#dc2626'}">พร้อมใช้: ${fmtQty(c.available)}</span>
             </div>
             <div style="font-size:12.5px;color:#0f172a;font-weight:700;margin-top:2px">${highlightMatch(desc, q)}</div>
             <div style="font-size:11px;color:#64748b;margin-top:2px">
               📍 Location: <b>${esc(bins)}</b>
-              ${c.inMoBom ? ` · ต้องใช้ตาม Order: <b>${fmtQty(c.moRequiredQty)}</b> · โอน ZJDB แล้ว: <b>${fmtQty(c.moTransferredQty)}</b>` : ''}
+              ${c.inMoBom ? ` · ต้องใช้: <b>${fmtQty(c.moRequiredQty)}</b>` : ''}
             </div>
           </div>
         `;
@@ -11824,7 +12045,8 @@
 
   function renderPartReqHistoryTable() {
     const tbody = el('partReqTableBody');
-    if (!tbody) return;
+    const mobileList = el('partReqMobileList');
+    if (!tbody && !mobileList) return;
 
     const q = String(el('partReqSearchInput')?.value || '').trim().toLowerCase();
     const shiftFilter = el('partReqShiftFilter')?.value || '';
@@ -11847,16 +12069,90 @@
     });
 
     if (!filtered.length) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="9" style="padding:28px;text-align:center;color:#64748b;font-size:13.5px">
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" style="padding:28px;text-align:center;color:#64748b;font-size:13.5px">
+              ยังไม่มีรายการเบิก Part ที่ตรงกับเงื่อนไขการค้นหา
+            </td>
+          </tr>
+        `;
+      }
+      if (mobileList) {
+        mobileList.innerHTML = `
+          <div style="padding:24px 14px;text-align:center;color:#64748b;font-size:13.5px;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:10px">
             ยังไม่มีรายการเบิก Part ที่ตรงกับเงื่อนไขการค้นหา
-          </td>
-        </tr>
-      `;
+          </div>
+        `;
+      }
       return;
     }
 
+    if (mobileList) {
+      mobileList.innerHTML = filtered.map((r) => {
+        const isIssued = r.status === 'issued';
+        const desc = [r.materialName, r.specification].filter(Boolean).join(' · ') || '—';
+        const locsText = Array.isArray(r.locations) && r.locations.length
+          ? r.locations.map((l, idx) => `#${idx + 1}: ${esc(l.location)}${l.qty !== '' && l.qty != null ? ` (<b>${fmtQty(l.qty)}</b> ${esc(r.unit || 'PCS')})` : ''}`).join(' · ')
+          : (r.locationsSummary ? esc(r.locationsSummary) : 'รอคลังระบุ Location');
+        const hasPhoto = Boolean(r.issuePhotoDataUrl && r.issuePhotoDataUrl.startsWith('data:image'));
+
+        return `
+          <div style="border:1.5px solid ${isIssued ? '#bbf7d0' : '#fcd34d'};background:${isIssued ? '#ffffff' : '#fffdf5'};border-radius:12px;padding:12px 13px;box-shadow:0 2px 8px rgba(15,23,42,0.05)">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px">
+              <span class="badge ${isIssued ? 'green' : 'amber'}" style="font-size:12px;font-weight:800;padding:4px 10px">
+                ${isIssued ? '✅ จ่าย Part แล้ว' : '⏳ รอคลังจ่าย'}
+              </span>
+              <span style="font-size:11.5px;color:#475569;font-weight:700">🕒 เบิก: ${esc(time(r.requestedAt))}</span>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px">
+              <div style="min-width:0">
+                <div style="font-size:15px;font-weight:800;color:#087e78;font-family:ui-monospace,Consolas,monospace">${esc(r.materialCode)}</div>
+                <div style="font-size:13px;font-weight:700;color:#0f172a;line-height:1.35">${esc(desc)}</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0;background:#f0fdf4;border:1px solid #bbf7d0;padding:5px 10px;border-radius:9px">
+                <div style="font-size:17px;font-weight:900;color:#166534;line-height:1.1">${fmtQty(r.requestQty)}</div>
+                <div style="font-size:11px;font-weight:800;color:#0f766e">${esc(r.unit || 'PCS')}</div>
+              </div>
+            </div>
+
+            <div style="font-size:12.5px;color:#334155;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;line-height:1.5;margin-bottom:8px">
+              <div><b>MO:</b> <strong style="color:#0f6a66">${esc(r.moNumber)}</strong> ${r.directTransferDocs ? `<span style="color:#047857;font-size:11.5px">(🔗 ${esc(r.directTransferDocs)})</span>` : ''}</div>
+              <div><b>ผู้เบิก:</b> ${esc(r.requesterName || '—')} <b>(กะ ${esc(r.shift || 'A')})</b> · <b>สาเหตุ:</b> <span style="color:#dc2626;font-weight:700">${esc(r.reason || '—')}</span></div>
+              ${r.requesterNote ? `<div>💬 <b>หมายเหตุผู้เบิก:</b> ${esc(r.requesterNote)}</div>` : ''}
+              ${isIssued ? `
+                <div style="margin-top:5px;padding-top:5px;border-top:1px dashed #cbd5e1;color:#14532d">
+                  <div>📍 <b>Location ที่หยิบ:</b> ${locsText}</div>
+                  <div>👤 <b>ผู้จ่าย:</b> <b>${esc(r.issuerName || '—')}</b> · 🕒 <b>จ่าย:</b> ${esc(time(r.issuedAt))}</div>
+                  ${r.issuerNote ? `<div>💬 <b>หมายเหตุผู้จ่าย:</b> ${esc(r.issuerNote)}</div>` : ''}
+                </div>
+              ` : ''}
+            </div>
+
+            <div style="display:flex;gap:8px">
+              ${isIssued ? `
+                ${hasPhoto ? `
+                  <button type="button" class="btn soft btn-view-req-photo" data-id="${esc(r.reqId)}" style="flex:1;height:40px;font-size:13px;font-weight:800;border-color:#86efac;background:#f0fdf4;color:#166534;display:inline-flex;align-items:center;justify-content:center;gap:6px">
+                    <img src="${r.issuePhotoDataUrl}" alt="Photo" style="width:24px;height:20px;object-fit:cover;border-radius:3px;border:1px solid #16a34a">
+                    🔍 ดูรูปถ่ายจริง
+                  </button>
+                ` : ''}
+                <button type="button" class="btn soft btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="flex:1;height:40px;font-size:13px;font-weight:700">
+                  ✏️ ดู / แก้ไข
+                </button>
+              ` : `
+                <button type="button" class="btn primary btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="width:100%;height:42px;background:#d97706;border-color:#b45309;font-size:14px;font-weight:800;justify-content:center;box-shadow:0 3px 8px rgba(180,83,9,0.22)">
+                  📦 กด Confirm จ่าย Part (Location + ถ่ายรูป)
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    if (!tbody) return;
     tbody.innerHTML = filtered.map((r) => {
       const isIssued = r.status === 'issued';
       const desc = [r.materialName, r.specification].filter(Boolean).join(' · ') || '—';
@@ -11946,20 +12242,20 @@
   function createWhLocationRowHtml(index, locValue = '', qtyValue = '', suggestions = []) {
     const datalistId = `whLocSuggestList_${index}`;
     return `
-      <div class="wh-location-row" data-idx="${index}" style="display:grid;grid-template-columns:1fr 140px ${index > 0 ? '38px' : '0px'};gap:8px;align-items:center;background:#fff;padding:8px 10px;border-radius:8px;border:1px solid #cbd5e1">
+      <div class="wh-location-row" data-idx="${index}">
         <div>
-          <label style="font-size:11.5px;font-weight:800;color:#0f6a66;display:block;margin-bottom:2px">📍 Location / พื้นที่จัดเก็บที่ ${index + 1} <span style="color:#dc2626">*</span></label>
-          <input type="text" class="field wh-loc-name-input" list="${datalistId}" value="${esc(locValue)}" placeholder="ระบุ Location / Bin เช่น H9-A01, RM-B02..." required style="width:100%;font-weight:700;font-size:13px">
+          <label style="font-size:12px;font-weight:800;color:#0f6a66;display:block;margin-bottom:3px">📍 Location / พื้นที่จัดเก็บที่ ${index + 1} <span style="color:#dc2626">*</span></label>
+          <input type="text" class="field wh-loc-name-input" list="${datalistId}" value="${esc(locValue)}" placeholder="ระบุ Location / Bin เช่น H9-A01, RM-B02..." required style="width:100%;font-weight:700;font-size:13.5px;height:40px">
           <datalist id="${datalistId}">
             ${suggestions.map(s => `<option value="${esc(s)}"></option>`).join('')}
           </datalist>
         </div>
         <div>
-          <label style="font-size:11.5px;font-weight:700;color:#475569;display:block;margin-bottom:2px">จำนวนที่ดึงจากจุดนี้</label>
-          <input type="number" class="field wh-loc-qty-input" min="0" step="any" value="${esc(qtyValue)}" placeholder="จำนวน" style="width:100%;text-align:right;font-weight:700;font-size:13px">
+          <label style="font-size:12px;font-weight:700;color:#475569;display:block;margin-bottom:3px">จำนวนที่ดึง</label>
+          <input type="number" class="field wh-loc-qty-input" min="0" step="any" value="${esc(qtyValue)}" placeholder="จำนวน" style="width:100%;text-align:right;font-weight:700;font-size:14px;height:40px">
         </div>
         ${index > 0
-          ? `<button type="button" class="btn danger wh-remove-loc-btn" title="ลบ Location นี้" style="padding:6px 8px;margin-top:16px;font-size:12px">✕</button>`
+          ? `<button type="button" class="btn danger wh-remove-loc-btn" title="ลบ Location นี้" style="height:40px;padding:0 12px;font-size:13px">✕</button>`
           : `<span></span>`}
       </div>
     `;
@@ -12338,9 +12634,9 @@
       if (el('reqMoInput')) el('reqMoInput').value = '';
       if (el('reqZjdbInput')) el('reqZjdbInput').value = '';
       if (el('reqPpbomInput')) el('reqPpbomInput').value = '';
-      if (el('reqMoProductBadge')) {
-        el('reqMoProductBadge').className = 'badge gray';
-        el('reqMoProductBadge').textContent = 'ยังไม่ได้เลือก MO';
+      if (el('reqMoLinkedHint')) {
+        el('reqMoLinkedHint').classList.add('hidden');
+        el('reqMoLinkedHint').textContent = '';
       }
       if (el('reqMatCodeInput')) el('reqMatCodeInput').value = '';
       if (el('reqMatDescInput')) el('reqMatDescInput').value = '';
@@ -12426,7 +12722,7 @@
       } finally {
         if (saveBtn) {
           saveBtn.disabled = false;
-          saveBtn.innerHTML = '💾 Save บันทึกใบเบิก Part (ส่งแจ้งเตือนไป Warehouse)';
+          saveBtn.innerHTML = '💾 Save บันทึกใบเบิก Part';
         }
       }
     });
