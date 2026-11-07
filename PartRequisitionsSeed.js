@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-07T06:08:46.113Z",
+  "updatedAt": "2026-11-07T08:59:59.460Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -53,6 +53,31 @@ window.PART_REQUISITIONS_SEED = {
       "issuerNote": "",
       "issuePhotoDataUrl": "",
       "updatedAt": "2026-11-07T04:46:39.822Z"
+    },
+    {
+      "reqId": "REQ-20261107-68673",
+      "requestDate": "2026-11-07",
+      "requestedAt": "2026-11-07T04:19:28.673Z",
+      "moNumber": "MO-20261106-003100",
+      "ppbomNumber": "PPBOM-20261106-003357",
+      "directTransferDocs": "ZJDB-261106-000017, ZJDB-261106-000018",
+      "materialCode": "1005QT00168",
+      "materialName": "Lug WBS 100A",
+      "specification": "48020-043-05",
+      "requestQty": 15,
+      "unit": "PCS",
+      "reason": "ชำรุด/ตกหล่นระหว่างประกอบ",
+      "requesterName": "สมหญิง (พนักงานเบิก Part)",
+      "shift": "A",
+      "requesterNote": "หัวสกรูบิ่น 15 ตัว ขอเบิกเพิ่ม",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "2026-11-07T04:19:28.673Z"
     }
   ]
 };
