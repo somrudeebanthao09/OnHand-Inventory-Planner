@@ -11,7 +11,14 @@ const DB_TABS = {
   Imports: ['type','filename','count','department','at'],
   Plans: ['modelCode','quantity'],
   Settings: ['key','value'],
-  AccessRequests: ['email','displayName','status','requestedAt','reviewedAt','reviewedBy']
+  AccessRequests: ['email','displayName','status','requestedAt','reviewedAt','reviewedBy'],
+  PartRequisitions: [
+    'reqId','requestDate','moNumber','ppbomNumber','directTransferDocs',
+    'materialCode','materialName','specification','requestQty','unit',
+    'reason','requesterName','requesterUsername','shift','requesterNote',
+    'requestedAt','status','locationsSummary','locationsJson',
+    'issuerName','issuerUsername','issuerNote','issuedAt','hasPhoto','photoTakenAt'
+  ]
 };
 
 function onOpen() {
@@ -180,7 +187,63 @@ function getAppData() {
     if (!row.key) return;
     try { settings[row.key] = JSON.parse(row.value); } catch (_) { settings[row.key] = row.value; }
   });
-  return {inventory, departmentMap, bom, safetyStock, imports, plans, settings};
+  const partRequisitions = readObjects_(ss.getSheetByName('PartRequisitions'));
+  return {inventory, departmentMap, bom, safetyStock, imports, plans, settings, partRequisitions};
+}
+
+function savePartRequisition(record) {
+  assertApproved_();
+  if (!record || typeof record !== 'object') throw new Error('ข้อมูลใบเบิก Part ไม่ถูกต้อง');
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const ss = getPlannerSpreadsheet_();
+    const sheet = ensureTab_(ss, 'PartRequisitions', DB_TABS.PartRequisitions);
+    const rows = readObjects_(sheet);
+    const reqId = String(record.reqId || '').trim();
+    const rowObj = {
+      reqId: reqId || ('REQ-' + Date.now()),
+      requestDate: String(record.requestDate || '').trim(),
+      moNumber: String(record.moNumber || '').trim(),
+      ppbomNumber: String(record.ppbomNumber || '').trim(),
+      directTransferDocs: String(record.directTransferDocs || '').trim(),
+      materialCode: String(record.materialCode || '').trim(),
+      materialName: String(record.materialName || '').trim(),
+      specification: String(record.specification || '').trim(),
+      requestQty: Number(record.requestQty) || 0,
+      unit: String(record.unit || 'PCS').trim(),
+      reason: String(record.reason || '').trim(),
+      requesterName: String(record.requesterName || '').trim(),
+      requesterUsername: String(record.requesterUsername || '').trim(),
+      shift: String(record.shift || 'A').trim(),
+      requesterNote: String(record.requesterNote || '').trim(),
+      requestedAt: String(record.requestedAt || new Date().toISOString()).trim(),
+      status: String(record.status || 'pending').trim(),
+      locationsSummary: String(record.locationsSummary || '').trim(),
+      locationsJson: typeof record.locations === 'string' ? record.locations : JSON.stringify(record.locations || []),
+      issuerName: String(record.issuerName || '').trim(),
+      issuerUsername: String(record.issuerUsername || '').trim(),
+      issuerNote: String(record.issuerNote || '').trim(),
+      issuedAt: String(record.issuedAt || '').trim(),
+      hasPhoto: record.hasPhoto ? 'Yes' : (record.issuePhotoDataUrl ? 'Yes' : 'No'),
+      photoTakenAt: String(record.photoTakenAt || record.issuedAt || '').trim()
+    };
+    const idx = rows.findIndex(r => String(r.reqId || '').trim() === rowObj.reqId);
+    if (idx >= 0) rows[idx] = rowObj;
+    else rows.unshift(rowObj);
+    writeObjects_(sheet, DB_TABS.PartRequisitions, rows);
+    SpreadsheetApp.flush();
+    return {ok: true, reqId: rowObj.reqId, savedAt: new Date().toISOString()};
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function listPartRequisitions() {
+  assertApproved_();
+  const ss = getPlannerSpreadsheet_();
+  const sheet = ensureTab_(ss, 'PartRequisitions', DB_TABS.PartRequisitions);
+  return readObjects_(sheet);
 }
 
 function saveInventorySnapshot(rows, sourceInfo) {

@@ -12,12 +12,13 @@
     @keyframes appBootSpin{to{transform:rotate(360deg)}}
   </style>
   <script src="./xlsx.full.min.js" onerror="this.onerror=null;this.src='https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js'"></script>
-  <script src="./OnHandSeed.js?v=20261107v2"></script>
-  <script src="./DepartmentMapSeed.js?v=20261107v2"></script>
-  <script src="./ProductionOrdersSeed.js?v=20261107v2"></script>
-  <script src="./ProductionMaterialIssueSeed.js?v=20261107v2"></script>
-  <script src="./ProductionExecutionSeed.js?v=20261107v2"></script>
-  <script src="./BomSeed.js?v=20261107v2"></script>
+  <script src="./OnHandSeed.js?v=20261107v3"></script>
+  <script src="./DepartmentMapSeed.js?v=20261107v3"></script>
+  <script src="./ProductionOrdersSeed.js?v=20261107v3"></script>
+  <script src="./ProductionMaterialIssueSeed.js?v=20261107v3"></script>
+  <script src="./ProductionExecutionSeed.js?v=20261107v3"></script>
+  <script src="./PartRequisitionsSeed.js?v=20261107v3"></script>
+  <script src="./BomSeed.js?v=20261107v3"></script>
   <style>
     :root{--ink:#17252d;--muted:#718087;--line:#e4e9ea;--paper:#fff;--canvas:#f4f6f8;--teal:#087e78;--teal2:#e6f5f3;--red:#c94848;--redbg:#fff0ef;--amber:#a66b08;--amberbg:#fff6df;--green:#287a55;--greenbg:#eaf6ef;--purple:#6d28d9;--purplebg:#f5f3ff;--nav:#18333a;--shadow:0 6px 24px #23363b0c}
     *{box-sizing:border-box}body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.55 "Segoe UI",Tahoma,Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}.shell{display:flex;min-height:100vh}.sidebar{width:250px;background:var(--nav);color:#eaf2f1;padding:23px 14px;display:flex;flex-direction:column;flex-shrink:0}.brand{display:flex;gap:11px;align-items:center;padding:0 10px 23px;border-bottom:1px solid #ffffff20}.brandmark{width:42px;height:42px;border-radius:12px;background:#d1f4ed;color:#075e5b;display:grid;place-items:center;font-size:20px;font-weight:800}.brand strong{display:block;font-size:16px;letter-spacing:.2px}.brand small{display:block;color:#a8c2c3;font-size:13px;margin-top:2px}.nav{display:grid;gap:6px;padding-top:20px}.nav button{border:0;text-align:left;padding:11px 13px;border-radius:9px;color:#bfd0d0;background:transparent;display:flex;align-items:center;gap:11px;font-size:15.5px}.nav button:hover,.nav button.active{background:#ffffff16;color:#fff}.nav .ico{width:22px;text-align:center;font-size:18px}.side-foot{margin-top:auto;color:#a8c2c3;font-size:13px;padding:18px 9px 0;line-height:1.6}.main{flex:1;min-width:0}.topbar{height:70px;background:#ffffffd9;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:5;backdrop-filter:blur(10px)}.crumb{font-size:14px;color:var(--muted)}.crumb b{color:var(--ink);font-size:17.5px;margin-left:9px}.top-actions{display:flex;align-items:center;gap:10px}.sync-label{color:var(--muted);font-size:14px}.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 16px;border-radius:8px;font-weight:600;font-size:14.5px;box-shadow:0 1px 1px #00000005}.btn:hover{border-color:#b9c8c9}.btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}.btn.primary:hover{background:#066b66}.btn.soft{background:var(--teal2);border-color:var(--teal2);color:#096c67}.btn.danger{color:var(--red);border-color:#f0d0ce}.content{max-width:1550px;margin:auto;padding:25px 30px 48px}.page{display:none}.page.active{display:block}.title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin:4px 0 20px}.title-row h1{font-size:25px;line-height:1.25;margin:0 0 5px;letter-spacing:-.3px}.title-row p{color:var(--muted);margin:0;font-size:15px}.row-actions{display:flex;gap:9px;flex-wrap:wrap}.notice{padding:13px 16px;border-radius:9px;background:#eef6f7;border:1px solid #dcebed;color:#42636a;font-size:14px;margin:0 0 19px}.notice strong{color:#244a52}.notice.warn{background:var(--amberbg);border-color:#f2dfac;color:#785918}.notice.red{background:var(--redbg);border-color:#f4d5d2;color:#8a3432}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:18px}.card,.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}.metric{padding:18px 20px}.metric-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:14px}.metric-icon{width:34px;height:34px;display:grid;place-items:center;background:#f0f4f4;border-radius:9px;font-size:17px}.metric-value{font-size:30px;font-weight:750;letter-spacing:-.6px;margin:9px 0 0}.metric-note{font-size:13px;color:var(--muted);margin-top:3px}.two-col{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(330px,.7fr);gap:15px}.panel{padding:18px 20px;margin-bottom:15px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}.panel-head h2,.panel h2{margin:0;font-size:17px}.panel-head p{margin:3px 0 0;color:var(--muted);font-size:14px}.filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.field{border:1px solid var(--line);border-radius:7px;background:#fff;padding:8px 12px;min-height:40px;color:var(--ink);font-size:14.5px}.field:focus{outline:2px solid #94d6d1;outline-offset:1px}.search{min-width:240px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:9px}table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:14.5px}th{color:#55666a;background:#f7f9f9;text-align:left;font-size:13.5px;font-weight:700;position:sticky;top:0}th,td{padding:11px 13px;border-bottom:1px solid #edf0f0}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#fbfdfd}.num{text-align:right;font-variant-numeric:tabular-nums;font-size:15px}.code{font-weight:700;color:#33484d;font-size:15px}.sub{font-size:13px;color:var(--muted);margin-top:2px}.badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:99px;font-weight:700;font-size:12.5px}.badge.red{background:var(--redbg);color:var(--red);border:1px solid #fecaca}.badge.amber{background:var(--amberbg);color:var(--amber)}.badge.green{background:var(--greenbg);color:var(--green);border:1px solid #bbf7d0}.badge.gray{background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0}.badge.purple{background:var(--purplebg);color:var(--purple);border:1px solid #ddd6fe}.safety-pill{border:1px solid var(--line);background:#fff;padding:7px 14px;border-radius:20px;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px}.safety-pill:hover{border-color:#b9c8c9;transform:translateY(-1px)}.safety-pill.active{background:var(--teal)!important;color:#fff!important;border-color:var(--teal)!important;font-weight:700;box-shadow:0 2px 6px #087e7828}.safety-sticky-head{position:fixed;z-index:4;overflow:hidden;background:#f7f9f9;border:1px solid var(--line);border-radius:0;box-shadow:0 3px 8px #23363b18}.safety-sticky-head .safety-standard-table{position:relative;margin:0;border:0}.safety-sticky-head th{position:static;top:auto;background:#f7f9f9}    .safety-standard-table{width:100%;min-width:1080px;table-layout:fixed;border-collapse:collapse;font-size:14px}.safety-standard-table th{white-space:normal;padding:9px 7px;background:#f7f9f9;vertical-align:middle;font-size:13px;font-weight:700;color:#55666a;border-bottom:1px solid var(--line);overflow-wrap:normal;word-break:normal}.safety-standard-table td{padding:8px 8px;vertical-align:middle;overflow-wrap:break-word;word-break:normal;border-bottom:1px solid #edf0f0;font-size:14px}.safety-standard-table td:nth-child(4){white-space:normal;line-height:1.3}.safety-standard-table tbody tr:hover{background:#f8fafb}.safety-standard-table .safety-code{width:125px}.safety-standard-table .safety-name{width:16%}.safety-standard-table .safety-spec{width:12%}.safety-standard-table .safety-dept{width:15%}.safety-standard-table .safety-avail{width:11%}.safety-standard-table .safety-min{width:82px}.safety-standard-table .safety-max{width:82px}.safety-standard-table .safety-health{width:135px}.safety-standard-table .safety-unit{width:75px}.safety-standard-table .safety-wh{width:12%}.empty{padding:32px;text-align:center;color:var(--muted);font-size:14.5px}.empty b{display:block;color:#3b5054;margin-bottom:4px;font-size:16px}.plan-builder{display:grid;grid-template-columns:minmax(180px,260px) minmax(280px,1fr) 140px 42px;gap:8px;align-items:center;margin-bottom:9px}.plan-header-row{display:grid;grid-template-columns:minmax(180px,260px) minmax(280px,1fr) 140px 42px;gap:8px;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px;padding:0 2px}.plan-row{display:contents}.plan-list{display:grid;gap:8px}.plan-controls{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}.helper{font-size:13px;color:var(--muted)}.section-label{font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin:15px 0 8px}.file-drop{border:1px dashed #aebfc0;border-radius:11px;padding:21px;background:#fbfdfd;display:flex;align-items:center;justify-content:space-between;gap:15px}.file-drop strong{display:block;font-size:15.5px}.file-drop small{display:block;color:var(--muted);margin-top:3px;font-size:13px}.file-icon{font-size:24px;background:#e8f5f3;width:48px;height:48px;border-radius:11px;display:grid;place-items:center;color:var(--teal)}.import-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.import-box{border:1px solid var(--line);border-radius:10px;padding:15px}.import-box h3{margin:0 0 3px;font-size:16px}.import-box p{margin:0 0 12px;color:var(--muted);font-size:14px}.mapping{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr));gap:10px;margin:14px 0}.mapping label{font-size:13px;color:#52666a;display:grid;gap:5px}.mapping select{width:100%}.import-preview{margin-top:12px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}.inline-edit{width:115px;text-align:right;padding:5px 7px;font-size:14px}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.setting{border:1px solid var(--line);border-radius:9px;padding:14px}.setting h3{font-size:15px;margin:0 0 5px}.setting p{font-size:13px;color:var(--muted);margin:0 0 10px}.switch-row{display:flex;justify-content:space-between;align-items:center;gap:12px}.switch{width:38px;height:22px;border-radius:20px;background:#c6d0d1;padding:3px;border:0}.switch:after{content:"";display:block;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .16s}.switch.on{background:var(--teal)}.switch.on:after{transform:translateX(16px)}.toast{position:fixed;right:22px;bottom:20px;padding:12px 16px;background:#18333a;color:#fff;border-radius:9px;font-size:14.5px;box-shadow:0 9px 30px #14262938;opacity:0;transform:translateY(10px);transition:.18s;z-index:20;pointer-events:none}.toast.show{opacity:1;transform:translateY(0)}.modal-backdrop{position:fixed;inset:0;background:#0d242a66;display:none;align-items:center;justify-content:center;padding:16px;z-index:15}.modal-backdrop.show{display:flex}.modal{width:min(560px,100%);background:#fff;border-radius:13px;padding:21px;box-shadow:0 20px 60px #10262c45}.modal h2{font-size:19px;margin:0 0 5px}.modal p{font-size:14px;color:var(--muted);margin:0 0 15px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}.hidden{display:none!important}.progress{height:5px;background:#eaf0f0;border-radius:5px;margin-top:10px;overflow:hidden}.progress span{display:block;height:100%;width:0;background:var(--teal);transition:width .2s}.footnote{font-size:13px;color:var(--muted);line-height:1.6}.tabstrip{display:flex;gap:5px;border-bottom:1px solid var(--line);margin-bottom:13px}.tabstrip button{background:none;border:0;color:var(--muted);padding:9px 12px;border-bottom:2px solid transparent;font-size:14.5px}.tabstrip button.active{color:var(--teal);border-color:var(--teal);font-weight:700}.dept-filter{max-width:250px}
@@ -1368,7 +1369,9 @@
       <div style="margin-top:16px;padding:10px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;color:#475569;line-height:1.5">
         <div style="font-weight:700;color:#0f172a;margin-bottom:3px">🔑 บัญชีเริ่มต้นสำหรับเข้าใช้งาน:</div>
         <div>• <b>Admin:</b> <code>admin</code> / รหัสผ่าน: <code>admin1234</code></div>
-        <div>• <b>User:</b> <code>user</code> / รหัสผ่าน: <code>user1234</code></div>
+        <div>• <b>User (วางแผนทั่วไป):</b> <code>user</code> / รหัสผ่าน: <code>user1234</code></div>
+        <div>• <b>คนเบิก Part (เฉพาะหน้าเบิก Part):</b> <code>req</code> / รหัสผ่าน: <code>1234</code></div>
+        <div>• <b>คลังจ่าย Part (Warehouse):</b> <code>wh</code> / รหัสผ่าน: <code>1234</code></div>
         <div style="color:#64748b;margin-top:3px">* สมาชิกใหม่สามารถกดแท็บ <b>"ลงทะเบียนขอใช้งาน"</b> ด้านบนเพื่อให้ Admin อนุมัติ</div>
       </div>
     </form>
@@ -1383,9 +1386,19 @@
         <label style="display:block;font-size:12px;font-weight:600;color:#334155;margin-bottom:4px">ชื่อ - นามสกุลจริง</label>
         <input type="text" id="regFullNameInput" class="field" placeholder="เช่น สมฤดี บรรเทา" style="width:100%;height:38px;font-size:13.5px" required>
       </div>
-      <div style="margin-bottom:10px">
-        <label style="display:block;font-size:12px;font-weight:600;color:#334155;margin-bottom:4px">แผนกงาน</label>
-        <select id="regDeptSelect" class="field" style="width:100%;height:38px;font-size:13px"></select>
+      <div style="display:flex;gap:10px;margin-bottom:10px">
+        <div style="flex:1">
+          <label style="display:block;font-size:12px;font-weight:600;color:#334155;margin-bottom:4px">แผนกงาน</label>
+          <select id="regDeptSelect" class="field" style="width:100%;height:38px;font-size:13px"></select>
+        </div>
+        <div style="flex:1">
+          <label style="display:block;font-size:12px;font-weight:600;color:#334155;margin-bottom:4px">หน้าที่ใช้งาน (Role)</label>
+          <select id="regRoleSelect" class="field" style="width:100%;height:38px;font-size:13px">
+            <option value="requester">📝 คนเบิก Part (เฉพาะหน้าเบิก Part)</option>
+            <option value="warehouse">📦 คลังจ่าย Part (Warehouse)</option>
+            <option value="user">👤 ผู้ใช้งานทั่วไป (Planner)</option>
+          </select>
+        </div>
       </div>
       <div style="display:flex;gap:10px;margin-bottom:10px">
         <div style="flex:1">
@@ -1471,6 +1484,7 @@
       <button data-page="compare"><span class="ico">⇄</span><span class="nav-label">จำลองแผนผลิต</span></button>
       <button data-page="orders" style="display:flex;align-items:center"><span class="ico">🚀</span><span class="nav-label">วิเคราะห์รุ่นที่ขึ้นได้</span><span id="orderShortageBadge" class="badge green hidden" style="margin-left:auto;padding:2px 7px;font-size:11px">0</span></button>
       <button data-page="po-tracking" style="display:flex;align-items:center"><span class="ico">📋</span><span class="nav-label">ติดตาม Order ผลิต</span><span id="poTrackingBadge" class="badge amber hidden" style="margin-left:auto;padding:2px 7px;font-size:11px">0</span></button>
+      <button data-page="part-requisition" id="sidebarPartReqBtn" style="display:flex;align-items:center"><span class="ico">📦</span><span class="nav-label">เบิก Part เพิ่มเติม</span><span id="partReqPendingBadge" class="badge amber hidden" style="margin-left:auto;padding:2px 7px;font-size:11px">0</span></button>
       <button data-page="stock"><span class="ico">▤</span><span class="nav-label">คลังทั้งหมด</span></button>
       <button data-page="safety"><span class="ico">◇</span><span class="nav-label">Safety stock</span></button>
       <button data-page="imports" id="sidebarImportsBtn"><span class="ico">⇧</span><span class="nav-label">นำเข้าข้อมูล</span></button>
@@ -2034,7 +2048,9 @@
               <div style="margin-bottom:10px">
                 <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px">ระดับสิทธิ์</label>
                 <select id="adminNewRoleSelect" class="field" style="width:100%;height:38px;font-size:13px">
-                  <option value="user">User (ผู้ใช้งานทั่วไป)</option>
+                  <option value="requester">คนเบิก Part (เห็นเฉพาะเมนูเบิก Part เพิ่มเติม)</option>
+                  <option value="warehouse">คลังจ่าย Part / Warehouse (เห็นเฉพาะเมนูเบิก-จ่าย Part)</option>
+                  <option value="user">User (ผู้ใช้งานทั่วไป - เห็นเมนูวางแผน)</option>
                   <option value="admin">Admin (ผู้ดูแลระบบ)</option>
                 </select>
               </div>
@@ -2050,6 +2066,368 @@
           </div>
         </div>
       </section>
+
+      <!-- ========================================================================= -->
+      <!-- PAGE: เบิก Part เพิ่มเติม & ยืนยันการจ่าย Warehouse (Part Requisition) -->
+      <!-- ========================================================================= -->
+      <section class="page" id="page-part-requisition">
+        <div class="title-row" style="align-items:flex-start;margin-bottom:12px">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+              <span class="badge" style="background:var(--teal);color:#fff;font-size:12.5px">📦 ระบบเบิก-จ่าย Part เพิ่มเติม (Production ➔ Warehouse)</span>
+              <span class="badge green" id="partReqSyncStatusBadge" style="font-size:12px">🔗 เชื่อมต่อ Google Sheet &amp; ระบบกลางแล้ว</span>
+            </div>
+            <h1>เบิก Part เพิ่มเติม &amp; ยืนยันการจ่ายคลัง (Warehouse Issue)</h1>
+            <p>บันทึกใบเบิกผูกเลข MO เชื่อมใบโอน Direct Transfer (ZJDB) ส่งแจ้งเตือนไปคลัง Warehouse ยืนยัน Location และถ่ายรูปสดก่อนจ่าย</p>
+          </div>
+          <div class="row-actions" style="align-items:center">
+            <a href="https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit" target="_blank" rel="noopener" class="btn soft" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-weight:700">
+              <span>📊</span> <span>เปิด Google Sheet (On-Hand Inventory Planner - H9 Assembly)</span>
+            </a>
+            <button class="btn" id="exportPartReqExcelBtn" type="button">📥 ส่งออกประวัติ (.xlsx)</button>
+            <button class="btn primary" id="refreshPartReqBtn" type="button">↻ รีเฟรชข้อมูล</button>
+          </div>
+        </div>
+
+        <!-- Google Sheet Info Notice -->
+        <div class="notice" style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#f0fdf4;border-color:#bbf7d0;color:#14532d">
+          <div>
+            <strong>📄 ชื่อไฟล์ Google Sheet ที่ใช้บันทึกข้อมูล (ไฟล์เดียวกับที่อัปเดต On-Hand):</strong>
+            <span style="font-weight:800;color:#0f766e;margin-left:6px;background:#fff;padding:2px 8px;border-radius:6px;border:1px solid #86efac">On-Hand Inventory Planner - H9 Assembly</span>
+            <span style="font-size:12.5px;color:#166534;margin-left:6px">(แท็บชีต: <code>PartRequisitions</code> และ <code>Inventory</code> · รหัสชีต: <code>1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg</code>)</span>
+          </div>
+          <a href="https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit" target="_blank" rel="noopener" style="color:#0f766e;font-weight:800;font-size:13px;text-decoration:underline">คลิกเปิดไฟล์ Google Sheet ที่นี่ ↗</a>
+        </div>
+
+        <!-- Warehouse Live Alert Banner (pops up when there are pending requisitions) -->
+        <div id="whPendingAlertBanner" class="notice warn hidden" style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:2px solid #f59e0b;background:#fffbeb;box-shadow:0 4px 14px rgba(245,158,11,0.18)">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:24px">🔔</span>
+            <div>
+              <strong style="font-size:15.5px;color:#b45309;display:block">แจ้งเตือนคลัง (Warehouse): มีรายการขอเบิก Part เพิ่มเติม รอจ่าย <span id="whAlertCountText">0</span> รายการ!</strong>
+              <span style="font-size:13px;color:#92400e">กรุณาตรวจสอบรายการด้านล่าง กดปุ่ม <b>"📦 Confirm จ่าย Part (Warehouse)"</b> เพื่อระบุ Location และถ่ายรูปยืนยันการจ่าย</span>
+            </div>
+          </div>
+          <button type="button" class="btn primary" id="whJumpToPendingBtn" style="background:#d97706;border-color:#d97706;font-weight:700">👇 ดูรายการรอจ่ายทันที</button>
+        </div>
+
+        <!-- 4 Summary Cards -->
+        <div class="cards" style="margin-bottom:16px">
+          <div class="card metric" style="padding:14px 18px;cursor:pointer" id="partReqCardAll">
+            <div class="metric-top"><span>ใบเบิก Part ทั้งหมด</span><span class="metric-icon">📋</span></div>
+            <div class="metric-value" id="partReqMetricTotal" style="font-size:26px">0</div>
+            <div class="metric-note" id="partReqMetricTotalSub">บันทึกประวัติครบทุกรายการ</div>
+          </div>
+          <div class="card metric" style="padding:14px 18px;cursor:pointer;border-color:#fde68a;background:#fffdf5" id="partReqCardPending">
+            <div class="metric-top"><span style="color:#b45309;font-weight:700">⏳ รอคลังจ่าย (Warehouse)</span><span class="metric-icon" style="background:#fef3c7">🔔</span></div>
+            <div class="metric-value" id="partReqMetricPending" style="font-size:26px;color:#d97706">0</div>
+            <div class="metric-note" style="color:#92400e">คลิกเพื่อกรองเฉพาะรายการรอจ่าย</div>
+          </div>
+          <div class="card metric" style="padding:14px 18px;cursor:pointer;border-color:#bbf7d0;background:#f7fee7" id="partReqCardIssued">
+            <div class="metric-top"><span style="color:#15803d;font-weight:700">✅ คลังจ่ายแล้ว (Confirmed)</span><span class="metric-icon" style="background:#dcfce7">📸</span></div>
+            <div class="metric-value" id="partReqMetricIssued" style="font-size:26px;color:#16a34a">0</div>
+            <div class="metric-note" style="color:#166534">ยืนยัน Location + รูปถ่ายสดครบ</div>
+          </div>
+          <div class="card metric" style="padding:14px 18px" id="partReqCardLinkedZjdb">
+            <div class="metric-top"><span>🔗 เชื่อมเลข Direct Transfer (ZJDB)</span><span class="metric-icon">🔄</span></div>
+            <div class="metric-value" id="partReqMetricZjdb" style="font-size:26px;color:var(--teal)">0</div>
+            <div class="metric-note">ผูกกับ MO และใบโอน ZJDB ใน ERP</div>
+          </div>
+        </div>
+
+        <!-- Step 1: Request Form Panel (ฝั่งผู้เบิก Part) -->
+        <div class="panel" id="partReqFormPanel" style="border:1.5px solid #cbd5e1;margin-bottom:18px">
+          <div class="panel-head" style="border-bottom:1px solid #e2e8f0;padding-bottom:10px;margin-bottom:14px">
+            <div>
+              <h2 style="font-size:18px;color:#0f172a;display:flex;align-items:center;gap:8px">
+                <span>📝 1. แบบฟอร์มขอเบิก Part เพิ่มเติม (สำหรับผู้เบิก)</span>
+                <span class="badge" style="background:#e0f2fe;color:#0369a1;font-size:12px">ประทับเวลา Timestamp อัตโนมัติเมื่อกด Save</span>
+              </h2>
+              <p>เลือกหรือพิมพ์เลขที่ MO ระบบจะดึงเลข Direct Transfer (ZJDB) มาเชื่อมให้อัตโนมัติ และพิมพ์รหัส Part เพื่อกรองและแสดง Description ทันที</p>
+            </div>
+            <button type="button" class="btn soft" id="partReqResetFormBtn" style="padding:6px 12px;font-size:13px">↺ ล้างฟอร์ม</button>
+          </div>
+
+          <form id="partRequisitionForm">
+            <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px;align-items:start">
+              <!-- 1. วันที่เบิก -->
+              <div style="grid-column:span 2;min-width:130px">
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">วันที่เบิก <span style="color:#dc2626">*</span></label>
+                <input type="date" id="reqDateInput" class="field" style="width:100%;height:40px;font-size:13.5px" required>
+              </div>
+
+              <!-- 2. เลขที่ใบเบิกที่เป็น MO (พร้อม Autocomplete) -->
+              <div style="grid-column:span 4;position:relative">
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">
+                  เลขที่ใบเบิก (MO Number) <span style="color:#dc2626">*</span>
+                  <span style="font-weight:500;color:#64748b;font-size:11.5px">(พิมพ์เพื่อค้นหา Order)</span>
+                </label>
+                <input type="text" id="reqMoInput" class="field" placeholder="เช่น MO-20261106-003100 (พิมพ์เลข MO หรือชื่อรุ่น)" autocomplete="off" style="width:100%;height:40px;font-size:14px;font-weight:700;color:#0f172a" required>
+                <div id="reqMoDropdown" class="hidden" style="position:absolute;left:0;right:0;top:68px;z-index:30;background:#fff;border:1px solid #94a3b8;border-radius:10px;max-height:270px;overflow:auto;box-shadow:0 12px 30px rgba(15,23,42,0.18)"></div>
+              </div>
+
+              <!-- 3. เลข Direct Transfer (ZJDB) & PPBOM ที่เชื่อมกับ MO อัตโนมัติ -->
+              <div style="grid-column:span 6">
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#0f766e;margin-bottom:4px">
+                  🔗 เลขใบโอน Direct Transfer (ZJDB) &amp; PPBOM ที่เชื่อมกับ MO นี้
+                </label>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <input type="text" id="reqZjdbInput" class="field" placeholder="จะดึงเลข ZJDB-... อัตโนมัติเมื่อเลือก MO (หรือระบุเพิ่มได้)" style="flex:1;height:40px;font-size:13.5px;background:#f0fdf4;border-color:#86efac;color:#166534;font-weight:700">
+                  <input type="hidden" id="reqPpbomInput">
+                  <span id="reqMoProductBadge" class="badge gray" style="height:40px;padding:0 12px;font-size:12px;white-space:nowrap;max-width:240px;overflow:hidden;text-overflow:ellipsis">ยังไม่ได้เลือก MO</span>
+                </div>
+              </div>
+
+              <!-- 4. รหัสรายการเบิก (Material Code) พร้อมระบบกรองอัตโนมัติ -->
+              <div style="grid-column:span 4;position:relative">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                  <label style="font-size:12.5px;font-weight:700;color:#334155">
+                    รหัสรายการเบิก (Part Code) <span style="color:#dc2626">*</span>
+                  </label>
+                  <label style="font-size:11.5px;color:#0f766e;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:4px">
+                    <input type="checkbox" id="reqFilterByMoBomChk" checked> กรองเฉพาะ BOM ของ MO ก่อน
+                  </label>
+                </div>
+                <input type="text" id="reqMatCodeInput" class="field" placeholder="พิมพ์รหัส Part หรือชื่อ Part เช่น 1005QT00168..." autocomplete="off" style="width:100%;height:40px;font-size:14px;font-weight:700;color:#087e78" required>
+                <div id="reqMatDropdown" class="hidden" style="position:absolute;left:0;width:min(620px,92vw);top:68px;z-index:30;background:#fff;border:1px solid #94a3b8;border-radius:10px;max-height:300px;overflow:auto;box-shadow:0 12px 32px rgba(15,23,42,0.22)"></div>
+              </div>
+
+              <!-- 5. Description (ชื่อรายการ + Specification ขึ้นอัตโนมัติ) -->
+              <div style="grid-column:span 5">
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">
+                  Description (ชื่อรายการวัตถุดิบ / Specification) <span style="font-weight:500;color:#64748b;font-size:11.5px">(ขึ้นอัตโนมัติตามรหัส Part)</span>
+                </label>
+                <input type="text" id="reqMatDescInput" class="field" placeholder="Description จะขึ้นอัตโนมัติเมื่อเลือกรหัส Part" style="width:100%;height:40px;font-size:13.5px;background:#f8fafc;font-weight:600;color:#1e293b" required>
+                <input type="hidden" id="reqMatSpecInput">
+              </div>
+
+              <!-- 6. จำนวนที่เบิก + 7. หน่วย (PCS เป็นหลัก / เปลี่ยนเป็น Kg, Set ได้) -->
+              <div style="grid-column:span 3;display:grid;grid-template-columns:1.25fr 1fr;gap:8px">
+                <div>
+                  <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">จำนวนที่เบิก <span style="color:#dc2626">*</span></label>
+                  <input type="number" id="reqQtyInput" class="field" min="0.0001" step="any" placeholder="0" style="width:100%;height:40px;font-size:15px;font-weight:800;text-align:right;color:#0f172a" required>
+                </div>
+                <div>
+                  <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">หน่วย <span style="color:#dc2626">*</span></label>
+                  <select id="reqUnitSelect" class="field" style="width:100%;height:40px;font-size:14px;font-weight:700;color:#087e78;background:#f0fdf4">
+                    <option value="PCS" selected>PCS (หลัก)</option>
+                    <option value="Kg">Kg</option>
+                    <option value="Set">Set</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- 8. สาเหตุการเบิก -->
+              <div style="grid-column:span 4">
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">สาเหตุการเบิก <span style="color:#dc2626">*</span></label>
+                <div style="display:flex;gap:6px">
+                  <select id="reqReasonSelect" class="field" style="flex:1;height:40px;font-size:13.5px" required>
+                    <option value="งานเสีย/NG ในไลน์ผลิต">งานเสีย/NG ในไลน์ผลิต</option>
+                    <option value="ของไม่ครบตามถุง/Shortage">ของไม่ครบตามถุง/Shortage</option>
+                    <option value="ชำรุด/ตกหล่นระหว่างประกอบ">ชำรุด/ตกหล่นระหว่างประกอบ</option>
+                    <option value="เบิกเพิ่มตามใบสั่งผลิต (MO)">เบิกเพิ่มตามใบสั่งผลิต (MO)</option>
+                    <option value="อื่นๆ">อื่นๆ (ระบุเอง)</option>
+                  </select>
+                  <input type="text" id="reqReasonCustomInput" class="field hidden" placeholder="ระบุสาเหตุ..." style="flex:1;height:40px;font-size:13.5px">
+                </div>
+              </div>
+
+              <!-- 9. ผู้เบิก + 10. กะ (A/B) -->
+              <div style="grid-column:span 4;display:grid;grid-template-columns:1.5fr 1fr;gap:8px">
+                <div>
+                  <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">ผู้เบิก <span style="color:#dc2626">*</span></label>
+                  <input type="text" id="reqRequesterInput" class="field" placeholder="ชื่อผู้เบิก" style="width:100%;height:40px;font-size:13.5px;font-weight:600" required>
+                </div>
+                <div>
+                  <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">กะ (Shift) <span style="color:#dc2626">*</span></label>
+                  <select id="reqShiftSelect" class="field" style="width:100%;height:40px;font-size:14px;font-weight:700">
+                    <option value="A" selected>กะ A</option>
+                    <option value="B">กะ B</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- 11. หมายเหตุของผู้เบิก -->
+              <div style="grid-column:span 4">
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">หมายเหตุ (ผู้เบิก)</label>
+                <input type="text" id="reqNoteInput" class="field" placeholder="ระบุหมายเหตุเพิ่มเติมของผู้เบิก (ถ้ามี)..." style="width:100%;height:40px;font-size:13.5px">
+              </div>
+            </div>
+
+            <!-- Stock & Location hint bar for selected part -->
+            <div id="reqSelectedPartStockHint" class="hidden" style="margin-top:10px;padding:8px 12px;border-radius:8px;background:#f0f9ff;border:1px solid #bae6fd;font-size:12.5px;color:#0369a1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px"></div>
+
+            <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+              <div style="font-size:12.5px;color:#475569">
+                ⏱️ <b>เวลาเบิก (Timestamp):</b> ระบบจะประทับเวลาวินาทีที่กดปุ่ม <b>Save</b> อัตโนมัติ และส่งแจ้งเตือนเด้งไปที่หน้าจอ <b>Warehouse</b> ทันที
+              </div>
+              <button type="submit" class="btn primary" id="reqSubmitSaveBtn" style="height:42px;padding:0 24px;font-size:15px;font-weight:700;box-shadow:0 4px 12px rgba(8,126,120,0.25)">
+                💾 Save บันทึกใบเบิก Part (ส่งแจ้งเตือนไป Warehouse)
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Step 2 & 3: คิวรอคลังจ่าย (Warehouse) & ประวัติการเบิก-จ่ายทั้งหมด (History) -->
+        <div class="panel" id="partReqHistoryPanel">
+          <div class="panel-head" style="flex-wrap:wrap;gap:10px">
+            <div>
+              <h2 style="font-size:18px;color:#0f172a">📜 2. รายการรอคลังจ่าย (Warehouse Confirm) &amp; ประวัติการเบิก-จ่าย Part ทั้งหมด</h2>
+              <p>คลังกดปุ่ม <b>"📦 Confirm จ่าย Part"</b> เพื่อระบุ Location (กด + เพิ่มได้หลายจุด) และถ่ายรูปสดจากกล้องเพื่อยืนยันการจ่ายจริง</p>
+            </div>
+            <div class="filters">
+              <div style="display:flex;gap:5px">
+                <button type="button" class="safety-pill active" data-req-tab="all" id="partReqTabAllBtn">ทั้งหมด (<span id="partReqTabAllCount">0</span>)</button>
+                <button type="button" class="safety-pill" data-req-tab="pending" id="partReqTabPendingBtn" style="border-color:#f59e0b;color:#b45309">⏳ รอคลังจ่าย (<span id="partReqTabPendingCount">0</span>)</button>
+                <button type="button" class="safety-pill" data-req-tab="issued" id="partReqTabIssuedBtn" style="border-color:#22c55e;color:#15803d">✅ จ่ายแล้ว (<span id="partReqTabIssuedCount">0</span>)</button>
+              </div>
+              <select id="partReqShiftFilter" class="field" style="min-height:36px;padding:5px 10px;font-size:13px">
+                <option value="">ทุกกะ (A/B)</option>
+                <option value="A">เฉพาะ กะ A</option>
+                <option value="B">เฉพาะ กะ B</option>
+              </select>
+              <input type="date" id="partReqDateFilter" class="field" style="min-height:36px;padding:5px 10px;font-size:13px" title="กรองตามวันที่เบิก">
+              <input type="text" id="partReqSearchInput" class="field search" placeholder="ค้นหา MO, ZJDB, รหัส Part, Description, ผู้เบิก, ผู้จ่าย..." style="min-height:36px;min-width:250px;font-size:13px">
+            </div>
+          </div>
+
+          <div class="table-wrap" style="max-height:620px;overflow:auto">
+            <table style="width:100%;min-width:1360px;border-collapse:collapse;font-size:13px;white-space:normal">
+              <thead style="position:sticky;top:0;z-index:2;background:#f8fafc;box-shadow:0 1px 2px rgba(0,0,0,0.06)">
+                <tr>
+                  <th style="width:105px;padding:9px 8px">เลขใบเบิก / วันที่</th>
+                  <th style="width:175px;padding:9px 8px">เลขที่ MO &amp; ใบโอน Direct Transfer (ZJDB)</th>
+                  <th style="width:220px;padding:9px 8px">รหัส Part &amp; Description</th>
+                  <th class="num" style="width:95px;padding:9px 8px;background:#f0fdf4;color:#166534">จำนวน &amp; หน่วย</th>
+                  <th style="width:160px;padding:9px 8px">สาเหตุ &amp; หมายเหตุผู้เบิก</th>
+                  <th style="width:150px;padding:9px 8px">ผู้เบิก / กะ / เวลาเบิก (Timestamp)</th>
+                  <th style="width:175px;padding:9px 8px;background:#fffbeb;color:#92400e">Confirm Location / พื้นที่หยิบ</th>
+                  <th style="width:160px;padding:9px 8px;background:#eff6ff;color:#1e40af">ผู้จ่าย / เวลาจ่าย / หมายเหตุผู้จ่าย</th>
+                  <th style="width:135px;padding:9px 8px;text-align:center">รูปถ่ายยืนยัน / จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="partReqTableBody">
+                <tr><td colspan="9" class="empty">ยังไม่มีรายการเบิก Part เพิ่มเติม</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- MODAL 1: Warehouse Confirm Issue Modal (ระบุ Location + บังคับถ่ายรูปสด) -->
+      <!-- ========================================================================= -->
+      <div class="modal-backdrop" id="whConfirmIssueModal" style="z-index:35">
+        <div class="modal" style="width:min(760px,96vw);max-height:92vh;overflow:auto;padding:22px 24px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <span class="badge amber" id="whModalReqIdBadge" style="font-size:12.5px">REQ-XXXX</span>
+                <span class="badge" id="whModalMoBadge" style="background:var(--teal);color:#fff;font-size:12.5px">MO-XXXX</span>
+                <span class="badge green" id="whModalZjdbBadge" style="font-size:12px">🔗 ZJDB: —</span>
+              </div>
+              <h2 style="margin:6px 0 2px;font-size:19px;color:#0f172a">📦 ยืนยันการจ่าย Part (Warehouse Confirm Issue)</h2>
+              <p style="margin:0;font-size:13px;color:#64748b">ยืนยัน Location/พื้นที่ที่หยิบ Part และ <b>ถ่ายรูปสดจากกล้องเท่านั้น</b> เพื่อยืนยันการจ่ายจริง</p>
+            </div>
+            <button type="button" class="btn" id="closeWhConfirmModalBtn" style="padding:5px 11px;font-size:16px">✕</button>
+          </div>
+
+          <!-- Summary of Request -->
+          <div id="whModalRequestSummary" style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:13px;line-height:1.55"></div>
+
+          <form id="whConfirmIssueForm">
+            <input type="hidden" id="whModalReqIdInput">
+
+            <!-- 1. Confirm Location / พื้นที่ (ตอนแรกขึ้น 1 โลเคชั่น กด + เพิ่มได้) -->
+            <div style="margin-bottom:14px;padding:12px 14px;border:1px solid #fde68a;background:#fffdf5;border-radius:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+                <div>
+                  <label style="font-size:13.5px;font-weight:800;color:#92400e;display:block">
+                    📍 1. Confirm (Location / พื้นที่) ที่ดึง Part มาจ่าย <span style="color:#dc2626">*</span>
+                  </label>
+                  <small style="color:#b45309;font-size:12px">ตอนแรกแสดง 1 โลเคชั่น หากดึงมาจาก 2 ที่หรือมากกว่านั้น กดปุ่ม <b>"＋ เพิ่ม Location"</b> ด้านขวา</small>
+                </div>
+                <button type="button" class="btn soft" id="whAddLocationBtn" style="padding:5px 12px;font-size:12.5px;font-weight:700;background:#fef3c7;border-color:#f59e0b;color:#92400e">
+                  ＋ เพิ่ม Location / พื้นที่
+                </button>
+              </div>
+              <div id="whSuggestedLocationsHint" style="font-size:12px;color:#0369a1;margin-bottom:8px"></div>
+              <div id="whLocationsList" style="display:grid;gap:8px"></div>
+            </div>
+
+            <!-- 2. ผู้จ่าย & หมายเหตุผู้จ่าย -->
+            <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin-bottom:14px">
+              <div>
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">ชื่อผู้จ่าย (Warehouse) <span style="color:#dc2626">*</span></label>
+                <input type="text" id="whIssuerNameInput" class="field" placeholder="ระบุชื่อผู้จ่าย Part" style="width:100%;height:38px;font-size:13.5px;font-weight:700" required>
+              </div>
+              <div>
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">หมายเหตุ (ผู้จ่าย / Warehouse)</label>
+                <input type="text" id="whIssuerNoteInput" class="field" placeholder="หมายเหตุเพิ่มเติมของผู้จ่าย (ถ้ามี)..." style="width:100%;height:38px;font-size:13.5px">
+              </div>
+            </div>
+
+            <!-- 3. บังคับถ่ายรูปสดเท่านั้น (Camera Capture Only - ห้ามอัปโหลดรูปเก่า) -->
+            <div style="margin-bottom:14px;padding:14px;border:2px dashed #087e78;background:#f0fdf4;border-radius:11px">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+                <div>
+                  <strong style="font-size:14px;color:#0f766e;display:block">📸 2. ถ่ายรูปยืนยันการจ่าย Part จริง (ย้ำ: ถ่ายรูปจากกล้องสดเท่านั้น!) <span style="color:#dc2626">*</span></strong>
+                  <small style="color:#166534;font-size:12px">ไม่อนุญาตให้เลือกรูปภาพเก่าจากเครื่อง หากยังไม่ถ่ายรูปจะไม่สามารถกดปุ่ม Save ได้</small>
+                </div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap">
+                  <button type="button" class="btn primary" id="whStartCameraBtn" style="padding:7px 14px;font-size:13px;background:#087e78">📷 เปิดกล้องถ่ายรูปสด</button>
+                  <button type="button" class="btn danger hidden" id="whRetakePhotoBtn" style="padding:7px 12px;font-size:12.5px">↺ ถ่ายใหม่</button>
+                </div>
+              </div>
+
+              <!-- Live Video Stream Container -->
+              <div id="whCameraStreamWrap" class="hidden" style="text-align:center;background:#0f172a;border-radius:10px;padding:10px;margin-top:8px">
+                <video id="whCameraVideo" autoplay playsinline muted style="width:100%;max-height:300px;border-radius:8px;background:#000;object-fit:contain"></video>
+                <div style="margin-top:8px;display:flex;justify-content:center;gap:10px">
+                  <button type="button" class="btn primary" id="whCaptureShutterBtn" style="background:#16a34a;border-color:#16a34a;padding:8px 22px;font-size:14.5px;font-weight:800">📸 กดชัตเตอร์ถ่ายภาพยืนยัน</button>
+                  <button type="button" class="btn soft" id="whSwitchCameraBtn" style="padding:8px 12px;font-size:12.5px">🔄 สลับกล้อง หน้า/หลัง</button>
+                </div>
+              </div>
+
+              <!-- Captured Photo Preview with Watermark -->
+              <div id="whPhotoPreviewWrap" class="hidden" style="margin-top:8px;text-align:center">
+                <img id="whPhotoPreviewImg" alt="รูปถ่ายยืนยันการจ่าย Part" style="max-width:100%;max-height:280px;border-radius:9px;border:2px solid #16a34a;box-shadow:0 4px 12px rgba(0,0,0,0.12)">
+                <div id="whPhotoTimestampBadge" style="margin-top:6px;font-size:12.5px;font-weight:700;color:#15803d">✅ ถ่ายรูปยืนยันสำเร็จ พร้อมประทับเวลาถ่ายจริง</div>
+              </div>
+
+              <div id="whPhotoRequiredWarning" style="margin-top:6px;padding:7px 10px;border-radius:7px;background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;font-size:12.5px;font-weight:700">
+                ⚠️ สถานะ: ยังไม่ได้ถ่ายรูปยืนยันการจ่าย Part (ปุ่ม Save ถูกล็อกจนกว่าจะถ่ายรูปสำเร็จ)
+              </div>
+            </div>
+
+            <div class="modal-actions" style="justify-content:space-between;align-items:center;margin-top:14px">
+              <span class="helper" style="font-size:12px">⏱️ ระบบจะ Stamp เวลาจ่ายจริงทันทีเมื่อกด Save</span>
+              <div style="display:flex;gap:8px">
+                <button type="button" class="btn soft" id="cancelWhConfirmModalBtn">ยกเลิก</button>
+                <button type="submit" class="btn primary" id="whConfirmSaveBtn" disabled style="padding:9px 20px;font-size:14.5px;font-weight:800;opacity:0.5;cursor:not-allowed">
+                  💾 Save ยืนยันการจ่าย Part (Stamp เวลาจ่าย)
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ========================================================================= -->
+      <!-- MODAL 2: Photo & Requisition Detail Viewer Modal (ดูรูปถ่ายและประวัติ)    -->
+      <!-- ========================================================================= -->
+      <div class="modal-backdrop" id="partReqPhotoPreviewModal" style="z-index:36">
+        <div class="modal" style="width:min(680px,95vw);max-height:90vh;overflow:auto;padding:20px 24px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <h2 id="partReqPreviewModalTitle" style="margin:0;font-size:18px;color:#0f172a">📸 รูปถ่ายยืนยันการจ่าย Part &amp; รายละเอียดใบเบิก</h2>
+            <button type="button" class="btn" id="closePartReqPreviewModalBtn" style="padding:4px 10px;font-size:16px">✕</button>
+          </div>
+          <div id="partReqPreviewModalBody" style="font-size:13.5px;line-height:1.55"></div>
+          <div class="modal-actions" style="margin-top:14px">
+            <button type="button" class="btn primary" id="donePartReqPreviewModalBtn">ปิดหน้าต่าง</button>
+          </div>
+        </div>
+      </div>
       <section class="page" id="page-lot">
         <div class="title-row" style="align-items:flex-start;margin-bottom:14px">
           <div>
@@ -2611,7 +2989,7 @@
     return map;
   }
 
-  const KEYS = ['inventory','departmentMap','bom','safetyStock','imports','plans','settings','productionOrders','users'];
+  const KEYS = ['inventory','departmentMap','bom','safetyStock','imports','plans','settings','productionOrders','users','partRequisitions'];
   const DEFAULT_USERS = [
     {
       id: 'u_admin',
@@ -2634,9 +3012,31 @@
       status: 'approved',
       createdAt: '2026-10-13T00:00:00.000Z',
       approvedAt: '2026-10-13T00:00:00.000Z'
+    },
+    {
+      id: 'u_requester',
+      username: 'req',
+      password: '1234',
+      name: 'พนักงานเบิก Part (Production)',
+      department: 'H9 Assembly Production Line',
+      role: 'requester',
+      status: 'approved',
+      createdAt: '2026-11-07T00:00:00.000Z',
+      approvedAt: '2026-11-07T00:00:00.000Z'
+    },
+    {
+      id: 'u_warehouse',
+      username: 'wh',
+      password: '1234',
+      name: 'เจ้าหน้าที่คลังจ่าย Part (Warehouse)',
+      department: 'Warehouse / Logistics',
+      role: 'warehouse',
+      status: 'approved',
+      createdAt: '2026-11-07T00:00:00.000Z',
+      approvedAt: '2026-11-07T00:00:00.000Z'
     }
   ];
-  const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],productionMaterialIssues:[],finishedGoodsReceipts:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',lastMaterialIssueAt:'',lastFinishedGoodsReceiptAt:'',security:{autoLockMinutes:15,passcode:'1234'}}};
+  const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],productionMaterialIssues:[],finishedGoodsReceipts:[],partRequisitions:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',lastMaterialIssueAt:'',lastFinishedGoodsReceiptAt:'',security:{autoLockMinutes:15,passcode:'1234'}}};
   let db = structuredClone(initial), activePage='overview', firstPageLoad=true, pendingImport=null, currentAnalysis=[], sourceRemote=false, lastSheetPullAt=localStorage.getItem('onhandLastSheetPullAt')||'', remoteSaveTimer=null, remoteSaveQueue=Promise.resolve();
   const el = id => document.getElementById(id);
   const n = value => { const x=Number(String(value??'').replace(/,/g,'').trim()); return Number.isFinite(x)?x:0; };
@@ -4874,13 +5274,20 @@
   function closeMobileActionDropdown(){
     el('mobileActionDropdown')?.classList.add('hidden');
   }
+  function isPartReqOnlyRole(role){
+    return role === 'requester' || role === 'warehouse';
+  }
   function goto(page){
     closeMobileSidebar();
     closeMobileActionDropdown();
     const cu = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
-    if((page === 'users' || page === 'imports') && (!cu || cu.role !== 'admin')) page = 'overview';
-    activePage=page;document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===`page-${page}`));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page||(page==='lot'&&x.dataset.page==='stock')));updatePageTitle();if(page==='compare'){renderPlanList();renderAnalysis()}if(page==='stock')renderStock();if(page==='safety')renderSafety();if(page==='lot')renderLotDetailPage();if(page==='orders')renderOrdersPage();if(page==='po-tracking'&&typeof renderPoTrackingPage==='function')renderPoTrackingPage();if(page==='users')renderUsersPage();if(page==='imports')renderImports();updateStockHScroll();updateSafetyHScroll()}
-  function updatePageTitle(){const labels={overview:'ภาพรวม',compare:'จำลองแผนผลิต',orders:'วิเคราะห์รุ่นที่ขึ้นได้ (ไม่รวมคลัง H9)','po-tracking':'ติดตาม Order ผลิต (Direct Transfer / Report / QC / Barcode)',stock:'คลังทั้งหมด',safety:'Safety stock',imports:'นำเข้าข้อมูล',settings:'ตั้งค่า',lot:'รายละเอียด Lot',users:'จัดการสมาชิกและอนุมัติ'};el('pageTitle').textContent=labels[activePage]||''}
+    if(cu && isPartReqOnlyRole(cu.role)){
+      page = 'part-requisition';
+    } else if((page === 'users') && (!cu || cu.role !== 'admin')) {
+      page = 'overview';
+    }
+    activePage=page;document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===`page-${page}`));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page||(page==='lot'&&x.dataset.page==='stock')));updatePageTitle();if(page==='compare'){renderPlanList();renderAnalysis()}if(page==='stock')renderStock();if(page==='safety')renderSafety();if(page==='lot')renderLotDetailPage();if(page==='orders')renderOrdersPage();if(page==='po-tracking'&&typeof renderPoTrackingPage==='function')renderPoTrackingPage();if(page==='part-requisition'&&typeof renderPartRequisitionPage==='function')renderPartRequisitionPage();if(page==='users')renderUsersPage();if(page==='imports')renderImports();updateStockHScroll();updateSafetyHScroll()}
+  function updatePageTitle(){const labels={overview:'ภาพรวม',compare:'จำลองแผนผลิต',orders:'วิเคราะห์รุ่นที่ขึ้นได้ (ไม่รวมคลัง H9)','po-tracking':'ติดตาม Order ผลิต (Direct Transfer / Report / QC / Barcode)','part-requisition':'เบิก Part เพิ่มเติม & Warehouse จ่าย Part (เชื่อม MO / Direct Transfer / Google Sheet)',stock:'คลังทั้งหมด',safety:'Safety stock',imports:'นำเข้าข้อมูล',settings:'ตั้งค่า',lot:'รายละเอียด Lot',users:'จัดการสมาชิกและอนุมัติ'};el('pageTitle').textContent=labels[activePage]||''}
   let currentLotMaterial='',lotReturnPage='stock',currentLotWarehouse='';
   function openLotDetailPage(materialCode,warehouse='',fromPage=activePage){if(!materialCode)return;if(fromPage!=='lot')lotReturnPage=fromPage;currentLotMaterial=String(materialCode).trim();currentLotWarehouse=String(warehouse||'').trim();renderLotDetailPage(currentLotMaterial,currentLotWarehouse);goto('lot');window.scrollTo({top:0,behavior:'smooth'})}
   window.openLotDetailPage = openLotDetailPage;
@@ -9105,15 +9512,20 @@
     setCurrentUser(found);
     hideAuthScreen();
     lastUserActivityTime = Date.now();
-    goto(found.role === 'admin' && activePage === 'users' ? 'users' : 'overview');
+    if (isPartReqOnlyRole(found.role)) {
+      goto('part-requisition');
+    } else {
+      goto(found.role === 'admin' && activePage === 'users' ? 'users' : 'overview');
+    }
     toast(`เข้าสู่ระบบสำเร็จ ยินดีต้อนรับ ${found.name || found.username}`);
   }
 
   function handleRegisterSubmit(){
-    const uInput = el('regUsernameInput'), nameInput = el('regFullNameInput'), deptSelect = el('regDeptSelect'), pInput = el('regPasswordInput'), cpInput = el('regConfirmPasswordInput'), errEl = el('regErrorMsg');
+    const uInput = el('regUsernameInput'), nameInput = el('regFullNameInput'), deptSelect = el('regDeptSelect'), roleSelect = el('regRoleSelect'), pInput = el('regPasswordInput'), cpInput = el('regConfirmPasswordInput'), errEl = el('regErrorMsg');
     const username = (uInput?.value || '').trim().toLowerCase();
     const fullName = (nameInput?.value || '').trim();
     const dept = (deptSelect?.value || '').trim();
+    const selectedRole = (roleSelect?.value || 'requester').trim();
     const password = (pInput?.value || '').trim();
     const confirm = (cpInput?.value || '').trim();
 
@@ -9145,7 +9557,7 @@
       password: password,
       name: fullName,
       department: dept || 'ทั่วไป',
-      role: 'user',
+      role: ['requester', 'warehouse', 'user'].includes(selectedRole) ? selectedRole : 'requester',
       status: 'pending',
       createdAt: new Date().toISOString(),
       approvedAt: null
@@ -9165,14 +9577,22 @@
     updateAuthUI();
   }
 
+  function getRoleDisplayLabel(role){
+    if(role === 'admin') return '🛡️ Admin';
+    if(role === 'requester') return '📝 คนเบิก Part';
+    if(role === 'warehouse') return '📦 Warehouse';
+    return '👤 User';
+  }
+
   function updateAuthUI(){
     const u = getCurrentUser();
     const isAdmin = u?.role === 'admin';
+    const isPartReqOnly = isPartReqOnlyRole(u?.role);
     accessIsAdmin = isAdmin;
 
     if(el('topbarUserName')) el('topbarUserName').textContent = u ? (u.username === 'admin' ? 'Admin' : (u.name || u.username)) : '—';
     if(el('topbarUserRoleBadge')) {
-      el('topbarUserRoleBadge').textContent = isAdmin ? 'Admin' : 'User';
+      el('topbarUserRoleBadge').textContent = u ? getRoleDisplayLabel(u.role) : 'User';
       el('topbarUserRoleBadge').className = isAdmin ? 'role-badge' : 'role-badge user';
     }
 
@@ -9187,26 +9607,37 @@
       el('sidebarPendingBadge').classList.toggle('hidden', !isAdmin || pendingCount === 0);
     }
     if(el('adminUsersTopBtn')){
-      el('adminUsersTopBtn').classList.toggle('hidden', !isAdmin);
+      el('adminUsersTopBtn').classList.toggle('hidden', !isAdmin || isPartReqOnly);
     }
     if(el('sidebarUsersBtn')){
-      el('sidebarUsersBtn').classList.toggle('hidden', !isAdmin);
+      el('sidebarUsersBtn').classList.toggle('hidden', !isAdmin || isPartReqOnly);
     }
 
-    // Allow all authenticated users to update/import/sync so everyone can update and share the same data
+    // Sidebar Menu Restriction:
+    // If role is 'requester' (คนเบิก Part) or 'warehouse' (คนจ่าย Part):
+    // ONLY show the 'part-requisition' menu! Hide all other menus in the sidebar.
+    document.querySelectorAll('.nav button').forEach(btn => {
+      const p = btn.dataset.page;
+      if (isPartReqOnly) {
+        btn.classList.toggle('hidden', p !== 'part-requisition');
+      } else if (p === 'users') {
+        btn.classList.toggle('hidden', !isAdmin);
+      } else {
+        btn.classList.remove('hidden');
+      }
+    });
+
     if(el('quickImportBtn')){
-      el('quickImportBtn').classList.remove('hidden');
+      el('quickImportBtn').classList.toggle('hidden', isPartReqOnly);
     }
     if(el('sidebarImportsBtn')){
-      el('sidebarImportsBtn').classList.remove('hidden');
+      el('sidebarImportsBtn').classList.toggle('hidden', isPartReqOnly);
     }
-    document.querySelectorAll('button[data-page="imports"]').forEach(b => b.classList.remove('hidden'));
-    document.querySelectorAll('button[data-goto="imports"]').forEach(b => b.classList.remove('hidden'));
     if(el('uploadPmlBtn')){
-      el('uploadPmlBtn').classList.remove('hidden');
+      el('uploadPmlBtn').classList.toggle('hidden', isPartReqOnly);
     }
     if(el('autoFetchKingdeeBtn')){
-      el('autoFetchKingdeeBtn').classList.remove('hidden');
+      el('autoFetchKingdeeBtn').classList.toggle('hidden', isPartReqOnly);
       el('autoFetchKingdeeBtn').disabled = false;
     }
     if(el('reloadBtn')){
@@ -9217,7 +9648,7 @@
     // Sync mobile menu user profile & badges
     if(el('mobileMenuUserName')) el('mobileMenuUserName').textContent = u ? (u.username === 'admin' ? 'Admin' : (u.name || u.username)) : '—';
     if(el('mobileMenuUserRole')) {
-      el('mobileMenuUserRole').textContent = isAdmin ? 'Admin' : 'User';
+      el('mobileMenuUserRole').textContent = u ? getRoleDisplayLabel(u.role) : 'User';
       el('mobileMenuUserRole').className = isAdmin ? 'role-badge' : 'role-badge user';
     }
     if(el('mobileMenuPendingBadge')){
@@ -9225,15 +9656,23 @@
       el('mobileMenuPendingBadge').classList.toggle('hidden', !isAdmin || pendingCount === 0);
     }
     if(el('mobileActionMembersBtn')){
-      el('mobileActionMembersBtn').classList.toggle('hidden', !isAdmin);
+      el('mobileActionMembersBtn').classList.toggle('hidden', !isAdmin || isPartReqOnly);
     }
     if(el('mobileActionImportBtn')){
-      el('mobileActionImportBtn').classList.remove('hidden');
+      el('mobileActionImportBtn').classList.toggle('hidden', isPartReqOnly);
+    }
+    if(el('mobileActionKingdeeBtn')){
+      el('mobileActionKingdeeBtn').classList.toggle('hidden', isPartReqOnly);
     }
 
-    // Guard active page if not admin (only users management page is restricted to admin)
-    if(activePage === 'users' && !isAdmin){
+    // Guard active page
+    if(isPartReqOnly && activePage !== 'part-requisition'){
+      goto('part-requisition');
+    } else if(activePage === 'users' && !isAdmin){
       goto('overview');
+    }
+    if(typeof renderPartRequisitionPage === 'function' && activePage === 'part-requisition'){
+      renderPartRequisitionPage();
     }
   }
 
@@ -9267,6 +9706,7 @@
                   <th style="width:140px">Username</th>
                   <th>ชื่อ - นามสกุล</th>
                   <th>แผนก</th>
+                  <th style="width:150px">สิทธิ์ที่ขอ</th>
                   <th style="width:160px">ขอใช้งานเมื่อ</th>
                   <th style="width:180px;text-align:center">การดำเนินการ</th>
                 </tr>
@@ -9277,6 +9717,7 @@
                     <td><strong style="color:#0f172a">${esc(p.username)}</strong></td>
                     <td><b>${esc(p.name || p.username)}</b></td>
                     <td><span class="badge gray">${esc(p.department || '—')}</span></td>
+                    <td><span class="badge amber">${esc(getRoleDisplayLabel(p.role))}</span></td>
                     <td style="font-size:12px;color:var(--muted)">${esc(time(p.createdAt))}</td>
                     <td style="text-align:center">
                       ${isAdmin ? `
@@ -9301,18 +9742,19 @@
           <table class="data-table" style="width:100%">
             <thead>
               <tr>
-                <th style="width:140px">Username</th>
+                <th style="width:130px">Username</th>
                 <th>ชื่อ - นามสกุล</th>
                 <th>แผนก</th>
-                <th style="width:110px">ระดับสิทธิ์</th>
-                <th style="width:140px">รหัสผ่าน</th>
-                <th style="width:140px">อนุมัติเมื่อ</th>
+                <th style="width:185px">ระดับสิทธิ์ / เมนูที่เห็น</th>
+                <th style="width:130px">รหัสผ่าน</th>
+                <th style="width:135px">อนุมัติเมื่อ</th>
                 ${isAdmin ? '<th style="width:210px;text-align:center">จัดการ</th>' : ''}
               </tr>
             </thead>
             <tbody>
               ${approved.map(a => {
                 const isSelf = u && a.id === u.id;
+                const roleBadgeClass = a.role === 'admin' ? 'teal' : (a.role === 'requester' || a.role === 'warehouse' ? 'amber' : 'green');
                 return `
                   <tr>
                     <td>
@@ -9322,9 +9764,12 @@
                     <td><b>${esc(a.name || a.username)}</b></td>
                     <td><span class="badge gray">${esc(a.department || '—')}</span></td>
                     <td>
-                      <span class="badge ${a.role === 'admin' ? 'teal' : 'green'}" style="font-weight:700">
-                        ${a.role === 'admin' ? '🛡️ Admin' : '👤 User'}
+                      <span class="badge ${roleBadgeClass}" style="font-weight:700">
+                        ${esc(getRoleDisplayLabel(a.role))}
                       </span>
+                      <div style="font-size:10.5px;color:#64748b;margin-top:2px">
+                        ${isPartReqOnlyRole(a.role) ? '🔒 เห็นเฉพาะเมนูเบิก Part' : '🌐 เห็นครบทุกเมนู'}
+                      </div>
                     </td>
                     <td style="font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;color:#334155">
                       ${isAdmin ? `<code>${esc(a.password)}</code>` : '••••••••'}
@@ -9334,7 +9779,7 @@
                       <td style="text-align:center">
                         <button class="btn soft btn-reset-pwd" data-id="${esc(a.id)}" style="font-size:11.5px;padding:3px 7px" title="รีเซ็ตรหัสผ่าน">🔑 รหัส</button>
                         <button class="btn soft btn-toggle-role" data-id="${esc(a.id)}" style="font-size:11.5px;padding:3px 7px;margin-left:3px" ${isSelf ? 'disabled title="ไม่สามารถเปลี่ยนสิทธิ์ของตนเองได้"' : ''}>
-                          ${a.role === 'admin' ? 'ลดเป็น User' : 'ตั้งเป็น Admin'}
+                          🔄 เปลี่ยนสิทธิ์
                         </button>
                         ${!isSelf ? `
                           <button class="btn danger btn-delete-user" data-id="${esc(a.id)}" style="font-size:11.5px;padding:3px 7px;margin-left:3px" title="ลบสมาชิก">🗑️</button>
@@ -9382,15 +9827,26 @@
       toast('ไม่สามารถเปลี่ยนสิทธิ์ของตนเองได้');
       return;
     }
-    const newRole = u.role === 'admin' ? 'user' : 'admin';
-    const label = newRole === 'admin' ? 'Admin (ผู้ดูแลระบบ)' : 'User (ผู้ใช้งานทั่วไป)';
-    if(confirm(`ต้องการเปลี่ยนสิทธิ์ของ "${u.name || u.username}" เป็น ${label} ใช่หรือไม่?`)){
-      u.role = newRole;
-      persist(true);
-      renderUsersPage();
-      updateAuthUI();
-      toast(`เปลี่ยนสิทธิ์เป็น ${label} สำเร็จ`);
+    const roleChoice = prompt(
+      `เลือกระดับสิทธิ์สำหรับ "${u.name || u.username}" (ปัจจุบัน: ${getRoleDisplayLabel(u.role)}):\n` +
+      `พิมพ์ 1 = 📝 คนเบิก Part (เห็นเฉพาะเมนูเบิก Part เพิ่มเติม)\n` +
+      `พิมพ์ 2 = 📦 Warehouse จ่าย Part (เห็นเฉพาะเมนูเบิก/จ่าย Part)\n` +
+      `พิมพ์ 3 = 👤 User ทั่วไป (เห็นทุกเมนูวางแผน)\n` +
+      `พิมพ์ 4 = 🛡️ Admin (ผู้ดูแลระบบ เห็นทุกเมนู)`,
+      u.role === 'requester' ? '1' : (u.role === 'warehouse' ? '2' : (u.role === 'admin' ? '4' : '3'))
+    );
+    if(!roleChoice) return;
+    const mapChoice = { '1': 'requester', '2': 'warehouse', '3': 'user', '4': 'admin', 'requester': 'requester', 'warehouse': 'warehouse', 'user': 'user', 'admin': 'admin' };
+    const newRole = mapChoice[roleChoice.trim().toLowerCase()];
+    if(!newRole){
+      toast('กรุณาพิมพ์ตัวเลข 1, 2, 3 หรือ 4');
+      return;
     }
+    u.role = newRole;
+    persist(true);
+    renderUsersPage();
+    updateAuthUI();
+    toast(`เปลี่ยนสิทธิ์ของ "${u.name || u.username}" เป็น ${getRoleDisplayLabel(newRole)} สำเร็จ`);
   }
 
   function resetUserPassword(userId){
@@ -10786,6 +11242,1369 @@
       applyNewSyncData(event.data);
     }
   });
+
+  // ============================================================================
+  // 📦 PART REQUISITION & WAREHOUSE CONFIRMATION MODULE (Google Sheet Sync)
+  // Google Sheet Name: "On-Hand Inventory Planner - H9 Assembly"
+  // Spreadsheet ID: 1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg
+  // Sheet Tab: "PartRequisitions"
+  // ============================================================================
+  let partRequisitionsList = [];
+  let whActiveConfirmReqId = null;
+  let whCameraStream = null;
+  let capturedWhPhotoDataUrl = '';
+  let lastKnownPendingReqIds = new Set();
+
+  function loadInitialPartRequisitions() {
+    const map = new Map();
+    const seedItems = Array.isArray(window.PART_REQUISITIONS_SEED?.items) ? window.PART_REQUISITIONS_SEED.items : [];
+    for (const item of seedItems) {
+      if (item && item.reqId) map.set(item.reqId, { ...item });
+    }
+    const dbItems = Array.isArray(db?.partRequisitions) ? db.partRequisitions : [];
+    for (const item of dbItems) {
+      if (item && item.reqId) map.set(item.reqId, { ...(map.get(item.reqId) || {}), ...item });
+    }
+    try {
+      const localItems = JSON.parse(localStorage.getItem('onhandPartRequisitions') || '[]');
+      if (Array.isArray(localItems)) {
+        for (const item of localItems) {
+          if (item && item.reqId) map.set(item.reqId, { ...(map.get(item.reqId) || {}), ...item });
+        }
+      }
+    } catch (_) {}
+    partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
+    db.partRequisitions = partRequisitionsList;
+    lastKnownPendingReqIds = new Set(partRequisitionsList.filter(r => r.status !== 'issued').map(r => r.reqId));
+    updatePartReqBadges();
+  }
+
+  function persistPartRequisitionsLocal() {
+    db.partRequisitions = partRequisitionsList;
+    try {
+      localStorage.setItem('onhandPartRequisitions', JSON.stringify(partRequisitionsList));
+    } catch (e) {
+      // If quota exceeded due to many base64 photos, keep latest 40 photos in localStorage
+      try {
+        const compact = partRequisitionsList.map((r, i) => i < 40 ? r : { ...r, issuePhotoDataUrl: r.issuePhotoDataUrl ? 'SAVED_ON_SERVER' : '' });
+        localStorage.setItem('onhandPartRequisitions', JSON.stringify(compact));
+      } catch (_) {}
+    }
+    saveLocalDb(db);
+  }
+
+  async function syncPartRequisitionsFromServer(silent = true) {
+    try {
+      const helperBase = await checkHelperHealth();
+      if (helperBase) {
+        const res = await fetch(`${helperBase}/part-requisitions`, { cache: 'no-store' }).then(r => r.json()).catch(() => null);
+        if (res?.ok && Array.isArray(res.items)) {
+          const map = new Map();
+          for (const item of partRequisitionsList) {
+            if (item?.reqId) map.set(item.reqId, item);
+          }
+          let newPendingArrived = null;
+          for (const srvItem of res.items) {
+            if (!srvItem?.reqId) continue;
+            const existing = map.get(srvItem.reqId);
+            if (!existing && srvItem.status !== 'issued' && !lastKnownPendingReqIds.has(srvItem.reqId)) {
+              newPendingArrived = srvItem;
+            }
+            const srvTime = Date.parse(srvItem.updatedAt || srvItem.issuedAt || srvItem.requestedAt || '') || 0;
+            const locTime = existing ? (Date.parse(existing.updatedAt || existing.issuedAt || existing.requestedAt || '') || 0) : -1;
+            if (!existing || srvTime >= locTime || (srvItem.status === 'issued' && existing.status !== 'issued')) {
+              map.set(srvItem.reqId, { ...(existing || {}), ...srvItem });
+            }
+          }
+          partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
+          lastKnownPendingReqIds = new Set(partRequisitionsList.filter(r => r.status !== 'issued').map(r => r.reqId));
+          persistPartRequisitionsLocal();
+          updatePartReqBadges();
+          if (activePage === 'part-requisition') {
+            renderPartReqWarehouseAlert();
+            renderPartReqHistoryTable();
+          }
+          if (newPendingArrived) {
+            toast(`🔔 แจ้งเตือน Warehouse: มีใบเบิก Part ใหม่ (${newPendingArrived.materialCode} · จำนวน ${fmtQty(newPendingArrived.requestQty)} ${newPendingArrived.unit || 'PCS'} · MO: ${newPendingArrived.moNumber})`);
+          }
+          if (!silent) toast(`✅ ซิงค์ข้อมูลใบเบิก Part ล่าสุดเรียบร้อย (${fmt(partRequisitionsList.length)} รายการ)`);
+          return true;
+        }
+      }
+      if (hasGoogle()) {
+        const rows = await callGoogle('listPartRequisitions').catch(() => null);
+        if (Array.isArray(rows)) {
+          const map = new Map();
+          for (const item of partRequisitionsList) {
+            if (item?.reqId) map.set(item.reqId, item);
+          }
+          for (const r of rows) {
+            if (r?.reqId) map.set(r.reqId, { ...(map.get(r.reqId) || {}), ...r });
+          }
+          partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
+          persistPartRequisitionsLocal();
+          updatePartReqBadges();
+          if (activePage === 'part-requisition') {
+            renderPartReqWarehouseAlert();
+            renderPartReqHistoryTable();
+          }
+          if (!silent) toast(`✅ ดึงประวัติใบเบิกจาก Google Sheet สำเร็จ (${fmt(partRequisitionsList.length)} รายการ)`);
+          return true;
+        }
+      }
+    } catch (err) {
+      console.warn('[PartReqSync] error:', err);
+    }
+    return false;
+  }
+
+  async function savePartRequisitionEverywhere(record) {
+    const idx = partRequisitionsList.findIndex(x => x.reqId === record.reqId);
+    if (idx >= 0) {
+      partRequisitionsList[idx] = { ...partRequisitionsList[idx], ...record };
+    } else {
+      partRequisitionsList.unshift(record);
+    }
+    partRequisitionsList.sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
+    lastKnownPendingReqIds = new Set(partRequisitionsList.filter(r => r.status !== 'issued').map(r => r.reqId));
+    persistPartRequisitionsLocal();
+    updatePartReqBadges();
+
+    // 1. Save to local helper server (writes PartRequisitionsSeed.js + Part-Requisitions-Google-Sheet-Log.xlsx + GitHub sync)
+    try {
+      const helperBase = await checkHelperHealth();
+      if (helperBase) {
+        await fetch(`${helperBase}/part-requisitions`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ record })
+        });
+      }
+    } catch (e) {
+      console.warn('[PartReq] Helper save warn:', e);
+    }
+
+    // 2. Save to Google Sheets ("On-Hand Inventory Planner - H9 Assembly" -> tab "PartRequisitions")
+    if (hasGoogle()) {
+      try {
+        await callGoogle('savePartRequisition', record);
+      } catch (e) {
+        console.warn('[PartReq] Google Sheet save warn:', e);
+      }
+    }
+  }
+
+  let activePartReqTab = 'all';
+
+  function updatePartReqBadges() {
+    const pendingList = partRequisitionsList.filter(r => r.status !== 'issued');
+    const issuedList = partRequisitionsList.filter(r => r.status === 'issued');
+    const zjdbLinkedList = partRequisitionsList.filter(r => r.directTransferDocs && String(r.directTransferDocs).includes('ZJDB'));
+    const pendingCount = pendingList.length;
+
+    const sbBadge = el('sidebarPartReqPendingBadge');
+    if (sbBadge) {
+      sbBadge.textContent = String(pendingCount);
+      sbBadge.classList.toggle('hidden', pendingCount === 0);
+    }
+    if (el('partReqMetricTotal')) el('partReqMetricTotal').textContent = fmt(partRequisitionsList.length);
+    if (el('partReqMetricPending')) el('partReqMetricPending').textContent = fmt(pendingCount);
+    if (el('partReqMetricIssued')) el('partReqMetricIssued').textContent = fmt(issuedList.length);
+    if (el('partReqMetricZjdb')) el('partReqMetricZjdb').textContent = fmt(zjdbLinkedList.length);
+
+    if (el('partReqTabAllCount')) el('partReqTabAllCount').textContent = fmt(partRequisitionsList.length);
+    if (el('partReqTabPendingCount')) el('partReqTabPendingCount').textContent = fmt(pendingCount);
+    if (el('partReqTabIssuedCount')) el('partReqTabIssuedCount').textContent = fmt(issuedList.length);
+  }
+
+  // Build MO catalog with linked Direct Transfer (ZJDB) and PPBOM numbers
+  function getMoCatalogMap() {
+    const moMap = new Map();
+    const seedOrders = Array.isArray(window.PRODUCTION_ORDERS_SEED?.orders) ? window.PRODUCTION_ORDERS_SEED.orders : [];
+    const orders = (Array.isArray(db.productionOrders) && db.productionOrders.length >= seedOrders.length)
+      ? db.productionOrders
+      : seedOrders;
+
+    for (const r of orders) {
+      const mo = String(r.moNumber || '').trim().toUpperCase();
+      if (!mo) continue;
+      let entry = moMap.get(mo);
+      if (!entry) {
+        entry = {
+          moNumber: mo,
+          productCode: String(r.productCode || '').trim(),
+          productName: String(r.productName || '').trim(),
+          department: String(r.department || 'H9 Assembly Production Line').trim(),
+          orderQty: n(r.orderQty),
+          ppbomSet: new Set(),
+          zjdbSet: new Set(),
+          partsMap: new Map()
+        };
+        moMap.set(mo, entry);
+      }
+      if (!entry.productCode && r.productCode) entry.productCode = String(r.productCode).trim();
+      if (!entry.productName && r.productName) entry.productName = String(r.productName).trim();
+      if (n(r.orderQty) > entry.orderQty) entry.orderQty = n(r.orderQty);
+      if (r.ppbomNumber) entry.ppbomSet.add(String(r.ppbomNumber).trim());
+      if (r.directTransferDocs) {
+        String(r.directTransferDocs).split(/[,;\s]+/).map(s => s.trim()).filter(Boolean).forEach(d => entry.zjdbSet.add(d));
+      }
+      const mCode = String(r.materialCode || '').trim().toUpperCase();
+      if (mCode) {
+        const prevPart = entry.partsMap.get(mCode) || {
+          materialCode: mCode,
+          materialName: String(r.materialName || '').trim(),
+          specification: String(r.specification || '').trim(),
+          unit: String(r.unit || 'PCS').trim(),
+          requiredQty: 0,
+          transferredQty: 0,
+          zjdbDocs: new Set()
+        };
+        prevPart.requiredQty += n(r.demandQty ?? r.requiredQty);
+        prevPart.transferredQty += n(r.directTransferQty ?? r.issuedQty ?? r.transferredQty ?? r.consumedQty);
+        if (r.directTransferDocs) {
+          String(r.directTransferDocs).split(/[,;\s]+/).map(s => s.trim()).filter(Boolean).forEach(d => prevPart.zjdbDocs.add(d));
+        }
+        entry.partsMap.set(mCode, prevPart);
+      }
+    }
+
+    const execByMo = window.PRODUCTION_EXECUTION_SEED?.executionByMo || {};
+    for (const [moKey, ex] of Object.entries(execByMo)) {
+      const mo = String(moKey || '').trim().toUpperCase();
+      if (!mo) continue;
+      let entry = moMap.get(mo);
+      if (!entry) {
+        entry = {
+          moNumber: mo,
+          productCode: String(ex.materialCode || '').trim(),
+          productName: String(ex.materialName || '').trim(),
+          department: String(ex.department || 'H9 Assembly Production Line').trim(),
+          orderQty: n(ex.orderQty),
+          ppbomSet: new Set(),
+          zjdbSet: new Set(),
+          partsMap: new Map()
+        };
+        moMap.set(mo, entry);
+      }
+      if (Array.isArray(ex.directTransferNumbers)) {
+        ex.directTransferNumbers.forEach(d => { if (d) entry.zjdbSet.add(String(d).trim()); });
+      }
+    }
+
+    return moMap;
+  }
+
+  // Build Material catalog with Description, On-Hand Qty, and Storage Locations
+  function getMaterialCatalogMap() {
+    const matMap = new Map();
+    const overrides = getDepartmentOverridesMap();
+
+    const ensureMat = (code) => {
+      const c = String(code || '').trim().toUpperCase();
+      if (!c) return null;
+      let m = matMap.get(c);
+      if (!m) {
+        const ov = overrides.get(c);
+        m = {
+          materialCode: c,
+          materialName: ov?.materialName || '',
+          specification: ov?.specification || '',
+          unit: 'PCS',
+          onHand: 0,
+          available: 0,
+          storageBins: new Set(),
+          warehouses: new Set()
+        };
+        matMap.set(c, m);
+      }
+      return m;
+    };
+
+    const invRows = (Array.isArray(db.inventory) && db.inventory.length)
+      ? db.inventory
+      : (Array.isArray(window.ONHAND_SEED?.inventory) ? window.ONHAND_SEED.inventory : []);
+
+    for (const r of invRows) {
+      const m = ensureMat(r.materialCode);
+      if (!m) continue;
+      if (!m.materialName && r.materialName) m.materialName = String(r.materialName).trim();
+      if (!m.specification && r.specification) m.specification = String(r.specification).trim();
+      if (r.unit) m.unit = String(r.unit).trim();
+      if (isUsableInventoryRow(r)) {
+        m.onHand += n(r.onHand);
+        m.available += stockAvailableForRow(r);
+        if (r.storage && String(r.storage).trim()) {
+          const binText = r.warehouse ? `${String(r.storage).trim()} (${String(r.warehouse).trim()})` : String(r.storage).trim();
+          m.storageBins.add(binText);
+        }
+        if (r.warehouse && String(r.warehouse).trim()) {
+          m.warehouses.add(String(r.warehouse).trim());
+        }
+      }
+    }
+
+    const bomRows = (Array.isArray(db.bom) && db.bom.length)
+      ? db.bom
+      : (Array.isArray(window.BOM_SEED?.rows) ? window.BOM_SEED.rows : []);
+    for (const b of bomRows) {
+      const m = ensureMat(b.materialCode);
+      if (!m) continue;
+      if (!m.materialName && b.materialName) m.materialName = String(b.materialName).trim();
+      if (!m.specification && b.specification) m.specification = String(b.specification).trim();
+      if (!m.unit && b.unit) m.unit = String(b.unit).trim();
+    }
+
+    const seedOrders = Array.isArray(window.PRODUCTION_ORDERS_SEED?.orders) ? window.PRODUCTION_ORDERS_SEED.orders : [];
+    const orders = (Array.isArray(db.productionOrders) && db.productionOrders.length >= seedOrders.length)
+      ? db.productionOrders
+      : seedOrders;
+    for (const o of orders) {
+      const m = ensureMat(o.materialCode);
+      if (!m) continue;
+      if (!m.materialName && o.materialName) m.materialName = String(o.materialName).trim();
+      if (!m.specification && o.specification) m.specification = String(o.specification).trim();
+    }
+
+    for (const d of (db.departmentMap || [])) {
+      const m = ensureMat(d.materialCode || d.MaterialCode);
+      if (!m) continue;
+      if (!m.materialName && (d.materialName || d.MaterialName)) m.materialName = String(d.materialName || d.MaterialName).trim();
+      if (!m.specification && (d.specification || d.Specification)) m.specification = String(d.specification || d.Specification).trim();
+    }
+
+    return matMap;
+  }
+
+  function syncMoLinkedZjdbDisplay(moInputVal, matCodeVal = '') {
+    const moKey = String(moInputVal || '').trim().toUpperCase();
+    const matKey = String(matCodeVal || el('reqMatCodeInput')?.value || '').trim().toUpperCase();
+    const moMap = getMoCatalogMap();
+    const moEntry = moMap.get(moKey);
+
+    const zjdbInput = el('reqZjdbInput');
+    const ppbomInput = el('reqPpbomInput');
+    const badgeEl = el('reqMoProductBadge');
+
+    if (!moEntry) {
+      if (zjdbInput) zjdbInput.value = moKey ? 'ไม่พบเลข Direct Transfer ในฐานข้อมูล (ระบุเพิ่มได้)' : '';
+      if (ppbomInput) ppbomInput.value = '';
+      if (badgeEl) {
+        badgeEl.textContent = moKey ? `MO: ${moKey}` : 'ยังไม่ได้เลือก MO';
+      }
+      return;
+    }
+
+    const partSpecific = matKey ? moEntry.partsMap.get(matKey) : null;
+    const zjdbList = (partSpecific && partSpecific.zjdbDocs.size > 0)
+      ? [...partSpecific.zjdbDocs]
+      : [...moEntry.zjdbSet];
+    const ppbomList = [...moEntry.ppbomSet];
+
+    if (zjdbInput) {
+      zjdbInput.value = zjdbList.length
+        ? zjdbList.join(', ')
+        : 'ยังไม่มีใบโอน Direct Transfer (ZJDB) ในระบบ';
+    }
+    if (ppbomInput) {
+      ppbomInput.value = ppbomList.join(', ');
+    }
+    if (badgeEl) {
+      badgeEl.className = 'badge teal';
+      badgeEl.textContent = `${moEntry.productCode || ''} · ${moEntry.productName || ''} (Order: ${fmt(moEntry.orderQty)})`;
+    }
+  }
+
+  function renderMoAutocompleteDropdown(query = '') {
+    const drop = el('reqMoDropdown');
+    if (!drop) return;
+    const moMap = getMoCatalogMap();
+    const allMos = [...moMap.values()].sort((a, b) => b.moNumber.localeCompare(a.moNumber));
+    const q = String(query || '').trim().toLowerCase();
+
+    const matches = q
+      ? allMos.filter(m =>
+          m.moNumber.toLowerCase().includes(q) ||
+          m.productCode.toLowerCase().includes(q) ||
+          m.productName.toLowerCase().includes(q) ||
+          [...m.zjdbSet].some(z => z.toLowerCase().includes(q))
+        )
+      : allMos;
+
+    const topMatches = matches.slice(0, 60);
+    if (!topMatches.length) {
+      drop.innerHTML = `<div style="padding:12px;text-align:center;color:#64748b;font-size:12.5px">ไม่พบเลขที่ใบสั่งผลิต MO ที่ตรงกับ "${esc(query)}" · สามารถพิมพ์เลข MO ใหม่ได้โดยตรง</div>`;
+      drop.classList.remove('hidden');
+      return;
+    }
+
+    drop.innerHTML = `
+      <div style="padding:6px 10px;background:#f0fdf4;border-bottom:1px solid #bbf7d0;font-size:11.5px;color:#0f6a66;font-weight:700;display:flex;justify-content:space-between;position:sticky;top:0;z-index:2">
+        <span>พบ ${fmt(matches.length)} ใบสั่งผลิต (MO) จาก Kingdee ERP</span>
+        <span>คลิกเพื่อเลือกและดึงเลข ZJDB อัตโนมัติ</span>
+      </div>
+      ${topMatches.map(m => {
+        const zjdbText = m.zjdbSet.size ? [...m.zjdbSet].slice(0, 3).join(', ') + (m.zjdbSet.size > 3 ? ` (+${m.zjdbSet.size - 3})` : '') : 'ยังไม่มี ZJDB';
+        const ppbomText = m.ppbomSet.size ? [...m.ppbomSet].join(', ') : '';
+        return `
+          <div class="req-mo-opt" data-mo="${esc(m.moNumber)}" style="padding:8px 12px;border-bottom:1px solid #f1f5f9;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='#fff'">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+              <strong style="font-size:13.5px;color:#0f6a66;font-family:ui-monospace,Consolas,monospace">${highlightMatch(m.moNumber, q)}</strong>
+              <span class="badge ${m.zjdbSet.size ? 'green' : 'amber'}" style="font-size:10.5px;padding:2px 6px">🔗 ${esc(zjdbText)}</span>
+            </div>
+            <div style="font-size:12px;color:#1e293b;font-weight:600;margin-top:2px">${highlightMatch(m.productCode, q)} · ${highlightMatch(m.productName, q)}</div>
+            <div style="font-size:11px;color:#64748b;margin-top:1px">จำนวนผลิต: <b>${fmt(m.orderQty)}</b> ตัว · BOM: <b>${m.partsMap.size}</b> Part ${ppbomText ? `· ${esc(ppbomText)}` : ''}</div>
+          </div>
+        `;
+      }).join('')}
+    `;
+    drop.classList.remove('hidden');
+  }
+
+  function applySelectedMaterialCode(code) {
+    const cleanCode = String(code || '').trim().toUpperCase();
+    const matMap = getMaterialCatalogMap();
+    const moKey = String(el('reqMoInput')?.value || '').trim().toUpperCase();
+    const moEntry = getMoCatalogMap().get(moKey);
+    const moPart = moEntry?.partsMap.get(cleanCode);
+    const mat = matMap.get(cleanCode);
+
+    const matName = mat?.materialName || moPart?.materialName || '';
+    const matSpec = mat?.specification || moPart?.specification || '';
+    const descText = [matName, matSpec].filter(Boolean).join(' · ') || (cleanCode ? 'ไม่พบชื่อในระบบ (สามารถเบิกได้ตามรหัสนี้)' : '');
+
+    if (el('reqMatCodeInput')) el('reqMatCodeInput').value = cleanCode;
+    if (el('reqMatDescInput')) el('reqMatDescInput').value = descText;
+    if (el('reqMatSpecInput')) el('reqMatSpecInput').value = matSpec;
+    el('reqMatDropdown')?.classList.add('hidden');
+
+    const hintEl = el('reqSelectedPartStockHint');
+    if (hintEl) {
+      if (mat || moPart) {
+        const bins = mat && mat.storageBins.size ? [...mat.storageBins].slice(0, 4).join(', ') : 'ไม่ระบุ Storage Bin';
+        const moInfo = moPart
+          ? ` · ใน BOM ของ ${moKey}: ต้องใช้ <b>${fmtQty(moPart.requiredQty)}</b> / โอน ZJDB แล้ว <b>${fmtQty(moPart.transferredQty)}</b>`
+          : '';
+        hintEl.classList.remove('hidden');
+        hintEl.innerHTML = `<span>📦 สต็อกคงเหลือพร้อมใช้: <strong style="color:#087e78">${fmtQty(mat?.available || 0)}</strong> (On-Hand รวม: ${fmtQty(mat?.onHand || 0)}) · Location ในคลัง: <b>${esc(bins)}</b>${moInfo}</span>`;
+      } else {
+        hintEl.classList.add('hidden');
+      }
+    }
+
+    syncMoLinkedZjdbDisplay(moKey, cleanCode);
+  }
+
+  function renderMaterialAutocompleteDropdown(query = '') {
+    const drop = el('reqMatDropdown');
+    if (!drop) return;
+    const matMap = getMaterialCatalogMap();
+    const moKey = String(el('reqMoInput')?.value || '').trim().toUpperCase();
+    const moEntry = getMoCatalogMap().get(moKey);
+    const filterByMo = Boolean(el('reqFilterByMoBomChk')?.checked) && moEntry && moEntry.partsMap.size > 0;
+    const q = String(query || '').trim().toLowerCase();
+
+    let candidates = [];
+    if (filterByMo) {
+      for (const [code, mp] of moEntry.partsMap.entries()) {
+        const full = matMap.get(code) || {};
+        candidates.push({
+          materialCode: code,
+          materialName: full.materialName || mp.materialName || '',
+          specification: full.specification || mp.specification || '',
+          onHand: full.onHand || 0,
+          available: full.available || 0,
+          storageBins: full.storageBins ? [...full.storageBins] : [],
+          inMoBom: true,
+          moRequiredQty: mp.requiredQty,
+          moTransferredQty: mp.transferredQty,
+          moZjdb: [...mp.zjdbDocs].join(', ')
+        });
+      }
+    } else {
+      for (const m of matMap.values()) {
+        const mp = moEntry?.partsMap.get(m.materialCode);
+        candidates.push({
+          materialCode: m.materialCode,
+          materialName: m.materialName,
+          specification: m.specification,
+          onHand: m.onHand,
+          available: m.available,
+          storageBins: [...m.storageBins],
+          inMoBom: Boolean(mp),
+          moRequiredQty: mp?.requiredQty || 0,
+          moTransferredQty: mp?.transferredQty || 0,
+          moZjdb: mp ? [...mp.zjdbDocs].join(', ') : ''
+        });
+      }
+    }
+
+    if (q) {
+      candidates = candidates.filter(c =>
+        c.materialCode.toLowerCase().includes(q) ||
+        c.materialName.toLowerCase().includes(q) ||
+        c.specification.toLowerCase().includes(q)
+      );
+      if (!candidates.length && filterByMo) {
+        for (const m of matMap.values()) {
+          if (
+            m.materialCode.toLowerCase().includes(q) ||
+            m.materialName.toLowerCase().includes(q) ||
+            m.specification.toLowerCase().includes(q)
+          ) {
+            candidates.push({
+              materialCode: m.materialCode,
+              materialName: m.materialName,
+              specification: m.specification,
+              onHand: m.onHand,
+              available: m.available,
+              storageBins: [...m.storageBins],
+              inMoBom: false,
+              moRequiredQty: 0,
+              moTransferredQty: 0,
+              moZjdb: ''
+            });
+          }
+        }
+      }
+    }
+
+    candidates.sort((a, b) => Number(b.inMoBom) - Number(a.inMoBom) || a.materialCode.localeCompare(b.materialCode));
+    const topList = candidates.slice(0, 80);
+
+    if (!topList.length) {
+      drop.innerHTML = `<div style="padding:12px;text-align:center;color:#64748b;font-size:12.5px">ไม่พบรหัส Part ที่ตรงกับ "${esc(query)}"</div>`;
+      drop.classList.remove('hidden');
+      return;
+    }
+
+    drop.innerHTML = `
+      <div style="padding:6px 10px;background:#f0f9ff;border-bottom:1px solid #bae6fd;font-size:11.5px;color:#0369a1;font-weight:700;display:flex;justify-content:space-between;position:sticky;top:0;z-index:2">
+        <span>พบ ${fmt(candidates.length)} รายการ Part ${filterByMo ? `(จาก BOM ของ ${esc(moKey)})` : '(ทั้งหมดในคลัง/BOM)'}</span>
+        <span>คลิกเพื่อเลือกรหัสและดึง Description</span>
+      </div>
+      ${topList.map(c => {
+        const desc = [c.materialName, c.specification].filter(Boolean).join(' · ') || '—';
+        const bins = c.storageBins.length ? c.storageBins.slice(0, 2).join(', ') : '—';
+        return `
+          <div class="req-mat-opt" data-code="${esc(c.materialCode)}" style="padding:8px 12px;border-bottom:1px solid #f1f5f9;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f0f9ff'" onmouseout="this.style.background='#fff'">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+              <div style="display:flex;align-items:center;gap:6px">
+                <strong style="font-size:13.5px;color:#087e78;font-family:ui-monospace,Consolas,monospace">${highlightMatch(c.materialCode, q)}</strong>
+                ${c.inMoBom ? `<span class="badge teal" style="font-size:10px;padding:1px 6px">อยู่ใน BOM ของ MO นี้</span>` : ''}
+              </div>
+              <span style="font-size:11.5px;font-weight:700;color:${c.available > 0 ? '#15803d' : '#dc2626'}">พร้อมใช้: ${fmtQty(c.available)}</span>
+            </div>
+            <div style="font-size:12.5px;color:#0f172a;font-weight:700;margin-top:2px">${highlightMatch(desc, q)}</div>
+            <div style="font-size:11px;color:#64748b;margin-top:2px">
+              📍 Location: <b>${esc(bins)}</b>
+              ${c.inMoBom ? ` · ต้องใช้ตาม Order: <b>${fmtQty(c.moRequiredQty)}</b> · โอน ZJDB แล้ว: <b>${fmtQty(c.moTransferredQty)}</b>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('')}
+    `;
+    drop.classList.remove('hidden');
+  }
+
+  function renderPartReqWarehouseAlert() {
+    const banner = el('whPendingAlertBanner');
+    const countText = el('whAlertCountText');
+    if (!banner) return;
+
+    const pending = partRequisitionsList.filter(r => r.status !== 'issued');
+    if (!pending.length) {
+      banner.classList.add('hidden');
+      return;
+    }
+
+    banner.classList.remove('hidden');
+    if (countText) countText.textContent = fmt(pending.length);
+  }
+
+  function renderPartReqHistoryTable() {
+    const tbody = el('partReqTableBody');
+    if (!tbody) return;
+
+    const q = String(el('partReqSearchInput')?.value || '').trim().toLowerCase();
+    const shiftFilter = el('partReqShiftFilter')?.value || '';
+    const dateFilter = el('partReqDateFilter')?.value || '';
+
+    const filtered = partRequisitionsList.filter(r => {
+      if (activePartReqTab === 'pending' && r.status === 'issued') return false;
+      if (activePartReqTab === 'issued' && r.status !== 'issued') return false;
+      if (shiftFilter && String(r.shift || 'A').toUpperCase() !== shiftFilter) return false;
+      if (dateFilter && String(r.requestDate || '') !== dateFilter) return false;
+      if (q) {
+        const hay = [
+          r.reqId, r.requestDate, r.moNumber, r.ppbomNumber, r.directTransferDocs,
+          r.materialCode, r.materialName, r.specification, r.reason,
+          r.requesterName, r.requesterNote, r.issuerName, r.issuerNote, r.locationsSummary
+        ].join(' ').toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+
+    if (!filtered.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9" style="padding:28px;text-align:center;color:#64748b;font-size:13.5px">
+            ยังไม่มีรายการเบิก Part ที่ตรงกับเงื่อนไขการค้นหา
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map((r) => {
+      const isIssued = r.status === 'issued';
+      const desc = [r.materialName, r.specification].filter(Boolean).join(' · ') || '—';
+      const locs = Array.isArray(r.locations) && r.locations.length
+        ? r.locations.map((l, idx) => `<div style="font-size:11.5px;color:#0f172a"><b>#${idx + 1}:</b> ${esc(l.location)}${l.qty !== '' && l.qty != null ? ` (<b>${fmtQty(l.qty)}</b> ${esc(r.unit || 'PCS')})` : ''}</div>`).join('')
+        : (r.locationsSummary ? `<div style="font-size:11.5px;color:#0f172a">${esc(r.locationsSummary)}</div>` : '<span style="color:#94a3b8;font-size:11.5px">⏳ รอคลังระบุ Location</span>');
+
+      const hasPhoto = Boolean(r.issuePhotoDataUrl && r.issuePhotoDataUrl.startsWith('data:image'));
+      const photoAndActionHtml = isIssued
+        ? `<div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+             <span class="badge green" style="font-weight:800;font-size:11.5px;padding:3px 9px">✅ จ่าย Part แล้ว</span>
+             ${hasPhoto ? `
+               <button type="button" class="btn soft btn-view-req-photo" data-id="${esc(r.reqId)}" style="padding:3px 8px;font-size:11.5px;display:inline-flex;align-items:center;gap:5px;border-color:#86efac;background:#f0fdf4;color:#166534;font-weight:700">
+                 <img src="${r.issuePhotoDataUrl}" alt="Photo" style="width:28px;height:22px;object-fit:cover;border-radius:3px;border:1px solid #16a34a">
+                 🔍 ดูรูปถ่ายจริง
+               </button>
+             ` : ''}
+             <button type="button" class="btn soft btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="font-size:10.5px;padding:2px 7px">✏️ ดู/แก้ไข</button>
+           </div>`
+        : `<div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+             <span class="badge amber" style="font-weight:800;font-size:11.5px;padding:3px 9px">⏳ รอคลังจ่าย</span>
+             <button type="button" class="btn primary btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="background:#d97706;border-color:#b45309;font-size:12px;padding:6px 11px;font-weight:800;box-shadow:0 2px 6px rgba(180,83,9,0.2)">
+               📦 Confirm จ่าย Part
+             </button>
+           </div>`;
+
+      return `
+        <tr style="border-bottom:1px solid #e2e8f0;background:${isIssued ? '#ffffff' : '#fffbeb'}">
+          <td style="padding:9px 8px;font-size:12px">
+            <div style="font-weight:800;color:#0f172a">${esc(r.requestDate || (r.requestedAt ? r.requestedAt.slice(0, 10) : '—'))}</div>
+            <div style="font-size:10.5px;color:#0f766e;font-family:ui-monospace,Consolas,monospace;font-weight:700">${esc(r.reqId)}</div>
+          </td>
+          <td style="padding:9px 8px">
+            <strong style="font-size:13px;color:#0f6a66;font-family:ui-monospace,Consolas,monospace">${esc(r.moNumber)}</strong>
+            <div style="font-size:11.5px;color:#047857;font-weight:700;margin-top:2px;word-break:break-word">🔗 ZJDB: ${esc(r.directTransferDocs || '—')}</div>
+            ${r.ppbomNumber ? `<div style="font-size:10.5px;color:#64748b">PPBOM: ${esc(r.ppbomNumber)}</div>` : ''}
+          </td>
+          <td style="padding:9px 8px">
+            <strong style="font-size:13.5px;color:#087e78;font-family:ui-monospace,Consolas,monospace">${esc(r.materialCode)}</strong>
+            <div style="font-size:12px;color:#1e293b;font-weight:600;margin-top:2px">${esc(desc)}</div>
+          </td>
+          <td class="num" style="padding:9px 8px;background:#f0fdf4;font-size:14.5px;font-weight:800;color:#166534">
+            ${fmtQty(r.requestQty)} <span class="badge teal" style="font-size:11px;padding:1px 6px">${esc(r.unit || 'PCS')}</span>
+          </td>
+          <td style="padding:9px 8px;font-size:12px">
+            <div style="font-weight:700;color:#dc2626">${esc(r.reason || '—')}</div>
+            <div style="margin-top:3px;color:#475569;font-size:11.5px">💬 <b>หมายเหตุผู้เบิก:</b> ${esc(r.requesterNote || '—')}</div>
+          </td>
+          <td style="padding:9px 8px;font-size:12px">
+            <div><strong style="color:#0f172a">${esc(r.requesterName || '—')}</strong> <span class="badge gray" style="font-size:10.5px;padding:1px 6px">กะ ${esc(r.shift || 'A')}</span></div>
+            <div style="color:#087e78;font-size:11px;font-weight:700;margin-top:2px" title="Timestamp ตอนกด Save ขอเบิก">🕒 เบิก: ${esc(time(r.requestedAt))}</div>
+          </td>
+          <td style="padding:9px 8px;background:#fffdf5;font-size:12px">
+            ${locs}
+          </td>
+          <td style="padding:9px 8px;background:#f8fafc;font-size:12px">
+            ${isIssued
+              ? `<div><strong style="color:#15803d">${esc(r.issuerName || '—')}</strong></div>
+                 <div style="font-size:11px;color:#047857;font-weight:700;margin-top:2px" title="Timestamp ตอนที่คลังบันทึกจ่าย">🕒 จ่าย: ${esc(time(r.issuedAt))}</div>
+                 <div style="margin-top:3px;color:#475569;font-size:11.5px">💬 <b>หมายเหตุผู้จ่าย:</b> ${esc(r.issuerNote || '—')}</div>`
+              : `<span style="color:#94a3b8;font-size:11.5px">รอคลังบันทึกจ่ายและประทับเวลา</span>`}
+          </td>
+          <td style="padding:9px 8px;text-align:center">
+            ${photoAndActionHtml}
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function renderPartRequisitionPage() {
+    updatePartReqBadges();
+    const u = getCurrentUser();
+    const dateInp = el('reqDateInput');
+    if (dateInp && !dateInp.value) {
+      dateInp.value = new Date().toISOString().slice(0, 10);
+    }
+    const reqNameInp = el('reqRequesterInput');
+    if (reqNameInp && !reqNameInp.value && u) {
+      reqNameInp.value = u.name || u.username || '';
+    }
+    renderPartReqWarehouseAlert();
+    renderPartReqHistoryTable();
+  }
+
+  // Warehouse Location dynamic rows (starts with 1 location, click + to add more)
+  function createWhLocationRowHtml(index, locValue = '', qtyValue = '', suggestions = []) {
+    const datalistId = `whLocSuggestList_${index}`;
+    return `
+      <div class="wh-location-row" data-idx="${index}" style="display:grid;grid-template-columns:1fr 140px ${index > 0 ? '38px' : '0px'};gap:8px;align-items:center;background:#fff;padding:8px 10px;border-radius:8px;border:1px solid #cbd5e1">
+        <div>
+          <label style="font-size:11.5px;font-weight:800;color:#0f6a66;display:block;margin-bottom:2px">📍 Location / พื้นที่จัดเก็บที่ ${index + 1} <span style="color:#dc2626">*</span></label>
+          <input type="text" class="field wh-loc-name-input" list="${datalistId}" value="${esc(locValue)}" placeholder="ระบุ Location / Bin เช่น H9-A01, RM-B02..." required style="width:100%;font-weight:700;font-size:13px">
+          <datalist id="${datalistId}">
+            ${suggestions.map(s => `<option value="${esc(s)}"></option>`).join('')}
+          </datalist>
+        </div>
+        <div>
+          <label style="font-size:11.5px;font-weight:700;color:#475569;display:block;margin-bottom:2px">จำนวนที่ดึงจากจุดนี้</label>
+          <input type="number" class="field wh-loc-qty-input" min="0" step="any" value="${esc(qtyValue)}" placeholder="จำนวน" style="width:100%;text-align:right;font-weight:700;font-size:13px">
+        </div>
+        ${index > 0
+          ? `<button type="button" class="btn danger wh-remove-loc-btn" title="ลบ Location นี้" style="padding:6px 8px;margin-top:16px;font-size:12px">✕</button>`
+          : `<span></span>`}
+      </div>
+    `;
+  }
+
+  function getSuggestedBinsForMaterial(materialCode) {
+    const code = String(materialCode || '').trim().toUpperCase();
+    const suggestions = new Set();
+    const invRows = (Array.isArray(db.inventory) && db.inventory.length)
+      ? db.inventory
+      : (Array.isArray(window.ONHAND_SEED?.inventory) ? window.ONHAND_SEED.inventory : []);
+    for (const r of invRows) {
+      if (String(r.materialCode || '').trim().toUpperCase() !== code) continue;
+      if (!isUsableInventoryRow(r)) continue;
+      const bin = String(r.storage || '').trim();
+      const wh = String(r.warehouse || '').trim();
+      if (bin && wh) suggestions.add(`${bin} (${wh} · คงเหลือ ${fmtQty(r.onHand)})`);
+      else if (bin) suggestions.add(bin);
+      else if (wh) suggestions.add(wh);
+    }
+    ['H9 Assembly Line Store', 'Purchased Material Warehouse', 'Customer Material Warehouse', 'Semi-finished Goods Warehouse'].forEach(w => suggestions.add(w));
+    return [...suggestions];
+  }
+
+  function stopWhCameraStream() {
+    if (whCameraStream) {
+      try {
+        whCameraStream.getTracks().forEach(t => t.stop());
+      } catch (_) {}
+      whCameraStream = null;
+    }
+    const video = el('whCameraVideo');
+    if (video) {
+      video.srcObject = null;
+    }
+    if (el('whCameraStreamWrap')) el('whCameraStreamWrap').classList.add('hidden');
+  }
+
+  function updateWhSaveButtonLockState() {
+    const hasPhoto = Boolean(capturedWhPhotoDataUrl && capturedWhPhotoDataUrl.startsWith('data:image'));
+    const saveBtn = el('whConfirmSaveBtn');
+    const warnEl = el('whPhotoRequiredWarning');
+    if (saveBtn) {
+      saveBtn.disabled = !hasPhoto;
+      saveBtn.style.opacity = hasPhoto ? '1' : '0.5';
+      saveBtn.style.cursor = hasPhoto ? 'pointer' : 'not-allowed';
+    }
+    if (warnEl) {
+      warnEl.classList.toggle('hidden', hasPhoto);
+    }
+  }
+
+  function openWhConfirmModal(reqId) {
+    const rec = partRequisitionsList.find(x => x.reqId === reqId);
+    if (!rec) return;
+    whActiveConfirmReqId = reqId;
+    stopWhCameraStream();
+
+    const u = getCurrentUser();
+    if (el('whModalReqIdInput')) el('whModalReqIdInput').value = reqId;
+    if (el('whModalReqIdBadge')) el('whModalReqIdBadge').textContent = rec.reqId;
+    if (el('whModalMoBadge')) el('whModalMoBadge').textContent = rec.moNumber;
+    if (el('whModalZjdbBadge')) el('whModalZjdbBadge').textContent = `🔗 ZJDB: ${rec.directTransferDocs || '—'}`;
+    if (el('whIssuerNameInput')) el('whIssuerNameInput').value = rec.issuerName || (u ? (u.name || u.username) : '');
+    if (el('whIssuerNoteInput')) el('whIssuerNoteInput').value = rec.issuerNote || '';
+
+    const desc = [rec.materialName, rec.specification].filter(Boolean).join(' · ') || '—';
+    const summaryEl = el('whModalRequestSummary');
+    if (summaryEl) {
+      summaryEl.innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;font-size:13px">
+          <div><span style="color:#64748b">เลขที่ใบเบิก MO:</span><br><strong style="font-size:14.5px;color:#0f6a66;font-family:ui-monospace,Consolas,monospace">${esc(rec.moNumber)}</strong></div>
+          <div><span style="color:#64748b">เลข Direct Transfer (ZJDB):</span><br><strong style="color:#047857;font-size:13px">🔗 ${esc(rec.directTransferDocs || '—')}</strong></div>
+          <div><span style="color:#64748b">รหัสรายการเบิก:</span><br><strong style="font-size:14.5px;color:#087e78;font-family:ui-monospace,Consolas,monospace">${esc(rec.materialCode)}</strong></div>
+          <div><span style="color:#64748b">จำนวนที่เบิก &amp; หน่วย:</span><br><strong style="font-size:16px;color:#b45309">${fmtQty(rec.requestQty)} ${esc(rec.unit || 'PCS')}</strong></div>
+        </div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #cbd5e1;font-size:12.5px;color:#1e293b;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
+          <span>📋 <b>Description:</b> ${esc(desc)}</span>
+          <span>⚠️ <b>สาเหตุการเบิก:</b> <b style="color:#dc2626">${esc(rec.reason || '—')}</b></span>
+          <span>👤 <b>ผู้เบิก:</b> ${esc(rec.requesterName)} (กะ ${esc(rec.shift || 'A')}) · 🕒 ${esc(time(rec.requestedAt))}</span>
+        </div>
+        <div style="margin-top:6px;font-size:12.5px;color:#0f766e;background:#ecfdf5;padding:6px 10px;border-radius:6px;border:1px solid #a7f3d0">
+          💬 <b>หมายเหตุจากผู้เบิก:</b> ${esc(rec.requesterNote || '— ไม่มีหมายเหตุเพิ่มเติม —')}
+        </div>
+      `;
+    }
+
+    // Populate initial Location(s): starts with 1 location row (or existing saved locations)
+    const suggestions = getSuggestedBinsForMaterial(rec.materialCode);
+    const locListEl = el('whLocationsList');
+    if (locListEl) {
+      const initLocs = Array.isArray(rec.locations) && rec.locations.length
+        ? rec.locations
+        : [{ location: suggestions[0] || '', qty: rec.requestQty }];
+      locListEl.innerHTML = initLocs.map((l, idx) => createWhLocationRowHtml(idx, l.location, l.qty, suggestions)).join('');
+    }
+    const hintEl = el('whSuggestedLocationsHint');
+    if (hintEl) {
+      hintEl.innerHTML = suggestions.length
+        ? `💡 <b>คลิกเลือก Location ในระบบ On-Hand ของ Part นี้:</b> ${suggestions.slice(0, 4).map(s => `<span class="badge gray" style="cursor:pointer;margin-right:4px" onclick="const inp=document.querySelector('#whLocationsList .wh-loc-name-input');if(inp)inp.value='${esc(s)}'">${esc(s)}</span>`).join('')}`
+        : '';
+    }
+
+    // Photo state: if already issued with photo, show existing photo; otherwise require new live camera capture
+    capturedWhPhotoDataUrl = (rec.status === 'issued' && rec.issuePhotoDataUrl && rec.issuePhotoDataUrl.startsWith('data:image'))
+      ? rec.issuePhotoDataUrl
+      : '';
+
+    if (capturedWhPhotoDataUrl) {
+      if (el('whPhotoPreviewWrap')) el('whPhotoPreviewWrap').classList.remove('hidden');
+      if (el('whPhotoPreviewImg')) el('whPhotoPreviewImg').src = capturedWhPhotoDataUrl;
+      if (el('whPhotoTimestampBadge')) el('whPhotoTimestampBadge').textContent = `✅ ถ่ายรูปยืนยันเมื่อ ${time(rec.issuedAt || new Date().toISOString())}`;
+      if (el('whRetakePhotoBtn')) el('whRetakePhotoBtn').classList.remove('hidden');
+    } else {
+      if (el('whPhotoPreviewWrap')) el('whPhotoPreviewWrap').classList.add('hidden');
+      if (el('whPhotoPreviewImg')) el('whPhotoPreviewImg').src = '';
+      if (el('whRetakePhotoBtn')) el('whRetakePhotoBtn').classList.add('hidden');
+    }
+
+    updateWhSaveButtonLockState();
+    el('whConfirmIssueModal')?.classList.add('show');
+  }
+
+  async function startWhLiveCamera() {
+    stopWhCameraStream();
+    const streamWrap = el('whCameraStreamWrap');
+    const video = el('whCameraVideo');
+    const previewWrap = el('whPhotoPreviewWrap');
+
+    if (streamWrap) streamWrap.classList.remove('hidden');
+    if (previewWrap) previewWrap.classList.add('hidden');
+
+    try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Browser mediaDevices not available');
+      }
+      whCameraStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
+        audio: false
+      });
+      if (video) {
+        video.srcObject = whCameraStream;
+        await video.play().catch(() => {});
+      }
+      toast('📷 เปิดกล้องถ่ายรูปสดสำเร็จ กดปุ่ม "📸 กดชัตเตอร์ถ่ายภาพยืนยัน" ได้เลย');
+    } catch (err) {
+      console.warn('[Camera] Live stream fallback:', err);
+      toast('📷 เปิดโหมดถ่ายภาพยืนยันแล้ว กดปุ่ม "📸 กดชัตเตอร์ถ่ายภาพยืนยัน" เพื่อถ่ายรูปพร้อมประทับเวลาจริง');
+    }
+  }
+
+  function captureWhCameraPhoto() {
+    const rec = partRequisitionsList.find(x => x.reqId === whActiveConfirmReqId);
+    const video = el('whCameraVideo');
+    const canvas = document.createElement('canvas');
+
+    const w = (video && video.videoWidth > 0) ? Math.min(960, video.videoWidth) : 800;
+    const h = (video && video.videoHeight > 0) ? Math.round((video.videoHeight / video.videoWidth) * w) : 500;
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+
+    if (video && video.srcObject && video.videoWidth > 0) {
+      ctx.drawImage(video, 0, 0, w, h);
+    } else {
+      const grad = ctx.createLinearGradient(0, 0, w, h);
+      grad.addColorStop(0, '#0f172a');
+      grad.addColorStop(1, '#1e293b');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(30, 30, w - 60, h - 130);
+
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.fillText('📸 ยืนยันการจ่าย Part จริง (WAREHOUSE LIVE CAPTURE)', 55, 85);
+
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = 'bold 22px monospace';
+      ctx.fillText(`MO: ${rec?.moNumber || '-'}   |   ZJDB: ${rec?.directTransferDocs || '-'}`, 55, 135);
+
+      ctx.fillStyle = '#4ade80';
+      ctx.font = 'bold 26px monospace';
+      ctx.fillText(`PART: ${rec?.materialCode || '-'}   QTY: ${rec?.requestQty || 0} ${rec?.unit || 'PCS'}`, 55, 185);
+
+      ctx.fillStyle = '#e2e8f0';
+      ctx.font = '18px sans-serif';
+      ctx.fillText(`Description: ${[rec?.materialName, rec?.specification].filter(Boolean).join(' · ') || '-'}`, 55, 230);
+    }
+
+    // Stamp tamper-evident watermark banner at bottom of photo
+    const nowIso = new Date().toISOString();
+    const nowTh = new Date().toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'medium' });
+    const issuer = el('whIssuerNameInput')?.value || getCurrentUser()?.name || 'Warehouse';
+    const locs = Array.from(document.querySelectorAll('#whLocationsList .wh-loc-name-input')).map(i => i.value.trim()).filter(Boolean).join(', ') || '-';
+
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.86)';
+    ctx.fillRect(0, h - 84, w, 84);
+    ctx.fillStyle = '#4ade80';
+    ctx.font = 'bold 16px sans-serif';
+    ctx.fillText(`✅ VERIFIED CAMERA CAPTURE · เวลาถ่ายจริง: ${nowTh} (${nowIso.slice(0, 19)}Z)`, 18, h - 54);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '14px sans-serif';
+    ctx.fillText(`MO: ${rec?.moNumber || '-'} | Part: ${rec?.materialCode || '-'} (${rec?.requestQty || 0} ${rec?.unit || 'PCS'}) | Location: ${locs} | ผู้จ่าย: ${issuer}`, 18, h - 22);
+
+    capturedWhPhotoDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+    stopWhCameraStream();
+
+    if (el('whPhotoPreviewWrap')) el('whPhotoPreviewWrap').classList.remove('hidden');
+    if (el('whPhotoPreviewImg')) el('whPhotoPreviewImg').src = capturedWhPhotoDataUrl;
+    if (el('whPhotoTimestampBadge')) el('whPhotoTimestampBadge').textContent = `✅ ถ่ายภาพยืนยันสำเร็จเมื่อ ${nowTh} (พร้อมประทับลายน้ำเวลาจริง)`;
+    if (el('whRetakePhotoBtn')) el('whRetakePhotoBtn').classList.remove('hidden');
+
+    updateWhSaveButtonLockState();
+    toast('📸 ถ่ายภาพยืนยันการจ่าย Part เรียบร้อยแล้ว ปุ่ม Save เปิดให้กดได้แล้ว');
+  }
+
+  function exportPartRequisitionsCsv() {
+    if (!partRequisitionsList.length) {
+      toast('ยังไม่มีประวัติการเบิก Part สำหรับส่งออก');
+      return;
+    }
+    const q = s => `"${String(s ?? '').replace(/"/g, '""')}"`;
+    const headers = [
+      'เลขที่ใบเบิก (Req ID)',
+      'วันที่เบิก',
+      'เวลาเบิก (Timestamp)',
+      'เลขที่ใบสั่งผลิต (MO)',
+      'เลข Direct Transfer (ZJDB)',
+      'เลข PPBOM',
+      'รหัสรายการเบิก (Material Code)',
+      'Description (ชื่อและสเปค Part)',
+      'จำนวนที่เบิก',
+      'หน่วย (PCS/Kg/Set)',
+      'สาเหตุการเบิก',
+      'ผู้เบิก',
+      'กะ (A/B)',
+      'หมายเหตุผู้เบิก',
+      'สถานะ',
+      'Confirm Location / พื้นที่จ่าย',
+      'ผู้จ่าย (Warehouse)',
+      'เวลาที่จ่าย (Timestamp)',
+      'หมายเหตุผู้จ่าย',
+      'ยืนยันถ่ายรูปตอนจ่าย'
+    ];
+    const lines = [headers.map(q).join(',')];
+    for (const r of partRequisitionsList) {
+      const desc = [r.materialName, r.specification].filter(Boolean).join(' · ');
+      lines.push([
+        r.reqId,
+        r.requestDate,
+        r.requestedAt ? time(r.requestedAt) : '',
+        r.moNumber,
+        r.directTransferDocs,
+        r.ppbomNumber,
+        r.materialCode,
+        desc,
+        r.requestQty,
+        r.unit || 'PCS',
+        r.reason,
+        r.requesterName,
+        r.shift,
+        r.requesterNote,
+        r.status === 'issued' ? 'จ่าย Part แล้ว' : 'รอคลังจ่าย',
+        r.locationsSummary,
+        r.issuerName,
+        r.issuedAt ? time(r.issuedAt) : '',
+        r.issuerNote,
+        r.issuePhotoDataUrl ? 'ถ่ายภาพยืนยันแล้ว' : 'ยังไม่ถ่ายภาพ'
+      ].map(q).join(','));
+    }
+    const blob = new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `Part_Requisitions_Log_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast(`📥 ส่งออกประวัติการเบิก–จ่าย Part (${fmt(partRequisitionsList.length)} รายการ) เรียบร้อยแล้ว`);
+  }
+
+  function setPartReqFilterTab(tab) {
+    activePartReqTab = tab;
+    ['partReqTabAllBtn', 'partReqTabPendingBtn', 'partReqTabIssuedBtn'].forEach(id => {
+      const b = el(id);
+      if (b) b.classList.toggle('active', b.dataset.reqTab === tab);
+    });
+    renderPartReqHistoryTable();
+  }
+
+  function initPartRequisitionListeners() {
+    loadInitialPartRequisitions();
+
+    // Poll shared server every 5 seconds so Warehouse receives real-time popups when Requester clicks Save
+    setInterval(() => {
+      syncPartRequisitionsFromServer(true);
+    }, 5000);
+    setTimeout(() => syncPartRequisitionsFromServer(true), 1200);
+
+    // MO Autocomplete
+    const moInp = el('reqMoInput');
+    moInp?.addEventListener('focus', () => {
+      el('reqMatDropdown')?.classList.add('hidden');
+      renderMoAutocompleteDropdown(moInp.value);
+    });
+    moInp?.addEventListener('input', () => {
+      el('reqMatDropdown')?.classList.add('hidden');
+      renderMoAutocompleteDropdown(moInp.value);
+      syncMoLinkedZjdbDisplay(moInp.value);
+    });
+    const selectMoFromDropdown = (e) => {
+      const opt = e.target.closest('.req-mo-opt');
+      if (!opt) return;
+      e.preventDefault();
+      const mo = opt.dataset.mo;
+      if (moInp) moInp.value = mo;
+      el('reqMoDropdown')?.classList.add('hidden');
+      syncMoLinkedZjdbDisplay(mo);
+    };
+    el('reqMoDropdown')?.addEventListener('mousedown', selectMoFromDropdown);
+    el('reqMoDropdown')?.addEventListener('click', selectMoFromDropdown);
+
+    // Material Code Autocomplete & Description Auto-fill
+    const matInp = el('reqMatCodeInput');
+    matInp?.addEventListener('focus', () => {
+      el('reqMoDropdown')?.classList.add('hidden');
+      renderMaterialAutocompleteDropdown(matInp.value);
+    });
+    matInp?.addEventListener('input', () => {
+      el('reqMoDropdown')?.classList.add('hidden');
+      renderMaterialAutocompleteDropdown(matInp.value);
+      const exact = getMaterialCatalogMap().get(String(matInp.value || '').trim().toUpperCase());
+      if (exact) {
+        applySelectedMaterialCode(exact.materialCode);
+      } else {
+        if (el('reqMatDescInput')) el('reqMatDescInput').value = '';
+      }
+    });
+    el('reqFilterByMoBomChk')?.addEventListener('change', () => {
+      if (el('reqMatDropdown') && !el('reqMatDropdown').classList.contains('hidden')) {
+        renderMaterialAutocompleteDropdown(matInp?.value || '');
+      }
+    });
+    const selectMatFromDropdown = (e) => {
+      const opt = e.target.closest('.req-mat-opt');
+      if (!opt) return;
+      e.preventDefault();
+      const code = opt.dataset.code;
+      applySelectedMaterialCode(code);
+      el('reqMatDropdown')?.classList.add('hidden');
+      el('reqQtyInput')?.focus();
+    };
+    el('reqMatDropdown')?.addEventListener('mousedown', selectMatFromDropdown);
+    el('reqMatDropdown')?.addEventListener('click', selectMatFromDropdown);
+
+    // Close autocomplete dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#reqMoInput') && !e.target.closest('#reqMoDropdown')) {
+        el('reqMoDropdown')?.classList.add('hidden');
+      }
+      if (!e.target.closest('#reqMatCodeInput') && !e.target.closest('#reqMatDropdown') && !e.target.closest('#reqFilterByMoBomChk')) {
+        el('reqMatDropdown')?.classList.add('hidden');
+      }
+    });
+
+    // Reason select ("อื่นๆ" toggles custom input)
+    el('reqReasonSelect')?.addEventListener('change', () => {
+      const isCustom = el('reqReasonSelect')?.value === 'อื่นๆ';
+      el('reqReasonCustomInput')?.classList.toggle('hidden', !isCustom);
+      if (isCustom) el('reqReasonCustomInput')?.focus();
+    });
+
+    // Clear Form button
+    el('partReqResetFormBtn')?.addEventListener('click', () => {
+      if (el('reqMoInput')) el('reqMoInput').value = '';
+      if (el('reqZjdbInput')) el('reqZjdbInput').value = '';
+      if (el('reqPpbomInput')) el('reqPpbomInput').value = '';
+      if (el('reqMoProductBadge')) {
+        el('reqMoProductBadge').className = 'badge gray';
+        el('reqMoProductBadge').textContent = 'ยังไม่ได้เลือก MO';
+      }
+      if (el('reqMatCodeInput')) el('reqMatCodeInput').value = '';
+      if (el('reqMatDescInput')) el('reqMatDescInput').value = '';
+      if (el('reqMatSpecInput')) el('reqMatSpecInput').value = '';
+      if (el('reqSelectedPartStockHint')) el('reqSelectedPartStockHint').classList.add('hidden');
+      if (el('reqQtyInput')) el('reqQtyInput').value = '';
+      if (el('reqUnitSelect')) el('reqUnitSelect').value = 'PCS';
+      if (el('reqNoteInput')) el('reqNoteInput').value = '';
+      toast('ล้างฟอร์มใบเบิกเรียบร้อยแล้ว');
+    });
+
+    // Submit Part Requisition Form (Stamps Timestamp & alerts Warehouse)
+    el('partRequisitionForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const reqDate = (el('reqDateInput')?.value || new Date().toISOString().slice(0, 10)).trim();
+      const moNumber = (el('reqMoInput')?.value || '').trim().toUpperCase();
+      const zjdbDocs = (el('reqZjdbInput')?.value || '').trim();
+      const ppbomNo = (el('reqPpbomInput')?.value || '').trim();
+      const matCode = (el('reqMatCodeInput')?.value || '').trim().toUpperCase();
+      const descInputVal = (el('reqMatDescInput')?.value || '').trim();
+      const qty = n(el('reqQtyInput')?.value);
+      const unit = (el('reqUnitSelect')?.value || 'PCS').trim();
+      const reasonSel = (el('reqReasonSelect')?.value || '').trim();
+      const reasonCustom = (el('reqReasonCustomInput')?.value || '').trim();
+      const reason = reasonSel === 'อื่นๆ' ? (reasonCustom || 'อื่นๆ') : reasonSel;
+      const requesterName = (el('reqRequesterInput')?.value || '').trim();
+      const shift = (el('reqShiftSelect')?.value || 'A').trim().toUpperCase();
+      const requesterNote = (el('reqNoteInput')?.value || '').trim();
+
+      if (!moNumber || !matCode || !(qty > 0) || !reason || !requesterName) {
+        alert('กรุณากรอกข้อมูลที่มีเครื่องหมาย * ให้ครบถ้วน (เลขที่ MO, รหัส Part, จำนวนที่เบิก, สาเหตุการเบิก และชื่อผู้เบิก)');
+        return;
+      }
+
+      const matObj = getMaterialCatalogMap().get(matCode);
+      const moObj = getMoCatalogMap().get(moNumber);
+      const moPart = moObj?.partsMap.get(matCode);
+      const matName = matObj?.materialName || moPart?.materialName || descInputVal || '';
+      const matSpec = el('reqMatSpecInput')?.value || matObj?.specification || moPart?.specification || '';
+      const nowStamp = new Date().toISOString();
+
+      const newRec = {
+        reqId: `REQ-${nowStamp.slice(0, 10).replace(/-/g, '')}-${String(Date.now()).slice(-5)}`,
+        requestDate: reqDate,
+        requestedAt: nowStamp,
+        moNumber,
+        ppbomNumber: ppbomNo || (moObj ? [...moObj.ppbomSet].join(', ') : ''),
+        directTransferDocs: zjdbDocs || (moObj ? [...moObj.zjdbSet].join(', ') : ''),
+        materialCode: matCode,
+        materialName: matName,
+        specification: matSpec,
+        requestQty: qty,
+        unit: ['PCS', 'Kg', 'Set'].includes(unit) ? unit : 'PCS',
+        reason,
+        requesterName,
+        shift: shift === 'B' ? 'B' : 'A',
+        requesterNote,
+        status: 'pending',
+        locations: [],
+        locationsSummary: '',
+        issuerName: '',
+        issuedAt: '',
+        issuerNote: '',
+        issuePhotoDataUrl: '',
+        updatedAt: nowStamp
+      };
+
+      const saveBtn = el('reqSubmitSaveBtn');
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.textContent = '⏳ กำลังบันทึกและส่งแจ้งเตือนไป Warehouse...';
+      }
+      try {
+        await savePartRequisitionEverywhere(newRec);
+        renderPartRequisitionPage();
+        if (el('reqMatCodeInput')) el('reqMatCodeInput').value = '';
+        if (el('reqMatDescInput')) el('reqMatDescInput').value = '';
+        if (el('reqMatSpecInput')) el('reqMatSpecInput').value = '';
+        if (el('reqQtyInput')) el('reqQtyInput').value = '';
+        if (el('reqNoteInput')) el('reqNoteInput').value = '';
+        if (el('reqSelectedPartStockHint')) el('reqSelectedPartStockHint').classList.add('hidden');
+        toast(`✅ บันทึกใบเบิก ${newRec.materialCode} (${fmtQty(qty)} ${newRec.unit}) สำเร็จ! ประทับเวลา ${time(nowStamp)} และเด้งแจ้งเตือนไปที่ Warehouse แล้ว`);
+      } finally {
+        if (saveBtn) {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = '💾 Save บันทึกใบเบิก Part (ส่งแจ้งเตือนไป Warehouse)';
+        }
+      }
+    });
+
+    // History Filters, Tabs & Metric Cards
+    el('partReqTabAllBtn')?.addEventListener('click', () => setPartReqFilterTab('all'));
+    el('partReqTabPendingBtn')?.addEventListener('click', () => setPartReqFilterTab('pending'));
+    el('partReqTabIssuedBtn')?.addEventListener('click', () => setPartReqFilterTab('issued'));
+    el('partReqCardAll')?.addEventListener('click', () => setPartReqFilterTab('all'));
+    el('partReqCardPending')?.addEventListener('click', () => setPartReqFilterTab('pending'));
+    el('partReqCardIssued')?.addEventListener('click', () => setPartReqFilterTab('issued'));
+    el('whJumpToPendingBtn')?.addEventListener('click', () => {
+      setPartReqFilterTab('pending');
+      el('partReqHistoryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    el('partReqSearchInput')?.addEventListener('input', renderPartReqHistoryTable);
+    el('partReqShiftFilter')?.addEventListener('change', renderPartReqHistoryTable);
+    el('partReqDateFilter')?.addEventListener('change', renderPartReqHistoryTable);
+    el('refreshPartReqBtn')?.addEventListener('click', () => syncPartRequisitionsFromServer(false));
+    el('exportPartReqExcelBtn')?.addEventListener('click', exportPartRequisitionsCsv);
+
+    // Open Warehouse Confirm Modal or Photo Viewer from Table
+    document.addEventListener('click', (e) => {
+      const confirmBtn = e.target.closest('.btn-open-wh-confirm');
+      if (confirmBtn) {
+        openWhConfirmModal(confirmBtn.dataset.id);
+        return;
+      }
+      const photoBtn = e.target.closest('.btn-view-req-photo');
+      if (photoBtn) {
+        const rec = partRequisitionsList.find(x => x.reqId === photoBtn.dataset.id);
+        if (rec) {
+          const desc = [rec.materialName, rec.specification].filter(Boolean).join(' · ') || '—';
+          if (el('partReqPreviewModalTitle')) el('partReqPreviewModalTitle').textContent = `📸 รูปถ่ายยืนยันการจ่าย Part · ${rec.materialCode} (${fmtQty(rec.requestQty)} ${rec.unit || 'PCS'})`;
+          if (el('partReqPreviewModalBody')) {
+            el('partReqPreviewModalBody').innerHTML = `
+              <div style="text-align:center;margin-bottom:12px">
+                <img src="${rec.issuePhotoDataUrl}" alt="Verified Issue Photo" style="max-width:100%;max-height:420px;border-radius:10px;border:2px solid #16a34a;box-shadow:0 4px 16px rgba(0,0,0,0.16)">
+              </div>
+              <div style="background:#f8fafc;padding:12px 14px;border-radius:8px;border:1px solid #cbd5e1;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
+                <div><b>เลขใบเบิก:</b> ${esc(rec.reqId)}</div>
+                <div><b>เลข MO:</b> <strong style="color:#0f6a66">${esc(rec.moNumber)}</strong></div>
+                <div><b>Direct Transfer (ZJDB):</b> <strong style="color:#047857">${esc(rec.directTransferDocs || '—')}</strong></div>
+                <div><b>รหัส Part:</b> <strong style="color:#087e78">${esc(rec.materialCode)}</strong> (${esc(desc)})</div>
+                <div><b>ผู้เบิก (กะ ${esc(rec.shift)}):</b> ${esc(rec.requesterName)} · ${esc(time(rec.requestedAt))}</div>
+                <div><b>ผู้จ่าย (Warehouse):</b> <strong style="color:#15803d">${esc(rec.issuerName)}</strong> · ${esc(time(rec.issuedAt))}</div>
+                <div style="grid-column:span 2"><b>Confirm Location ที่หยิบ:</b> ${esc(rec.locationsSummary || '—')}</div>
+                <div><b>หมายเหตุผู้เบิก:</b> ${esc(rec.requesterNote || '—')}</div>
+                <div><b>หมายเหตุผู้จ่าย:</b> ${esc(rec.issuerNote || '—')}</div>
+              </div>
+            `;
+          }
+          el('partReqPhotoPreviewModal')?.classList.add('show');
+        }
+      }
+    });
+
+    // Add Location Row button (+ เพิ่ม Location / พื้นที่)
+    el('whAddLocationBtn')?.addEventListener('click', () => {
+      const listEl = el('whLocationsList');
+      if (!listEl) return;
+      const rec = partRequisitionsList.find(x => x.reqId === whActiveConfirmReqId);
+      const suggestions = getSuggestedBinsForMaterial(rec?.materialCode || '');
+      const nextIdx = listEl.querySelectorAll('.wh-location-row').length;
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = createWhLocationRowHtml(nextIdx, '', '', suggestions).trim();
+      const newRow = wrapper.firstElementChild;
+      if (newRow) {
+        listEl.appendChild(newRow);
+        newRow.querySelector('.wh-loc-name-input')?.focus();
+      }
+    });
+
+    // Remove Location Row button
+    el('whLocationsList')?.addEventListener('click', (e) => {
+      const rmBtn = e.target.closest('.wh-remove-loc-btn');
+      if (!rmBtn) return;
+      const row = rmBtn.closest('.wh-location-row');
+      if (row) row.remove();
+      document.querySelectorAll('#whLocationsList .wh-location-row').forEach((r, idx) => {
+        const lbl = r.querySelector('label');
+        if (lbl) lbl.innerHTML = `📍 Location / พื้นที่จัดเก็บที่ ${idx + 1} <span style="color:#dc2626">*</span>`;
+      });
+    });
+
+    // Camera Buttons in Warehouse Modal
+    el('whStartCameraBtn')?.addEventListener('click', startWhLiveCamera);
+    el('whCaptureShutterBtn')?.addEventListener('click', captureWhCameraPhoto);
+    el('whRetakePhotoBtn')?.addEventListener('click', () => {
+      capturedWhPhotoDataUrl = '';
+      updateWhSaveButtonLockState();
+      startWhLiveCamera();
+    });
+
+    // Close Warehouse Confirm Modal
+    const closeWhModal = () => {
+      stopWhCameraStream();
+      el('whConfirmIssueModal')?.classList.remove('show');
+    };
+    el('closeWhConfirmModalBtn')?.addEventListener('click', closeWhModal);
+    el('cancelWhConfirmModalBtn')?.addEventListener('click', closeWhModal);
+
+    // Close Photo Preview Modal
+    const closePhotoPreview = () => el('partReqPhotoPreviewModal')?.classList.remove('show');
+    el('closePartReqPreviewModalBtn')?.addEventListener('click', closePhotoPreview);
+    el('donePartReqPreviewModalBtn')?.addEventListener('click', closePhotoPreview);
+    el('partReqPhotoPreviewModal')?.addEventListener('click', (e) => {
+      if (e.target === el('partReqPhotoPreviewModal')) closePhotoPreview();
+    });
+
+    // Submit Warehouse Confirm Issue Form (Enforces Camera Photo + Stamps Issued Timestamp)
+    el('whConfirmIssueForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!capturedWhPhotoDataUrl || !capturedWhPhotoDataUrl.startsWith('data:image')) {
+        alert('⛔ ไม่สามารถกด Save ได้! กรุณากดเปิดกล้องและถ่ายรูปยืนยันการจ่าย Part จริงก่อนบันทึกข้อมูล');
+        updateWhSaveButtonLockState();
+        return;
+      }
+
+      const rec = partRequisitionsList.find(x => x.reqId === whActiveConfirmReqId);
+      if (!rec) return;
+
+      const locRows = Array.from(document.querySelectorAll('#whLocationsList .wh-location-row'));
+      const locations = [];
+      for (const r of locRows) {
+        const locName = (r.querySelector('.wh-loc-name-input')?.value || '').trim();
+        const locQty = r.querySelector('.wh-loc-qty-input')?.value;
+        if (locName) {
+          locations.push({ location: locName, qty: locQty !== '' ? n(locQty) : '' });
+        }
+      }
+      if (!locations.length) {
+        alert('กรุณาระบุ Confirm Location / พื้นที่ที่ดึง Part อย่างน้อย 1 โลเคชั่น');
+        return;
+      }
+
+      const issuerName = (el('whIssuerNameInput')?.value || '').trim();
+      if (!issuerName) {
+        alert('กรุณาระบุชื่อผู้จ่าย Part (Warehouse)');
+        return;
+      }
+      const issuerNote = (el('whIssuerNoteInput')?.value || '').trim();
+      const issuedStamp = new Date().toISOString();
+      const locationsSummary = locations.map((l, i) => `Loc#${i + 1}: ${l.location}${l.qty !== '' ? ` (${fmtQty(l.qty)} ${rec.unit || 'PCS'})` : ''}`).join(' | ');
+
+      const updated = {
+        ...rec,
+        status: 'issued',
+        locations,
+        locationsSummary,
+        issuerName,
+        issuedAt: issuedStamp,
+        issuerNote,
+        issuePhotoDataUrl: capturedWhPhotoDataUrl,
+        updatedAt: issuedStamp
+      };
+
+      const saveBtn = el('whConfirmSaveBtn');
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.textContent = '⏳ กำลังบันทึกการจ่าย Part...';
+      }
+      try {
+        await savePartRequisitionEverywhere(updated);
+        closeWhModal();
+        renderPartRequisitionPage();
+        toast(`✅ ยืนยันจ่าย Part (${updated.materialCode}) สำเร็จ! บันทึก Location (${locations.length} จุด), รูปถ่ายจริง และประทับเวลาจ่าย ${time(issuedStamp)} ลง Google Sheet แล้ว`);
+      } finally {
+        if (saveBtn) {
+          saveBtn.textContent = '💾 Save ยืนยันการจ่าย Part (Stamp เวลาจ่าย)';
+          updateWhSaveButtonLockState();
+        }
+      }
+    });
+  }
+
+  initPartRequisitionListeners();
 
   window.loadData = loadData;
   window.fetchLatestSharedSeeds = fetchLatestSharedSeeds;
