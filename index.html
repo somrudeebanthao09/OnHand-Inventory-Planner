@@ -10788,7 +10788,8 @@
   });
 
   window.loadData = loadData;
-  window.db = db;
+  window.fetchLatestSharedSeeds = fetchLatestSharedSeeds;
+  Object.defineProperty(window, 'db', { get: () => db, set: (v) => { db = v; }, configurable: true });
 boot();
 })();
 </script>
