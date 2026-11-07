@@ -3326,6 +3326,9 @@
         accessIsAdmin = currentUser.role === 'admin';
         el('accessAdminPanel').classList.toggle('hidden',!accessIsAdmin);
       }
+      if (['requester', 'warehouse'].includes(currentUser.role)) {
+        initializePartReqSharedApi().catch(err => console.warn('[PartReqAPI] startup sync failed:', err?.message || err));
+      }
       document.documentElement.classList.add('app-ready');
     }catch(err){
       console.error('Material Planner startup failed',err);
@@ -9699,6 +9702,8 @@
 
   function logoutUser(){
     setCurrentUser(null);
+    sessionStorage.removeItem(PART_REQ_API_SESSION_KEY);
+    partReqApiReconciledIdentity = '';
     sessionStorage.removeItem('onhandScreenLocked');
     const lockEl = el('securityLockScreen');
     if(lockEl){
@@ -9785,6 +9790,9 @@
       goto(found.role === 'admin' && activePage === 'users' ? 'users' : 'overview');
     }
     toast(`เข้าสู่ระบบสำเร็จ ยินดีต้อนรับ ${found.name || found.username}`);
+    if (['requester', 'warehouse'].includes(found.role)) {
+      initializePartReqSharedApi().catch(err => console.warn('[PartReqAPI] login sync failed:', err?.message || err));
+    }
   }
 
   function handleRegisterSubmit(){
@@ -11563,6 +11571,14 @@
   let partReqRelayFlushTimer = null;
   let partReqRelayFlushPromise = null;
   let partReqRelayStartupReconciled = false;
+  const PART_REQ_SHARED_API_URL = 'https://script.google.com/macros/s/AKfycbwOvGYHdiIEizehNTvSBNMsLHNozeRwjBOnZ2A6k3YhTU_37Mnl2WCZgLC4WrGSWTOG/exec';
+  const PART_REQ_API_SESSION_KEY = 'onhandPartReqApiSession';
+  let partReqApiPullPromise = null;
+  let partReqApiReconcilePromise = null;
+  let partReqApiReconciledIdentity = '';
+  let partReqApiLastRecords = [];
+  let partReqApiLoginPromise = null;
+  const partReqApiLoginRetryAfter = new Map();
 
   function getPartReqRelayVersion(record) {
     if (!record?.reqId) return '';
@@ -11871,6 +11887,210 @@
     } catch (_) {}
   }
 
+  function partReqApiConfigured() {
+    return /^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec(?:\?.*)?$/.test(PART_REQ_SHARED_API_URL);
+  }
+
+  function postPartReqApiForm(fields) {
+    if (!partReqApiConfigured()) return Promise.reject(new Error('PART_API_NOT_CONFIGURED'));
+    return new Promise((resolve, reject) => {
+      const requestId = `part-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      const frameName = `part_req_api_${requestId.replace(/[^a-z0-9_]/gi, '')}`;
+      const frame = document.createElement('iframe');
+      frame.name = frameName;
+      frame.title = 'Part requisition sync';
+      frame.setAttribute('aria-hidden', 'true');
+      frame.style.cssText = 'position:fixed;width:1px;height:1px;left:-10000px;top:-10000px;border:0';
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = PART_REQ_SHARED_API_URL;
+      form.target = frameName;
+      form.style.display = 'none';
+      Object.entries({ ...fields, requestId }).forEach(([name, value]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = typeof value === 'string' ? value : String(value ?? '');
+        form.appendChild(input);
+      });
+      let settled = false;
+      const clean = () => {
+        window.removeEventListener('message', onMessage);
+        clearTimeout(timer);
+        form.remove();
+        setTimeout(() => frame.remove(), 0);
+      };
+      const finish = (error, result) => {
+        if (settled) return;
+        settled = true;
+        clean();
+        if (error) reject(error);
+        else resolve(result);
+      };
+      const onMessage = (event) => {
+        if (event.source !== frame.contentWindow) return;
+        let hostname = '';
+        try { hostname = new URL(event.origin).hostname; } catch (_) { return; }
+        if (hostname !== 'script.google.com' && !hostname.endsWith('.googleusercontent.com')) return;
+        if (!event.data || event.data.requestId !== requestId) return;
+        finish(null, event.data);
+      };
+      const timer = setTimeout(() => finish(new Error('PART_API_TIMEOUT')), 20000);
+      window.addEventListener('message', onMessage);
+      document.body.append(frame, form);
+      try { form.submit(); } catch (err) { finish(err); }
+    });
+  }
+
+  async function ensurePartReqApiSession() {
+    const user = getCurrentUser();
+    if (!user || !['requester', 'warehouse'].includes(user.role)) throw new Error('PART_API_ROLE_NOT_ALLOWED');
+    let saved = null;
+    try { saved = JSON.parse(sessionStorage.getItem(PART_REQ_API_SESSION_KEY) || 'null'); } catch (_) {}
+    const username = String(user.username || '').trim().toLowerCase();
+    if (saved?.token && saved.username === username && saved.role === user.role && saved.expiresAt > Date.now() + 30000) return saved;
+    if (partReqApiLoginPromise) return partReqApiLoginPromise;
+    if (Date.now() < (partReqApiLoginRetryAfter.get(username) || 0)) throw new Error('PART_API_LOGIN_RETRY_DELAY');
+    partReqApiLoginPromise = (async () => {
+      const password = String(user.password || '');
+      if (!password) throw new Error('PART_API_LOGIN_REQUIRED');
+      const response = await postPartReqApiForm({ action: 'login', username, password });
+      if (!response?.ok || !response.token) {
+        partReqApiLoginRetryAfter.set(username, Date.now() + 15 * 60 * 1000);
+        throw new Error(response?.error || 'PART_API_LOGIN_FAILED');
+      }
+      partReqApiLoginRetryAfter.delete(username);
+      const session = {
+        token: response.token,
+        username,
+        role: response.role,
+        expiresAt: Date.now() + (Math.max(60, Number(response.expiresIn) || 21600) * 1000)
+      };
+      const activeUser = getCurrentUser();
+      if (!activeUser || String(activeUser.username || '').trim().toLowerCase() !== username) throw new Error('PART_API_USER_CHANGED');
+      if (session.role !== user.role) throw new Error('PART_API_ROLE_MISMATCH');
+      sessionStorage.setItem(PART_REQ_API_SESSION_KEY, JSON.stringify(session));
+      return session;
+    })().finally(() => { partReqApiLoginPromise = null; });
+    return partReqApiLoginPromise;
+  }
+
+  async function callPartReqSharedApi(action, fields = {}) {
+    const session = await ensurePartReqApiSession();
+    const response = await postPartReqApiForm({ action, token: session.token, ...fields });
+    if (response?.error === 'SESSION_EXPIRED') {
+      sessionStorage.removeItem(PART_REQ_API_SESSION_KEY);
+      const renewed = await ensurePartReqApiSession();
+      return postPartReqApiForm({ action, token: renewed.token, ...fields });
+    }
+    return response;
+  }
+
+  function normalizePartReqApiRecord(record) {
+    let locations = Array.isArray(record?.locations) ? record.locations : [];
+    if (!locations.length && record?.locationsJson) {
+      try { const parsed = JSON.parse(record.locationsJson); if (Array.isArray(parsed)) locations = parsed; } catch (_) {}
+    }
+    return {
+      ...record,
+      locations,
+      hasPhoto: Boolean(record?.hasPhoto),
+      photoUrl: String(record?.photoAttachmentUrl || record?.photoUrl || ''),
+      issuePhotoDataUrl: ''
+    };
+  }
+
+  function partReqApiTime(record) {
+    return Date.parse(record?.updatedAt || record?.issuedAt || record?.requestedAt || '') || 0;
+  }
+
+  function partReqApiRequesterIsCurrent(record, user) {
+    const username = String(record?.requesterUsername || '').trim().toLowerCase();
+    if (username) return username === String(user?.username || '').trim().toLowerCase();
+    const requesterName = String(record?.requesterName || '').trim().toLowerCase();
+    return Boolean(requesterName) && requesterName === String(user?.name || user?.username || '').trim().toLowerCase();
+  }
+
+  function replacePartReqRecordsFromApi(records) {
+    if (!Array.isArray(records) || !records.length) return false;
+    const incomingIds = new Set(records.filter(item => item?.reqId).map(item => item.reqId));
+    const localById = new Map(partRequisitionsList.filter(item => item?.reqId).map(item => [item.reqId, item]));
+    const map = new Map(partRequisitionsList.filter(item => item?.reqId && !incomingIds.has(item.reqId)).map(item => [item.reqId, item]));
+    for (const item of records) {
+      if (!item?.reqId) continue;
+      const existing = localById.get(item.reqId);
+      const incoming = { ...normalizePartReqApiRecord(item), issuePhotoDataUrl: existing?.issuePhotoDataUrl || '' };
+      notifyFreshPartReqTransition(incoming, existing);
+      map.set(item.reqId, { ...(existing || {}), ...incoming });
+    }
+    partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
+    persistPartRequisitionsLocal();
+    updatePartReqBadges();
+    if (activePage === 'part-requisition' || activePage === 'part-issue') {
+      renderPartReqWarehouseAlert();
+      renderPartReqHistoryTable();
+    }
+    return true;
+  }
+
+  async function pullPartReqSharedApiRecords() {
+    if (partReqApiPullPromise) return partReqApiPullPromise;
+    partReqApiPullPromise = (async () => {
+      const response = await callPartReqSharedApi('list');
+      if (!response?.ok || !Array.isArray(response.items)) throw new Error(response?.error || 'PART_API_LIST_FAILED');
+      partReqApiLastRecords = response.items.map(normalizePartReqApiRecord);
+      replacePartReqRecordsFromApi(response.items);
+      return true;
+    })().finally(() => { partReqApiPullPromise = null; });
+    return partReqApiPullPromise;
+  }
+
+  async function savePartReqToSharedApi(record) {
+    const apiRecord = {
+      ...record,
+      hasPhoto: Boolean(record?.hasPhoto || record?.issuePhotoDataUrl || record?.photoAttachmentUrl || record?.photoUrl)
+    };
+    delete apiRecord.issuePhotoDataUrl;
+    const response = await callPartReqSharedApi('save', { record: JSON.stringify(apiRecord) });
+    if (!response?.ok) throw new Error(response?.error || 'PART_API_SAVE_FAILED');
+    return response;
+  }
+
+  async function initializePartReqSharedApi() {
+    const user = getCurrentUser();
+    if (!user || !['requester', 'warehouse'].includes(user.role) || !partReqApiConfigured()) return false;
+    const identity = `${user.role}:${String(user.username || '').trim().toLowerCase()}`;
+    if (partReqApiReconciledIdentity === identity) return true;
+    if (partReqApiReconcilePromise) return partReqApiReconcilePromise;
+    partReqApiReconcilePromise = (async () => {
+      await ensurePartReqApiSession();
+      await pullPartReqSharedApiRecords();
+      let localItems = [];
+      try {
+        const parsed = JSON.parse(localStorage.getItem('onhandPartRequisitions') || '[]');
+        if (Array.isArray(parsed)) localItems = parsed;
+      } catch (_) {}
+      const centralById = new Map(partReqApiLastRecords.filter(item => item?.reqId).map(item => [item.reqId, item]));
+      const candidates = localItems.filter(record => {
+        if (!record?.reqId || record.deleted) return false;
+        if (user.role === 'requester') return record.status !== 'issued' && partReqApiRequesterIsCurrent(record, user);
+        return record.status === 'issued';
+      });
+      for (const record of candidates) {
+        const remote = centralById.get(record.reqId);
+        if (user.role === 'requester' && remote?.status === 'issued') continue;
+        if (remote && partReqApiTime(record) <= partReqApiTime(remote)) continue;
+        try { await savePartReqToSharedApi(record); } catch (err) {
+          console.warn('[PartReqAPI] local reconciliation skipped:', err?.message || err);
+        }
+      }
+      await pullPartReqSharedApiRecords();
+      partReqApiReconciledIdentity = identity;
+      return true;
+    })().finally(() => { partReqApiReconcilePromise = null; });
+    return partReqApiReconcilePromise;
+  }
+
   async function syncPartRequisitionsFromServer(silent = true) {
     let anySuccess = false;
     try {
@@ -11922,6 +12142,19 @@
         }
       }
 
+      const currentPartUser = getCurrentUser();
+      if (currentPartUser && ['requester', 'warehouse'].includes(currentPartUser.role) && partReqApiConfigured()) {
+        try {
+          const identity = `${currentPartUser.role}:${String(currentPartUser.username || '').trim().toLowerCase()}`;
+          const apiOk = partReqApiReconciledIdentity === identity
+            ? await pullPartReqSharedApiRecords()
+            : await initializePartReqSharedApi();
+          if (apiOk) anySuccess = true;
+        } catch (err) {
+          console.warn('[PartReqAPI] sync failed:', err?.message || err);
+        }
+      }
+
       if (!silent) {
         toast(`✅ ซิงค์ข้อมูลใบเบิก Part ล่าสุดเรียบร้อย (${fmt(partRequisitionsList.length)} รายการ)`);
       }
@@ -11965,11 +12198,12 @@
   }
 
   async function savePartRequisitionEverywhere(record) {
-    const idx = partRequisitionsList.findIndex(x => x.reqId === record.reqId);
+    const stampedRecord = { ...record, updatedAt: record.updatedAt || new Date().toISOString() };
+    const idx = partRequisitionsList.findIndex(x => x.reqId === stampedRecord.reqId);
     if (idx >= 0) {
-      partRequisitionsList[idx] = { ...partRequisitionsList[idx], ...record };
+      partRequisitionsList[idx] = { ...partRequisitionsList[idx], ...stampedRecord };
     } else {
-      partRequisitionsList.unshift(record);
+      partRequisitionsList.unshift(stampedRecord);
     }
     partRequisitionsList.sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
     persistPartRequisitionsLocal();
@@ -11977,29 +12211,44 @@
 
     // 0. Broadcast immediately to other open tabs in the same browser
     try {
-      partReqBroadcastChannel?.postMessage({ record });
+      partReqBroadcastChannel?.postMessage({ record: stampedRecord });
     } catch (_) {}
 
-    // 1. Push immediately over HTTPS Cloud Relay so Warehouse on ANY mobile phone or PC receives it in < 0.5s!
-    const relayNotified = await pushRecordToCloudRelay(record);
-    if (!relayNotified) queuePartReqRelayRecord(record, 5000);
+    // 1. Save to the shared Part API so separate users/devices read the same records.
+    const apiSave = partReqApiConfigured()
+      ? savePartReqToSharedApi(stampedRecord).then(() => true).catch(err => {
+          console.warn('[PartReqAPI] save failed:', err?.message || err);
+          return false;
+        })
+      : Promise.resolve(false);
 
-    // 2. Save to local helper server in background (writes PartRequisitionsSeed.js + Part-Requisitions-Google-Sheet-Log.xlsx + GitHub sync)
+    // 2. Keep the existing relay as a fast notification/fallback path.
+    const relaySave = pushRecordToCloudRelay(stampedRecord);
+    const [apiSaved, relayNotified] = await Promise.all([apiSave, relaySave]);
+    if (!relayNotified) queuePartReqRelayRecord(stampedRecord, 5000);
+    if (apiSaved) {
+      const user = getCurrentUser();
+      if (user && ['requester', 'warehouse'].includes(user.role)) {
+        partReqApiReconciledIdentity = `${user.role}:${String(user.username || '').trim().toLowerCase()}`;
+      }
+    }
+
+    // 3. Save to local helper server in background (writes PartRequisitionsSeed.js + Part-Requisitions-Google-Sheet-Log.xlsx + GitHub sync)
     checkHelperHealth().then(helperBase => {
       if (helperBase) {
         fetchWithTimeout(`${helperBase}/part-requisitions`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ record })
+          body: JSON.stringify({ record: stampedRecord })
         }, 4000).catch(() => {});
       }
     }).catch(() => {});
 
-    // 3. Save to Google Sheets ("On-Hand Inventory Planner - H9 Assembly" -> tab "PartRequisitions")
+    // 4. Save to Google Sheets ("On-Hand Inventory Planner - H9 Assembly" -> tab "PartRequisitions")
     if (hasGoogle()) {
-      callGoogle('savePartRequisition', record).catch(() => {});
+      callGoogle('savePartRequisition', stampedRecord).catch(() => {});
     }
-    return { relayNotified };
+    return { relayNotified: apiSaved || relayNotified, apiSaved };
   }
 
   let activePartReqTab = 'all';
