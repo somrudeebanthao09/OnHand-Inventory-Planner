@@ -11935,7 +11935,8 @@
         if (!event.data || event.data.requestId !== requestId) return;
         finish(null, event.data);
       };
-      const timer = setTimeout(() => finish(new Error('PART_API_TIMEOUT')), 20000);
+      // First login performs the server-side password derivation; allow Apps Script time to finish it.
+      const timer = setTimeout(() => finish(new Error('PART_API_TIMEOUT')), 90000);
       window.addEventListener('message', onMessage);
       document.body.append(frame, form);
       try { form.submit(); } catch (err) { finish(err); }
@@ -12076,16 +12077,18 @@
         if (user.role === 'requester') return record.status !== 'issued' && partReqApiRequesterIsCurrent(record, user);
         return record.status === 'issued';
       });
+      let reconciliationComplete = true;
       for (const record of candidates) {
         const remote = centralById.get(record.reqId);
         if (user.role === 'requester' && remote?.status === 'issued') continue;
         if (remote && partReqApiTime(record) <= partReqApiTime(remote)) continue;
         try { await savePartReqToSharedApi(record); } catch (err) {
+          reconciliationComplete = false;
           console.warn('[PartReqAPI] local reconciliation skipped:', err?.message || err);
         }
       }
       await pullPartReqSharedApiRecords();
-      partReqApiReconciledIdentity = identity;
+      if (reconciliationComplete) partReqApiReconciledIdentity = identity;
       return true;
     })().finally(() => { partReqApiReconcilePromise = null; });
     return partReqApiReconcilePromise;
@@ -12226,13 +12229,6 @@
     const relaySave = pushRecordToCloudRelay(stampedRecord);
     const [apiSaved, relayNotified] = await Promise.all([apiSave, relaySave]);
     if (!relayNotified) queuePartReqRelayRecord(stampedRecord, 5000);
-    if (apiSaved) {
-      const user = getCurrentUser();
-      if (user && ['requester', 'warehouse'].includes(user.role)) {
-        partReqApiReconciledIdentity = `${user.role}:${String(user.username || '').trim().toLowerCase()}`;
-      }
-    }
-
     // 3. Save to local helper server in background (writes PartRequisitionsSeed.js + Part-Requisitions-Google-Sheet-Log.xlsx + GitHub sync)
     checkHelperHealth().then(helperBase => {
       if (helperBase) {
