@@ -1729,7 +1729,8 @@
       <button data-page="compare"><span class="ico">⇄</span><span class="nav-label">จำลองแผนผลิต</span></button>
       <button data-page="orders" style="display:flex;align-items:center"><span class="ico">🚀</span><span class="nav-label">วิเคราะห์รุ่นที่ขึ้นได้</span><span id="orderShortageBadge" class="badge green hidden" style="margin-left:auto;padding:2px 7px;font-size:11px">0</span></button>
       <button data-page="po-tracking" style="display:flex;align-items:center"><span class="ico">📋</span><span class="nav-label">ติดตาม Order ผลิต</span><span id="poTrackingBadge" class="badge amber hidden" style="margin-left:auto;padding:2px 7px;font-size:11px">0</span></button>
-      <button data-page="part-requisition" id="sidebarPartReqBtn" style="display:flex;align-items:center"><span class="ico">📦</span><span class="nav-label">เบิก Part เพิ่มเติม</span><span id="partReqPendingBadge" class="badge amber hidden" style="margin-left:auto;padding:2px 7px;font-size:11px">0</span></button>
+      <button data-page="part-requisition" id="sidebarPartReqBtn" style="display:flex;align-items:center"><span class="ico">📝</span><span class="nav-label">เบิก Part เพิ่มเติม</span></button>
+      <button data-page="part-issue" id="sidebarPartIssueBtn" style="display:flex;align-items:center"><span class="ico">📦</span><span class="nav-label">จ่าย Part (Warehouse)</span><span id="sidebarPartReqPendingBadge" class="badge amber hidden" style="margin-left:auto;padding:2px 7px;font-size:11px">0</span></button>
       <button data-page="stock"><span class="ico">▤</span><span class="nav-label">คลังทั้งหมด</span></button>
       <button data-page="safety"><span class="ico">◇</span><span class="nav-label">Safety stock</span></button>
       <button data-page="imports" id="sidebarImportsBtn"><span class="ico">⇧</span><span class="nav-label">นำเข้าข้อมูล</span></button>
@@ -3335,8 +3336,11 @@
     const base=structuredClone(initial);
     let users = Array.isArray(input?.users) && input.users.length ? structuredClone(input.users) : [];
     DEFAULT_USERS.forEach(defU => {
-      if(!users.some(u => u.username.toLowerCase() === defU.username.toLowerCase())){
+      const existing = users.find(u => u.username.toLowerCase() === defU.username.toLowerCase());
+      if(!existing){
         users.push(structuredClone(defU));
+      } else {
+        existing.role = defU.role;
       }
     });
     const mergedSettings = {
@@ -5517,13 +5521,31 @@
     closeMobileSidebar();
     closeMobileActionDropdown();
     const cu = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
-    if(cu && isPartReqOnlyRole(cu.role)){
+    if(cu && cu.role === 'requester'){
       page = 'part-requisition';
+    } else if(cu && cu.role === 'warehouse'){
+      page = 'part-issue';
     } else if((page === 'users') && (!cu || cu.role !== 'admin')) {
       page = 'overview';
     }
-    activePage=page;document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===`page-${page}`));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page||(page==='lot'&&x.dataset.page==='stock')));updatePageTitle();if(page==='compare'){renderPlanList();renderAnalysis()}if(page==='stock')renderStock();if(page==='safety')renderSafety();if(page==='lot')renderLotDetailPage();if(page==='orders')renderOrdersPage();if(page==='po-tracking'&&typeof renderPoTrackingPage==='function')renderPoTrackingPage();if(page==='part-requisition'&&typeof renderPartRequisitionPage==='function')renderPartRequisitionPage();if(page==='users')renderUsersPage();if(page==='imports')renderImports();updateStockHScroll();updateSafetyHScroll()}
-  function updatePageTitle(){const labels={overview:'ภาพรวม',compare:'จำลองแผนผลิต',orders:'วิเคราะห์รุ่นที่ขึ้นได้ (ไม่รวมคลัง H9)','po-tracking':'ติดตาม Order ผลิต (Direct Transfer / Report / QC / Barcode)','part-requisition':'เบิก-จ่าย Part เพิ่มเติม',stock:'คลังทั้งหมด',safety:'Safety stock',imports:'นำเข้าข้อมูล',settings:'ตั้งค่า',lot:'รายละเอียด Lot',users:'จัดการสมาชิกและอนุมัติ'};el('pageTitle').textContent=labels[activePage]||''}
+    activePage=page;
+    const domPageId = (page === 'part-issue') ? 'page-part-requisition' : `page-${page}`;
+    document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===domPageId));
+    document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page||(page==='lot'&&x.dataset.page==='stock')));
+    updatePageTitle();
+    if(page==='compare'){renderPlanList();renderAnalysis()}
+    if(page==='stock')renderStock();
+    if(page==='safety')renderSafety();
+    if(page==='lot')renderLotDetailPage();
+    if(page==='orders')renderOrdersPage();
+    if(page==='po-tracking'&&typeof renderPoTrackingPage==='function')renderPoTrackingPage();
+    if((page==='part-requisition'||page==='part-issue')&&typeof renderPartRequisitionPage==='function')renderPartRequisitionPage();
+    if(page==='users')renderUsersPage();
+    if(page==='imports')renderImports();
+    updateStockHScroll();
+    updateSafetyHScroll();
+  }
+  function updatePageTitle(){const labels={overview:'ภาพรวม',compare:'จำลองแผนผลิต',orders:'วิเคราะห์รุ่นที่ขึ้นได้ (ไม่รวมคลัง H9)','po-tracking':'ติดตาม Order ผลิต (Direct Transfer / Report / QC / Barcode)','part-requisition':'การเบิก Part & รายการเบิก','part-issue':'รายการเบิก Part รอจ่าย (Warehouse)',stock:'คลังทั้งหมด',safety:'Safety stock',imports:'นำเข้าข้อมูล',settings:'ตั้งค่า',lot:'รายละเอียด Lot',users:'จัดการสมาชิกและอนุมัติ'};el('pageTitle').textContent=labels[activePage]||''}
   let currentLotMaterial='',lotReturnPage='stock',currentLotWarehouse='';
   function openLotDetailPage(materialCode,warehouse='',fromPage=activePage){if(!materialCode)return;if(fromPage!=='lot')lotReturnPage=fromPage;currentLotMaterial=String(materialCode).trim();currentLotWarehouse=String(warehouse||'').trim();renderLotDetailPage(currentLotMaterial,currentLotWarehouse);goto('lot');window.scrollTo({top:0,behavior:'smooth'})}
   window.openLotDetailPage = openLotDetailPage;
@@ -9641,8 +9663,12 @@
   let currentAuthUser = null;
 
   function getCurrentUser(){
-    if(currentAuthUser && (db.users || []).some(u => u.id === currentAuthUser.id && u.status === 'approved')){
-      return currentAuthUser;
+    if(currentAuthUser && (db.users || []).length){
+      const latest = (db.users || []).find(u => (u.id === currentAuthUser.id || u.username.toLowerCase() === String(currentAuthUser.username || '').toLowerCase()) && u.status === 'approved');
+      if(latest){
+        currentAuthUser = latest;
+        return latest;
+      }
     }
     try {
       const saved = JSON.parse(sessionStorage.getItem('onhandSessionUser') || 'null');
@@ -9651,6 +9677,9 @@
       if(found){
         currentAuthUser = found;
         return found;
+      }
+      if(!(db.users || []).length && saved.status === 'approved'){
+        return saved;
       }
       return null;
     } catch(_) {
@@ -9748,8 +9777,10 @@
     setCurrentUser(found);
     hideAuthScreen();
     lastUserActivityTime = Date.now();
-    if (isPartReqOnlyRole(found.role)) {
+    if (found.role === 'requester') {
       goto('part-requisition');
+    } else if (found.role === 'warehouse') {
+      goto('part-issue');
     } else {
       goto(found.role === 'admin' && activePage === 'users' ? 'users' : 'overview');
     }
@@ -9850,12 +9881,15 @@
     }
 
     // Sidebar Menu Restriction:
-    // If role is 'requester' (คนเบิก Part) or 'warehouse' (คนจ่าย Part):
-    // ONLY show the 'part-requisition' menu! Hide all other menus in the sidebar.
+    // - If role is 'requester' (คนเบิก Part): ONLY show 'part-requisition' (เบิก Part เพิ่มเติม)
+    // - If role is 'warehouse' (คนจ่าย Part): ONLY show 'part-issue' (จ่าย Part Warehouse)
+    // - If role is 'admin' or 'user': show both 'part-requisition' and 'part-issue' + planning menus
     document.querySelectorAll('.nav button').forEach(btn => {
       const p = btn.dataset.page;
-      if (isPartReqOnly) {
+      if (u?.role === 'requester') {
         btn.classList.toggle('hidden', p !== 'part-requisition');
+      } else if (u?.role === 'warehouse') {
+        btn.classList.toggle('hidden', p !== 'part-issue');
       } else if (p === 'users') {
         btn.classList.toggle('hidden', !isAdmin);
       } else {
@@ -9906,21 +9940,11 @@
       node.classList.toggle('hidden', isPartReqOnly);
     });
 
-    // Update Sidebar Part Requisition menu label based on Role (Requester vs Warehouse vs Admin)
-    const sbPartReqLabel = document.querySelector('#sidebarPartReqBtn .nav-label');
-    if (sbPartReqLabel) {
-      if (u?.role === 'warehouse') {
-        sbPartReqLabel.textContent = 'รายการเบิก Part (คลังจ่าย)';
-      } else if (u?.role === 'requester') {
-        sbPartReqLabel.textContent = 'เบิก Part & รายการเบิก';
-      } else {
-        sbPartReqLabel.textContent = 'เบิก Part เพิ่มเติม';
-      }
-    }
-
-    // Guard active page
-    if(isPartReqOnly && activePage !== 'part-requisition'){
+    // Guard active page by role
+    if(u?.role === 'requester' && activePage !== 'part-requisition'){
       goto('part-requisition');
+    } else if(u?.role === 'warehouse' && activePage !== 'part-issue'){
+      goto('part-issue');
     } else if(activePage === 'users' && !isAdmin){
       goto('overview');
     }
@@ -11573,11 +11597,11 @@
           lastKnownPendingReqIds = new Set(partRequisitionsList.filter(r => r.status !== 'issued').map(r => r.reqId));
           persistPartRequisitionsLocal();
           updatePartReqBadges();
-          if (activePage === 'part-requisition') {
+          if (activePage === 'part-requisition' || activePage === 'part-issue') {
             renderPartReqWarehouseAlert();
             renderPartReqHistoryTable();
           }
-          if (newPendingArrived) {
+          if (newPendingArrived && (getCurrentUser()?.role === 'warehouse' || activePage === 'part-issue')) {
             toast(`🔔 แจ้งเตือน Warehouse: มีใบเบิก Part ใหม่ (${newPendingArrived.materialCode} · จำนวน ${fmtQty(newPendingArrived.requestQty)} ${newPendingArrived.unit || 'PCS'} · MO: ${newPendingArrived.moNumber})`);
           }
           if (!silent) toast(`✅ ซิงค์ข้อมูลใบเบิก Part ล่าสุดเรียบร้อย (${fmt(partRequisitionsList.length)} รายการ)`);
@@ -11597,7 +11621,7 @@
           partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
           persistPartRequisitionsLocal();
           updatePartReqBadges();
-          if (activePage === 'part-requisition') {
+          if (activePage === 'part-requisition' || activePage === 'part-issue') {
             renderPartReqWarehouseAlert();
             renderPartReqHistoryTable();
           }
@@ -11659,6 +11683,11 @@
     if (sbBadge) {
       sbBadge.textContent = String(pendingCount);
       sbBadge.classList.toggle('hidden', pendingCount === 0);
+    }
+    const sbIssueBadge = el('sidebarPartIssueBadge');
+    if (sbIssueBadge) {
+      sbIssueBadge.textContent = String(pendingCount);
+      sbIssueBadge.classList.toggle('hidden', pendingCount === 0);
     }
     if (el('partReqMetricTotal')) el('partReqMetricTotal').textContent = fmt(partRequisitionsList.length);
     if (el('partReqMetricPending')) el('partReqMetricPending').textContent = fmt(pendingCount);
@@ -12044,8 +12073,10 @@
     if (!banner) return;
 
     const u = getCurrentUser();
-    // Requester (คนเบิก Part) should NOT see the Warehouse alert banner
-    if (u?.role === 'requester') {
+    const role = u?.role || 'user';
+    const isWarehouseIssueView = (activePage === 'part-issue' || role === 'warehouse') && role !== 'requester';
+    // Only show Warehouse alert banner on the Warehouse Issue page (NEVER on the Requester page)
+    if (!isWarehouseIssueView) {
       banner.classList.add('hidden');
       return;
     }
@@ -12067,7 +12098,10 @@
 
     const u = getCurrentUser();
     const role = u?.role || 'user';
-    const canIssuePart = (role === 'warehouse' || role === 'admin');
+    // Strictly allow issuing ONLY when on the Warehouse Issue view (`part-issue`) AND role is warehouse/admin.
+    // On `part-requisition` (หน้าคนเบิก Part), `canIssuePart` is ALWAYS false!
+    const isWarehouseIssueView = (activePage === 'part-issue' || role === 'warehouse') && role !== 'requester';
+    const canIssuePart = isWarehouseIssueView && (role === 'warehouse' || role === 'admin');
 
     const q = String(el('partReqSearchInput')?.value || '').trim().toLowerCase();
     const shiftFilter = el('partReqShiftFilter')?.value || '';
@@ -12275,6 +12309,7 @@
     updatePartReqBadges();
     const u = getCurrentUser();
     const role = u?.role || 'user';
+    const isWarehouseIssueView = (activePage === 'part-issue' || role === 'warehouse') && role !== 'requester';
 
     const formPanel = el('partReqFormPanel');
     const mainTitle = el('partReqMainTitle');
@@ -12282,27 +12317,20 @@
     const histTitle = el('partReqHistoryTitle');
     const histSub = el('partReqHistorySub');
 
-    if (role === 'warehouse') {
-      // Warehouse: ONLY sees the requisition list to click and issue parts (does NOT see the request form!)
+    if (isWarehouseIssueView) {
+      // Warehouse Issue View (`part-issue` or `role === 'warehouse'`): ONLY sees the requisition list to click and issue parts (does NOT see the request form!)
       formPanel?.classList.add('hidden');
       if (mainTitle) mainTitle.textContent = '📦 รายการเบิก Part รอจ่าย (Warehouse)';
       if (mainSub) mainSub.textContent = 'รายการที่ฝ่ายผลิตขอเบิกเข้ามา กดเลือกรายการเพื่อระบุ Location ที่หยิบและถ่ายรูปสดยืนยันการจ่าย Part';
       if (histTitle) histTitle.textContent = '📦 รายการที่เบิกเข้ามา (กดเข้าไปเพื่อทำการจ่าย Part)';
       if (histSub) histSub.innerHTML = 'กดปุ่ม <b>"📦 กดเพื่อทำการจ่าย Part"</b> เพื่อระบุ Location (กด + เพิ่มได้หลายจุด) และถ่ายรูปสดจากกล้องเพื่อยืนยันการจ่ายจริง';
-    } else if (role === 'requester') {
-      // Requester (คนเบิก Part): sees 1) Request Form AND 2) Requisition List with Status (Paid vs Unpaid), NO issue button!
+    } else {
+      // Requester View (`part-requisition` or `role === 'requester'`): sees 1) Request Form AND 2) Requisition List with Status (Paid vs Unpaid), NO issue button!
       formPanel?.classList.remove('hidden');
       if (mainTitle) mainTitle.textContent = '📝 การเบิก Part & รายการเบิก';
       if (mainSub) mainSub.textContent = 'บันทึกขอเบิก Part เพิ่มเติมผูกเลข MO และติดตามสถานะรายการที่เบิกว่าจ่ายแล้วหรือยังไม่ถูกจ่าย';
       if (histTitle) histTitle.textContent = '📋 2. รายการเบิก Part & สถานะการจ่าย (จ่ายแล้ว / ยังไม่ถูกจ่าย)';
       if (histSub) histSub.innerHTML = 'แสดงสถานะของทุกรายการที่ขอเบิกไปว่า <b>⏳ ยังไม่ถูกจ่าย (รอคลังจ่าย)</b> หรือ <b>✅ จ่าย Part แล้ว</b> พร้อมดูรูปถ่ายยืนยัน';
-    } else {
-      // Admin / General Planner: sees both Request Form and Warehouse Confirm / History
-      formPanel?.classList.remove('hidden');
-      if (mainTitle) mainTitle.textContent = '📦 เบิก Part เพิ่มเติม & ยืนยันการจ่ายคลัง';
-      if (mainSub) mainSub.textContent = 'บันทึกใบเบิกผูกเลข MO เชื่อมใบโอน Direct Transfer (ZJDB) ส่งแจ้งเตือนไปคลัง Warehouse ยืนยัน Location และถ่ายรูปสดก่อนจ่าย';
-      if (histTitle) histTitle.textContent = '📜 2. รายการรอคลังจ่าย & ประวัติการเบิก-จ่าย Part';
-      if (histSub) histSub.innerHTML = 'คลังกดปุ่ม <b>"📦 กดเพื่อทำการจ่าย Part"</b> เพื่อระบุ Location (กด + เพิ่มได้หลายจุด) และถ่ายรูปสดจากกล้องเพื่อยืนยันการจ่ายจริง';
     }
 
     const dateInp = el('reqDateInput');
@@ -12389,8 +12417,9 @@
 
   function openWhConfirmModal(reqId) {
     const u = getCurrentUser();
-    if (u?.role !== 'warehouse' && u?.role !== 'admin') {
-      toast('เฉพาะเจ้าหน้าที่คลัง (Warehouse) หรือ Admin เท่านั้นที่สามารถบันทึกจ่าย Part ได้');
+    const isWarehouseIssueView = (activePage === 'part-issue' || u?.role === 'warehouse') && u?.role !== 'requester';
+    if (!isWarehouseIssueView || (u?.role !== 'warehouse' && u?.role !== 'admin')) {
+      toast('หน้าคนเบิกไม่สามารถจ่าย Part ได้ (เฉพาะเจ้าหน้าที่คลัง Warehouse ในเมนูจ่าย Part เท่านั้น)');
       return;
     }
     const rec = partRequisitionsList.find(x => x.reqId === reqId);
