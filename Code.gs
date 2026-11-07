@@ -22,8 +22,14 @@ const DB_TABS = {
 };
 
 function onOpen() {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    if (ss) ensureTab_(ss, 'PartRequisitions', DB_TABS.PartRequisitions);
+  } catch (_) {}
   SpreadsheetApp.getUi().createMenu('Material Planner')
-    .addItem('เตรียมชีตระบบ', 'setup')
+    .addItem('⚡ ซิงค์ข้อมูลล่าสุด (สร้างแท็บ PartRequisitions + อัปเดต On-Hand ล่าสุด)', 'syncLatestFromGitHub')
+    .addSeparator()
+    .addItem('เตรียมชีตระบบ (สร้างแท็บทั้งหมด)', 'setup')
     .addItem('เปิดหน้า Material Planner', 'showAppUrl')
     .addToUi();
 }
@@ -479,4 +485,174 @@ function updateKingdeeSyncStatus(requestId, status, message, rowCount) {
     lock.releaseLock();
   }
 }
+
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const payload = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    const action = payload.action || '';
+    const ss = getPlannerSpreadsheet_();
+    if (action === 'savePartRequisition' && payload.record) {
+      const sheet = ensureTab_(ss, 'PartRequisitions', DB_TABS.PartRequisitions);
+      const rows = readObjects_(sheet);
+      const r = payload.record;
+      const rowObj = {
+        reqId: String(r.reqId || '').trim(),
+        requestDate: String(r.requestDate || '').trim(),
+        moNumber: String(r.moNumber || '').trim(),
+        ppbomNumber: String(r.ppbomNumber || '').trim(),
+        directTransferDocs: String(r.directTransferDocs || '').trim(),
+        materialCode: String(r.materialCode || '').trim(),
+        materialName: String(r.materialName || '').trim(),
+        specification: String(r.specification || '').trim(),
+        requestQty: Number(r.requestQty) || 0,
+        unit: String(r.unit || 'PCS').trim(),
+        reason: String(r.reason || '').trim(),
+        requesterName: String(r.requesterName || '').trim(),
+        requesterUsername: String(r.requesterUsername || '').trim(),
+        shift: String(r.shift || 'A').trim(),
+        requesterNote: String(r.requesterNote || '').trim(),
+        requestedAt: String(r.requestedAt || '').trim(),
+        status: String(r.status || 'pending').trim(),
+        locationsSummary: String(r.locationsSummary || '').trim(),
+        locationsJson: JSON.stringify(r.locations || []),
+        issuerName: String(r.issuerName || '').trim(),
+        issuerUsername: String(r.issuerUsername || '').trim(),
+        issuerNote: String(r.issuerNote || '').trim(),
+        issuedAt: String(r.issuedAt || '').trim(),
+        hasPhoto: r.issuePhotoDataUrl ? 'YES' : 'NO',
+        photoTakenAt: String(r.issuedAt || '').trim()
+      };
+      const idx = rows.findIndex(x => String(x.reqId).trim() === rowObj.reqId);
+      if (idx >= 0) rows[idx] = rowObj;
+      else rows.unshift(rowObj);
+      writeObjects_(sheet, DB_TABS.PartRequisitions, rows);
+      SpreadsheetApp.flush();
+      return ContentService.createTextOutput(JSON.stringify({ ok: true, count: rows.length })).setMimeType(ContentService.MimeType.JSON);
+    }
+    if (action === 'syncLatestFromGitHub') {
+      const res = syncLatestFromGitHub();
+      return ContentService.createTextOutput(JSON.stringify(res)).setMimeType(ContentService.MimeType.JSON);
+    }
+    return ContentService.createTextOutput(JSON.stringify({ ok: false, message: 'Unknown action' })).setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ ok: false, error: String(err) })).setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function syncLatestFromGitHub() {
+  const ss = getPlannerSpreadsheet_();
+  const partSheet = ensureTab_(ss, 'PartRequisitions', DB_TABS.PartRequisitions);
+  const invSheet = ensureTab_(ss, 'Inventory', DB_TABS.Inventory);
+  const impSheet = ensureTab_(ss, 'Imports', DB_TABS.Imports);
+  const setSheet = ensureTab_(ss, 'Settings', DB_TABS.Settings);
+
+  let reqCount = 0;
+  let invCount = 0;
+  let latestStamp = new Date().toISOString();
+
+  // 1. Pull PartRequisitionsSeed.js from GitHub
+  try {
+    const prResp = UrlFetchApp.fetch('https://raw.githubusercontent.com/jrh91234/OnHand-Inventory-Planner/main/PartRequisitionsSeed.js?t=' + Date.now(), { muteHttpExceptions: true });
+    if (prResp.getResponseCode() === 200) {
+      const text = prResp.getContentText();
+      const jsonStr = text.replace(/^[\s\S]*?window\.PART_REQUISITIONS_SEED\s*=\s*/, '').replace(/;\s*$/, '');
+      const parsed = JSON.parse(jsonStr);
+      const items = (parsed && parsed.items) || [];
+      const rows = items.map(r => ({
+        reqId: r.reqId || '',
+        requestDate: r.requestDate || '',
+        moNumber: r.moNumber || '',
+        ppbomNumber: r.ppbomNumber || '',
+        directTransferDocs: r.directTransferDocs || '',
+        materialCode: r.materialCode || '',
+        materialName: r.materialName || '',
+        specification: r.specification || '',
+        requestQty: Number(r.requestQty) || 0,
+        unit: r.unit || 'PCS',
+        reason: r.reason || '',
+        requesterName: r.requesterName || '',
+        requesterUsername: r.requesterUsername || '',
+        shift: r.shift || 'A',
+        requesterNote: r.requesterNote || '',
+        requestedAt: r.requestedAt || '',
+        status: r.status || 'pending',
+        locationsSummary: r.locationsSummary || '',
+        locationsJson: JSON.stringify(r.locations || []),
+        issuerName: r.issuerName || '',
+        issuerUsername: r.issuerUsername || '',
+        issuerNote: r.issuerNote || '',
+        issuedAt: r.issuedAt || '',
+        hasPhoto: r.issuePhotoDataUrl ? 'YES' : 'NO',
+        photoTakenAt: r.issuedAt || ''
+      }));
+      writeObjects_(partSheet, DB_TABS.PartRequisitions, rows);
+      reqCount = rows.length;
+    }
+  } catch (e) {
+    Logger.log('PartRequisitions sync error: ' + e);
+  }
+
+  // 2. Pull OnHandSeed.js from GitHub
+  try {
+    const ohResp = UrlFetchApp.fetch('https://raw.githubusercontent.com/jrh91234/OnHand-Inventory-Planner/main/OnHandSeed.js?t=' + Date.now(), { muteHttpExceptions: true });
+    if (ohResp.getResponseCode() === 200) {
+      const text = ohResp.getContentText();
+      const jsonStr = text.replace(/^[\s\S]*?window\.ONHAND_SEED\s*=\s*/, '').replace(/;\s*$/, '');
+      const parsed = JSON.parse(jsonStr);
+      const items = (parsed && parsed.inventory) || [];
+      latestStamp = (parsed && parsed.snapshotAt) || latestStamp;
+      const fname = (parsed && parsed.filename) || 'Kingdee Live Sync';
+      if (items.length > 0) {
+        const clean = items.map(x => ({
+          materialCode: x.materialCode || '',
+          materialName: x.materialName || '',
+          specification: x.specification || '',
+          warehouse: x.warehouse || '',
+          storage: x.storage || '',
+          onHand: Number(x.onHand) || 0,
+          unit: x.unit || 'PCS',
+          department: x.department || '',
+          reserved: Number(x.reserved) || 0,
+          availableQty: x.availableQty === '' || x.availableQty == null ? '' : Number(x.availableQty) || 0,
+          lotNumber: x.lotNumber || '',
+          owner: x.owner || '',
+          ownerType: x.ownerType || '',
+          status: x.status || 'Available',
+          source: fname,
+          importedAt: latestStamp
+        }));
+        writeObjects_(invSheet, DB_TABS.Inventory, clean);
+        invCount = clean.length;
+
+        const imports = readObjects_(impSheet);
+        imports.unshift({ type: 'inventory', filename: fname, count: invCount, department: 'ทุกแผนก', at: latestStamp });
+        writeObjects_(impSheet, DB_TABS.Imports, imports.slice(0, 100));
+
+        const settingsRows = readObjects_(setSheet);
+        const upsert = (k, v) => {
+          const idx = settingsRows.findIndex(r => r.key === k);
+          const row = { key: k, value: JSON.stringify(v) };
+          if (idx >= 0) settingsRows[idx] = row;
+          else settingsRows.push(row);
+        };
+        upsert('lastInventoryAt', latestStamp);
+        upsert('updatedAt', new Date().toISOString());
+        writeObjects_(setSheet, DB_TABS.Settings, settingsRows);
+      }
+    }
+  } catch (e) {
+    Logger.log('OnHandSeed sync error: ' + e);
+  }
+
+  SpreadsheetApp.flush();
+  try {
+    SpreadsheetApp.getUi().alert('✅ ซิงค์ข้อมูลล่าสุดสำเร็จ!\n• แท็บ PartRequisitions: ' + reqCount + ' รายการ\n• แท็บ Inventory (On-Hand ล่าสุด ' + latestStamp.slice(0, 10) + '): ' + invCount + ' แถว');
+  } catch (_) {}
+  return { ok: true, reqCount, invCount, latestStamp };
+}
+
 

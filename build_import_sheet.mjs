@@ -1,15 +1,14 @@
 import fs from 'node:fs';
-import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const XLSX = require('C:/Users/Admin/Downloads/h9-part-readiness-source-20261002/node_modules/xlsx');
 
-// 1. Load department overrides and seed
 global.window = {};
+
+// 1. Load Department Map & Overrides
 const mapCode = fs.readFileSync('C:/Users/Admin/Downloads/OnHand-Inventory-Planner/DepartmentMapSeed.js', 'utf8');
 eval(mapCode);
-
 const overrides = global.window.DEPARTMENT_OVERRIDES || [];
 const overrideMap = new Map();
 overrides.forEach(o => overrideMap.set(String(o.materialCode).trim(), o.department));
@@ -18,19 +17,86 @@ const deptSeed = global.window.DEPARTMENT_SEED?.rows || [];
 const deptSeedMap = new Map();
 deptSeed.forEach(d => deptSeedMap.set(String(d.materialCode).trim(), d.department));
 
-// 2. Load latest OnHandSeed
+// 2. Load latest OnHandSeed (Nov 6, 2026)
 const seedCode = fs.readFileSync('C:/Users/Admin/Downloads/OnHand-Inventory-Planner/OnHandSeed.js', 'utf8');
 eval(seedCode);
 const inv = global.window.ONHAND_SEED?.inventory || [];
-const stamp = global.window.ONHAND_SEED?.snapshotAt || new Date().toISOString();
-const fname = global.window.ONHAND_SEED?.filename || 'On-Hand Inventory-20261014120727602-Somrudee Banthao.xlsx';
+const invStamp = global.window.ONHAND_SEED?.snapshotAt || new Date().toISOString();
+const invDateFormatted = invStamp.slice(0, 10);
+const invFilename = global.window.ONHAND_SEED?.filename || 'On-Hand Inventory-20261106160521208-Somrudee Banthao.xlsx';
 
-console.log('Total inventory items:', inv.length);
+// 3. Load latest PartRequisitionsSeed (Nov 7, 2026)
+if (fs.existsSync('C:/Users/Admin/Downloads/OnHand-Inventory-Planner/PartRequisitionsSeed.js')) {
+  eval(fs.readFileSync('C:/Users/Admin/Downloads/OnHand-Inventory-Planner/PartRequisitionsSeed.js', 'utf8'));
+}
+const partReqs = global.window.PART_REQUISITIONS_SEED?.items || [];
 
-// 3. Build rows matching Google Sheet exact columns
-// A: materialCode, B: materialName, C: warehouse, D: department, E: onHand, F: reserved, G: availableQty, H: unit, I: source, J: importedAt
-// K: specification, L: storage, M: lotNumber, N: owner, O: ownerType, P: status
-const headers = [
+// 4. Load latest BomSeed
+if (fs.existsSync('C:/Users/Admin/Downloads/OnHand-Inventory-Planner/BomSeed.js')) {
+  eval(fs.readFileSync('C:/Users/Admin/Downloads/OnHand-Inventory-Planner/BomSeed.js', 'utf8'));
+}
+const bomRows = global.window.BOM_SEED?.rows || [];
+const bomStamp = global.window.BOM_SEED?.snapshotAt || invStamp;
+
+const wb = XLSX.utils.book_new();
+
+// Tab 1: PartRequisitions (Put right at the front or alongside Inventory so it's immediately visible!)
+const partReqHeaders = [
+  'reqId',
+  'requestDate',
+  'requestedAt',
+  'moNumber',
+  'ppbomNumber',
+  'directTransferDocs',
+  'materialCode',
+  'materialName',
+  'specification',
+  'requestQty',
+  'unit',
+  'reason',
+  'requesterName',
+  'shift',
+  'requesterNote',
+  'status',
+  'locationsSummary',
+  'locationsJson',
+  'issuerName',
+  'issuedAt',
+  'issuerNote',
+  'issuePhotoStatus',
+  'updatedAt'
+];
+const partReqAoA = [partReqHeaders];
+for (const r of partReqs) {
+  partReqAoA.push([
+    r.reqId || '',
+    r.requestDate || '',
+    r.requestedAt || '',
+    r.moNumber || '',
+    r.ppbomNumber || '',
+    r.directTransferDocs || '',
+    r.materialCode || '',
+    r.materialName || '',
+    r.specification || '',
+    Number(r.requestQty) || 0,
+    r.unit || 'PCS',
+    r.reason || '',
+    r.requesterName || '',
+    r.shift || 'A',
+    r.requesterNote || '',
+    r.status || 'pending',
+    r.locationsSummary || '',
+    JSON.stringify(r.locations || []),
+    r.issuerName || '',
+    r.issuedAt || '',
+    r.issuerNote || '',
+    r.issuePhotoDataUrl ? 'VERIFIED_CAMERA_PHOTO' : '',
+    r.updatedAt || ''
+  ]);
+}
+
+// Tab 2: Inventory (Latest Nov 6, 2026)
+const invHeaders = [
   'materialCode',
   'materialName',
   'warehouse',
@@ -48,22 +114,11 @@ const headers = [
   'ownerType',
   'status'
 ];
-
-let h1Count = 0;
-const data = [headers];
+const invAoA = [invHeaders];
 for (const r of inv) {
   const code = String(r.materialCode || r.partCode || '').trim();
-  let dept = '';
-  if (overrideMap.has(code)) {
-    dept = overrideMap.get(code);
-    h1Count++;
-  } else if (deptSeedMap.has(code)) {
-    dept = deptSeedMap.get(code);
-  } else if (r.department) {
-    dept = r.department;
-  }
-
-  data.push([
+  const dept = overrideMap.get(code) || deptSeedMap.get(code) || r.department || '';
+  invAoA.push([
     code,
     r.materialName || r.partName || '',
     r.warehouse || 'Raw Material Warehouse',
@@ -72,8 +127,8 @@ for (const r of inv) {
     Number(r.reserved) || 0,
     Number(r.availableQty) || 0,
     r.unit || 'PCS',
-    fname,
-    stamp,
+    invFilename,
+    invStamp,
     r.specification || '',
     r.storage || '',
     r.lotNumber || '',
@@ -83,21 +138,86 @@ for (const r of inv) {
   ]);
 }
 
-console.log('Matched H1 items in inventory:', h1Count);
+// Tab 3: Sheet1 (Summary & Quick Status)
+const nowIso = new Date().toISOString();
+const sheet1AoA = [
+  ['On-Hand Inventory Planner - H9 Assembly (Google Sheet Database)', ''],
+  ['อัปเดตข้อมูลล่าสุดเมื่อ (Last Updated)', nowIso],
+  ['วันที่ข้อมูล On-Hand ล่าสุด (Latest Inventory Snapshot)', invStamp],
+  ['ไฟล์ On-Hand ล่าสุดจาก Kingdee', invFilename],
+  ['จำนวนรายการ On-Hand ทั้งหมด (แถว)', inv.length],
+  ['จำนวนรายการเบิก Part เพิ่มเติม (PartRequisitions)', partReqs.length]
+];
 
-// Save to On-Hand-Inventory-Google-Sheet-Import.xlsx
-const wb = XLSX.utils.book_new();
-const ws = XLSX.utils.aoa_to_sheet(data);
-XLSX.utils.book_append_sheet(wb, ws, 'Inventory');
-const targetFile = 'C:/Users/Admin/Downloads/OnHand-Inventory-Planner/On-Hand-Inventory-Google-Sheet-Import.xlsx';
-XLSX.writeFile(wb, targetFile);
-console.log('Successfully written', targetFile);
+// Tab 4: BOM (compact summary or full BOM)
+const bomHeaders = ['department', 'modelCode', 'modelName', 'materialCode', 'materialName', 'specification', 'qtyPer', 'unit', 'source', 'importedAt'];
+const bomAoA = [bomHeaders];
+for (const b of bomRows.slice(0, 15000)) {
+  bomAoA.push([
+    b.department || 'H9 Assembly Production Line',
+    b.modelCode || '',
+    b.modelName || '',
+    b.materialCode || '',
+    b.materialName || '',
+    b.specification || '',
+    Number(b.qtyPer) || 0,
+    b.unit || 'PCS',
+    b.source || 'Kingdee BOM Export (Latest)',
+    b.importedAt || bomStamp
+  ]);
+}
 
-// Also create a strictly 10-column version if the user prefers exact 10 columns only
-const data10 = data.map(row => row.slice(0, 10));
-const wb10 = XLSX.utils.book_new();
-const ws10 = XLSX.utils.aoa_to_sheet(data10);
-XLSX.utils.book_append_sheet(wb10, ws10, 'Inventory');
-const targetFile10 = 'C:/Users/Admin/Downloads/OnHand-Inventory-Planner/On-Hand-Inventory-Google-Sheet-Import-10cols.xlsx';
-XLSX.writeFile(wb10, targetFile10);
-console.log('Successfully written 10-column version:', targetFile10);
+// Tab 5: SafetyStock
+const safetyAoA = [['materialCode', 'safetyStock', 'minStock', 'maxStock', 'updatedAt', 'updatedBy']];
+
+// Tab 6: Imports (Showing latest Nov 6-7, 2026 dates!)
+const importsAoA = [
+  ['type', 'filename', 'count', 'department', 'at'],
+  ['inventory', invFilename, inv.length, 'ทุกแผนก (Kingdee Real-time)', invStamp],
+  ['partRequisitions', 'PartRequisitions Live Sync', partReqs.length, 'H9 Assembly Production Line', nowIso]
+];
+
+// Tab 7: Plans
+const plansAoA = [['department', 'modelCode', 'quantity']];
+
+// Tab 8: Settings (Showing latest Nov 6-7, 2026 dates!)
+const settingsAoA = [
+  ['key', 'value'],
+  ['activeDepts', JSON.stringify(['H9 Assembly Production Line', 'H1 Assembly Production Line', 'Assembly Production Line'])],
+  ['autoRefresh08', 'false'],
+  ['autoSync10m', 'false'],
+  ['lastInventoryAt', invStamp],
+  ['lastBomAt', bomStamp],
+  ['lastPartRequisitionAt', nowIso],
+  ['updatedAt', nowIso]
+];
+
+// Tab 9: Department
+const deptAoA = [['materialCode', 'materialName', 'Specification', 'Department', 'updatedAt']];
+for (const o of overrides) {
+  deptAoA.push([o.materialCode || '', o.materialName || '', o.specification || '', o.department || 'H1 Assembly Production Line', invDateFormatted]);
+}
+
+XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(sheet1AoA), 'Sheet1');
+XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(invAoA), 'Inventory');
+XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(partReqAoA), 'PartRequisitions');
+XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(bomAoA), 'BOM');
+XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(safetyAoA), 'SafetyStock');
+XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(importsAoA), 'Imports');
+XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(plansAoA), 'Plans');
+XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(settingsAoA), 'Settings');
+XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(deptAoA), 'Department');
+
+const outPaths = [
+  'C:/Users/Admin/Downloads/OnHand-Inventory-Planner/On-Hand-Inventory-Google-Sheet-Import.xlsx',
+  'C:/Users/Admin/Downloads/On-Hand-Inventory-Google-Sheet-Import.xlsx',
+  'C:/Users/Admin/Downloads/h9-part-readiness-source-20261002/On-Hand-Inventory-Google-Sheet-Import.xlsx'
+];
+for (const p of outPaths) {
+  try {
+    XLSX.writeFile(wb, p);
+    console.log('Written updated Google Sheet workbook:', p);
+  } catch (e) {
+    console.warn('Could not write:', p, e.message);
+  }
+}

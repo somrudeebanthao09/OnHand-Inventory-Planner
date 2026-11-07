@@ -1604,7 +1604,7 @@
     <form id="authLoginForm" onsubmit="return false;">
       <div style="margin-bottom:12px">
         <label style="display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom:5px">ชื่อผู้ใช้งาน (Username)</label>
-        <input type="text" id="loginUsernameInput" class="field" placeholder="กรอก Username (เช่น admin หรือ user)" autocomplete="username" style="width:100%;height:40px;font-size:14px" required>
+        <input type="text" id="loginUsernameInput" class="field" placeholder="กรอกชื่อผู้ใช้งาน (Username)" autocomplete="username" style="width:100%;height:40px;font-size:14px" required>
       </div>
       <div style="margin-bottom:12px">
         <label style="display:block;font-size:12.5px;font-weight:600;color:#334155;margin-bottom:5px">รหัสผ่าน (Password)</label>
@@ -1616,13 +1616,8 @@
       <div class="lock-error-msg" id="loginErrorMsg" style="min-height:18px;margin-bottom:12px"></div>
       <button type="submit" class="btn primary" id="loginSubmitBtn" style="width:100%;height:42px;font-size:14.5px;font-weight:700;justify-content:center">เข้าสู่ระบบ</button>
 
-      <div style="margin-top:16px;padding:10px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;color:#475569;line-height:1.5">
-        <div style="font-weight:700;color:#0f172a;margin-bottom:3px">🔑 บัญชีเริ่มต้นสำหรับเข้าใช้งาน:</div>
-        <div>• <b>Admin:</b> <code>admin</code> / รหัสผ่าน: <code>admin1234</code></div>
-        <div>• <b>User (วางแผนทั่วไป):</b> <code>user</code> / รหัสผ่าน: <code>user1234</code></div>
-        <div>• <b>คนเบิก Part (เฉพาะหน้าเบิก Part):</b> <code>req</code> / รหัสผ่าน: <code>1234</code></div>
-        <div>• <b>คลังจ่าย Part (Warehouse):</b> <code>wh</code> / รหัสผ่าน: <code>1234</code></div>
-        <div style="color:#64748b;margin-top:3px">* สมาชิกใหม่สามารถกดแท็บ <b>"ลงทะเบียนขอใช้งาน"</b> ด้านบนเพื่อให้ Admin อนุมัติ</div>
+      <div style="margin-top:14px;text-align:center;font-size:12px;color:#64748b">
+        * สมาชิกใหม่สามารถกดแท็บ <b>"ลงทะเบียนขอใช้งาน"</b> ด้านบนเพื่อให้ผู้ดูแลระบบอนุมัติ
       </div>
     </form>
 
@@ -2324,11 +2319,11 @@
         <div class="title-row" style="align-items:flex-start;margin-bottom:12px">
           <div>
             <div class="part-req-hero-badges" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
-              <span class="badge" style="background:var(--teal);color:#fff;font-size:12.5px">📦 ระบบเบิก-จ่าย Part เพิ่มเติม (Production ➔ Warehouse)</span>
+              <span class="badge" id="partReqHeroBadge" style="background:var(--teal);color:#fff;font-size:12.5px">📦 ระบบเบิก-จ่าย Part เพิ่มเติม (Production ➔ Warehouse)</span>
               <span class="badge green" id="partReqSyncStatusBadge" style="font-size:12px">🔗 เชื่อมต่อ Google Sheet &amp; ระบบกลางแล้ว</span>
             </div>
-            <h1>📦 เบิก Part เพิ่มเติม &amp; ยืนยันการจ่ายคลัง</h1>
-            <p>บันทึกใบเบิกผูกเลข MO เชื่อมใบโอน Direct Transfer (ZJDB) ส่งแจ้งเตือนไปคลัง Warehouse ยืนยัน Location และถ่ายรูปสดก่อนจ่าย</p>
+            <h1 id="partReqMainTitle">📦 เบิก Part เพิ่มเติม &amp; ยืนยันการจ่ายคลัง</h1>
+            <p id="partReqMainSub">บันทึกใบเบิกผูกเลข MO เชื่อมใบโอน Direct Transfer (ZJDB) ส่งแจ้งเตือนไปคลัง Warehouse ยืนยัน Location และถ่ายรูปสดก่อนจ่าย</p>
           </div>
           <div class="row-actions" style="align-items:center">
             <a href="https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit" target="_blank" rel="noopener" id="openPartReqGoogleSheetBtn" class="btn soft part-req-admin-only" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-weight:700">
@@ -2344,9 +2339,12 @@
           <div>
             <strong>📄 ชื่อไฟล์ Google Sheet ที่ใช้บันทึกข้อมูล (ไฟล์เดียวกับที่อัปเดต On-Hand):</strong>
             <span style="font-weight:800;color:#0f766e;margin-left:6px;background:#fff;padding:2px 8px;border-radius:6px;border:1px solid #86efac">On-Hand Inventory Planner - H9 Assembly</span>
-            <span style="font-size:12.5px;color:#166534;margin-left:6px">(แท็บชีต: <code>PartRequisitions</code> และ <code>Inventory</code> · รหัสชีต: <code>1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg</code>)</span>
+            <span style="font-size:12.5px;color:#166534;margin-left:6px">(แท็บชีต: <code>PartRequisitions</code> และ <code>Inventory</code> ล่าสุด · รหัสชีต: <code>1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg</code>)</span>
           </div>
-          <a href="https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit" target="_blank" rel="noopener" style="color:#0f766e;font-weight:800;font-size:13px;text-decoration:underline">คลิกเปิดไฟล์ Google Sheet ที่นี่ ↗</a>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <a href="On-Hand-Inventory-Google-Sheet-Import.xlsx" download="On-Hand-Inventory-Google-Sheet-Import.xlsx" class="btn soft" style="padding:5px 11px;font-size:12.5px;font-weight:800;background:#dcfce7;border-color:#86efac;color:#14532d;text-decoration:none" title="ดาวน์โหลดไฟล์ .xlsx ที่มีแท็บ PartRequisitions + Inventory ข้อมูลล่าสุด เพื่อนำไป File -> Import -> Replace spreadsheet ใน Google Sheet">📥 ดาวน์โหลดไฟล์อัปเดต Google Sheet ครบทุกแท็บ (.xlsx)</a>
+            <a href="https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit" target="_blank" rel="noopener" style="color:#0f766e;font-weight:800;font-size:13px;text-decoration:underline">คลิกเปิดไฟล์ Google Sheet ที่นี่ ↗</a>
+          </div>
         </div>
 
         <!-- Warehouse Live Alert Banner (pops up when there are pending requisitions) -->
@@ -2504,8 +2502,8 @@
         <div class="panel" id="partReqHistoryPanel">
           <div class="panel-head" style="flex-wrap:wrap;gap:10px">
             <div>
-              <h2 style="font-size:17px;color:#0f172a">📜 2. รายการรอคลังจ่าย &amp; ประวัติการเบิก-จ่าย Part</h2>
-              <p>คลังกดปุ่ม <b>"📦 Confirm จ่าย Part"</b> เพื่อระบุ Location (กด + เพิ่มได้หลายจุด) และถ่ายรูปสดจากกล้องเพื่อยืนยันการจ่ายจริง</p>
+              <h2 id="partReqHistoryTitle" style="font-size:17px;color:#0f172a">📜 2. รายการรอคลังจ่าย &amp; ประวัติการเบิก-จ่าย Part</h2>
+              <p id="partReqHistorySub">คลังกดปุ่ม <b>"📦 Confirm จ่าย Part"</b> เพื่อระบุ Location (กด + เพิ่มได้หลายจุด) และถ่ายรูปสดจากกล้องเพื่อยืนยันการจ่ายจริง</p>
             </div>
             <div class="filters">
               <div class="part-req-status-tabs">
@@ -9908,13 +9906,25 @@
       node.classList.toggle('hidden', isPartReqOnly);
     });
 
+    // Update Sidebar Part Requisition menu label based on Role (Requester vs Warehouse vs Admin)
+    const sbPartReqLabel = document.querySelector('#sidebarPartReqBtn .nav-label');
+    if (sbPartReqLabel) {
+      if (u?.role === 'warehouse') {
+        sbPartReqLabel.textContent = 'รายการเบิก Part (คลังจ่าย)';
+      } else if (u?.role === 'requester') {
+        sbPartReqLabel.textContent = 'เบิก Part & รายการเบิก';
+      } else {
+        sbPartReqLabel.textContent = 'เบิก Part เพิ่มเติม';
+      }
+    }
+
     // Guard active page
     if(isPartReqOnly && activePage !== 'part-requisition'){
       goto('part-requisition');
     } else if(activePage === 'users' && !isAdmin){
       goto('overview');
     }
-    if(typeof renderPartRequisitionPage === 'function' && activePage === 'part-requisition'){
+    if(typeof renderPartRequisitionPage === 'function'){
       renderPartRequisitionPage();
     }
   }
@@ -12033,6 +12043,13 @@
     const countText = el('whAlertCountText');
     if (!banner) return;
 
+    const u = getCurrentUser();
+    // Requester (คนเบิก Part) should NOT see the Warehouse alert banner
+    if (u?.role === 'requester') {
+      banner.classList.add('hidden');
+      return;
+    }
+
     const pending = partRequisitionsList.filter(r => r.status !== 'issued');
     if (!pending.length) {
       banner.classList.add('hidden');
@@ -12047,6 +12064,10 @@
     const tbody = el('partReqTableBody');
     const mobileList = el('partReqMobileList');
     if (!tbody && !mobileList) return;
+
+    const u = getCurrentUser();
+    const role = u?.role || 'user';
+    const canIssuePart = (role === 'warehouse' || role === 'admin');
 
     const q = String(el('partReqSearchInput')?.value || '').trim().toLowerCase();
     const shiftFilter = el('partReqShiftFilter')?.value || '';
@@ -12097,11 +12118,46 @@
           : (r.locationsSummary ? esc(r.locationsSummary) : 'รอคลังระบุ Location');
         const hasPhoto = Boolean(r.issuePhotoDataUrl && r.issuePhotoDataUrl.startsWith('data:image'));
 
+        let mobileActionSection = '';
+        if (isIssued) {
+          mobileActionSection = `
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              ${hasPhoto ? `
+                <button type="button" class="btn soft btn-view-req-photo" data-id="${esc(r.reqId)}" style="flex:1;height:40px;font-size:13px;font-weight:800;border-color:#86efac;background:#f0fdf4;color:#166534;display:inline-flex;align-items:center;justify-content:center;gap:6px">
+                  <img src="${r.issuePhotoDataUrl}" alt="Photo" style="width:24px;height:20px;object-fit:cover;border-radius:3px;border:1px solid #16a34a">
+                  🔍 ดูรูปถ่ายยืนยันการจ่าย
+                </button>
+              ` : `
+                <div style="width:100%;padding:8px 10px;border-radius:8px;background:#f0fdf4;border:1px solid #86efac;color:#166534;font-size:12.5px;font-weight:800;text-align:center">
+                  ✅ สถานะ: คลังจ่าย Part รายการนี้เรียบร้อยแล้ว
+                </div>
+              `}
+              ${canIssuePart ? `
+                <button type="button" class="btn soft btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="height:40px;padding:0 14px;font-size:12.5px;font-weight:700">
+                  ✏️ แก้ไขการจ่าย
+                </button>
+              ` : ''}
+            </div>
+          `;
+        } else if (canIssuePart) {
+          mobileActionSection = `
+            <button type="button" class="btn primary btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="width:100%;height:42px;background:#d97706;border-color:#b45309;font-size:14px;font-weight:800;justify-content:center;box-shadow:0 3px 8px rgba(180,83,9,0.22)">
+              📦 กดเพื่อทำการจ่าย Part (ระบุ Location + ถ่ายรูป)
+            </button>
+          `;
+        } else {
+          mobileActionSection = `
+            <div style="width:100%;padding:9px 12px;border-radius:8px;background:#fef3c7;border:1px solid #f59e0b;color:#92400e;font-size:13px;font-weight:800;text-align:center">
+              ⏳ สถานะ: ยังไม่ถูกจ่าย (รอคลังดำเนินการจ่าย Part)
+            </div>
+          `;
+        }
+
         return `
           <div style="border:1.5px solid ${isIssued ? '#bbf7d0' : '#fcd34d'};background:${isIssued ? '#ffffff' : '#fffdf5'};border-radius:12px;padding:12px 13px;box-shadow:0 2px 8px rgba(15,23,42,0.05)">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px">
               <span class="badge ${isIssued ? 'green' : 'amber'}" style="font-size:12px;font-weight:800;padding:4px 10px">
-                ${isIssued ? '✅ จ่าย Part แล้ว' : '⏳ รอคลังจ่าย'}
+                ${isIssued ? '✅ สถานะ: จ่าย Part แล้ว' : '⏳ สถานะ: ยังไม่ถูกจ่าย (รอคลังจ่าย)'}
               </span>
               <span style="font-size:11.5px;color:#475569;font-weight:700">🕒 เบิก: ${esc(time(r.requestedAt))}</span>
             </div>
@@ -12124,29 +12180,13 @@
               ${isIssued ? `
                 <div style="margin-top:5px;padding-top:5px;border-top:1px dashed #cbd5e1;color:#14532d">
                   <div>📍 <b>Location ที่หยิบ:</b> ${locsText}</div>
-                  <div>👤 <b>ผู้จ่าย:</b> <b>${esc(r.issuerName || '—')}</b> · 🕒 <b>จ่าย:</b> ${esc(time(r.issuedAt))}</div>
+                  <div>👤 <b>ผู้จ่าย:</b> <b>${esc(r.issuerName || '—')}</b> · 🕒 <b>จ่ายเมื่อ:</b> ${esc(time(r.issuedAt))}</div>
                   ${r.issuerNote ? `<div>💬 <b>หมายเหตุผู้จ่าย:</b> ${esc(r.issuerNote)}</div>` : ''}
                 </div>
               ` : ''}
             </div>
 
-            <div style="display:flex;gap:8px">
-              ${isIssued ? `
-                ${hasPhoto ? `
-                  <button type="button" class="btn soft btn-view-req-photo" data-id="${esc(r.reqId)}" style="flex:1;height:40px;font-size:13px;font-weight:800;border-color:#86efac;background:#f0fdf4;color:#166534;display:inline-flex;align-items:center;justify-content:center;gap:6px">
-                    <img src="${r.issuePhotoDataUrl}" alt="Photo" style="width:24px;height:20px;object-fit:cover;border-radius:3px;border:1px solid #16a34a">
-                    🔍 ดูรูปถ่ายจริง
-                  </button>
-                ` : ''}
-                <button type="button" class="btn soft btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="flex:1;height:40px;font-size:13px;font-weight:700">
-                  ✏️ ดู / แก้ไข
-                </button>
-              ` : `
-                <button type="button" class="btn primary btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="width:100%;height:42px;background:#d97706;border-color:#b45309;font-size:14px;font-weight:800;justify-content:center;box-shadow:0 3px 8px rgba(180,83,9,0.22)">
-                  📦 กด Confirm จ่าย Part (Location + ถ่ายรูป)
-                </button>
-              `}
-            </div>
+            ${mobileActionSection}
           </div>
         `;
       }).join('');
@@ -12161,8 +12201,9 @@
         : (r.locationsSummary ? `<div style="font-size:11.5px;color:#0f172a">${esc(r.locationsSummary)}</div>` : '<span style="color:#94a3b8;font-size:11.5px">⏳ รอคลังระบุ Location</span>');
 
       const hasPhoto = Boolean(r.issuePhotoDataUrl && r.issuePhotoDataUrl.startsWith('data:image'));
-      const photoAndActionHtml = isIssued
-        ? `<div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+      let photoAndActionHtml = '';
+      if (isIssued) {
+        photoAndActionHtml = `<div style="display:flex;flex-direction:column;align-items:center;gap:5px">
              <span class="badge green" style="font-weight:800;font-size:11.5px;padding:3px 9px">✅ จ่าย Part แล้ว</span>
              ${hasPhoto ? `
                <button type="button" class="btn soft btn-view-req-photo" data-id="${esc(r.reqId)}" style="padding:3px 8px;font-size:11.5px;display:inline-flex;align-items:center;gap:5px;border-color:#86efac;background:#f0fdf4;color:#166534;font-weight:700">
@@ -12170,14 +12211,21 @@
                  🔍 ดูรูปถ่ายจริง
                </button>
              ` : ''}
-             <button type="button" class="btn soft btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="font-size:10.5px;padding:2px 7px">✏️ ดู/แก้ไข</button>
-           </div>`
-        : `<div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+             ${canIssuePart ? `<button type="button" class="btn soft btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="font-size:10.5px;padding:2px 7px">✏️ ดู/แก้ไข</button>` : ''}
+           </div>`;
+      } else if (canIssuePart) {
+        photoAndActionHtml = `<div style="display:flex;flex-direction:column;align-items:center;gap:6px">
              <span class="badge amber" style="font-weight:800;font-size:11.5px;padding:3px 9px">⏳ รอคลังจ่าย</span>
              <button type="button" class="btn primary btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="background:#d97706;border-color:#b45309;font-size:12px;padding:6px 11px;font-weight:800;box-shadow:0 2px 6px rgba(180,83,9,0.2)">
-               📦 Confirm จ่าย Part
+               📦 กดเพื่อทำการจ่าย Part
              </button>
            </div>`;
+      } else {
+        photoAndActionHtml = `<div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+             <span class="badge amber" style="font-weight:800;font-size:11.5px;padding:4px 10px">⏳ ยังไม่ถูกจ่าย</span>
+             <span style="font-size:11px;color:#b45309;font-weight:600">รอคลังจ่าย Part</span>
+           </div>`;
+      }
 
       return `
         <tr style="border-bottom:1px solid #e2e8f0;background:${isIssued ? '#ffffff' : '#fffbeb'}">
@@ -12226,6 +12274,37 @@
   function renderPartRequisitionPage() {
     updatePartReqBadges();
     const u = getCurrentUser();
+    const role = u?.role || 'user';
+
+    const formPanel = el('partReqFormPanel');
+    const mainTitle = el('partReqMainTitle');
+    const mainSub = el('partReqMainSub');
+    const histTitle = el('partReqHistoryTitle');
+    const histSub = el('partReqHistorySub');
+
+    if (role === 'warehouse') {
+      // Warehouse: ONLY sees the requisition list to click and issue parts (does NOT see the request form!)
+      formPanel?.classList.add('hidden');
+      if (mainTitle) mainTitle.textContent = '📦 รายการเบิก Part รอจ่าย (Warehouse)';
+      if (mainSub) mainSub.textContent = 'รายการที่ฝ่ายผลิตขอเบิกเข้ามา กดเลือกรายการเพื่อระบุ Location ที่หยิบและถ่ายรูปสดยืนยันการจ่าย Part';
+      if (histTitle) histTitle.textContent = '📦 รายการที่เบิกเข้ามา (กดเข้าไปเพื่อทำการจ่าย Part)';
+      if (histSub) histSub.innerHTML = 'กดปุ่ม <b>"📦 กดเพื่อทำการจ่าย Part"</b> เพื่อระบุ Location (กด + เพิ่มได้หลายจุด) และถ่ายรูปสดจากกล้องเพื่อยืนยันการจ่ายจริง';
+    } else if (role === 'requester') {
+      // Requester (คนเบิก Part): sees 1) Request Form AND 2) Requisition List with Status (Paid vs Unpaid), NO issue button!
+      formPanel?.classList.remove('hidden');
+      if (mainTitle) mainTitle.textContent = '📝 การเบิก Part & รายการเบิก';
+      if (mainSub) mainSub.textContent = 'บันทึกขอเบิก Part เพิ่มเติมผูกเลข MO และติดตามสถานะรายการที่เบิกว่าจ่ายแล้วหรือยังไม่ถูกจ่าย';
+      if (histTitle) histTitle.textContent = '📋 2. รายการเบิก Part & สถานะการจ่าย (จ่ายแล้ว / ยังไม่ถูกจ่าย)';
+      if (histSub) histSub.innerHTML = 'แสดงสถานะของทุกรายการที่ขอเบิกไปว่า <b>⏳ ยังไม่ถูกจ่าย (รอคลังจ่าย)</b> หรือ <b>✅ จ่าย Part แล้ว</b> พร้อมดูรูปถ่ายยืนยัน';
+    } else {
+      // Admin / General Planner: sees both Request Form and Warehouse Confirm / History
+      formPanel?.classList.remove('hidden');
+      if (mainTitle) mainTitle.textContent = '📦 เบิก Part เพิ่มเติม & ยืนยันการจ่ายคลัง';
+      if (mainSub) mainSub.textContent = 'บันทึกใบเบิกผูกเลข MO เชื่อมใบโอน Direct Transfer (ZJDB) ส่งแจ้งเตือนไปคลัง Warehouse ยืนยัน Location และถ่ายรูปสดก่อนจ่าย';
+      if (histTitle) histTitle.textContent = '📜 2. รายการรอคลังจ่าย & ประวัติการเบิก-จ่าย Part';
+      if (histSub) histSub.innerHTML = 'คลังกดปุ่ม <b>"📦 กดเพื่อทำการจ่าย Part"</b> เพื่อระบุ Location (กด + เพิ่มได้หลายจุด) และถ่ายรูปสดจากกล้องเพื่อยืนยันการจ่ายจริง';
+    }
+
     const dateInp = el('reqDateInput');
     if (dateInp && !dateInp.value) {
       dateInp.value = new Date().toISOString().slice(0, 10);
@@ -12309,12 +12388,15 @@
   }
 
   function openWhConfirmModal(reqId) {
+    const u = getCurrentUser();
+    if (u?.role !== 'warehouse' && u?.role !== 'admin') {
+      toast('เฉพาะเจ้าหน้าที่คลัง (Warehouse) หรือ Admin เท่านั้นที่สามารถบันทึกจ่าย Part ได้');
+      return;
+    }
     const rec = partRequisitionsList.find(x => x.reqId === reqId);
     if (!rec) return;
     whActiveConfirmReqId = reqId;
     stopWhCameraStream();
-
-    const u = getCurrentUser();
     if (el('whModalReqIdInput')) el('whModalReqIdInput').value = reqId;
     if (el('whModalReqIdBadge')) el('whModalReqIdBadge').textContent = rec.reqId;
     if (el('whModalMoBadge')) el('whModalMoBadge').textContent = rec.moNumber;
