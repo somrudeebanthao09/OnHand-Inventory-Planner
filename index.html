@@ -3563,6 +3563,43 @@
     return sourceRemote;
   }
 
+  // Machines without the Local Helper (e.g. GitHub Pages) only get Kingdee data through the shared
+  // OnHandSeed.js that the Admin machine publishes. Check its snapshotAt cheaply (first bytes only)
+  // and reload the shared seeds when the Admin machine has published a newer snapshot.
+  const REMOTE_SEED_CHECK_INTERVAL_MS = 5 * 60 * 1000;
+  let lastRemoteSeedCheckAt = 0, remoteSeedCheckRunning = false;
+  async function readRemoteSeedStamp() {
+    const url = `https://raw.githubusercontent.com/somrudeebanthao09/OnHand-Inventory-Planner/main/OnHandSeed.js?t=${Date.now()}`;
+    const resp = await fetch(url, { cache: 'no-store', headers: { Range: 'bytes=0-511' } });
+    if (!resp.ok) return '';
+    const head = (await resp.text()).slice(0, 4096);
+    const m = head.match(/"snapshotAt"\s*:\s*"([^"]+)"/);
+    return m ? m[1] : '';
+  }
+  async function checkRemoteSeedUpdate(force = false) {
+    if (remoteSeedCheckRunning) return false;
+    if (!force && Date.now() - lastRemoteSeedCheckAt < REMOTE_SEED_CHECK_INTERVAL_MS) return false;
+    remoteSeedCheckRunning = true;
+    lastRemoteSeedCheckAt = Date.now();
+    try {
+      const remoteStamp = await readRemoteSeedStamp();
+      const localStamp = db.settings?.lastInventoryAt || '';
+      if (!remoteStamp || (localStamp && Date.parse(remoteStamp) <= Date.parse(localStamp))) return false;
+      const res = await fetchLatestSharedSeeds({ forceRemote: true });
+      if (!res?.ok) return false;
+      rebuildStockRowsCache();
+      try { computeOrderShortages(); } catch (_) {}
+      renderAll();
+      toast(`🔄 อัปเดตข้อมูล Kingdee ล่าสุดจากเครื่อง Admin แล้ว (${time(db.settings.lastInventoryAt)})`);
+      return true;
+    } catch (err) {
+      console.warn('[SharedSync] remote seed check warn:', err);
+      return false;
+    } finally {
+      remoteSeedCheckRunning = false;
+    }
+  }
+
   async function fetchSeedScriptEval(fileName) {
     const bust = `t=${Date.now()}`;
     const urls = [];
@@ -10482,6 +10519,10 @@
         rebuildStockRowsCache();
         renderAll();
         nextAutoSyncAtMs = Date.now() + AUTO_SYNC_INTERVAL_MS;
+      }
+      else if(!hasGoogle()){
+        // No Local Helper on this machine: follow the snapshot the Admin machine publishes to GitHub.
+        await checkRemoteSeedUpdate(false);
       }
     } catch (err) {
       console.warn('[AutoSync 10m] Cycle error:', err);
