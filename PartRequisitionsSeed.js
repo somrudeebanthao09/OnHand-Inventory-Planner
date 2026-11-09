@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-09T03:19:56.755Z",
+  "updatedAt": "2026-11-09T09:44:19.640Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -20,14 +20,22 @@ window.PART_REQUISITIONS_SEED = {
       "requesterName": "พนักงานเบิก Part (Production)",
       "shift": "A",
       "requesterNote": "ทดสอบกดเบิกจากมือถือเด้งไปหา Warehouse ทันที",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
-      "issuerName": "",
-      "issuedAt": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CJ11",
+          "qty": 25
+        }
+      ],
+      "locationsSummary": "Loc#1: CJ11 (25 PCS)",
+      "issuerName": "เจ้าหน้าที่คลังจ่าย Part (Warehouse)",
+      "issuedAt": "2026-11-09T07:56:05.883Z",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "2026-11-07T06:08:44.613Z"
+      "updatedAt": "2026-11-09T07:56:05.883Z",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261107-24613.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261107-99822",
