@@ -1867,7 +1867,7 @@
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding-bottom:10px;border-bottom:1px dashed #e2e8f0">
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;color:#1e293b">
               <span style="background:#0d9488;color:#fff;font-weight:700;padding:2px 9px;border-radius:99px;font-size:12px">💡 วิธีดูหน้านี้แบบเข้าใจง่าย</span>
-              <span><strong>1.</strong> ดึงสต็อกคลังหลัก <em>(ไม่รวมคลัง H9 ที่จ่ายเข้าไลน์แล้ว)</em></span>
+              <span><strong>1.</strong> ดึงสต็อกคลังหลัก <em>(ไม่รวมคลัง H9 ที่จ่ายเข้าไลน์แล้ว และ Sealed Inventory Warehouse ที่หางานไม่เจอ)</em></span>
               <span style="color:#94a3b8">➜</span>
               <span><strong>2.</strong> เทียบโครงสร้าง BOM ทุกรุ่นว่ามี <strong>Part ครบทุกตัวไหม</strong></span>
               <span style="color:#94a3b8">➜</span>
@@ -3725,12 +3725,21 @@
     remoteSaveTimer=setTimeout(save,700);
   }
 
+  // Warehouses whose stock cannot actually be found/picked -> never count as usable stock.
+  // Exact name match only: "Outsourced Sealed Warehouse" is a different warehouse and is still counted.
+  const EXCLUDED_UNFINDABLE_WAREHOUSES = ['sealed inventory warehouse'];
+  function isUnfindableWarehouse(wh){
+    const w = String(wh || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    return EXCLUDED_UNFINDABLE_WAREHOUSES.includes(w);
+  }
+
   function isUsableInventoryRow(item){
     if(!item) return false;
     const wh = String(item.warehouse || '').trim().toLowerCase();
     if(wh.includes('defective') || wh.includes('scrap') || wh.includes('งานเสีย') || wh.includes('เศษซาก')) {
       return false;
     }
+    if(isUnfindableWarehouse(wh)) return false;
     const st = String(item.status || '').trim().toLowerCase();
     if(st === 'defective' || st === 'scrapped' || st.includes('เสีย') || st.includes('ซาก')) {
       return false;
@@ -3744,6 +3753,7 @@
     if(w.includes('defective') || w.includes('scrap') || w.includes('งานเสีย') || w.includes('เศษซาก')) {
       return false;
     }
+    if(isUnfindableWarehouse(w)) return false;
     return true;
   }
 
@@ -4834,11 +4844,13 @@
         ? `<button type="button" class="part-lot-link" data-code="${esc(x.materialCode)}" data-warehouse="${esc(x.warehouse)}" style="background:#e6f5f3;color:#087e78;border:1px solid #c2e8e5;border-radius:12px;padding:3px 8px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap" title="ดู ${x.lotCount} Lots ในคลัง ${esc(x.warehouse)}">${x.lotCount} Lots ▾</button>`
         : (x.lotCount === 1 ? `<button type="button" class="part-lot-link" data-code="${esc(x.materialCode)}" data-warehouse="${esc(x.warehouse)}" style="background:#f0f4f4;color:#52666a;border:1px solid #dce2e2;border-radius:12px;padding:3px 8px;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap" title="ดู Lot ในคลัง ${esc(x.warehouse)}">1 Lot</button>` : '');
       const isBad=!isUsableWarehouse(x.warehouse);
+      const isUnfindable=isUnfindableWarehouse(x.warehouse);
+      const badTitle=isUnfindable?'คลังที่หางานไม่เจอ ไม่นับรวมในยอดพร้อมใช้ผลิต':'คลังงานเสีย/เศษซาก ไม่นับรวมในยอดพร้อมใช้ผลิต';
       const whHtml=isBad
-        ? `<strong style="color:#b91c1c">${esc(x.warehouse||'—')}</strong><span class="badge red" style="font-size:10px;margin-left:4px" title="คลังงานเสีย/เศษซาก ไม่นับรวมในยอดพร้อมใช้ผลิต">งานเสีย/ซาก</span>`
+        ? `<strong style="color:#b91c1c">${esc(x.warehouse||'—')}</strong><span class="badge red" style="font-size:10px;margin-left:4px" title="${badTitle}">${isUnfindable?'หางานไม่เจอ':'งานเสีย/ซาก'}</span>`
         : `<strong>${esc(x.warehouse||'—')}</strong>`;
       const availHtml=isBad
-        ? `<span style="color:#ef4444;font-weight:600" title="คลังงานเสีย/เศษซาก ไม่นำไปนับรวมในยอดพร้อมใช้ผลิต">0 <small style="color:#94a3b8">(${fmtQty(row.available)})</small></span>`
+        ? `<span style="color:#ef4444;font-weight:600" title="${badTitle}">0 <small style="color:#94a3b8">(${fmtQty(row.available)})</small></span>`
         : fmtQty(row.available);
       const healthBadge = renderHealthBadge(row.health || getPartStockHealth(x.materialCode));
       const deptsText = row.departments.length
@@ -6021,7 +6033,7 @@
           unit: item.unit || 'EA'
         });
       }
-      if (!isUsableInventoryRow(item)) continue; // Exclude Defective Warehouse, Scrap Warehouse, and defective status
+      if (!isUsableInventoryRow(item)) continue; // Exclude Defective/Scrap/Sealed Inventory Warehouse and defective status
 
       const avail = stockAvailableForRow(item);
       if (isH9WorkshopWarehouseRow(item)) {
