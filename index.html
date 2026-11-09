@@ -3274,7 +3274,7 @@
     }
   ];
   const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],productionMaterialIssues:[],finishedGoodsReceipts:[],partRequisitions:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',lastMaterialIssueAt:'',lastFinishedGoodsReceiptAt:'',security:{autoLockMinutes:15,passcode:'1234'}}};
-  let db = structuredClone(initial), activePage='overview', firstPageLoad=true, pendingImport=null, currentAnalysis=[], sourceRemote=false, lastSheetPullAt=localStorage.getItem('onhandLastSheetPullAt')||'', remoteSaveTimer=null, remoteSaveQueue=Promise.resolve();
+  let db = structuredClone(initial), activePage='overview', firstPageLoad=true, pendingImport=null, currentAnalysis=[], sourceRemote=false, sharedSheetConnected=false, sharedSheetLoadAt='', lastSheetPullAt=localStorage.getItem('onhandLastSheetPullAt')||'', remoteSaveTimer=null, remoteSaveQueue=Promise.resolve();
   const el = id => document.getElementById(id);
   const n = value => { const x=Number(String(value??'').replace(/,/g,'').trim()); return Number.isFinite(x)?x:0; };
   const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -3456,6 +3456,15 @@
       return;
     }
     notice.classList.remove('hidden');
+    if(sharedSheetConnected){
+      notice.className = 'notice info';
+      notice.style.borderColor = '#087e78';
+      notice.style.background = '#f0fdf4';
+      notice.style.color = '#166534';
+      const pulledAt = db.settings.lastInventoryAt || sharedSheetLoadAt;
+      notice.innerHTML = `<strong>📊 ข้อมูล On-Hand จาก Google Sheets</strong> — ${fmt(db.inventory.length)} แถว · ดึงข้อมูลล่าสุดเมื่อ ${esc(time(pulledAt))} · ผู้ใช้ทุกคนเห็นข้อมูลจากชีตเดียวกัน`;
+      return;
+    }
     const lastTime = db.settings.lastInventoryAt ? time(db.settings.lastInventoryAt) : 'ยังไม่เคยนำเข้า';
     const autoBadge = isAutoSyncEnabled() ? ' · ⚡ อัปเดตอัตโนมัติทุก 10 นาที' : '';
     if(hasGoogle()){
@@ -3471,6 +3480,27 @@
       notice.className = 'notice warn';
       notice.innerHTML = '<strong>ยังไม่มีข้อมูล On-Hand</strong> — กดปุ่ม ⚡ ดึงจาก Kingdee เพื่อโหลดสต็อกล่าสุด';
     }
+  }
+  function fetchSharedSheetSnapshot(){
+    return new Promise((resolve,reject)=>{
+      const callback='__onhandSheet_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+      const script=document.createElement('script');
+      let done=false;
+      const finish=(fn,value)=>{
+        if(done)return;
+        done=true;
+        clearTimeout(timer);
+        try{delete window[callback]}catch(_){window[callback]=undefined}
+        script.remove();
+        fn(value);
+      };
+      const timer=setTimeout(()=>finish(reject,new Error('Google Sheets request timed out')),30000);
+      window[callback]=data=>finish(resolve,data);
+      script.onerror=()=>finish(reject,new Error('Google Sheets request failed'));
+      script.async=true;
+      script.src='https://script.google.com/macros/s/AKfycbz9qDc4l_N_uilJhI8mKHoAZ0mbM5-Pi3jE9NnigXWdSNqdbLZsxeNUFDnDlD2zEA-h/exec?api=sharedSnapshot&callback='+encodeURIComponent(callback)+'&t='+Date.now();
+      document.head.appendChild(script);
+    });
   }
   async function loadData(){
     if(hasGoogle()){
@@ -3544,6 +3574,8 @@
       }
     }else{
       sourceRemote=false;
+      sharedSheetConnected=false;
+      sharedSheetLoadAt='';
       db=localDb();
       el('syncState').textContent=db.inventory.length?'Snapshot ล่าสุด':'โหมดทดลอง';
       if(el('syncStateWrap')) el('syncStateWrap').title=db.inventory.length?`On-Hand snapshot ล่าสุด (${fmt(db.inventory.length)} แถว) · ข้อมูลตรงกันทุกคน`:'โหมดทดลองใน browser';
@@ -3552,6 +3584,26 @@
     try {
       await fetchLatestSharedSeeds({ forceRemote: false });
     } catch (_) {}
+    if(!hasGoogle()){
+      try{
+        const snapshot=await fetchSharedSheetSnapshot();
+        if(!snapshot || snapshot.ok!==true) throw new Error('Google Sheets did not return a shared snapshot');
+        if(Array.isArray(snapshot.inventory)) db.inventory=snapshot.inventory;
+        if(Array.isArray(snapshot.bom)) db.bom=snapshot.bom;
+        if(snapshot.safetyStock && typeof snapshot.safetyStock==='object') db.safetyStock=snapshot.safetyStock;
+        db.settings={...(db.settings||{}),...(snapshot.settings||{})};
+        if(!db.settings.lastInventoryAt) db.settings.lastInventoryAt=snapshot.generatedAt||'';
+        sharedSheetConnected=true;
+        sharedSheetLoadAt=new Date().toISOString();
+        lastSheetPullAt=sharedSheetLoadAt;
+        try{localStorage.setItem('onhandLastSheetPullAt',lastSheetPullAt)}catch(_){}
+        el('syncState').textContent='Google Sheets · '+time(db.settings.lastInventoryAt||sharedSheetLoadAt);
+        if(el('syncStateWrap')) el('syncStateWrap').title='Google Sheets · ข้อมูล On-Hand และ BOM ที่อ่านล่าสุด '+time(sharedSheetLoadAt);
+      }catch(err){
+        sharedSheetConnected=false;
+        console.warn('[SharedSheets] Could not load live snapshot:',err);
+      }
+    }
     updateConnectionNotice();
     if(firstPageLoad){
       firstPageLoad=false;
@@ -3577,7 +3629,7 @@
     return m ? m[1] : '';
   }
   async function checkRemoteSeedUpdate(force = false) {
-    if (remoteSeedCheckRunning) return false;
+    if (remoteSeedCheckRunning || sharedSheetConnected) return false;
     if (!force && Date.now() - lastRemoteSeedCheckAt < REMOTE_SEED_CHECK_INTERVAL_MS) return false;
     remoteSeedCheckRunning = true;
     lastRemoteSeedCheckAt = Date.now();
@@ -4213,7 +4265,7 @@
     el('riskCaption').textContent=selectedPlan().length?`แผนผลิต ${selectedPlan().length} รายการ · รวม Safety stock${dept?' · '+dept:''}`:'เพิ่มแผนผลิตเพื่อดู Part ที่อาจไม่พอ';
     const risk=a.filter(x=>x.shortage>0).slice(0,8);el('riskTable').innerHTML=renderMaterialResultTable(risk,false);
     const status=db.inventory.length&&db.bom.length?'พร้อมวิเคราะห์':db.inventory.length?'รอไฟล์ BOM':db.bom.length?'รอไฟล์ On-Hand':'ยังไม่มีข้อมูล';el('dataStatus').textContent=status;el('dataStatus').className='badge '+(db.inventory.length&&db.bom.length?'green':'gray');
-    el('sourceSummary').innerHTML=`<div class="section-label">${sourceRemote?'บันทึก On-Hand ใน Google Sheets ล่าสุด':'On-Hand ที่มีในเครื่องล่าสุด'}</div><div>${esc(time(db.settings.lastInventoryAt))}</div><div class="section-label">เว็บดึงข้อมูลจาก Google Sheets ล่าสุด</div><div>${esc(lastSheetPullAt?time(lastSheetPullAt):'ยังไม่เคยดึงจาก Google Sheets')}</div><div class="section-label">BOM Explosion</div><div>${esc(time(db.settings.lastBomAt))}</div><div class="section-label">รุ่นใน BOM</div><div>${fmt(modelsForDept('').length)} รุ่น · ${fmt(db.bom.length)} แถว</div>`;
+    el('sourceSummary').innerHTML=`<div class="section-label">${sourceRemote||sharedSheetConnected?'ข้อมูล On-Hand จาก Google Sheets ล่าสุด':'On-Hand ที่มีในเครื่องล่าสุด'}</div><div>${esc(time(db.settings.lastInventoryAt))}</div><div class="section-label">เว็บดึงข้อมูลจาก Google Sheets ล่าสุด</div><div>${esc(lastSheetPullAt?time(lastSheetPullAt):'ยังไม่เคยดึงจาก Google Sheets')}</div><div class="section-label">BOM Explosion</div><div>${esc(time(db.settings.lastBomAt))}</div><div class="section-label">รุ่นใน BOM</div><div>${fmt(modelsForDept('').length)} รุ่น · ${fmt(db.bom.length)} แถว</div>`;
   }
   function renderMaterialResultTable(rows,showModels=true){
     if(!rows.length)return `<div class="empty"><b>${selectedPlan().length?'ไม่มี Part ขาดในแผนนี้':'ยังไม่มีผลวิเคราะห์'}</b>${selectedPlan().length?'':'นำเข้าไฟล์ BOM และ On-Hand แล้วเพิ่ม Model ที่จะผลิต'}</div>`;
