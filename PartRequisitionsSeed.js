@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-09T09:44:19.640Z",
+  "updatedAt": "2026-11-10T04:53:19.006Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -53,14 +53,22 @@ window.PART_REQUISITIONS_SEED = {
       "requesterName": "พนักงานเบิก Part (Production)",
       "shift": "A",
       "requesterNote": "เบิกเพิ่มหน้าไลน์ H9",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
-      "issuerName": "",
-      "issuedAt": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "Cc",
+          "qty": 100
+        }
+      ],
+      "locationsSummary": "Loc#1: Cc (100 PCS)",
+      "issuerName": "เจ้าหน้าที่คลังจ่าย Part (Warehouse)",
+      "issuedAt": "2026-11-09T09:48:24.564Z",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "2026-11-07T04:46:39.822Z"
+      "updatedAt": "2026-11-09T09:48:24.564Z",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261107-99822.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261107-68673",
