@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-14T04:55:20.785Z",
+  "updatedAt": "2026-11-14T05:26:42.744Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "2b5e0347-668c-4428-8316-72e46c0360930b11f833d18f4737b55867522255cd42",
-    "wh": "cd8c5a5c-2c0d-4ac6-87fd-69462b40350bc068c81edf9c4f42a751250f7564d50f",
-    "expiresAt": 1794653186586
+    "req": "",
+    "wh": "",
+    "expiresAt": 0
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -24,8 +24,8 @@ window.PART_REQUISITIONS_SEED = {
   "items": [
     {
       "reqId": "REQ-20261114-79144",
-      "requestDate": "2026-11-14",
-      "requestedAt": "2026-11-14T04:31:19.144Z",
+      "requestDate": "14/11/2026 11:31:19",
+      "requestedAt": "14/11/2026 11:31:19",
       "moNumber": "MO-20261111-003332",
       "ppbomNumber": "",
       "directTransferDocs": "",
@@ -48,18 +48,19 @@ window.PART_REQUISITIONS_SEED = {
       ],
       "locationsSummary": "Loc#1: CJ11 (10 PCS)",
       "issuerName": "เจ้าหน้าที่คลังจ่าย Part (Warehouse)",
-      "issuedAt": "2026-11-14T04:31:59.263Z",
+      "issuedAt": "14/11/2026 11:31:59",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "2026-11-14T04:31:59.263Z",
+      "updatedAt": "14/11/2026 11:31:59",
       "issuerUsername": "wh",
       "photoUrl": "part-photos/REQ-20261114-79144.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "photoTakenAt": "14/11/2026 11:31:59"
     },
     {
       "reqId": "REQ-20261114-01742",
-      "requestDate": "2026-11-14",
-      "requestedAt": "2026-11-14T04:26:41.742Z",
+      "requestDate": "14/11/2026 11:26:41",
+      "requestedAt": "14/11/2026 11:26:41",
       "moNumber": "MO-20261111-003332",
       "ppbomNumber": "",
       "directTransferDocs": "",
@@ -82,13 +83,14 @@ window.PART_REQUISITIONS_SEED = {
       ],
       "locationsSummary": "Loc#1: CJ11 (15 PCS)",
       "issuerName": "เจ้าหน้าที่คลังจ่าย Part (Warehouse)",
-      "issuedAt": "2026-11-14T04:27:22.698Z",
+      "issuedAt": "14/11/2026 11:27:22",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "2026-11-14T04:27:22.698Z",
+      "updatedAt": "14/11/2026 11:27:22",
       "issuerUsername": "wh",
       "photoUrl": "part-photos/REQ-20261114-01742.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "photoTakenAt": "14/11/2026 11:27:22"
     }
   ]
 };
