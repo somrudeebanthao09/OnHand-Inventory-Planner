@@ -10355,7 +10355,7 @@
     let found = null;
     if (isPartReqSharedApiConfigured()) {
       try {
-        if (errEl) errEl.textContent = '⏳ กำลังตรวจสอบบัญชีกับ Google Sheet...';
+        if (errEl) errEl.textContent = '⏳ กำลังเข้าสู่ระบบ...';
         const res = await postPartReqSharedApiForm({ action: 'member_login', username, password });
         if (res?.ok && res.user) {
           found = res.user;
@@ -13197,10 +13197,33 @@
     };
   }
 
+  let partReqSheetAuthoritative = false;
   function replacePartReqRecordsFromApi(records) {
-    if (!Array.isArray(records) || !records.length) return false;
-    const normalized = records.filter(item => item?.reqId).map(normalizePartReqApiRecord);
-    return mergeIncomingPartRequisitions(normalized);
+    if (!Array.isArray(records)) return false;
+    partReqSheetAuthoritative = true;
+    const normalized = records.filter(item => item?.reqId && !item?.deleted).map(normalizePartReqApiRecord);
+    const sheetIds = new Set(normalized.map(r => r.reqId));
+    const nowMs = Date.now();
+    // Preserve only brand-new local records (< 15s old) still in-flight to Google Sheet
+    const inFlight = (partRequisitionsList || []).filter(r => {
+      if (!r?.reqId || r.deleted || sheetIds.has(r.reqId)) return false;
+      const t = partReqStamp(r);
+      return t > 0 && (nowMs - t) < 15000;
+    });
+    const nextList = [...inFlight, ...normalized].sort((a, b) => partReqStamp(b) - partReqStamp(a));
+    const prevSig = JSON.stringify((partRequisitionsList || []).map(r => [r.reqId, r.status, r.updatedAt, r.issuedAt, r.deleted]));
+    const nextSig = JSON.stringify(nextList.map(r => [r.reqId, r.status, r.updatedAt, r.issuedAt, r.deleted]));
+    partRequisitionsList = nextList;
+    try { localStorage.setItem('onhandPartRequisitions', JSON.stringify(partRequisitionsList)); } catch (_) {}
+    if (prevSig !== nextSig) {
+      try { updatePartReqNavBadge(); } catch (_) {}
+      try { renderPartReqWarehouseAlert(); } catch (_) {}
+      try { renderPartReqHistoryTable(); } catch (_) {}
+      try { renderPartReqPoBadges(); } catch (_) {}
+      try { runPartReqNotifications(); } catch (_) {}
+      return true;
+    }
+    return false;
   }
 
   let partReqLastApiPullAt = 0;
@@ -13291,21 +13314,6 @@
     if (partReqApiReconcilePromise) return partReqApiReconcilePromise;
     partReqApiReconcilePromise = (async () => {
       await pullPartReqSharedApiRecords();
-      const centralById = new Map(partReqApiLastRecords.filter(item => item?.reqId).map(item => [item.reqId, item]));
-      for (const record of partRequisitionsList) {
-        if (!record?.reqId) continue;
-        const remote = centralById.get(record.reqId);
-        const localRank = partReqRank(record);
-        const remoteRank = remote ? partReqRank(remote) : -1;
-        const localStamp = partReqStamp(record);
-        const remoteStamp = partReqStamp(remote);
-        if (remote && localRank < remoteRank) continue;
-        if (remote && localRank === remoteRank && localStamp <= remoteStamp) continue;
-        try { await savePartReqToSharedApi(record); } catch (err) {
-          console.warn('[PartReqAPI] local reconciliation skipped:', err?.message || err);
-        }
-      }
-      await pullPartReqSharedApiRecords();
       partReqApiReconciledIdentity = identity;
       return true;
     })().finally(() => { partReqApiReconcilePromise = null; });
@@ -13317,14 +13325,16 @@
     try {
       ensurePartReqStream();
 
-      // 1. localStorage (อัปเดตข้ามแท็บ)
-      try {
-        const localItems = JSON.parse(localStorage.getItem('onhandPartRequisitions') || '[]');
-        if (Array.isArray(localItems) && localItems.length) mergeIncomingPartRequisitions(localItems);
-      } catch (_) {}
+      // 1. localStorage (อัปเดตข้ามแท็บเฉพาะก่อนซิงค์กับ Google Sheet)
+      if (!partReqSheetAuthoritative) {
+        try {
+          const localItems = JSON.parse(localStorage.getItem('onhandPartRequisitions') || '[]');
+          if (Array.isArray(localItems) && localItems.length) mergeIncomingPartRequisitions(localItems);
+        } catch (_) {}
+      }
 
-      // 2. ฐานข้อมูลถาวร (Seed บน GitHub Pages / เครื่อง Helper) — ดึงทุก 10 วินาที
-      if (force || Date.now() - partReqLastSeedFetchAt > 10000) {
+      // 2. ฐานข้อมูลถาวร (Seed บน GitHub Pages / เครื่อง Helper) — ใช้เฉพาะก่อนซิงค์กับ Google Sheet
+      if (!partReqSheetAuthoritative && (force || Date.now() - partReqLastSeedFetchAt > 10000)) {
         if (await fetchPartReqSeedBaseline()) anySuccess = true;
       }
 
@@ -13366,9 +13376,9 @@
         }
       }
 
-      // 6. Shared Part API (Google Sheet PartRequisitions): ดึงเบื้องหลังโดยไม่บล็อกหน้าจอ
+      // 6. Shared Part API (Google Sheet PartRequisitions): ดึงแบบ Realtime ทุก 4 วินาทีโดยไม่บล็อกหน้าจอ
       const currentPartUser = getCurrentUser();
-      if (currentPartUser && partReqApiCanPostMessage() && (force || Date.now() - partReqLastApiPullAt > 18000)) {
+      if (currentPartUser && partReqApiCanPostMessage() && (force || (document.visibilityState !== 'hidden' && Date.now() - partReqLastApiPullAt > 4000))) {
         const identity = `${currentPartUser.role}:${String(currentPartUser.username || '').trim().toLowerCase()}`;
         const p = partReqApiReconciledIdentity === identity
           ? pullPartReqSharedApiRecords()
