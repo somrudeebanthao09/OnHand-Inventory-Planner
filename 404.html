@@ -6154,11 +6154,14 @@
       let mo = moMap.get(modelCode);
       if (!mo) {
         const pOv = overrides.get(modelCode);
+        const invSpec = (db.inventory || []).find(x => String(x.materialCode || '').trim() === modelCode)?.specification || '';
+        const orderSpec = (window.PRODUCTION_ORDERS_SEED?.orders || []).find(o => String(o.productCode || '').trim() === modelCode)?.specification || '';
         mo = {
           moNumber: modelCode,
           modelCode: modelCode,
           productCode: modelCode,
           productName: pOv?.materialName || r.modelName || modelCode,
+          specification: pOv?.specification || r.modelSpec || orderSpec || invSpec || '',
           department: pOv ? pOv.department : (normalizeDepartmentName(r.department) || 'ไม่ระบุแผนก'),
           itemsMap: new Map(),
           items: []
@@ -6766,6 +6769,9 @@
           <strong class="code" style="color:var(--teal);font-size:15.5px;display:block;margin-bottom:4px">${esc(mo.productCode)}</strong>
           ${typeBadgeHtml}
         </td>
+        <td style="padding:12px 10px;color:#334155;font-size:13.5px;font-weight:600;word-break:break-word">
+          ${esc(mo.specification || '—')}
+        </td>
         <td style="padding:12px 10px">
           <strong style="font-size:15.5px;color:#0f172a;display:block;line-height:1.35">${esc(mo.productName || '—')}</strong>
           <div style="margin-top:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
@@ -6787,14 +6793,15 @@
 
     const fActive = k => Boolean(ordersMoFilters[k]);
 
-    el('ordersTableWrap').innerHTML = `<table style="width:100%;min-width:960px;table-layout:fixed;border-collapse:collapse;font-size:14px;white-space:normal">
+    el('ordersTableWrap').innerHTML = `<table style="width:100%;min-width:1100px;table-layout:fixed;border-collapse:collapse;font-size:14px;white-space:normal">
       <colgroup>
         <col style="width:52px">
-        <col style="width:175px">
+        <col style="width:165px">
+        <col style="width:160px">
         <col style="width:auto">
-        <col style="width:220px">
-        <col style="width:200px">
         <col style="width:210px">
+        <col style="width:190px">
+        <col style="width:205px">
       </colgroup>
       <thead style="position:sticky;top:0;z-index:3;background:#f7f9f9;box-shadow:0 1px 2px rgba(0,0,0,0.06)">
         <tr style="background:#f7f9f9">
@@ -6803,6 +6810,12 @@
             <div class="orders-th-cell">
               <span>รหัสรุ่น (Model)</span>
               <button class="orders-filter-toggle ${fActive('productCode')?'active':''}" data-filter-key="productCode" type="button" title="กรองรหัสรุ่น">▾</button>
+            </div>
+          </th>
+          <th style="padding:12px 10px;font-size:13.5px">
+            <div class="orders-th-cell">
+              <span>Specification</span>
+              <button class="orders-filter-toggle ${fActive('specification')?'active':''}" data-filter-key="specification" type="button" title="กรอง Specification">▾</button>
             </div>
           </th>
           <th style="padding:12px 10px;font-size:13.5px">
