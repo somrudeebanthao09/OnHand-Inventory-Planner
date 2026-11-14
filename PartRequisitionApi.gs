@@ -731,11 +731,14 @@ function setupAllPlannerSheets() {
   const pdfSheet = partReqApiGetOrderPdfSheet_();
   const kingdeeLogSheet = partReqApiGetKingdeeLogSheet_();
   const authUsers = partReqApiGetAuthUsers_();
+  // Ensure Google Drive permission is authorized for Part photos & Order PDFs
+  const driveRootName = DriveApp.getRootFolder().getName();
   return {
     ok: true,
     sheets: [reqSheet.getName(), staff.sheetName || 'PartStaff', MEMBERS_SHEET_NAME, pushSheet.getName(), pdfSheet.getName(), kingdeeLogSheet.getName()],
     membersCount: members.length,
-    apiAuthReady: Boolean(authUsers.req && authUsers.wh)
+    apiAuthReady: Boolean(authUsers.req && authUsers.wh),
+    driveReady: Boolean(driveRootName)
   };
 }
 
