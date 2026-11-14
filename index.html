@@ -12514,7 +12514,8 @@
     const subHtml = isWarehouseAlert
       ? `<div><b>MO:</b> <strong style="color:#0f6a66">${esc(record.moNumber)}</strong> · <b>ผู้เบิก:</b> ${esc(record.requesterName || '—')} (กะ ${esc(record.shift || 'A')})</div>
          <div><b>รหัส Part:</b> <strong style="color:#b45309;font-size:14.5px">${esc(record.materialCode)}</strong> · จำนวน <strong style="color:#dc2626;font-size:15px">${fmtQty(record.requestQty)} ${esc(record.unit || 'PCS')}</strong></div>
-         <div style="font-size:12px;color:#475569">${esc(desc)} · สาเหตุ: <b>${esc(record.reason || '—')}</b></div>`
+         <div style="margin-top:4px;padding:4px 8px;border-radius:7px;background:#fef9c3;border:1px solid #fde047;font-size:14.5px;font-weight:900;color:#713f12;line-height:1.35">📋 ${esc(desc)}</div>
+         <div style="font-size:12px;color:#475569;margin-top:3px">สาเหตุ: <b>${esc(record.reason || '—')}</b></div>`
       : `<div><b>MO:</b> <strong style="color:#0f6a66">${esc(record.moNumber)}</strong> · <b>ผู้จ่าย:</b> ${esc(record.issuerName || 'Warehouse')}</div>
          <div><b>รหัส Part:</b> <strong style="color:#047857;font-size:14.5px">${esc(record.materialCode)}</strong> · จ่ายแล้ว <strong style="color:#15803d;font-size:15px">${fmtQty(record.requestQty)} ${esc(record.unit || 'PCS')}</strong></div>
          <div style="font-size:12px;color:#065f46">📍 Location ที่หยิบ: <b>${esc(record.locationsSummary || '—')}</b></div>`;
@@ -14138,9 +14139,10 @@
             </div>
 
             <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px">
-              <div style="min-width:0">
-                <div style="font-size:15px;font-weight:800;color:#087e78;font-family:ui-monospace,Consolas,monospace">${esc(r.materialCode)}</div>
-                <div style="font-size:13px;font-weight:700;color:#0f172a;line-height:1.35">${esc(desc)}</div>
+              <div style="min-width:0;flex:1">
+                <div style="font-size:13.5px;font-weight:800;color:#087e78;font-family:ui-monospace,Consolas,monospace">${esc(r.materialCode)}</div>
+                <div style="font-size:15.5px;font-weight:900;color:#0f172a;line-height:1.35;margin-top:2px">${esc(r.materialName || desc)}</div>
+                ${r.specification ? `<div style="display:inline-block;margin-top:4px;padding:3px 9px;border-radius:7px;background:#fef9c3;border:1.5px solid #facc15;font-size:15.5px;font-weight:900;color:#713f12;line-height:1.3">${esc(r.specification)}</div>` : ''}
               </div>
               <div style="text-align:right;flex-shrink:0;background:#f0fdf4;border:1px solid #bbf7d0;padding:5px 10px;border-radius:9px">
                 <div style="font-size:17px;font-weight:900;color:#166534;line-height:1.1">${fmtQty(r.requestQty)}</div>
@@ -14219,8 +14221,9 @@
             ${r.ppbomNumber ? `<div style="font-size:10.5px;color:#64748b">PPBOM: ${esc(r.ppbomNumber)}</div>` : ''}
           </td>
           <td style="padding:9px 8px">
-            <strong style="font-size:13.5px;color:#087e78;font-family:ui-monospace,Consolas,monospace">${esc(r.materialCode)}</strong>
-            <div style="font-size:12px;color:#1e293b;font-weight:600;margin-top:2px">${esc(desc)}</div>
+            <strong style="font-size:12.5px;color:#087e78;font-family:ui-monospace,Consolas,monospace">${esc(r.materialCode)}</strong>
+            <div style="font-size:14.5px;color:#0f172a;font-weight:800;margin-top:2px;line-height:1.35">${esc(r.materialName || desc)}</div>
+            ${r.specification ? `<div style="display:inline-block;margin-top:3px;padding:2px 8px;border-radius:6px;background:#fef9c3;border:1px solid #facc15;font-size:14.5px;font-weight:900;color:#713f12;line-height:1.3">${esc(r.specification)}</div>` : ''}
           </td>
           <td class="num" style="padding:9px 8px;background:#f0fdf4;font-size:14.5px;font-weight:800;color:#166534">
             ${fmtQty(r.requestQty)} <span class="badge teal" style="font-size:11px;padding:1px 6px">${esc(r.unit || 'PCS')}</span>
@@ -14670,7 +14673,7 @@
           <div><span style="color:#64748b">จำนวนที่เบิก &amp; หน่วย:</span><br><strong style="font-size:16px;color:#b45309">${fmtQty(rec.requestQty)} ${esc(rec.unit || 'PCS')}</strong></div>
         </div>
         <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #cbd5e1;font-size:12.5px;color:#1e293b;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
-          <span>📋 <b>Description:</b> ${esc(desc)}</span>
+          <div style="width:100%;padding:6px 10px;border-radius:8px;background:#fef9c3;border:1.5px solid #facc15;font-size:15.5px;font-weight:900;color:#713f12">📋 Description: ${esc(desc)}</div>
           <span>⚠️ <b>สาเหตุการเบิก:</b> <b style="color:#dc2626">${esc(rec.reason || '—')}</b></span>
           <span>👤 <b>ผู้เบิก:</b> ${esc(rec.requesterName)} (กะ ${esc(rec.shift || 'A')}) · 🕒 ${esc(formatPartReqDateTime(rec.requestedAt, rec.requestDate) || rec.requestDate || '-')}</span>
         </div>
