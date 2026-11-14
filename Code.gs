@@ -62,14 +62,25 @@ function partReqToRow_(r) {
   };
 }
 
+function isLegacyPurgedPartReq_(r) {
+  if (!r || !r.reqId) return true;
+  if (/^REQ-2026110[789]-/i.test(String(r.reqId || '').trim())) return true;
+  const reqTs = Date.parse(String(r.requestedAt || '')) || 0;
+  if (reqTs > 0 && reqTs < Date.parse('2026-11-14T04:01:00.000Z')) return true;
+  return false;
+}
+
 // รวมรายการเก่าในชีตกับรายการใหม่: อันที่ updatedAt ใหม่กว่าชนะ (เท่ากัน → issued ชนะ pending) และรายการที่ถูก Admin ลบ (deleted) จะถูกเอาออกจากชีต
 function mergePartReqRows_(existingRows, incoming) {
   const map = {};
-  existingRows.forEach(r => { const id = String(r.reqId || '').trim(); if (id) map[id] = r; });
+  existingRows.forEach(r => {
+    const id = String(r.reqId || '').trim();
+    if (id && !isLegacyPurgedPartReq_(r) && !String(r.issuerNote || '').includes('[DELETED_BY_ADMIN]')) map[id] = r;
+  });
   incoming.forEach(inc => {
     const id = String(inc.reqId || '').trim();
-    if (!id) return;
-    if (inc.deleted === true) { delete map[id]; return; }
+    if (!id || isLegacyPurgedPartReq_(inc)) return;
+    if (inc.deleted === true || String(inc.issuerNote || '').includes('[DELETED_BY_ADMIN]')) { delete map[id]; return; }
     const row = partReqToRow_(inc);
     const old = map[id];
     if (!old) { map[id] = row; return; }

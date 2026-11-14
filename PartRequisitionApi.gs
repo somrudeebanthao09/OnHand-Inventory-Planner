@@ -191,6 +191,14 @@ function partReqApiSave_(session, record) {
     const storedAt = Date.parse(String(existing?.updatedAt || existing?.issuedAt || existing?.requestedAt || '')) || 0;
     let merged;
 
+    if (Boolean(record.deleted) || String(record.issuerNote || '').includes('[DELETED_BY_ADMIN]')) {
+      if (existing && existing._sheetRow >= 2) {
+        sheet.deleteRow(existing._sheetRow);
+        SpreadsheetApp.flush();
+      }
+      return { ok: true, reqId, status: 'deleted', deleted: true, savedAt: new Date().toISOString() };
+    }
+
     if (session.role === 'requester') {
       if (record.status === 'issued' || (existing && existing.status === 'issued')) throw new Error('REQUEST_ALREADY_ISSUED');
       if (existing?.requesterUsername && String(existing.requesterUsername).toLowerCase() !== session.username) {
@@ -350,6 +358,7 @@ function partReqApiWriteRecord_(sheet, record, existing) {
 
 function partReqApiMessage_(result) {
   const payload = JSON.stringify(result).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
-  const html = `<!doctype html><html><head><meta charset="utf-8"></head><body><script>window.parent.postMessage(${payload}, ${JSON.stringify(PART_REQ_API_ALLOWED_ORIGIN)});</script></body></html>`;
+  const targetOrigin = JSON.stringify(PART_REQ_API_ALLOWED_ORIGIN);
+  const html = `<!doctype html><html><head><meta charset="utf-8"></head><body><script>try{if(window.top&&window.top!==window)window.top.postMessage(${payload},${targetOrigin});}catch(_){}try{if(window.parent&&window.parent.parent&&window.parent.parent!==window.top)window.parent.parent.postMessage(${payload},${targetOrigin});}catch(_){}try{window.parent.postMessage(${payload},${targetOrigin});}catch(_){}</script></body></html>`;
   return HtmlService.createHtmlOutput(html).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
