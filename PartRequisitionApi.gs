@@ -64,6 +64,11 @@ function doPost(e) {
         result = { ok: true, users: partReqApiSaveMembers_(users) };
       } else if (params.action === 'member_reset_password') {
         result = partReqApiMemberResetPassword_(params.username, params.newPassword);
+      } else if (params.action === 'kingdee_log_append') {
+        const entry = JSON.parse(String(params.entry || '{}'));
+        result = partReqApiAppendKingdeeLog_(entry);
+      } else if (params.action === 'kingdee_log_list') {
+        result = { ok: true, items: partReqApiListKingdeeLogs_() };
       } else {
         throw new Error('UNKNOWN_ACTION');
       }
@@ -686,13 +691,89 @@ function setupAllPlannerSheets() {
   const members = partReqApiGetMembers_();
   const pushSheet = partReqApiGetPushSheet_();
   const pdfSheet = partReqApiGetOrderPdfSheet_();
+  const kingdeeLogSheet = partReqApiGetKingdeeLogSheet_();
   const authUsers = partReqApiGetAuthUsers_();
   return {
     ok: true,
-    sheets: [reqSheet.getName(), staff.sheetName || 'PartStaff', MEMBERS_SHEET_NAME, pushSheet.getName(), pdfSheet.getName()],
+    sheets: [reqSheet.getName(), staff.sheetName || 'PartStaff', MEMBERS_SHEET_NAME, pushSheet.getName(), pdfSheet.getName(), kingdeeLogSheet.getName()],
     membersCount: members.length,
     apiAuthReady: Boolean(authUsers.req && authUsers.wh)
   };
+}
+
+const KINGDEE_SYNC_LOG_SHEET_NAME = 'KingdeeSyncLog';
+const KINGDEE_SYNC_LOG_HEADERS = [
+  'timestamp', 'triggerSource', 'status', 'dataFreshness',
+  'inventoryFile', 'inventoryFileTime', 'inventoryRows',
+  'pmlFile', 'pmlRows', 'dtFile', 'prFile',
+  'execOrders', 'barcodeOrders', 'durationSec',
+  'outputSummary', 'errorMessage'
+];
+
+function partReqApiGetKingdeeLogSheet_() {
+  const ss = SpreadsheetApp.openById(PART_REQ_API_SPREADSHEET_ID);
+  let sheet = ss.getSheetByName(KINGDEE_SYNC_LOG_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(KINGDEE_SYNC_LOG_SHEET_NAME);
+  }
+  const width = Math.max(sheet.getLastColumn(), KINGDEE_SYNC_LOG_HEADERS.length);
+  const firstRow = sheet.getLastRow() >= 1 ? sheet.getRange(1, 1, 1, width).getValues()[0] : [];
+  if (!firstRow.some(v => String(v || '').trim())) {
+    sheet.getRange(1, 1, 1, KINGDEE_SYNC_LOG_HEADERS.length).setValues([KINGDEE_SYNC_LOG_HEADERS]);
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function partReqApiAppendKingdeeLog_(entry) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+  try {
+    const sheet = partReqApiGetKingdeeLogSheet_();
+    const row = [
+      formatPartReqDateTime_(entry?.timestamp || new Date().toISOString(), '', true),
+      String(entry?.triggerSource || ''),
+      String(entry?.status || 'SUCCESS'),
+      String(entry?.dataFreshness || ''),
+      String(entry?.inventoryFile || ''),
+      String(entry?.inventoryFileTime || ''),
+      Number(entry?.inventoryRows) || 0,
+      String(entry?.pmlFile || ''),
+      Number(entry?.pmlRows) || 0,
+      String(entry?.dtFile || ''),
+      String(entry?.prFile || ''),
+      Number(entry?.execOrders) || 0,
+      Number(entry?.barcodeOrders) || 0,
+      Number(entry?.durationSec) || 0,
+      String(entry?.outputSummary || ''),
+      String(entry?.errorMessage || '')
+    ];
+    // Insert newest log at row 2 (right below header) so latest runs are always at the top
+    sheet.insertRowAfter(1);
+    sheet.getRange(2, 1, 1, KINGDEE_SYNC_LOG_HEADERS.length).setValues([row]);
+    // Keep at most 500 log rows so sheet stays fast
+    const lastRow = sheet.getLastRow();
+    if (lastRow > 501) {
+      sheet.deleteRows(502, lastRow - 501);
+    }
+    SpreadsheetApp.flush();
+    return { ok: true, sheetName: KINGDEE_SYNC_LOG_SHEET_NAME, timestamp: row[0] };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function partReqApiListKingdeeLogs_() {
+  const sheet = partReqApiGetKingdeeLogSheet_();
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return [];
+  const count = Math.min(lastRow - 1, 100);
+  const rows = sheet.getRange(2, 1, count, KINGDEE_SYNC_LOG_HEADERS.length).getValues();
+  return rows.map(r => {
+    const obj = {};
+    KINGDEE_SYNC_LOG_HEADERS.forEach((h, i) => { obj[h] = r[i]; });
+    return obj;
+  });
 }
 
 const ORDER_PDF_LINKS_SHEET_NAME = 'OrderPdfLinks';
