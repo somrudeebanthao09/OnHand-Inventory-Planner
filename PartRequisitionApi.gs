@@ -34,6 +34,8 @@ function doPost(e) {
       result = partReqApiMemberRegister_(regUser);
     } else if (params.action === 'members_list') {
       result = { ok: true, users: partReqApiGetMembers_() };
+    } else if (params.action === 'staff_list') {
+      result = { ok: true, staffRoster: partReqApiGetStaffRoster_() };
     } else {
       const session = partReqApiGetSession_(params.token);
       if (!session) throw new Error('SESSION_EXPIRED');

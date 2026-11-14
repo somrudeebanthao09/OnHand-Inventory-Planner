@@ -13206,10 +13206,10 @@
       const response = await callPartReqSharedApi('list');
       if (!response?.ok || !Array.isArray(response.items)) throw new Error(response?.error || 'PART_API_LIST_FAILED');
       if (response.staffRoster && (response.staffRoster.requesters?.length || response.staffRoster.issuers?.length)) {
-        const cur = loadPartStaffRoster();
         savePartStaffRoster({
-          requesters: [...(response.staffRoster.requesters || []), ...cur.requesters],
-          issuers: [...(response.staffRoster.issuers || []), ...cur.issuers]
+          requesters: response.staffRoster.requesters || [],
+          issuers: response.staffRoster.issuers || [],
+          source: 'sheet'
         }, false);
       }
       partReqApiLastRecords = response.items.map(normalizePartReqApiRecord);
@@ -13336,10 +13336,10 @@
         if (res?.ok) {
           if (res.apiTokens?.req) partReqSharedApiTokens = res.apiTokens;
           if (res.staffRoster && (res.staffRoster.requesters?.length || res.staffRoster.issuers?.length)) {
-            const cur = loadPartStaffRoster();
             savePartStaffRoster({
-              requesters: [...(res.staffRoster.requesters || []), ...cur.requesters],
-              issuers: [...(res.staffRoster.issuers || []), ...cur.issuers]
+              requesters: res.staffRoster.requesters || [],
+              issuers: res.staffRoster.issuers || [],
+              source: 'sheet'
             }, false);
           }
           if (Array.isArray(res.items)) mergeIncomingPartRequisitions(res.items);
@@ -14286,14 +14286,8 @@
   const PART_STAFF_STORAGE_KEY = 'onhand_planner_part_staff_roster_v1';
   let partStaffRoster = {
     sheetName: 'PartStaff',
-    requesters: [
-      'พนักงานเบิก Part (Production)',
-      'สมฤดี บรรเทา (Somrudee)'
-    ],
-    issuers: [
-      'เจ้าหน้าที่คลังจ่าย Part (Warehouse)',
-      'สมฤดี บรรเทา (Somrudee)'
-    ]
+    requesters: [],
+    issuers: []
   };
 
   function dedupeStaffNames(arr) {
@@ -14311,8 +14305,24 @@
   }
 
   function loadPartStaffRoster() {
-    let reqList = [...partStaffRoster.requesters];
-    let whList = [...partStaffRoster.issuers];
+    if (partStaffRoster?.source === 'sheet' && (partStaffRoster.requesters?.length || partStaffRoster.issuers?.length)) {
+      return partStaffRoster;
+    }
+    try {
+      const saved = JSON.parse(localStorage.getItem(PART_STAFF_STORAGE_KEY) || '{}');
+      if (saved?.source === 'sheet' && (Array.isArray(saved.requesters) || Array.isArray(saved.issuers))) {
+        partStaffRoster = {
+          sheetName: 'PartStaff',
+          source: 'sheet',
+          requesters: dedupeStaffNames(saved.requesters || []),
+          issuers: dedupeStaffNames(saved.issuers || []),
+          updatedAt: saved.updatedAt || ''
+        };
+        return partStaffRoster;
+      }
+    } catch (_) {}
+    let reqList = [...(partStaffRoster.requesters || [])];
+    let whList = [...(partStaffRoster.issuers || [])];
     try {
       const seedRoster = window.PART_REQUISITIONS_SEED?.staffRoster;
       if (seedRoster) {
@@ -14325,22 +14335,6 @@
       if (Array.isArray(saved.requesters) && saved.requesters.length) reqList = [...saved.requesters, ...reqList];
       if (Array.isArray(saved.issuers) && saved.issuers.length) whList = [...saved.issuers, ...whList];
     } catch (_) {}
-    // Include registered users by role (`requester` -> คนเบิก Part, `warehouse` -> คนจ่าย Part)
-    try {
-      const users = loadUsers();
-      for (const usr of users) {
-        if (usr.status && usr.status !== 'approved') continue;
-        const displayName = String(usr.name || usr.username || '').trim();
-        if (!displayName) continue;
-        if (usr.role === 'requester') reqList.push(displayName);
-        else if (usr.role === 'warehouse') whList.push(displayName);
-      }
-    } catch (_) {}
-    // Include names from active requisitions
-    for (const r of getVisiblePartReqs()) {
-      if (r.requesterName) reqList.push(String(r.requesterName).trim());
-      if (r.issuerName) whList.push(String(r.issuerName).trim());
-    }
     partStaffRoster = {
       sheetName: 'PartStaff',
       requesters: dedupeStaffNames(reqList),
@@ -14354,8 +14348,9 @@
     const cleanWh = dedupeStaffNames(newRoster?.issuers || partStaffRoster.issuers);
     partStaffRoster = {
       sheetName: 'PartStaff',
-      requesters: cleanReq.length ? cleanReq : ['พนักงานเบิก Part (Production)'],
-      issuers: cleanWh.length ? cleanWh : ['เจ้าหน้าที่คลังจ่าย Part (Warehouse)'],
+      source: newRoster?.source || partStaffRoster?.source || 'local',
+      requesters: cleanReq,
+      issuers: cleanWh,
       updatedAt: new Date().toISOString()
     };
     try {
@@ -14437,51 +14432,69 @@
 
   async function fetchPartStaffFromGoogleSheet(showFeedback = false) {
     let updated = false;
-    // 1. Try Apps Script callGoogle('getPartStaffRoster') if hosted inside GAS
-    if (hasGoogle()) {
-      const res = await callGoogle('getPartStaffRoster').catch(() => null);
-      if (res?.ok && (res.requesters?.length || res.issuers?.length)) {
-        const cur = loadPartStaffRoster();
-        savePartStaffRoster({
-          requesters: [...res.requesters, ...cur.requesters],
-          issuers: [...res.issuers, ...cur.issuers]
-        });
-        updated = true;
-      }
-    }
-    // 2. Try Google Sheet gviz CSV endpoint for tab `PartStaff` (or `คนเบิกจ่าย`)
-    for (const tabName of ['PartStaff', 'คนเบิกจ่าย']) {
+    // 1. Try Apps Script Web App (`staff_list`) — reads `PartStaff` directly as sheet owner
+    if (isPartReqSharedApiConfigured()) {
       try {
-        const csvUrl = `https://docs.google.com/spreadsheets/d/${PART_REQ_GOOGLE_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
-        const resp = await fetchWithTimeout(csvUrl, { cache: 'no-store' }, 4500).catch(() => null);
-        if (resp?.ok) {
-          const text = await resp.text();
-          if (text && !text.trim().startsWith('<!DOCTYPE') && !text.trim().startsWith('<html')) {
-            const parsed = parsePartStaffRowsText(text);
-            if (parsed.requesters.length || parsed.issuers.length) {
-              const cur = loadPartStaffRoster();
-              savePartStaffRoster({
-                requesters: [...parsed.requesters, ...cur.requesters],
-                issuers: [...parsed.issuers, ...cur.issuers]
-              });
-              updated = true;
-              break;
-            }
-          }
+        const res = await postPartReqSharedApiForm({ action: 'staff_list' });
+        if (res?.ok && res.staffRoster && (res.staffRoster.requesters?.length || res.staffRoster.issuers?.length)) {
+          savePartStaffRoster({
+            requesters: res.staffRoster.requesters || [],
+            issuers: res.staffRoster.issuers || [],
+            source: 'sheet'
+          }, false);
+          updated = true;
         }
       } catch (_) {}
     }
-    // 3. Try Helper Server `/part-staff`
-    const helperBase = await checkHelperHealth();
-    if (helperBase) {
-      const hRes = await fetchWithTimeout(`${helperBase}/part-staff`, { cache: 'no-store' }, 2500).then(r => r.json()).catch(() => null);
-      if (hRes?.ok && hRes.staffRoster) {
-        const cur = loadPartStaffRoster();
+    // 2. Try Apps Script callGoogle('getPartStaffRoster') if hosted inside GAS
+    if (!updated && hasGoogle()) {
+      const res = await callGoogle('getPartStaffRoster').catch(() => null);
+      if (res?.ok && (res.requesters?.length || res.issuers?.length)) {
         savePartStaffRoster({
-          requesters: [...(hRes.staffRoster.requesters || []), ...cur.requesters],
-          issuers: [...(hRes.staffRoster.issuers || []), ...cur.issuers]
+          requesters: res.requesters || [],
+          issuers: res.issuers || [],
+          source: 'sheet'
         }, false);
         updated = true;
+      }
+    }
+    // 3. Try Google Sheet gviz CSV endpoint for tab `PartStaff` (or `คนเบิกจ่าย`)
+    if (!updated) {
+      for (const tabName of ['PartStaff', 'คนเบิกจ่าย']) {
+        try {
+          const csvUrl = `https://docs.google.com/spreadsheets/d/${PART_REQ_GOOGLE_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
+          const resp = await fetchWithTimeout(csvUrl, { cache: 'no-store' }, 4500).catch(() => null);
+          if (resp?.ok) {
+            const text = await resp.text();
+            if (text && !text.trim().startsWith('<!DOCTYPE') && !text.trim().startsWith('<html')) {
+              const parsed = parsePartStaffRowsText(text);
+              if (parsed.requesters.length || parsed.issuers.length) {
+                savePartStaffRoster({
+                  requesters: parsed.requesters || [],
+                  issuers: parsed.issuers || [],
+                  source: 'sheet'
+                }, false);
+                updated = true;
+                break;
+              }
+            }
+          }
+        } catch (_) {}
+      }
+    }
+    // 4. Try Helper Server `/part-staff`
+    if (!updated) {
+      const helperBase = await checkHelperHealth();
+      if (helperBase) {
+        const hRes = await fetchWithTimeout(`${helperBase}/part-staff`, { cache: 'no-store' }, 2500).then(r => r.json()).catch(() => null);
+        if (hRes?.ok && hRes.staffRoster && (hRes.staffRoster.requesters?.length || hRes.staffRoster.issuers?.length)) {
+          savePartStaffRoster({
+            requesters: hRes.staffRoster.requesters || [],
+            issuers: hRes.staffRoster.issuers || [],
+            source: 'sheet'
+          }, false);
+          updated = true;
+        }
       }
     }
     if (showFeedback) {
