@@ -27,6 +27,11 @@ function doPost(e) {
       result = partReqApiChallenge_(params.username);
     } else if (params.action === 'login') {
       result = partReqApiLogin_(params.username, params.password, params.verifier);
+    } else if (params.action === 'member_login') {
+      result = partReqApiMemberLogin_(params.username, params.password);
+    } else if (params.action === 'member_register') {
+      const regUser = JSON.parse(String(params.user || '{}'));
+      result = partReqApiMemberRegister_(regUser);
     } else {
       const session = partReqApiGetSession_(params.token);
       if (!session) throw new Error('SESSION_EXPIRED');
@@ -55,6 +60,8 @@ function doPost(e) {
       } else if (params.action === 'members_save') {
         const users = JSON.parse(String(params.users || '[]'));
         result = { ok: true, users: partReqApiSaveMembers_(users) };
+      } else if (params.action === 'member_reset_password') {
+        result = partReqApiMemberResetPassword_(params.username, params.newPassword);
       } else {
         throw new Error('UNKNOWN_ACTION');
       }
@@ -499,7 +506,7 @@ function partReqApiGetMembersSheet_() {
   return sheet;
 }
 
-function partReqApiGetMembers_() {
+function partReqApiGetMembers_(includeSecrets) {
   const sheet = partReqApiGetMembersSheet_();
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) return [];
@@ -510,11 +517,92 @@ function partReqApiGetMembers_() {
     name: String(r[2] || '').trim(),
     department: String(r[3] || '').trim(),
     role: String(r[4] || 'user').trim().toLowerCase(),
-    password: String(r[5] || '').trim(),
+    password: includeSecrets ? String(r[5] || '').trim() : '••••••••',
     status: String(r[6] || 'approved').trim().toLowerCase(),
     approvedAt: String(r[7] || '').trim(),
     createdAt: String(r[8] || '').trim()
   })).filter(u => u.username);
+}
+
+function partReqApiMemberLogin_(usernameRaw, passwordRaw) {
+  const uname = String(usernameRaw || '').trim().toLowerCase();
+  const pwd = String(passwordRaw || '').trim();
+  if (!uname || !pwd) return { ok: false, error: 'INVALID_CREDENTIALS' };
+  const all = partReqApiGetMembers_(true);
+  const found = all.find(u => u.username.toLowerCase() === uname);
+  if (!found || found.password !== pwd) {
+    return { ok: false, error: 'INVALID_CREDENTIALS' };
+  }
+  return {
+    ok: true,
+    user: {
+      id: found.id,
+      username: found.username,
+      name: found.name,
+      department: found.department,
+      role: found.role,
+      status: found.status,
+      approvedAt: found.approvedAt,
+      createdAt: found.createdAt
+    }
+  };
+}
+
+function partReqApiMemberRegister_(regUser) {
+  const uname = String(regUser?.username || '').trim().toLowerCase();
+  const pwd = String(regUser?.password || '').trim();
+  if (!uname || !pwd || pwd.length < 4) return { ok: false, error: 'INVALID_INPUT' };
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+  try {
+    const existing = partReqApiGetMembers_(true);
+    if (existing.some(u => u.username.toLowerCase() === uname)) {
+      return { ok: false, error: 'USERNAME_EXISTS' };
+    }
+    const sheet = partReqApiGetMembersSheet_();
+    const nowIso = new Date().toISOString();
+    const row = [
+      String(regUser.id || ('u_' + Date.now())),
+      uname,
+      String(regUser.name || uname).trim(),
+      String(regUser.department || 'ทั่วไป').trim(),
+      ['requester', 'warehouse', 'user'].includes(String(regUser.role || '').toLowerCase()) ? String(regUser.role).toLowerCase() : 'requester',
+      pwd,
+      'pending',
+      '',
+      String(regUser.createdAt || nowIso)
+    ];
+    sheet.appendRow(row);
+    SpreadsheetApp.flush();
+    return { ok: true, username: uname, status: 'pending' };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function partReqApiMemberResetPassword_(usernameRaw, newPassRaw) {
+  const uname = String(usernameRaw || '').trim().toLowerCase();
+  const newPass = String(newPassRaw || '').trim();
+  if (!uname || newPass.length < 4) return { ok: false, error: 'INVALID_PASSWORD' };
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+  try {
+    const sheet = partReqApiGetMembersSheet_();
+    const lastRow = sheet.getLastRow();
+    if (lastRow >= 2) {
+      const rows = sheet.getRange(2, 1, lastRow - 1, MEMBERS_HEADERS.length).getValues();
+      for (let i = 0; i < rows.length; i++) {
+        if (String(rows[i][1] || '').trim().toLowerCase() === uname) {
+          sheet.getRange(i + 2, 6).setValue(newPass);
+          SpreadsheetApp.flush();
+          return { ok: true, username: uname };
+        }
+      }
+    }
+    return { ok: false, error: 'USER_NOT_FOUND' };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 function partReqApiSaveMembers_(users) {
@@ -522,26 +610,35 @@ function partReqApiSaveMembers_(users) {
   const lock = LockService.getScriptLock();
   lock.waitLock(15000);
   try {
+    const existingSecrets = new Map();
+    for (const ex of partReqApiGetMembers_(true)) {
+      existingSecrets.set(ex.username.toLowerCase(), ex.password);
+    }
     const sheet = partReqApiGetMembersSheet_();
     sheet.clearContents();
     sheet.getRange(1, 1, 1, MEMBERS_HEADERS.length).setValues([MEMBERS_HEADERS]);
     sheet.setFrozenRows(1);
     if (list.length) {
-      const rows = list.map(u => [
-        String(u.id || ('usr-' + String(u.username || '').trim())),
-        String(u.username || '').trim(),
-        String(u.name || u.username || '').trim(),
-        String(u.department || '').trim(),
-        String(u.role || 'user').trim().toLowerCase(),
-        String(u.password || '').trim(),
-        String(u.status || 'approved').trim().toLowerCase(),
-        String(u.approvedAt || '').trim(),
-        String(u.createdAt || '').trim()
-      ]);
+      const rows = list.map(u => {
+        const uname = String(u.username || '').trim();
+        const incomingPwd = String(u.password || '').trim();
+        const keptPwd = (incomingPwd && incomingPwd !== '••••••••') ? incomingPwd : (existingSecrets.get(uname.toLowerCase()) || '1234');
+        return [
+          String(u.id || ('usr-' + uname)),
+          uname,
+          String(u.name || uname).trim(),
+          String(u.department || '').trim(),
+          String(u.role || 'user').trim().toLowerCase(),
+          keptPwd,
+          String(u.status || 'approved').trim().toLowerCase(),
+          String(u.approvedAt || '').trim(),
+          String(u.createdAt || '').trim()
+        ];
+      });
       sheet.getRange(2, 1, rows.length, MEMBERS_HEADERS.length).setValues(rows);
     }
     SpreadsheetApp.flush();
-    return partReqApiGetMembers_();
+    return partReqApiGetMembers_(false);
   } finally {
     lock.releaseLock();
   }

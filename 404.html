@@ -3305,52 +3305,7 @@
   }
 
   const KEYS = ['inventory','departmentMap','bom','safetyStock','imports','plans','settings','productionOrders','users','partRequisitions'];
-  const DEFAULT_USERS = [
-    {
-      id: 'u_admin',
-      username: 'admin',
-      password: 'admin1234',
-      name: 'ผู้ดูแลระบบ (Admin)',
-      department: 'ส่วนกลาง / Management',
-      role: 'admin',
-      status: 'approved',
-      createdAt: '2026-10-13T00:00:00.000Z',
-      approvedAt: '2026-10-13T00:00:00.000Z'
-    },
-    {
-      id: 'u_user',
-      username: 'user',
-      password: 'user1234',
-      name: 'ผู้ใช้งานทั่วไป (User)',
-      department: 'H9 Assembly Production Line',
-      role: 'user',
-      status: 'approved',
-      createdAt: '2026-10-13T00:00:00.000Z',
-      approvedAt: '2026-10-13T00:00:00.000Z'
-    },
-    {
-      id: 'u_requester',
-      username: 'req',
-      password: '1234',
-      name: 'พนักงานเบิก Part (Production)',
-      department: 'H9 Assembly Production Line',
-      role: 'requester',
-      status: 'approved',
-      createdAt: '2026-11-07T00:00:00.000Z',
-      approvedAt: '2026-11-07T00:00:00.000Z'
-    },
-    {
-      id: 'u_warehouse',
-      username: 'wh',
-      password: '1234',
-      name: 'เจ้าหน้าที่คลังจ่าย Part (Warehouse)',
-      department: 'Warehouse / Logistics',
-      role: 'warehouse',
-      status: 'approved',
-      createdAt: '2026-11-07T00:00:00.000Z',
-      approvedAt: '2026-11-07T00:00:00.000Z'
-    }
-  ];
+  const DEFAULT_USERS = [];
   const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],productionMaterialIssues:[],finishedGoodsReceipts:[],partRequisitions:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',lastMaterialIssueAt:'',lastFinishedGoodsReceiptAt:'',security:{passcode:'1234'}}};
   let db = structuredClone(initial), activePage='overview', firstPageLoad=true, pendingImport=null, currentAnalysis=[], sourceRemote=false, lastSheetPullAt=localStorage.getItem('onhandLastSheetPullAt')||'', remoteSaveTimer=null, remoteSaveQueue=Promise.resolve();
   const el = id => document.getElementById(id);
@@ -10241,16 +10196,22 @@
     }
   }
 
-  function unlockScreen(){
+  async function unlockScreen(){
     const pwdInput = el('lockPasscodeInput');
     const entered = (pwdInput?.value || '').trim();
     const correctPin = String(getSecuritySettings().passcode || '1234').trim();
     const currentUser = getCurrentUser();
     const isPinMatch = entered === correctPin;
     const isUserMatch = currentUser && entered === currentUser.password;
-    const isAdminMatch = entered === 'admin1234' || (db.users || []).some(u => u.role === 'admin' && u.password === entered);
+    let isRemoteMatch = false;
+    if (!isPinMatch && currentUser?.username && isPartReqSharedApiConfigured()) {
+      try {
+        const res = await postPartReqSharedApiForm({ action: 'member_login', username: currentUser.username, password: entered });
+        if (res?.ok && res.user) isRemoteMatch = true;
+      } catch (_) {}
+    }
 
-    if(isPinMatch || isUserMatch || isAdminMatch){
+    if(isPinMatch || isUserMatch || isRemoteMatch){
       isScreenLocked = false;
       try { sessionStorage.removeItem('onhandScreenLocked'); } catch(_) {}
       const lockEl = el('securityLockScreen');
@@ -10382,7 +10343,7 @@
     s.innerHTML = depts.map(d => `<option value="${esc(d)}">${esc(d)}</option>`).join('');
   }
 
-  function handleLoginSubmit(){
+  async function handleLoginSubmit(){
     const uInput = el('loginUsernameInput'), pInput = el('loginPasswordInput'), errEl = el('loginErrorMsg');
     const username = (uInput?.value || '').trim();
     const password = (pInput?.value || '').trim();
@@ -10391,14 +10352,30 @@
       return;
     }
 
-    const users = db.users || [];
-    const found = users.find(u => u.username.toLowerCase() === username.toLowerCase());
-    if(!found || found.password !== password){
+    let found = null;
+    if (isPartReqSharedApiConfigured()) {
+      try {
+        if (errEl) errEl.textContent = '⏳ กำลังตรวจสอบบัญชีกับ Google Sheet...';
+        const res = await postPartReqSharedApiForm({ action: 'member_login', username, password });
+        if (res?.ok && res.user) {
+          found = res.user;
+        } else if (res && res.error === 'INVALID_CREDENTIALS') {
+          found = null;
+        }
+      } catch (_) {}
+    }
+    if (!found) {
+      const localMatch = (db.users || []).find(u => u.username.toLowerCase() === username.toLowerCase() && u.password && u.password !== '••••••••' && u.password === password);
+      if (localMatch) found = localMatch;
+    }
+
+    if(!found){
       if(errEl) errEl.textContent = 'ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง';
       const card = el('authCard');
       if(card){ card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake'); }
       return;
     }
+    if (errEl) errEl.textContent = '';
 
     if(found.status === 'pending'){
       if(errEl) errEl.innerHTML = `⏳ บัญชี <b>"${esc(found.username)}"</b> อยู่ระหว่างรอ Admin อนุมัติการใช้งาน<br><small style="color:#64748b">กรุณาแจ้งผู้ดูแลระบบเพื่อเปิดสิทธิ์ก่อนเข้าสู่ระบบ</small>`;
@@ -10412,19 +10389,19 @@
       return;
     }
 
-    setCurrentUser(found);
+    const safeUser = { ...found, password: '••••••••' };
+    setCurrentUser(safeUser);
     hideAuthScreen();
-    if (found.role === 'requester') {
+    if (safeUser.role === 'requester') {
       goto('part-requisition');
-    } else if (found.role === 'warehouse') {
+    } else if (safeUser.role === 'warehouse') {
       goto('part-issue');
     } else {
-      goto(found.role === 'admin' && activePage === 'users' ? 'users' : 'overview');
+      goto(safeUser.role === 'admin' && activePage === 'users' ? 'users' : 'overview');
     }
-    toast(`เข้าสู่ระบบสำเร็จ ยินดีต้อนรับ ${found.name || found.username}`);
-    if (['requester', 'warehouse'].includes(found.role)) {
-      initializePartReqSharedApi().catch(err => console.warn('[PartReqAPI] login sync failed:', err?.message || err));
-    }
+    toast(`เข้าสู่ระบบสำเร็จ ยินดีต้อนรับ ${safeUser.name || safeUser.username}`);
+    initializePartReqSharedApi().catch(err => console.warn('[PartReqAPI] login sync failed:', err?.message || err));
+    syncMembersFromGoogleSheet().catch(() => {});
   }
 
   function handleRegisterSubmit(){
@@ -10470,9 +10447,17 @@
       approvedAt: null
     };
 
-    db.users.push(newUser);
+    const safeLocalUser = { ...newUser, password: '••••••••' };
+    db.users.push(safeLocalUser);
     persist(true);
-    saveMembersToGoogleSheet();
+    if (isPartReqSharedApiConfigured()) {
+      fetch(PART_REQ_SHARED_API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body: new URLSearchParams({ action: 'member_register', user: JSON.stringify(newUser) }).toString()
+      }).catch(() => {});
+    }
 
     uInput.value = ''; nameInput.value = ''; pInput.value = ''; cpInput.value = '';
     switchAuthTab('login');
@@ -10690,7 +10675,7 @@
                       </div>
                     </td>
                     <td style="font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12.5px;color:#334155">
-                      ${isAdmin ? `<code>${esc(a.password)}</code>` : '••••••••'}
+                      ••••••••
                     </td>
                     <td style="font-size:12px;color:var(--muted)">${esc(time(a.approvedAt || a.createdAt))}</td>
                     ${isAdmin ? `
@@ -10829,16 +10814,27 @@
     toast(`เปลี่ยนสิทธิ์ของ "${u.name || u.username}" เป็น ${getRoleDisplayLabel(newRole)} สำเร็จ`);
   }
 
-  function resetUserPassword(userId){
+  async function resetUserPassword(userId){
     const u = (db.users || []).find(x => x.id === userId);
     if(!u) return;
     const newPass = prompt(`กรุณากรอกรหัสผ่านใหม่สำหรับ "${u.name || u.username}":`, '');
     if(newPass && newPass.trim().length >= 4){
-      u.password = newPass.trim();
+      const pwd = newPass.trim();
+      if (isPartReqSharedApiConfigured()) {
+        const token = await ensurePartReqSharedApiSession().catch(() => '');
+        if (token) {
+          await fetch(PART_REQ_SHARED_API_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+            body: new URLSearchParams({ action: 'member_reset_password', token, username: u.username, newPassword: pwd }).toString()
+          }).catch(() => {});
+        }
+      }
+      u.password = '••••••••';
       persist(true);
-      saveMembersToGoogleSheet();
       renderUsersPage();
-      toast(`เปลี่ยนรหัสผ่านของ "${u.name || u.username}" เรียบร้อยแล้ว`);
+      toast(`เปลี่ยนรหัสผ่านของ "${u.name || u.username}" ใน Google Sheet เรียบร้อยแล้ว`);
     } else if(newPass !== null) {
       alert('รหัสผ่านต้องมีความยาวอย่างน้อย 4 ตัวอักษร');
     }
