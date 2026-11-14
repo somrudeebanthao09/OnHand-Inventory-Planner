@@ -1676,7 +1676,7 @@
     <div class="lock-icon-wrap">🔒</div>
     <h2 style="margin:0 0 6px;font-size:21px;color:var(--ink);letter-spacing:-.3px">ระบบถูกล็อกเพื่อความปลอดภัย</h2>
     <p style="margin:0;font-size:13.5px;color:var(--muted);line-height:1.5">
-      ไม่มีการใช้งานนานเกินกำหนด หรือถูกกดล็อกหน้าจอ<br>กรุณากรอกรหัสผ่านเพื่อเข้าใช้งานต่อ
+      หน้าจอถูกล็อกชั่วคราว<br>กรุณากรอกรหัสผ่านเพื่อเข้าใช้งานต่อ
     </p>
     <form id="lockUnlockForm" onsubmit="return false;" style="margin-top:16px">
       <div class="lock-input-group">
@@ -2201,26 +2201,11 @@
         <div class="panel" id="securitySettingsPanel">
           <div class="panel-head">
             <div>
-              <h2>🛡️ ความปลอดภัยและการล็อกหน้าจอ (Security &amp; Auto-Lock)</h2>
-              <p>ตั้งเวลาล็อกหน้าจออัตโนมัติเมื่อไม่มีการใช้งาน และกำหนดรหัสผ่านเพื่อความปลอดภัยของข้อมูลสต็อกและคำสั่งผลิต</p>
+              <h2>🛡️ ความปลอดภัยและการล็อกหน้าจอ (Security)</h2>
+              <p>กำหนดรหัสผ่านสำหรับปลดล็อกหน้าจอเมื่อกดปุ่ม "🔒 ล็อกหน้าจอ" เพื่อความปลอดภัยของข้อมูลสต็อกและคำสั่งผลิต</p>
             </div>
-            <span class="badge green" id="securityStatusBadge">เปิดใช้งาน (15 นาที)</span>
           </div>
           <div class="settings-grid">
-            <div class="setting">
-              <h3>ระยะเวลาล็อกอัตโนมัติ (Inactivity Timeout)</h3>
-              <p>ระบบตรวจจับการใช้งาน (เมาส์, แป้นพิมพ์, สัมผัส) หากไม่มีการขยับจะทำการล็อกและเบลอหน้าจอทันที</p>
-              <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
-                <select id="autoLockTimeoutSelect" class="field" style="flex:1">
-                  <option value="5">5 นาที (เข้มงวดสูง)</option>
-                  <option value="15" selected>15 นาที (แนะนำตามมาตรฐานระบบ ERP / คลัง)</option>
-                  <option value="30">30 นาที (ปานกลาง)</option>
-                  <option value="60">60 นาที (1 ชั่วโมง)</option>
-                  <option value="0">ปิดการล็อกอัตโนมัติ (ไม่แนะนำ)</option>
-                </select>
-                <button class="btn primary" id="saveTimeoutBtn" type="button">บันทึกเวลา</button>
-              </div>
-            </div>
             <div class="setting">
               <h3>เปลี่ยนรหัสผ่านปลดล็อก (Passcode / PIN)</h3>
               <p>รหัสผ่านเริ่มต้นคือ <code>1234</code> สามารถเปลี่ยนเป็นตัวเลขหรือตัวอักษรที่ต้องการได้</p>
@@ -2229,9 +2214,6 @@
                 <button class="btn primary" id="savePasscodeBtn" type="button">เปลี่ยนรหัสผ่าน</button>
               </div>
             </div>
-          </div>
-          <div class="notice" style="margin-top:15px;background:#f3f8fa;border-color:#d7e7eb;color:#35565f">
-            <strong>💡 คำแนะนำมาตรฐานความปลอดภัย:</strong> ระบบ ERP และการจัดการสต็อกส่วนใหญ่ (เช่น SAP, Kingdee) กำหนดการล็อกหน้าจอเมื่อไม่ได้ใช้งานที่ <b>15 นาที</b> เพื่อป้องกันไม่ให้บุคคลอื่นเข้าดูข้อมูลหรือแก้ไขยอดสต็อกขณะพนักงานลุกออกจากโต๊ะทำงาน และสามารถกดปุ่ม <b>"🔒 ล็อกหน้าจอ"</b> บนแถบเมนูด้านบนได้ทันทีตลอดเวลา
           </div>
         </div>
         <div class="panel hidden" id="accessAdminPanel"><div class="panel-head"><div><h2>คำขอใช้เว็บ</h2><p>ตรวจสอบอีเมล Google และอนุมัติก่อนเข้าถึงข้อมูลคลัง</p></div><button class="btn" id="refreshAccessRequestsBtn">↻ รีเฟรช</button></div><div id="accessRequestsList"></div></div>
@@ -3369,7 +3351,7 @@
       approvedAt: '2026-11-07T00:00:00.000Z'
     }
   ];
-  const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],productionMaterialIssues:[],finishedGoodsReceipts:[],partRequisitions:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',lastMaterialIssueAt:'',lastFinishedGoodsReceiptAt:'',security:{autoLockMinutes:15,passcode:'1234'}}};
+  const initial = {inventory:[],departmentMap:[],bom:[],safetyStock:{},imports:[],plans:[],productionOrders:[],productionMaterialIssues:[],finishedGoodsReceipts:[],partRequisitions:[],users:[],settings:{activeDepts:DEPTS,autoRefresh08:true,autoSync10m:true,lastInventoryAt:'',lastBomAt:'',lastOrdersAt:'',lastMaterialIssueAt:'',lastFinishedGoodsReceiptAt:'',security:{passcode:'1234'}}};
   let db = structuredClone(initial), activePage='overview', firstPageLoad=true, pendingImport=null, currentAnalysis=[], sourceRemote=false, lastSheetPullAt=localStorage.getItem('onhandLastSheetPullAt')||'', remoteSaveTimer=null, remoteSaveQueue=Promise.resolve();
   const el = id => document.getElementById(id);
   const n = value => { const x=Number(String(value??'').replace(/,/g,'').trim()); return Number.isFinite(x)?x:0; };
@@ -3387,7 +3369,6 @@
   async function renderAccessRequests(){if(!accessIsAdmin)return;const host=el('accessRequestsList');host.innerHTML='<div class="empty">กำลังโหลดคำขอ…</div>';try{const rows=await callGoogle('listAccessRequests'),pending=rows.filter(x=>x.status==='pending');host.innerHTML=pending.length?`<div class="table-wrap"><table class="access-table"><thead><tr><th>อีเมล</th><th>ชื่อ</th><th>ขอเมื่อ</th><th>จัดการ</th></tr></thead><tbody>${pending.map(x=>`<tr><td>${esc(x.email)}</td><td>${esc(x.displayName||'—')}</td><td>${esc(time(x.requestedAt))}</td><td><button class="btn soft accessReview" data-email="${esc(x.email)}" data-decision="approved">อนุมัติ</button> <button class="btn danger accessReview" data-email="${esc(x.email)}" data-decision="rejected">ปฏิเสธ</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty"><b>ไม่มีคำขอรออนุมัติ</b></div>'}catch(err){host.innerHTML='<div class="notice red">โหลดคำขอไม่ได้ ตรวจสิทธิ์ Admin และการเชื่อมต่อ Google Sheets</div>';console.error(err)}}
   async function boot(){
     try{
-      initInactivityTracker();
       initAuthListeners();
       initUserManagementListeners();
       await loadData();
@@ -4157,7 +4138,7 @@
     const all = allProductionDepartments();
     return all.filter(d => active.includes(d) || d === 'H1 Assembly Production Line');
   };
-  function renderAll(){renderSelectors();renderOverview();renderPlanList();renderAnalysis();renderStock();renderSafety();renderImports();syncSwitches();renderSecuritySettings();computeOrderShortages();if(activePage==='orders')renderOrdersPage();if(typeof renderPoTrackingPage==='function')renderPoTrackingPage();}
+  function renderAll(){renderSelectors();renderOverview();renderPlanList();renderAnalysis();renderStock();renderSafety();renderImports();syncSwitches();computeOrderShortages();if(activePage==='orders')renderOrdersPage();if(typeof renderPoTrackingPage==='function')renderPoTrackingPage();}
   function renderSelectors(){
     const options='<option value="">ทุกแผนก</option>'+activeDepts().map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
     ['overviewDept'].forEach(id=>{const x=el(id),v=x.value;x.innerHTML=options;if([...x.options].some(o=>o.value===v))x.value=v});
@@ -10093,13 +10074,11 @@
   window.appOpenPoTrackingDetail = openPoTrackingDetailModal;
   window.appOpenPoLotModal = openPoLotComparisonModal;
 
-  // === Security Auto-Lock & Session Timeout System ===
-  let lastUserActivityTime = Date.now();
+  // === Security Manual Screen Lock ===
   let isScreenLocked = false;
 
   function getSecuritySettings(){
     return {
-      autoLockMinutes: 0,
       passcode: '1234',
       ...(db.settings?.security || {})
     };
@@ -10146,7 +10125,6 @@
       }
       if(pwdInput) pwdInput.value = '';
       if(el('lockErrorMsg')) el('lockErrorMsg').textContent = '';
-      lastUserActivityTime = Date.now();
       toast('ปลดล็อกหน้าจอเรียบร้อยแล้ว');
     } else {
       const card = el('lockCard');
@@ -10163,44 +10141,6 @@
         pwdInput.focus();
       }
     }
-  }
-
-  function renderSecuritySettings(){
-    const sec = getSecuritySettings();
-    if(el('autoLockTimeoutSelect')) el('autoLockTimeoutSelect').value = String(sec.autoLockMinutes ?? 15);
-    if(el('securityStatusBadge')){
-      const mins = Number(sec.autoLockMinutes);
-      if(mins > 0){
-        el('securityStatusBadge').className = 'badge green';
-        el('securityStatusBadge').textContent = `เปิดใช้งาน (${mins} นาที)`;
-      } else {
-        el('securityStatusBadge').className = 'badge gray';
-        el('securityStatusBadge').textContent = 'ปิดการล็อกอัตโนมัติ';
-      }
-    }
-  }
-
-  function initInactivityTracker(){
-    const recordActivity = () => {
-      if(!isScreenLocked){
-        lastUserActivityTime = Date.now();
-      }
-    };
-    ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll'].forEach(evt => {
-      window.addEventListener(evt, recordActivity, { passive: true });
-    });
-
-    setInterval(() => {
-      if(isScreenLocked) return;
-      const sec = getSecuritySettings();
-      const minutes = Number(sec.autoLockMinutes);
-      if(minutes > 0){
-        const idleMs = Date.now() - lastUserActivityTime;
-        if(idleMs >= minutes * 60 * 1000){
-          lockScreen('inactivity');
-        }
-      }
-    }, 10000);
   }
 
   window.appLockScreen = lockScreen;
@@ -10337,7 +10277,6 @@
 
     setCurrentUser(found);
     hideAuthScreen();
-    lastUserActivityTime = Date.now();
     if (found.role === 'requester') {
       goto('part-requisition');
     } else if (found.role === 'warehouse') {
@@ -11501,21 +11440,6 @@
       el('lockTogglePwdBtn').textContent = '👁️';
     }
     input.focus();
-  });
-  el('saveTimeoutBtn')?.addEventListener('click', async () => {
-    const mins = Number(el('autoLockTimeoutSelect').value);
-    if(!db.settings.security) db.settings.security = {};
-    db.settings.security.autoLockMinutes = mins;
-    await persist();
-    renderSecuritySettings();
-    toast(mins > 0 ? `ตั้งเวลาล็อกอัตโนมัติ ${mins} นาทีเรียบร้อยแล้ว` : 'ปิดการล็อกหน้าจออัตโนมัติแล้ว');
-  });
-  el('autoLockTimeoutSelect')?.addEventListener('change', async () => {
-    const mins = Number(el('autoLockTimeoutSelect').value);
-    if(!db.settings.security) db.settings.security = {};
-    db.settings.security.autoLockMinutes = mins;
-    await persist();
-    renderSecuritySettings();
   });
   el('savePasscodeBtn')?.addEventListener('click', async () => {
     const newPass = (el('newPasscodeInput').value || '').trim();
