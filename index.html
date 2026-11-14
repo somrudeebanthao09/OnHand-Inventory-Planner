@@ -10018,6 +10018,29 @@
       return orderPdfLinksByMo;
     }
     orderPdfLinksFetchedAt = Date.now();
+    // 1. ดึงจาก Cloud Google Sheet (OrderPdfLinks) โดยตรง
+    if (isPartReqSharedApiConfigured()) {
+      try {
+        const token = await ensurePartReqSharedApiSession().catch(() => '');
+        if (token) {
+          const gasRes = await postPartReqSharedApiForm({ action: 'list_order_pdfs', token });
+          if (gasRes?.ok && Array.isArray(gasRes.items)) {
+            const next = new Map();
+            for (const it of gasRes.items) {
+              const key = normalizeMoKey(it.moNumber);
+              if (!key) continue;
+              if (!next.has(key)) next.set(key, { order: null, transfers: new Map() });
+              const bucket = next.get(key);
+              if (it.docType === 'transfer') bucket.transfers.set(it.docNumber, it);
+              else bucket.order = it;
+            }
+            orderPdfLinksByMo = next;
+            return orderPdfLinksByMo;
+          }
+        }
+      } catch (_) {}
+    }
+    // 2. สำรอง: ดึงจาก Helper Server (ถ้าเปิดอยู่)
     try {
       const helperBase = await checkHelperHealth();
       if (helperBase) {
@@ -10436,6 +10459,7 @@
 
     db.users.push(newUser);
     persist(true);
+    saveMembersToGoogleSheet();
 
     uInput.value = ''; nameInput.value = ''; pInput.value = ''; cpInput.value = '';
     switchAuthTab('login');
