@@ -12745,22 +12745,24 @@
       }
       return;
     }
-    if (u.role === 'warehouse' || (u.role === 'admin' && activePage === 'part-issue')) {
+    if (u.role === 'warehouse' || u.role === 'admin') {
       const fresh = pending.filter(r => !st.pending.includes(r.reqId));
-      if (!fresh.length) return;
-      st.pending = [...st.pending, ...fresh.map(r => r.reqId)];
-      savePartReqSeen(identity, st);
-      playWarehouseAlertBeep();
-      const r0 = fresh[0];
-      toast(`🔔 ใบเบิก Part ใหม่ถึง Warehouse: ${r0.materialCode} · ${fmtQty(r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber}${fresh.length > 1 ? ` (และอีก ${fresh.length - 1} รายการ)` : ''}`);
-      showPartReqRealtimePopup({ roleType: 'warehouse', record: r0, extraCount: fresh.length - 1 });
-      showLocalSystemNotification(
-        `🔔 มีใบเบิก Part ใหม่ (${r0.materialCode})`,
-        `จำนวน ${fmtQty(r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber} · ผู้เบิก: ${r0.requesterName || '-'}${fresh.length > 1 ? ` (+อีก ${fresh.length - 1} รายการ)` : ''}`,
-        './#part-issue',
-        `part-req-pending-${r0.reqId}`
-      );
-    } else if (u.role === 'requester' || u.role === 'admin') {
+      if (fresh.length) {
+        st.pending = [...st.pending, ...fresh.map(r => r.reqId)];
+        savePartReqSeen(identity, st);
+        playWarehouseAlertBeep();
+        const r0 = fresh[0];
+        toast(`🔔 ใบเบิก Part ใหม่ถึง Warehouse: ${r0.materialCode} · ${fmtQty(r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber}${fresh.length > 1 ? ` (และอีก ${fresh.length - 1} รายการ)` : ''}`);
+        showPartReqRealtimePopup({ roleType: 'warehouse', record: r0, extraCount: fresh.length - 1 });
+        showLocalSystemNotification(
+          `🔔 มีใบเบิก Part ใหม่ (${r0.materialCode})`,
+          `จำนวน ${fmtQty(r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber} · ผู้เบิก: ${r0.requesterName || '-'}${fresh.length > 1 ? ` (+อีก ${fresh.length - 1} รายการ)` : ''}`,
+          './#part-issue',
+          `part-req-pending-${r0.reqId}`
+        );
+      }
+    }
+    if (u.role === 'requester' || u.role === 'admin') {
       const mine = issued.filter(r => !st.issued.includes(r.reqId));
       if (!mine.length) return;
       st.issued = [...st.issued, ...mine.map(r => r.reqId)];
@@ -12911,7 +12913,10 @@
     partReqRelaySeenEvents.add(evt.id);
     if (partReqRelaySeenEvents.size > 4000) partReqRelaySeenEvents.clear();
     const rec = await parseCloudRelayEvent(evt);
-    if (rec) mergeIncomingPartRequisitions([rec]);
+    if (rec) {
+      partReqInitialSyncDone = true;
+      mergeIncomingPartRequisitions([rec]);
+    }
   }
 
   function shouldRunPartReqRelay() {
@@ -13376,9 +13381,9 @@
         }
       }
 
-      // 6. Shared Part API (Google Sheet PartRequisitions): ดึงแบบ Realtime ทุก 4 วินาทีโดยไม่บล็อกหน้าจอ
+      // 6. Shared Part API (Google Sheet PartRequisitions): ดึงแบบ Realtime ทุก 2.5 วินาทีโดยไม่บล็อกหน้าจอ
       const currentPartUser = getCurrentUser();
-      if (currentPartUser && partReqApiCanPostMessage() && (force || (document.visibilityState !== 'hidden' && Date.now() - partReqLastApiPullAt > 4000))) {
+      if (currentPartUser && partReqApiCanPostMessage() && (force || (document.visibilityState !== 'hidden' && Date.now() - partReqLastApiPullAt > 2500))) {
         const identity = `${currentPartUser.role}:${String(currentPartUser.username || '').trim().toLowerCase()}`;
         const p = partReqApiReconciledIdentity === identity
           ? pullPartReqSharedApiRecords()
@@ -14878,10 +14883,10 @@
     loadInitialPartRequisitions();
     startPartReqRealtimeStream();
 
-    // Poll shared cloud relay & helper server every 3.5 seconds so Warehouse receives real-time popups when Requester clicks Save
+    // Poll shared cloud relay, Google Sheet & helper server every 2.5 seconds for near-realtime alerts
     setInterval(() => {
       syncPartRequisitionsFromServer(true);
-    }, 3500);
+    }, 2500);
     setTimeout(() => syncPartRequisitionsFromServer(true, true), 600);
 
     // Live 1-second Datetime clock for reqDateInput (DD/MM/YYYY HH:mm:ss) unless manually edited
