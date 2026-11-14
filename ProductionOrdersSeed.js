@@ -1,6 +1,6 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-14T06:30:34.753Z",
-  "filename": "Export list_Production Material List_1114142651.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
+  "snapshotAt": "2026-11-14T06:37:21.526Z",
+  "filename": "Export list_Production Material List_1114143636.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
   "count": 13979,
   "orders": [
     {
@@ -418,8 +418,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 300,
+      "consumedQty": 300,
+      "wipQty": 0,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Assembly",
       "requiredTime": "2026-11-14 10:50:55"
     },
@@ -17393,13 +17393,13 @@ window.PRODUCTION_ORDERS_SEED = {
       "directTransferQty": 0,
       "directTransferDocs": "",
       "ppbomDemandQty": 150,
-      "ppbomIssuedQty": 54,
-      "ppbomUnissuedQty": 96,
+      "ppbomIssuedQty": 102,
+      "ppbomUnissuedQty": 48,
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
       "consumedQty": 0,
-      "wipQty": 54,
+      "wipQty": 102,
       "issuingWarehouse": "Aluminum Die Casting Semi-Finished Product Warehouse-Waiting Packaging",
       "requiredTime": "2026-11-11 15:58:27"
     },
@@ -24958,8 +24958,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 430,
+      "consumedQty": 7,
+      "wipQty": 423,
       "issuingWarehouse": "Purchased parts warehouse",
       "requiredTime": "2026-11-11 10:17:02"
     },
@@ -24988,8 +24988,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 430,
+      "consumedQty": 7,
+      "wipQty": 423,
       "issuingWarehouse": "Purchased parts warehouse",
       "requiredTime": "2026-11-11 10:17:02"
     },
