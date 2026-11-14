@@ -2400,10 +2400,10 @@
             <input type="hidden" id="reqPpbomInput">
 
             <div class="part-req-form-grid">
-              <!-- 1. วันที่เบิก -->
+              <!-- 1. วันที่-เวลาเบิก (Datetime DD/MM/YYYY HH:mm:ss) -->
               <div class="pr-col-date">
-                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">วันที่เบิก <span style="color:#dc2626">*</span></label>
-                <input type="date" id="reqDateInput" class="field" style="width:100%;height:40px;font-size:13.5px" required>
+                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">วัน-เวลาเบิก (Datetime) <span style="color:#dc2626">*</span></label>
+                <input type="text" id="reqDateInput" class="field" placeholder="14/11/2026 11:29:00" style="width:100%;height:40px;font-size:13px;font-weight:750;font-family:ui-monospace,Consolas,monospace;color:#0f172a" required>
               </div>
 
               <!-- 2. กะ (A/B) -->
@@ -11836,9 +11836,59 @@
   let partReqApiLoginPromise = null;
   const partReqApiLoginRetryAfter = new Map();
 
+  function parsePartReqDateTimeMs(val) {
+    if (!val) return 0;
+    if (val instanceof Date) return Number.isFinite(val.getTime()) ? val.getTime() : 0;
+    if (typeof val === 'number') return Number.isFinite(val) ? val : 0;
+    const s = String(val).replace(/[\u200B-\u200D\uFEFF']/g, '').trim();
+    if (!s) return 0;
+    const dmy = /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/.exec(s);
+    if (dmy) {
+      let yyyy = Number(dmy[3]);
+      if (yyyy > 2400) yyyy -= 543;
+      const mm = Number(dmy[2]);
+      const dd = Number(dmy[1]);
+      const HH = Number(dmy[4] || 0);
+      const MI = Number(dmy[5] || 0);
+      const SS = Number(dmy[6] || 0);
+      return Date.UTC(yyyy, mm - 1, dd, HH - 7, MI, SS);
+    }
+    const cleanStr = s.replace(/\s*\([^)]*\)\s*$/, '').trim();
+    const parsed = Date.parse(cleanStr);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  function formatPartReqDateTime(val, fallbackVal = '', forSheet = false) {
+    let raw = String(val || '').replace(/[\u200B-\u200D\uFEFF']/g, '').trim();
+    const fb = String(fallbackVal || '').replace(/[\u200B-\u200D\uFEFF']/g, '').trim();
+    const isDateOnlyOrMidnight = !raw || /^\d{4}-\d{2}-\d{2}$/.test(raw) || /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(raw) || /00:00:00/.test(raw);
+    if (isDateOnlyOrMidnight && fb && !/00:00:00/.test(fb)) {
+      raw = fb;
+    }
+    const ms = parsePartReqDateTimeMs(raw) || parsePartReqDateTimeMs(fb);
+    if (!ms) return raw || '—';
+    const th = new Date(ms + 7 * 3600 * 1000);
+    const pad2 = x => String(x).padStart(2, '0');
+    const dd = pad2(th.getUTCDate());
+    const mm = pad2(th.getUTCMonth() + 1);
+    const yyyy = th.getUTCFullYear();
+    const HH = pad2(th.getUTCHours());
+    const MI = pad2(th.getUTCMinutes());
+    const SS = pad2(th.getUTCSeconds());
+    return forSheet ? `${dd}/${mm}/${yyyy}\u200B ${HH}:${MI}:${SS}` : `${dd}/${mm}/${yyyy} ${HH}:${MI}:${SS}`;
+  }
+
+  function partReqDateYMD(val, fallbackVal = '') {
+    const ms = parsePartReqDateTimeMs(val) || parsePartReqDateTimeMs(fallbackVal);
+    if (!ms) return '';
+    const th = new Date(ms + 7 * 3600 * 1000);
+    const pad2 = x => String(x).padStart(2, '0');
+    return `${th.getUTCFullYear()}-${pad2(th.getUTCMonth() + 1)}-${pad2(th.getUTCDate())}`;
+  }
+
   function isLegacyPurgedPartReq(r) {
     if (!r || !r.reqId) return true;
-    const reqTs = Date.parse(r.requestedAt || '') || 0;
+    const reqTs = parsePartReqDateTimeMs(r.requestedAt || r.requestDate || '') || 0;
     if (reqTs > 0 && reqTs < PART_REQ_PURGE_BEFORE_TS) return true;
     if (/^REQ-2026110[789]-/.test(String(r.reqId))) return true;
     return false;
@@ -11947,7 +11997,7 @@
 
   // ===================== Part Requisition shared-data helpers (v3) =====================
   function partReqStamp(r) {
-    return Date.parse(r?.updatedAt || r?.deletedAt || r?.issuedAt || r?.requestedAt || '') || 0;
+    return parsePartReqDateTimeMs(r?.updatedAt || r?.deletedAt || r?.issuedAt || r?.requestedAt || r?.requestDate || '') || 0;
   }
   // deleted (Admin ลบ) > issued (จ่ายแล้ว) > pending — สถานะไม่ย้อนกลับ แม้นาฬิกามือถือแต่ละเครื่องเดินไม่ตรงกัน
   function partReqRank(r) {
@@ -12090,8 +12140,15 @@
       if (item?.reqId && !isLegacyPurgedPartReq(item)) map.set(item.reqId, item);
     }
     let changed = false;
-    for (const inc of incomingList) {
-      if (!inc?.reqId || isLegacyPurgedPartReq(inc)) continue;
+    for (const incRaw of incomingList) {
+      if (!incRaw?.reqId || isLegacyPurgedPartReq(incRaw)) continue;
+      const inc = {
+        ...incRaw,
+        requestDate: formatPartReqDateTime(incRaw.requestDate, incRaw.requestedAt),
+        requestedAt: formatPartReqDateTime(incRaw.requestedAt || incRaw.requestDate, incRaw.requestDate),
+        issuedAt: incRaw.issuedAt ? formatPartReqDateTime(incRaw.issuedAt) : '',
+        photoTakenAt: (incRaw.photoTakenAt || incRaw.issuedAt) ? formatPartReqDateTime(incRaw.photoTakenAt || incRaw.issuedAt) : ''
+      };
       const ex = map.get(inc.reqId);
       if (!ex) {
         map.set(inc.reqId, { ...inc });
@@ -12110,7 +12167,7 @@
       changed = true;
     }
     if (!changed) return false;
-    partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
+    partRequisitionsList = [...map.values()].sort((a, b) => parsePartReqDateTimeMs(b.requestedAt || b.requestDate || '') - parsePartReqDateTimeMs(a.requestedAt || a.requestDate || ''));
     persistPartRequisitionsLocal();
     updatePartReqBadges();
     if (activePage === 'part-requisition' || activePage === 'part-issue') {
@@ -12455,20 +12512,17 @@
     if (!locations.length && record?.locationsJson) {
       try { const parsed = JSON.parse(record.locationsJson); if (Array.isArray(parsed)) locations = parsed; } catch (_) {}
     }
-    let requestDate = String(record?.requestDate || '').trim();
-    if (/^\d{4}-\d{2}-\d{2}T/.test(requestDate)) {
-      try {
-        requestDate = new Date(requestDate).toLocaleDateString('en-CA', { timeZone: 'Asia/Bangkok' });
-      } catch (_) {
-        requestDate = requestDate.slice(0, 10);
-      }
-    } else if (!requestDate && record?.requestedAt) {
-      requestDate = String(record.requestedAt).slice(0, 10);
-    }
+    const requestDate = formatPartReqDateTime(record?.requestDate, record?.requestedAt, false);
+    const requestedAt = formatPartReqDateTime(record?.requestedAt || record?.requestDate, record?.requestDate, false);
+    const issuedAt = record?.issuedAt ? formatPartReqDateTime(record?.issuedAt, '', false) : '';
+    const photoTakenAt = (record?.photoTakenAt || record?.issuedAt) ? formatPartReqDateTime(record?.photoTakenAt || record?.issuedAt, '', false) : '';
     const isAdminDeleted = Boolean(record?.deleted) || String(record?.issuerNote || '').includes('[DELETED_BY_ADMIN]');
     return {
       ...record,
       requestDate,
+      requestedAt,
+      issuedAt,
+      photoTakenAt,
       locations,
       deleted: isAdminDeleted,
       deletedAt: isAdminDeleted ? String(record?.deletedAt || record?.updatedAt || record?.issuedAt || '') : '',
@@ -12511,12 +12565,16 @@
     const isDeleted = Boolean(record?.deleted);
     const isIssued = isDeleted || record?.status === 'issued';
     const preferredRole = isIssued ? 'warehouse' : 'requester';
+    const rawIssAt = isDeleted ? (record.deletedAt || record.updatedAt || new Date().toISOString()) : String(record?.issuedAt || '');
     const apiRecord = {
       ...record,
       status: isIssued ? 'issued' : 'pending',
+      requestDate: formatPartReqDateTime(record?.requestDate, record?.requestedAt, true),
+      requestedAt: formatPartReqDateTime(record?.requestedAt || record?.requestDate, record?.requestDate, true),
       issuerNote: isDeleted ? '[DELETED_BY_ADMIN]' : String(record?.issuerNote || ''),
-      issuedAt: isDeleted ? (record.deletedAt || record.updatedAt || new Date().toISOString()) : String(record?.issuedAt || ''),
-      updatedAt: String(record?.updatedAt || record?.deletedAt || record?.issuedAt || record?.requestedAt || new Date().toISOString()),
+      issuedAt: rawIssAt ? formatPartReqDateTime(rawIssAt, '', true) : '',
+      photoTakenAt: (record?.photoTakenAt || rawIssAt) ? formatPartReqDateTime(record?.photoTakenAt || rawIssAt, '', true) : '',
+      updatedAt: formatPartReqDateTime(record?.updatedAt || record?.deletedAt || record?.issuedAt || record?.requestedAt || new Date().toISOString(), '', true),
       hasPhoto: isDeleted ? false : partReqHasPhoto(record)
     };
     delete apiRecord.issuePhotoDataUrl;
@@ -13310,10 +13368,10 @@
       if (activePartReqTab === 'pending' && r.status === 'issued') return false;
       if (activePartReqTab === 'issued' && r.status !== 'issued') return false;
       if (shiftFilter && String(r.shift || 'A').toUpperCase() !== shiftFilter) return false;
-      if (dateFilter && String(r.requestDate || '') !== dateFilter) return false;
+      if (dateFilter && partReqDateYMD(r.requestDate, r.requestedAt) !== dateFilter) return false;
       if (q) {
         const hay = [
-          r.reqId, r.requestDate, r.moNumber, r.ppbomNumber, r.directTransferDocs,
+          r.reqId, r.requestDate, r.requestedAt, r.issuedAt, r.moNumber, r.ppbomNumber, r.directTransferDocs,
           r.materialCode, r.materialName, r.specification, r.reason,
           r.requesterName, r.requesterNote, r.issuerName, r.issuerNote, r.locationsSummary
         ].join(' ').toLowerCase();
@@ -13392,7 +13450,7 @@
               <span class="badge ${isIssued ? 'green' : 'amber'}" style="font-size:12px;font-weight:800;padding:4px 10px">
                 ${isIssued ? '✅ สถานะ: จ่าย Part แล้ว' : '⏳ สถานะ: ยังไม่ถูกจ่าย (รอคลังจ่าย)'}
               </span>
-              <span style="font-size:11.5px;color:#475569;font-weight:700">🕒 เบิก: ${esc(time(r.requestedAt))}</span>
+              <span style="font-size:11.5px;color:#475569;font-weight:700;font-family:ui-monospace,Consolas,monospace">🕒 เบิก: ${esc(formatPartReqDateTime(r.requestedAt || r.requestDate, r.requestDate))}</span>
             </div>
 
             <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px">
@@ -13413,7 +13471,7 @@
               ${isIssued ? `
                 <div style="margin-top:5px;padding-top:5px;border-top:1px dashed #cbd5e1;color:#14532d">
                   <div>📍 <b>Location ที่หยิบ:</b> ${locsText}</div>
-                  <div>👤 <b>ผู้จ่าย:</b> <b>${esc(r.issuerName || '—')}</b> · 🕒 <b>จ่ายเมื่อ:</b> ${esc(time(r.issuedAt))}</div>
+                  <div>👤 <b>ผู้จ่าย:</b> <b>${esc(r.issuerName || '—')}</b> · 🕒 <b>จ่ายเมื่อ:</b> <span style="font-family:ui-monospace,Consolas,monospace">${esc(formatPartReqDateTime(r.issuedAt))}</span></div>
                   ${r.issuerNote ? `<div>💬 <b>หมายเหตุผู้จ่าย:</b> ${esc(r.issuerNote)}</div>` : ''}
                 </div>
               ` : ''}
@@ -13461,11 +13519,15 @@
            </div>`;
       }
 
+      const reqDtStr = formatPartReqDateTime(r.requestDate, r.requestedAt);
+      const reqAtStr = formatPartReqDateTime(r.requestedAt || r.requestDate, r.requestDate);
+      const issAtStr = r.issuedAt ? formatPartReqDateTime(r.issuedAt) : '';
+
       return `
         <tr style="border-bottom:1px solid #e2e8f0;background:${isIssued ? '#ffffff' : '#fffbeb'}">
           <td style="padding:9px 8px;font-size:12px">
-            <div style="font-weight:800;color:#0f172a">${esc(r.requestDate || (r.requestedAt ? r.requestedAt.slice(0, 10) : '—'))}</div>
-            <div style="font-size:10.5px;color:#0f766e;font-family:ui-monospace,Consolas,monospace;font-weight:700">${esc(r.reqId)}</div>
+            <div style="font-weight:800;color:#0f172a;font-family:ui-monospace,Consolas,monospace;font-size:11.5px">${esc(reqDtStr)}</div>
+            <div style="font-size:10.5px;color:#0f766e;font-family:ui-monospace,Consolas,monospace;font-weight:700;margin-top:2px">${esc(r.reqId)}</div>
           </td>
           <td style="padding:9px 8px">
             <strong style="font-size:13px;color:#0f6a66;font-family:ui-monospace,Consolas,monospace">${esc(r.moNumber)}</strong>
@@ -13485,7 +13547,7 @@
           </td>
           <td style="padding:9px 8px;font-size:12px">
             <div><strong style="color:#0f172a">${esc(r.requesterName || '—')}</strong> <span class="badge gray" style="font-size:10.5px;padding:1px 6px">กะ ${esc(r.shift || 'A')}</span></div>
-            <div style="color:#087e78;font-size:11px;font-weight:700;margin-top:2px" title="Timestamp ตอนกด Save ขอเบิก">🕒 เบิก: ${esc(time(r.requestedAt))}</div>
+            <div style="color:#087e78;font-size:11.5px;font-weight:700;margin-top:2px;font-family:ui-monospace,Consolas,monospace" title="Timestamp ตอนกด Save ขอเบิก">🕒 เบิก: ${esc(reqAtStr)}</div>
           </td>
           <td style="padding:9px 8px;background:#fffdf5;font-size:12px">
             ${locs}
@@ -13493,7 +13555,7 @@
           <td style="padding:9px 8px;background:#f8fafc;font-size:12px">
             ${isIssued
               ? `<div><strong style="color:#15803d">${esc(r.issuerName || '—')}</strong></div>
-                 <div style="font-size:11px;color:#047857;font-weight:700;margin-top:2px" title="Timestamp ตอนที่คลังบันทึกจ่าย">🕒 จ่าย: ${esc(time(r.issuedAt))}</div>
+                 <div style="font-size:11.5px;color:#047857;font-weight:700;margin-top:2px;font-family:ui-monospace,Consolas,monospace" title="Timestamp ตอนที่คลังบันทึกจ่าย">🕒 จ่าย: ${esc(issAtStr)}</div>
                  <div style="margin-top:3px;color:#475569;font-size:11.5px">💬 <b>หมายเหตุผู้จ่าย:</b> ${esc(r.issuerNote || '—')}</div>`
               : `<span style="color:#94a3b8;font-size:11.5px">รอคลังบันทึกจ่ายและประทับเวลา</span>`}
           </td>
@@ -13535,8 +13597,8 @@
     }
 
     const dateInp = el('reqDateInput');
-    if (dateInp && !dateInp.value) {
-      dateInp.value = new Date().toISOString().slice(0, 10);
+    if (dateInp && (!dateInp.value || document.activeElement !== dateInp)) {
+      dateInp.value = formatPartReqDateTime(new Date());
     }
     renderPartStaffDropdowns();
     const reqNameInp = el('reqRequesterInput');
@@ -13913,7 +13975,7 @@
         <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #cbd5e1;font-size:12.5px;color:#1e293b;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px">
           <span>📋 <b>Description:</b> ${esc(desc)}</span>
           <span>⚠️ <b>สาเหตุการเบิก:</b> <b style="color:#dc2626">${esc(rec.reason || '—')}</b></span>
-          <span>👤 <b>ผู้เบิก:</b> ${esc(rec.requesterName)} (กะ ${esc(rec.shift || 'A')}) · 🕒 ${esc(time(rec.requestedAt))}</span>
+          <span>👤 <b>ผู้เบิก:</b> ${esc(rec.requesterName)} (กะ ${esc(rec.shift || 'A')}) · 🕒 ${esc(formatPartReqDateTime(rec.requestedAt, rec.requestDate) || rec.requestDate || '-')}</span>
         </div>
         <div style="margin-top:6px;font-size:12.5px;color:#0f766e;background:#ecfdf5;padding:6px 10px;border-radius:6px;border:1px solid #a7f3d0">
           💬 <b>หมายเหตุจากผู้เบิก:</b> ${esc(rec.requesterNote || '— ไม่มีหมายเหตุเพิ่มเติม —')}
@@ -13940,7 +14002,7 @@
     if (capturedWhPhotoDataUrl) {
       if (el('whPhotoPreviewWrap')) el('whPhotoPreviewWrap').classList.remove('hidden');
       if (el('whPhotoPreviewImg')) el('whPhotoPreviewImg').src = capturedWhPhotoDataUrl;
-      if (el('whPhotoTimestampBadge')) el('whPhotoTimestampBadge').textContent = `✅ ถ่ายรูปยืนยันเมื่อ ${time(rec.issuedAt || new Date().toISOString())}`;
+      if (el('whPhotoTimestampBadge')) el('whPhotoTimestampBadge').textContent = `✅ ถ่ายรูปยืนยันเมื่อ ${formatPartReqDateTime(rec.issuedAt || new Date())}`;
       if (el('whRetakePhotoBtn')) el('whRetakePhotoBtn').classList.remove('hidden');
     } else {
       if (el('whPhotoPreviewWrap')) el('whPhotoPreviewWrap').classList.add('hidden');
@@ -14022,8 +14084,7 @@
     }
 
     // Stamp tamper-evident watermark banner at bottom of photo
-    const nowIso = new Date().toISOString();
-    const nowTh = new Date().toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'medium' });
+    const nowTh = formatPartReqDateTime(new Date());
     const issuer = el('whIssuerNameInput')?.value || getCurrentUser()?.name || 'Warehouse';
     const locs = Array.from(document.querySelectorAll('#whLocationsList .wh-loc-name-input')).map(i => i.value.trim()).filter(Boolean).join(', ') || '-';
 
@@ -14031,7 +14092,7 @@
     ctx.fillRect(0, h - 84, w, 84);
     ctx.fillStyle = '#4ade80';
     ctx.font = 'bold 16px sans-serif';
-    ctx.fillText(`✅ VERIFIED CAMERA CAPTURE · เวลาถ่ายจริง: ${nowTh} (${nowIso.slice(0, 19)}Z)`, 18, h - 54);
+    ctx.fillText(`✅ VERIFIED CAMERA CAPTURE · วัน-เวลาจ่ายจริง: ${nowTh}`, 18, h - 54);
     ctx.fillStyle = '#ffffff';
     ctx.font = '14px sans-serif';
     ctx.fillText(`MO: ${rec?.moNumber || '-'} | Part: ${rec?.materialCode || '-'} (${rec?.requestQty || 0} ${rec?.unit || 'PCS'}) | Location: ${locs} | ผู้จ่าย: ${issuer}`, 18, h - 22);
@@ -14082,8 +14143,8 @@
       const desc = [r.materialName, r.specification].filter(Boolean).join(' · ');
       lines.push([
         r.reqId,
-        r.requestDate,
-        r.requestedAt ? time(r.requestedAt) : '',
+        formatPartReqDateTime(r.requestDate, r.requestedAt) || r.requestDate,
+        r.requestedAt ? (formatPartReqDateTime(r.requestedAt, r.requestDate) || r.requestedAt) : '',
         r.moNumber,
         r.directTransferDocs,
         r.ppbomNumber,
@@ -14098,7 +14159,7 @@
         r.status === 'issued' ? 'จ่าย Part แล้ว' : 'รอคลังจ่าย',
         r.locationsSummary,
         r.issuerName,
-        r.issuedAt ? time(r.issuedAt) : '',
+        r.issuedAt ? (formatPartReqDateTime(r.issuedAt) || r.issuedAt) : '',
         r.issuerNote,
         partReqHasPhoto(r) ? 'ถ่ายภาพยืนยันแล้ว' : 'ยังไม่ถ่ายภาพ'
       ].map(q).join(','));
@@ -14130,6 +14191,18 @@
       syncPartRequisitionsFromServer(true);
     }, 3500);
     setTimeout(() => syncPartRequisitionsFromServer(true, true), 600);
+
+    // Live 1-second Datetime clock for reqDateInput (DD/MM/YYYY HH:mm:ss) unless manually edited
+    const reqDateEl = el('reqDateInput');
+    reqDateEl?.addEventListener('input', () => {
+      reqDateEl.dataset.manualEdited = '1';
+    });
+    setInterval(() => {
+      const inp = el('reqDateInput');
+      if (inp && inp.dataset.manualEdited !== '1' && document.activeElement !== inp) {
+        inp.value = formatPartReqDateTime(new Date());
+      }
+    }, 1000);
 
     // MO Autocomplete
     const moInp = el('reqMoInput');
@@ -14314,6 +14387,10 @@
 
     // Clear Form button
     el('partReqResetFormBtn')?.addEventListener('click', () => {
+      if (el('reqDateInput')) {
+        el('reqDateInput').dataset.manualEdited = '0';
+        el('reqDateInput').value = formatPartReqDateTime(new Date());
+      }
       if (el('reqMoInput')) el('reqMoInput').value = '';
       if (el('reqZjdbInput')) el('reqZjdbInput').value = '';
       if (el('reqPpbomInput')) el('reqPpbomInput').value = '';
@@ -14334,7 +14411,9 @@
     // Submit Part Requisition Form (Stamps Timestamp & alerts Warehouse)
     el('partRequisitionForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const reqDate = (el('reqDateInput')?.value || new Date().toISOString().slice(0, 10)).trim();
+      const nowStamp = formatPartReqDateTime(new Date());
+      const reqDateRaw = (el('reqDateInput')?.value || '').trim();
+      const reqDate = formatPartReqDateTime(reqDateRaw, nowStamp) || nowStamp;
       const moNumber = (el('reqMoInput')?.value || '').trim().toUpperCase();
       const zjdbDocs = (el('reqZjdbInput')?.value || '').trim();
       const ppbomNo = (el('reqPpbomInput')?.value || '').trim();
@@ -14368,12 +14447,12 @@
       const moPart = moObj?.partsMap.get(matCode);
       const matName = matObj?.materialName || moPart?.materialName || descInputVal || '';
       const matSpec = el('reqMatSpecInput')?.value || matObj?.specification || moPart?.specification || '';
-      const nowStamp = new Date().toISOString();
+      const ymdCompact = (partReqDateYMD(reqDate, nowStamp) || new Date().toISOString().slice(0, 10)).replace(/-/g, '');
 
       const newRec = {
-        reqId: `REQ-${nowStamp.slice(0, 10).replace(/-/g, '')}-${String(Date.now()).slice(-5)}`,
+        reqId: `REQ-${ymdCompact}-${String(Date.now()).slice(-5)}`,
         requestDate: reqDate,
-        requestedAt: nowStamp,
+        requestedAt: reqDate,
         moNumber,
         ppbomNumber: ppbomNo || (moObj ? [...moObj.ppbomSet].join(', ') : ''),
         directTransferDocs: zjdbDocs || (moObj ? [...moObj.zjdbSet].join(', ') : ''),
@@ -14471,8 +14550,8 @@
                 <div><b>เลข MO:</b> <strong style="color:#0f6a66">${esc(rec.moNumber)}</strong></div>
                 <div><b>Direct Transfer (ZJDB):</b> <strong style="color:#047857">${esc(rec.directTransferDocs || '—')}</strong></div>
                 <div><b>รหัส Part:</b> <strong style="color:#087e78">${esc(rec.materialCode)}</strong> (${esc(desc)})</div>
-                <div><b>ผู้เบิก (กะ ${esc(rec.shift)}):</b> ${esc(rec.requesterName)} · ${esc(time(rec.requestedAt))}</div>
-                <div><b>ผู้จ่าย (Warehouse):</b> <strong style="color:#15803d">${esc(rec.issuerName)}</strong> · ${esc(time(rec.issuedAt))}</div>
+                <div><b>ผู้เบิก (กะ ${esc(rec.shift)}):</b> ${esc(rec.requesterName)} · ${esc(formatPartReqDateTime(rec.requestedAt, rec.requestDate) || rec.requestDate || '-')}</div>
+                <div><b>ผู้จ่าย (Warehouse):</b> <strong style="color:#15803d">${esc(rec.issuerName)}</strong> · ${esc(rec.issuedAt ? (formatPartReqDateTime(rec.issuedAt) || rec.issuedAt) : '-')}</div>
                 <div style="grid-column:span 2"><b>Confirm Location ที่หยิบ:</b> ${esc(rec.locationsSummary || '—')}</div>
                 <div><b>หมายเหตุผู้เบิก:</b> ${esc(rec.requesterNote || '—')}</div>
                 <div><b>หมายเหตุผู้จ่าย:</b> ${esc(rec.issuerNote || '—')}</div>
@@ -14584,7 +14663,7 @@
         }
       } catch (_e) {}
       const issuerNote = (el('whIssuerNoteInput')?.value || '').trim();
-      const issuedStamp = new Date().toISOString();
+      const issuedStamp = formatPartReqDateTime(new Date());
       const locationsSummary = locations.map((l, i) => `Loc#${i + 1}: ${l.location}${l.qty !== '' ? ` (${fmtQty(l.qty)} ${rec.unit || 'PCS'})` : ''}`).join(' | ');
 
       const updated = {
@@ -14595,6 +14674,7 @@
         issuerName,
         issuerUsername: String(issuer?.username || '').trim(),
         issuedAt: issuedStamp,
+        photoTakenAt: issuedStamp,
         issuerNote,
         issuePhotoDataUrl: capturedWhPhotoDataUrl,
         updatedAt: issuedStamp

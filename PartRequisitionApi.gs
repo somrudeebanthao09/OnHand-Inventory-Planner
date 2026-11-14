@@ -229,6 +229,8 @@ function partReqApiSave_(session, record) {
         merged = existing ? {
           ...existing,
           reqId,
+          requestDate: String(record.requestDate || existing.requestDate || ''),
+          requestedAt: String(record.requestedAt || existing.requestedAt || ''),
           status: 'issued',
           locations: Array.isArray(record.locations) ? record.locations : [],
           locationsSummary: String(record.locationsSummary || ''),
@@ -260,10 +262,31 @@ function partReqApiSave_(session, record) {
   }
 }
 
+function formatPartReqDateTime_(val, fallbackVal) {
+  let raw = String(val || '').replace(/[\u200B-\u200D\uFEFF']/g, '').trim();
+  const fb = String(fallbackVal || '').replace(/[\u200B-\u200D\uFEFF']/g, '').trim();
+  const isDateOnlyOrMidnight = !raw || /^\d{4}-\d{2}-\d{2}$/.test(raw) || /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(raw) || /00:00:00/.test(raw);
+  if (isDateOnlyOrMidnight && fb && !/00:00:00/.test(fb)) raw = fb;
+  if (!raw) return '';
+  const dmy = /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/.exec(raw);
+  if (dmy) {
+    let yyyy = Number(dmy[3]);
+    if (yyyy > 2400) yyyy -= 543;
+    const pad2 = n => String(n).padStart(2, '0');
+    return `${pad2(dmy[1])}/${pad2(dmy[2])}/${yyyy}\u200B ${pad2(dmy[4] || 0)}:${pad2(dmy[5] || 0)}:${pad2(dmy[6] || 0)}`;
+  }
+  const cleanStr = raw.replace(/\s*\([^)]*\)\s*$/, '').trim();
+  const ms = Date.parse(cleanStr);
+  if (!Number.isFinite(ms)) return raw;
+  const th = new Date(ms + 7 * 3600 * 1000);
+  const pad2 = n => String(n).padStart(2, '0');
+  return `${pad2(th.getUTCDate())}/${pad2(th.getUTCMonth() + 1)}/${th.getUTCFullYear()}\u200B ${pad2(th.getUTCHours())}:${pad2(th.getUTCMinutes())}:${pad2(th.getUTCSeconds())}`;
+}
+
 function partReqApiToRow_(record) {
   return {
     reqId: String(record.reqId || ''),
-    requestDate: String(record.requestDate || ''),
+    requestDate: formatPartReqDateTime_(record.requestDate, record.requestedAt),
     moNumber: String(record.moNumber || ''),
     ppbomNumber: String(record.ppbomNumber || ''),
     directTransferDocs: String(record.directTransferDocs || ''),
@@ -277,17 +300,17 @@ function partReqApiToRow_(record) {
     requesterUsername: String(record.requesterUsername || ''),
     shift: String(record.shift || 'A'),
     requesterNote: String(record.requesterNote || ''),
-    requestedAt: String(record.requestedAt || ''),
+    requestedAt: formatPartReqDateTime_(record.requestedAt, record.requestDate),
     status: record.status === 'issued' ? 'issued' : 'pending',
     locationsSummary: String(record.locationsSummary || ''),
     locationsJson: JSON.stringify(Array.isArray(record.locations) ? record.locations : []),
     issuerName: String(record.issuerName || ''),
     issuerUsername: String(record.issuerUsername || ''),
     issuerNote: String(record.issuerNote || ''),
-    issuedAt: String(record.issuedAt || ''),
+    issuedAt: record.issuedAt ? formatPartReqDateTime_(record.issuedAt) : '',
     hasPhoto: Boolean(record.hasPhoto || record.issuePhotoDataUrl || record.photoUrl),
-    photoTakenAt: String(record.photoTakenAt || record.issuedAt || ''),
-    updatedAt: String(record.updatedAt || record.issuedAt || record.requestedAt || ''),
+    photoTakenAt: (record.photoTakenAt || record.issuedAt) ? formatPartReqDateTime_(record.photoTakenAt || record.issuedAt) : '',
+    updatedAt: formatPartReqDateTime_(record.updatedAt || record.issuedAt || record.requestedAt || new Date().toISOString()),
     photoUrl: String(record.photoAttachmentUrl || record.photoUrl || '')
   };
 }
