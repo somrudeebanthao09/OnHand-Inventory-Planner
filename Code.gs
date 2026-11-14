@@ -17,9 +17,103 @@ const DB_TABS = {
     'materialCode','materialName','specification','requestQty','unit',
     'reason','requesterName','requesterUsername','shift','requesterNote',
     'requestedAt','status','locationsSummary','locationsJson',
-    'issuerName','issuerUsername','issuerNote','issuedAt','hasPhoto','photoTakenAt'
+    'issuerName','issuerUsername','issuerNote','issuedAt','hasPhoto','photoTakenAt',
+    'updatedAt','photoUrl'
   ]
 };
+
+// Repo ที่ helper (เครื่อง Admin) push ข้อมูลล่าสุดขึ้นไป — ใช้ดึง PartRequisitions / On-Hand เข้า Google Sheet
+const GITHUB_RAW_BASE_ = 'https://raw.githubusercontent.com/somrudeebanthao09/OnHand-Inventory-Planner/main/';
+
+function partReqStamp_(r) {
+  return Date.parse(String((r && (r.updatedAt || r.issuedAt || r.requestedAt)) || '')) || 0;
+}
+
+function partReqToRow_(r) {
+  const locs = typeof r.locations === 'string' ? r.locations : JSON.stringify(r.locations || (r.locationsJson ? JSON.parse(r.locationsJson) : []));
+  return {
+    reqId: String(r.reqId || '').trim(),
+    requestDate: String(r.requestDate || '').trim(),
+    moNumber: String(r.moNumber || '').trim(),
+    ppbomNumber: String(r.ppbomNumber || '').trim(),
+    directTransferDocs: String(r.directTransferDocs || '').trim(),
+    materialCode: String(r.materialCode || '').trim(),
+    materialName: String(r.materialName || '').trim(),
+    specification: String(r.specification || '').trim(),
+    requestQty: Number(r.requestQty) || 0,
+    unit: String(r.unit || 'PCS').trim(),
+    reason: String(r.reason || '').trim(),
+    requesterName: String(r.requesterName || '').trim(),
+    requesterUsername: String(r.requesterUsername || '').trim(),
+    shift: String(r.shift || 'A').trim(),
+    requesterNote: String(r.requesterNote || '').trim(),
+    requestedAt: String(r.requestedAt || '').trim(),
+    status: String(r.status || 'pending').trim(),
+    locationsSummary: String(r.locationsSummary || '').trim(),
+    locationsJson: locs,
+    issuerName: String(r.issuerName || '').trim(),
+    issuerUsername: String(r.issuerUsername || '').trim(),
+    issuerNote: String(r.issuerNote || '').trim(),
+    issuedAt: String(r.issuedAt || '').trim(),
+    hasPhoto: (r.issuePhotoDataUrl || r.photoUrl || r.hasPhoto === true || String(r.hasPhoto).toLowerCase() === 'yes') ? 'Yes' : 'No',
+    photoTakenAt: String(r.photoTakenAt || r.issuedAt || '').trim(),
+    updatedAt: String(r.updatedAt || r.issuedAt || r.requestedAt || '').trim(),
+    photoUrl: String(r.photoUrl || '').trim()
+  };
+}
+
+// รวมรายการเก่าในชีตกับรายการใหม่: อันที่ updatedAt ใหม่กว่าชนะ (เท่ากัน → issued ชนะ pending) และรายการที่ถูก Admin ลบ (deleted) จะถูกเอาออกจากชีต
+function mergePartReqRows_(existingRows, incoming) {
+  const map = {};
+  existingRows.forEach(r => { const id = String(r.reqId || '').trim(); if (id) map[id] = r; });
+  incoming.forEach(inc => {
+    const id = String(inc.reqId || '').trim();
+    if (!id) return;
+    if (inc.deleted === true) { delete map[id]; return; }
+    const row = partReqToRow_(inc);
+    const old = map[id];
+    if (!old) { map[id] = row; return; }
+    const a = partReqStamp_(row), b = partReqStamp_(old);
+    if (a > b || (a === b && row.status === 'issued' && old.status !== 'issued')) map[id] = row;
+  });
+  return Object.keys(map).map(k => map[k]).sort((x, y) => partReqStamp_({requestedAt: y.requestedAt}) - partReqStamp_({requestedAt: x.requestedAt}));
+}
+
+function fetchGitHubSeed_(fileName, globalName) {
+  const resp = UrlFetchApp.fetch(GITHUB_RAW_BASE_ + fileName + '?t=' + Date.now(), { muteHttpExceptions: true });
+  if (resp.getResponseCode() !== 200) throw new Error('ดึง ' + fileName + ' จาก GitHub ไม่สำเร็จ (HTTP ' + resp.getResponseCode() + ')');
+  const text = resp.getContentText();
+  const jsonStr = text.replace(new RegExp('^[\\s\\S]*?window\\.' + globalName + '\\s*=\\s*'), '').replace(/;\s*$/, '');
+  return JSON.parse(jsonStr);
+}
+
+/** ดึง PartRequisitions ล่าสุดจาก GitHub เข้าแท็บ PartRequisitions (ใช้กับ Trigger อัตโนมัติ) */
+function syncPartRequisitionsFromGitHub() {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const ss = getPlannerSpreadsheet_();
+    const sheet = ensureTab_(ss, 'PartRequisitions', DB_TABS.PartRequisitions);
+    const parsed = fetchGitHubSeed_('PartRequisitionsSeed.js', 'PART_REQUISITIONS_SEED');
+    const merged = mergePartReqRows_(readObjects_(sheet), (parsed && parsed.items) || []);
+    writeObjects_(sheet, DB_TABS.PartRequisitions, merged);
+    SpreadsheetApp.flush();
+    return { ok: true, count: merged.length };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/** รันครั้งเดียว: ตั้งให้ชีต PartRequisitions อัปเดตตัวเองทุก 5 นาที */
+function installPartRequisitionSyncTrigger() {
+  ScriptApp.getProjectTriggers().forEach(t => {
+    if (t.getHandlerFunction() === 'syncPartRequisitionsFromGitHub') ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger('syncPartRequisitionsFromGitHub').timeBased().everyMinutes(5).create();
+  const res = syncPartRequisitionsFromGitHub();
+  try { SpreadsheetApp.getUi().alert('✅ ตั้งค่าอัปเดตอัตโนมัติทุก 5 นาทีแล้ว\nแท็บ PartRequisitions: ' + res.count + ' รายการ'); } catch (_) {}
+  return res;
+}
 
 function onOpen() {
   try {
@@ -28,6 +122,7 @@ function onOpen() {
   } catch (_) {}
   SpreadsheetApp.getUi().createMenu('Material Planner')
     .addItem('⚡ ซิงค์ข้อมูลล่าสุด (สร้างแท็บ PartRequisitions + อัปเดต On-Hand ล่าสุด)', 'syncLatestFromGitHub')
+    .addItem('⏱️ ตั้งให้ PartRequisitions อัปเดตเองทุก 5 นาที', 'installPartRequisitionSyncTrigger')
     .addSeparator()
     .addItem('เตรียมชีตระบบ (สร้างแท็บทั้งหมด)', 'setup')
     .addItem('เปิดหน้า Material Planner', 'showAppUrl')
@@ -205,46 +300,15 @@ function savePartRequisition(record) {
   try {
     const ss = getPlannerSpreadsheet_();
     const sheet = ensureTab_(ss, 'PartRequisitions', DB_TABS.PartRequisitions);
-    const rows = readObjects_(sheet);
-    const reqId = String(record.reqId || '').trim();
-    const rowObj = {
-      reqId: reqId || ('REQ-' + Date.now()),
-      requestDate: String(record.requestDate || '').trim(),
-      moNumber: String(record.moNumber || '').trim(),
-      ppbomNumber: String(record.ppbomNumber || '').trim(),
-      directTransferDocs: String(record.directTransferDocs || '').trim(),
-      materialCode: String(record.materialCode || '').trim(),
-      materialName: String(record.materialName || '').trim(),
-      specification: String(record.specification || '').trim(),
-      requestQty: Number(record.requestQty) || 0,
-      unit: String(record.unit || 'PCS').trim(),
-      reason: String(record.reason || '').trim(),
-      requesterName: String(record.requesterName || '').trim(),
-      requesterUsername: String(record.requesterUsername || '').trim(),
-      shift: String(record.shift || 'A').trim(),
-      requesterNote: String(record.requesterNote || '').trim(),
-      requestedAt: String(record.requestedAt || new Date().toISOString()).trim(),
-      status: String(record.status || 'pending').trim(),
-      locationsSummary: String(record.locationsSummary || '').trim(),
-      locationsJson: typeof record.locations === 'string' ? record.locations : JSON.stringify(record.locations || []),
-      issuerName: String(record.issuerName || '').trim(),
-      issuerUsername: String(record.issuerUsername || '').trim(),
-      issuerNote: String(record.issuerNote || '').trim(),
-      issuedAt: String(record.issuedAt || '').trim(),
-      hasPhoto: record.hasPhoto ? 'Yes' : (record.issuePhotoDataUrl ? 'Yes' : 'No'),
-      photoTakenAt: String(record.photoTakenAt || record.issuedAt || '').trim()
-    };
-    const idx = rows.findIndex(r => String(r.reqId || '').trim() === rowObj.reqId);
-    if (idx >= 0) rows[idx] = rowObj;
-    else rows.unshift(rowObj);
+    if (!String(record.reqId || '').trim()) record.reqId = 'REQ-' + Date.now();
+    const rows = mergePartReqRows_(readObjects_(sheet), [record]);
     writeObjects_(sheet, DB_TABS.PartRequisitions, rows);
     SpreadsheetApp.flush();
-    return {ok: true, reqId: rowObj.reqId, savedAt: new Date().toISOString()};
+    return {ok: true, reqId: record.reqId, deleted: record.deleted === true, savedAt: new Date().toISOString()};
   } finally {
     lock.releaseLock();
   }
 }
-
 function listPartRequisitions() {
   assertApproved_();
   const ss = getPlannerSpreadsheet_();
@@ -495,44 +559,12 @@ function doPost(e) {
     const ss = getPlannerSpreadsheet_();
     if (action === 'savePartRequisition' && payload.record) {
       const sheet = ensureTab_(ss, 'PartRequisitions', DB_TABS.PartRequisitions);
-      const rows = readObjects_(sheet);
-      const r = payload.record;
-      const rowObj = {
-        reqId: String(r.reqId || '').trim(),
-        requestDate: String(r.requestDate || '').trim(),
-        moNumber: String(r.moNumber || '').trim(),
-        ppbomNumber: String(r.ppbomNumber || '').trim(),
-        directTransferDocs: String(r.directTransferDocs || '').trim(),
-        materialCode: String(r.materialCode || '').trim(),
-        materialName: String(r.materialName || '').trim(),
-        specification: String(r.specification || '').trim(),
-        requestQty: Number(r.requestQty) || 0,
-        unit: String(r.unit || 'PCS').trim(),
-        reason: String(r.reason || '').trim(),
-        requesterName: String(r.requesterName || '').trim(),
-        requesterUsername: String(r.requesterUsername || '').trim(),
-        shift: String(r.shift || 'A').trim(),
-        requesterNote: String(r.requesterNote || '').trim(),
-        requestedAt: String(r.requestedAt || '').trim(),
-        status: String(r.status || 'pending').trim(),
-        locationsSummary: String(r.locationsSummary || '').trim(),
-        locationsJson: JSON.stringify(r.locations || []),
-        issuerName: String(r.issuerName || '').trim(),
-        issuerUsername: String(r.issuerUsername || '').trim(),
-        issuerNote: String(r.issuerNote || '').trim(),
-        issuedAt: String(r.issuedAt || '').trim(),
-        hasPhoto: r.issuePhotoDataUrl ? 'YES' : 'NO',
-        photoTakenAt: String(r.issuedAt || '').trim()
-      };
-      const idx = rows.findIndex(x => String(x.reqId).trim() === rowObj.reqId);
-      if (idx >= 0) rows[idx] = rowObj;
-      else rows.unshift(rowObj);
+      const rows = mergePartReqRows_(readObjects_(sheet), [payload.record]);
       writeObjects_(sheet, DB_TABS.PartRequisitions, rows);
       SpreadsheetApp.flush();
       return ContentService.createTextOutput(JSON.stringify({ ok: true, count: rows.length })).setMimeType(ContentService.MimeType.JSON);
     }
-    if (action === 'syncLatestFromGitHub') {
-      const res = syncLatestFromGitHub();
+    if (action === 'syncLatestFromGitHub') {      const res = syncLatestFromGitHub();
       return ContentService.createTextOutput(JSON.stringify(res)).setMimeType(ContentService.MimeType.JSON);
     }
     return ContentService.createTextOutput(JSON.stringify({ ok: false, message: 'Unknown action' })).setMimeType(ContentService.MimeType.JSON);
@@ -554,51 +586,18 @@ function syncLatestFromGitHub() {
   let invCount = 0;
   let latestStamp = new Date().toISOString();
 
-  // 1. Pull PartRequisitionsSeed.js from GitHub
+  // 1. Pull PartRequisitionsSeed.js from GitHub (merge, never wipe rows saved directly in the sheet)
   try {
-    const prResp = UrlFetchApp.fetch('https://raw.githubusercontent.com/jrh91234/OnHand-Inventory-Planner/main/PartRequisitionsSeed.js?t=' + Date.now(), { muteHttpExceptions: true });
-    if (prResp.getResponseCode() === 200) {
-      const text = prResp.getContentText();
-      const jsonStr = text.replace(/^[\s\S]*?window\.PART_REQUISITIONS_SEED\s*=\s*/, '').replace(/;\s*$/, '');
-      const parsed = JSON.parse(jsonStr);
-      const items = (parsed && parsed.items) || [];
-      const rows = items.map(r => ({
-        reqId: r.reqId || '',
-        requestDate: r.requestDate || '',
-        moNumber: r.moNumber || '',
-        ppbomNumber: r.ppbomNumber || '',
-        directTransferDocs: r.directTransferDocs || '',
-        materialCode: r.materialCode || '',
-        materialName: r.materialName || '',
-        specification: r.specification || '',
-        requestQty: Number(r.requestQty) || 0,
-        unit: r.unit || 'PCS',
-        reason: r.reason || '',
-        requesterName: r.requesterName || '',
-        requesterUsername: r.requesterUsername || '',
-        shift: r.shift || 'A',
-        requesterNote: r.requesterNote || '',
-        requestedAt: r.requestedAt || '',
-        status: r.status || 'pending',
-        locationsSummary: r.locationsSummary || '',
-        locationsJson: JSON.stringify(r.locations || []),
-        issuerName: r.issuerName || '',
-        issuerUsername: r.issuerUsername || '',
-        issuerNote: r.issuerNote || '',
-        issuedAt: r.issuedAt || '',
-        hasPhoto: r.issuePhotoDataUrl ? 'YES' : 'NO',
-        photoTakenAt: r.issuedAt || ''
-      }));
-      writeObjects_(partSheet, DB_TABS.PartRequisitions, rows);
-      reqCount = rows.length;
-    }
+    const parsed = fetchGitHubSeed_('PartRequisitionsSeed.js', 'PART_REQUISITIONS_SEED');
+    const rows = mergePartReqRows_(readObjects_(partSheet), (parsed && parsed.items) || []);
+    writeObjects_(partSheet, DB_TABS.PartRequisitions, rows);
+    reqCount = rows.length;
   } catch (e) {
     Logger.log('PartRequisitions sync error: ' + e);
   }
-
   // 2. Pull OnHandSeed.js from GitHub
   try {
-    const ohResp = UrlFetchApp.fetch('https://raw.githubusercontent.com/jrh91234/OnHand-Inventory-Planner/main/OnHandSeed.js?t=' + Date.now(), { muteHttpExceptions: true });
+    const ohResp = UrlFetchApp.fetch('https://raw.githubusercontent.com/somrudeebanthao09/OnHand-Inventory-Planner/main/OnHandSeed.js?t=' + Date.now(), { muteHttpExceptions: true });
     if (ohResp.getResponseCode() === 200) {
       const text = ohResp.getContentText();
       const jsonStr = text.replace(/^[\s\S]*?window\.ONHAND_SEED\s*=\s*/, '').replace(/;\s*$/, '');

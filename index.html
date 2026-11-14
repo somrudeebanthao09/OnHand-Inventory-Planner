@@ -1842,7 +1842,7 @@
       <section class="page" id="page-compare">
         <div class="title-row"><div><h1>จำลองแผนผลิต</h1><p>เพิ่ม Model และจำนวนผลิตได้หลายรุ่น ระบบรวมความต้องการ Part จาก BOM ให้อัตโนมัติ</p></div><div class="row-actions"><select class="field dept-filter" id="compareDept"></select><button class="btn" id="clearPlanBtn">ล้างรายการ</button></div></div>
         <div class="panel"><div class="panel-head"><div><h2>รุ่นที่จะขึ้นผลิต</h2><p>เลือกได้มากกว่าหนึ่งรุ่น และกำหนดจำนวนที่ต้องการผลิต</p></div><button class="btn soft" id="addModelBtn">＋ เพิ่ม Model</button></div><div id="planList" class="plan-list"></div><div class="plan-controls"><button class="btn primary" id="analyzeBtn">วิเคราะห์ความพร้อม</button><span id="planSummary" class="helper" style="align-self:center"></span></div><div class="notice red hidden" id="missingBomNotice"></div></div>
-        <div class="panel"><div class="panel-head"><div><h2>ผลวิเคราะห์วัตถุดิบ</h2><p>จำนวนที่ควรเรียกเข้า = ความต้องการผลิต + Safety stock − คงเหลือใช้ได้ <span style="font-size:12px;color:var(--teal);font-weight:600">🛡️ (ตัด Defective & Scrap Warehouse ออกอัตโนมัติ ไม่นำงานเสียมาคิด)</span></p></div><button class="btn" id="exportShortageBtn">ดาวน์โหลดรายการขาด CSV</button></div><div id="planResult"></div></div>
+        <div class="panel"><div class="panel-head"><div><h2>ผลวิเคราะห์วัตถุดิบ</h2><p>จำนวนที่ควรเรียกเข้า = ความต้องการผลิต + Safety stock − คงเหลือใช้ได้ <span style="font-size:12px;color:var(--teal);font-weight:600">🛡️ (ตัด Defective, Scrap & Sealed Inventory Warehouse ออกอัตโนมัติ ไม่นำยอดที่ใช้งานจริงไม่ได้มาคิด)</span></p></div><button class="btn" id="exportShortageBtn">ดาวน์โหลดรายการขาด CSV</button></div><div id="planResult"></div></div>
       </section>
       <section class="page" id="page-orders">
         <div class="title-row" style="align-items:flex-start;margin-bottom:14px">
@@ -2665,6 +2665,17 @@
           </div>
         </div>
       </div>
+      <!-- MODAL 3: Admin ยืนยันการลบรายการเบิก Part -->
+      <div class="modal-backdrop" id="partReqDeleteModal" style="z-index:40">
+        <div class="modal" style="width:min(520px,94vw);max-height:90vh;overflow:auto;padding:20px 22px">
+          <h2 style="margin:0 0 12px;font-size:18px;color:#b91c1c">🗑️ ยืนยันการลบรายการเบิก Part</h2>
+          <div id="partReqDeleteModalBody"></div>
+          <div class="modal-actions" style="margin-top:16px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">
+            <button type="button" class="btn soft" id="partReqDeleteCancelBtn">ยกเลิก</button>
+            <button type="button" class="btn danger" id="partReqDeleteConfirmBtn" style="font-weight:800">🗑️ ยืนยันลบรายการ</button>
+          </div>
+        </div>
+      </div>
       <section class="page" id="page-lot">
         <div class="title-row" style="align-items:flex-start;margin-bottom:14px">
           <div>
@@ -2992,7 +3003,7 @@
 
     <!-- Modal Footer -->
     <div class="modal-actions" style="margin-top:12px;justify-content:space-between;align-items:center;flex-shrink:0">
-      <span class="helper" style="font-size:12.5px;color:#64748b">🚫 สต็อกคลังหลักข้างต้น ตัดคลัง H9 (H9 Assembly-Workshop Warehouse) ที่จ่ายเข้าไลน์ไปแล้ว และคลังงานเสีย (Defective/Scrap) ออกทั้งหมด</span>
+      <span class="helper" style="font-size:12.5px;color:#64748b">🚫 สต็อกคลังหลักข้างต้น ตัดคลัง H9 (H9 Assembly-Workshop Warehouse) ที่จ่ายเข้าไลน์ไปแล้ว และคลังที่ใช้งานไม่ได้ (Defective / Scrap / Sealed Inventory) ออกทั้งหมด</span>
       <button class="btn primary" id="moModalDoneBtn" type="button" style="height:36px;font-size:13.5px;padding:0 18px;border-radius:18px">ปิดหน้าต่าง</button>
     </div>
   </div>
@@ -3325,6 +3336,9 @@
       }else{
         accessIsAdmin = currentUser.role === 'admin';
         el('accessAdminPanel').classList.toggle('hidden',!accessIsAdmin);
+      }
+      if (['requester', 'warehouse'].includes(currentUser.role)) {
+        initializePartReqSharedApi().catch(err => console.warn('[PartReqAPI] startup sync failed:', err?.message || err));
       }
       document.documentElement.classList.add('app-ready');
     }catch(err){
@@ -3722,10 +3736,24 @@
     remoteSaveTimer=setTimeout(save,700);
   }
 
+  // คลังที่ "มียอดในระบบแต่ของจริงใช้งานไม่ได้/ไม่มี" → ห้ามนำไปคำนวณ Available / วางแผน Order
+  // (Defective, Scrap และ Sealed Inventory / Outsourced Sealed Warehouse = คลังอายัด/ปิดผนึก)
+  const UNUSABLE_WAREHOUSE_KEYWORDS = ['defective', 'scrap', 'sealed', 'งานเสีย', 'เศษซาก', 'อายัด', '封存'];
+  function isUnusableWarehouseName(name){
+    const w = String(name || '').trim().toLowerCase();
+    if(!w) return false;
+    return UNUSABLE_WAREHOUSE_KEYWORDS.some(k => w.includes(k));
+  }
+  function getUnusableWarehouseReason(name){
+    const w = String(name || '').trim().toLowerCase();
+    if(w.includes('sealed') || w.includes('อายัด') || w.includes('封存')) return 'Sealed';
+    if(w.includes('scrap') || w.includes('เศษซาก')) return 'Scrap';
+    return 'Defective';
+  }
+
   function isUsableInventoryRow(item){
     if(!item) return false;
-    const wh = String(item.warehouse || '').trim().toLowerCase();
-    if(wh.includes('defective') || wh.includes('scrap') || wh.includes('งานเสีย') || wh.includes('เศษซาก')) {
+    if(isUnusableWarehouseName(item.warehouse)) {
       return false;
     }
     const st = String(item.status || '').trim().toLowerCase();
@@ -3737,8 +3765,7 @@
 
   function isUsableWarehouse(wh){
     if(!wh) return true;
-    const w = String(wh).trim().toLowerCase();
-    if(w.includes('defective') || w.includes('scrap') || w.includes('งานเสีย') || w.includes('เศษซาก')) {
+    if(isUnusableWarehouseName(wh)) {
       return false;
     }
     return true;
@@ -4584,7 +4611,7 @@
         if(ov?.specification) g.specification = ov.specification;
         else if(!g.specification&&item.specification)g.specification=item.specification;
         if(!ov && String(item.department||'').trim())g.departments.add(String(item.department).trim());
-        g.onHand+=n(item.onHand);g.reserved+=n(item.reserved);g.available+=stockAvailableForRow(item);
+        g.onHand+=n(item.onHand);g.reserved+=n(item.reserved);g.available+=isUsableInventoryRow(item)?stockAvailableForRow(item):0;
         if(String(item.storage||'').trim())g.storageBins.add(String(item.storage).trim());
         if(String(item.lotNumber||'').trim())g.lotNumbers.add(String(item.lotNumber).trim());
         if(String(item.owner||'').trim())g.owners.add(String(item.owner).trim());
@@ -4611,7 +4638,7 @@
         if(!ov && departments.size === 0){
           inferDepartmentForPart(item.materialCode, item.warehouse, item.materialName).forEach(d => departments.add(d));
         }
-        const departmentList=[...departments],available=stockAvailableForRow(item),departmentLabel=departmentList.length?departmentList.join(', '):'รอระบุแผนก';
+        const departmentList=[...departments],available=isUsableInventoryRow(item)?stockAvailableForRow(item):0,departmentLabel=departmentList.length?departmentList.join(', '):'รอระบุแผนก';
         const rawItem={
           ...item,
           materialName: ov?.materialName || item.materialName,
@@ -5243,7 +5270,7 @@
               <button class="safety-filter-toggle stock-filter-toggle ${safetyValueFilters.department ? 'active' : ''}" data-filter-key="department" type="button" aria-label="กรอง แผนกที่ใช้" title="กรองแผนก">▾</button>
             </div>
           </th>
-          <th class="num" title="ยอดคงเหลือหักยอดจอง และไม่รวมคลังงานเสีย Defective/Scrap">
+          <th class="num" title="ยอดคงเหลือหักยอดจอง และไม่รวมคลัง Defective/Scrap/Sealed">
             <div style="text-align:right">พร้อมใช้จริง (Available 🛡️)</div>
           </th>
           <th class="num" style="color:#b91c1c" title="จุดต่ำสุด/กันชนสำรอง หากต่ำกว่านี้คือวิกฤต">
@@ -5698,7 +5725,7 @@
             <div style="display:flex;align-items:flex-start;gap:10px">
               <span style="font-size:20px;line-height:1">🛡️</span>
               <div>
-                <div style="font-weight:700;font-size:14px;color:#9a3412">ตรวจพบสต็อกงานเสีย/ชิ้นงานมีตำหนิ (Defective / Scrap): ${fmtQty(defTotal)} ${esc(matUnit)} (${defLots.length} Lot)</div>
+                <div style="font-weight:700;font-size:14px;color:#9a3412">ตรวจพบสต็อกที่ใช้งานไม่ได้ (Defective / Scrap / Sealed Inventory): ${fmtQty(defTotal)} ${esc(matUnit)} (${defLots.length} Lot)</div>
                 <div style="font-size:12.5px;color:#b45309;margin-top:2px;line-height:1.5">
                   อยู่ในคลัง <b>${esc(defWhs.join(', '))}</b> (Lot: <code style="background:#ffedd5;padding:1px 5px;border-radius:4px;font-weight:700">${esc(defLots.join(', '))}</code>) · 
                   <b>ระบบตัดยอดนี้ออกจากการคำนวณพร้อมใช้ (Available) และการวางแผนผลิต/วิเคราะห์ Order โดยอัตโนมัติ</b> เพื่อป้องกันการคำนวณเกินจริง และให้ยอดงานผลิตตรงกับ ERP 100% (งานผลิตจริงมี ${fmtQty(usableTotal)} ${esc(matUnit)})
@@ -5729,14 +5756,18 @@
       const lotBadge=x.lotNumber
         ? `<div style="display:inline-flex;align-items:center;gap:5px"><span class="badge green" style="font-family:monospace;font-size:13.5px;font-weight:700" ${lotTitle?`title="${esc(lotTitle)}"`:''}>${esc(x.lotNumber)}</span>${isSubcontractLot?'<span class="badge gray" style="font-size:10.5px;padding:1px 5px" title="Lot งานจ้างผลิตภายนอก (Subcontract) จาก Kingdee ERP">Subcontract</span>':''}</div>`
         : '<span class="badge gray" style="font-size:12px">ไม่มี Lot</span>';
+      const badReason=isBad?getUnusableWarehouseReason(x.warehouse):'';
+      const badStatusText=isBad
+        ? (badReason==='Sealed' ? 'Sealed · ใช้ไม่ได้' : (x.status && x.status!=='Available' ? x.status : (badReason==='Scrap'?'Scrap':'Defective')))
+        : '';
       const statusBadge=isBad
-        ? `<span class="badge red" style="font-size:12px" title="งานเสีย/ซาก ไม่นับรวมในยอดพร้อมใช้">${esc(x.status||'Defective/Scrap')}</span>`
+        ? `<span class="badge red" style="font-size:12px" title="งานเสีย/ซาก/คลังอายัด (Sealed) ไม่นับรวมในยอดพร้อมใช้">${esc(badStatusText)}</span>`
         : (x.status==='Available'?'<span class="badge green" style="font-size:12px">Available</span>':x.status?`<span class="badge amber" style="font-size:12px">${esc(x.status)}</span>`:'<span class="badge gray" style="font-size:12px">—</span>');
       const whLabel=isBad
-        ? `<strong style="font-size:14px;color:#b91c1c">${esc(x.warehouse||'—')}</strong><span class="badge red" style="font-size:10px;margin-left:5px" title="คลังงานเสีย/เศษซาก จะไม่นำไปคำนวณในยอดพร้อมใช้">งานเสีย/ซาก</span>`
+        ? `<strong style="font-size:14px;color:#b91c1c">${esc(x.warehouse||'—')}</strong><span class="badge red" style="font-size:10px;margin-left:5px" title="คลังงานเสีย/เศษซาก/Sealed จะไม่นำไปคำนวณในยอดพร้อมใช้">${badReason==='Sealed'?'Sealed (ใช้ไม่ได้)':'งานเสีย/ซาก'}</span>`
         : `<strong style="font-size:14px">${esc(x.warehouse||'—')}</strong>`;
       const availDisplay=isBad
-        ? `<td class="num" style="color:#ef4444;font-size:13px" title="ไม่คิดในยอดพร้อมใช้ผลิต">0 <small style="color:#94a3b8">(${fmtQty(avail)} เสีย)</small></td>`
+        ? `<td class="num" style="color:#ef4444;font-size:13px" title="ไม่คิดในยอดพร้อมใช้ผลิต">0 <small style="color:#94a3b8">(${fmtQty(avail)} ${badReason==='Sealed'?'Sealed':'เสีย'})</small></td>`
         : `<td class="num" style="color:#287a55;font-weight:700;font-size:14.5px">${fmtQty(avail)}</td>`;
       return `<tr><td style="text-align:center;color:var(--muted);font-size:13px">${idx+1}</td><td>${lotBadge}</td><td>${whLabel}</td><td><span style="display:inline-block;padding:3px 9px;background:#eef4f5;border-radius:6px;font-weight:600;font-size:13px;color:#244a52">${esc(x.storage||'—')}</span></td><td class="num" style="font-weight:700;font-size:14.5px">${fmtQty(x.onHand)}</td>${availDisplay}<td class="num" style="color:#a66b08;font-size:14.5px">${fmtQty(x.reserved)}</td><td style="font-size:13.5px">${esc(x.unit||'—')}</td><td><strong style="color:#1d4249;font-size:13.5px">${esc(x.owner||'—')}</strong></td><td><span class="sub" style="font-size:12px">${esc(x.ownerType||'—')}</span></td><td>${statusBadge}</td></tr>`;
     }).join('');
@@ -9699,6 +9730,10 @@
 
   function logoutUser(){
     setCurrentUser(null);
+    sessionStorage.removeItem(PART_REQ_API_SESSION_KEY);
+    sessionStorage.removeItem(`${PART_REQ_API_SESSION_KEY}_req`);
+    sessionStorage.removeItem(`${PART_REQ_API_SESSION_KEY}_wh`);
+    partReqApiReconciledIdentity = '';
     sessionStorage.removeItem('onhandScreenLocked');
     const lockEl = el('securityLockScreen');
     if(lockEl){
@@ -9785,6 +9820,9 @@
       goto(found.role === 'admin' && activePage === 'users' ? 'users' : 'overview');
     }
     toast(`เข้าสู่ระบบสำเร็จ ยินดีต้อนรับ ${found.name || found.username}`);
+    if (['requester', 'warehouse'].includes(found.role)) {
+      initializePartReqSharedApi().catch(err => console.warn('[PartReqAPI] login sync failed:', err?.message || err));
+    }
   }
 
   function handleRegisterSubmit(){
@@ -10832,7 +10870,7 @@
       borderColor: '#087e78',
       bgGrad: 'linear-gradient(to right, #e6f5f3, #ffffff)',
       desc: 'คิดจาก <strong>Available = ยอดคงคลัง On-Hand รวม ลบ ยอดจอง (Allocated)</strong> ตามแผนการผลิตจริง',
-      rule: '<u>ไม่นับรวมคลังงานเสียและเศษซาก</u> (Defective & Scrap Warehouse) เพื่อให้ได้ตัวเลขที่ใช้ผลิตจริงได้ 100%',
+      rule: '<u>ไม่นับรวมคลังงานเสีย เศษซาก และ Sealed Inventory</u> (Defective, Scrap & Sealed Warehouse) เพื่อให้ได้ตัวเลขที่ใช้ผลิตจริงได้ 100%',
       tip: 'เชื่อมโยงคลังอัตโนมัติ: เช่น กรองคลัง H9 จะรวมชิ้นส่วน H1 ใน Customer Material & Purchased Warehouse ให้อัตโนมัติ'
     }
   };
@@ -11552,22 +11590,34 @@
   let whActiveConfirmReqId = null;
   let whCameraStream = null;
   let capturedWhPhotoDataUrl = '';
-  const PART_REQ_CLOUD_TOPIC = 'h9_onhand_part_req_sync_v2_10430e51';
-  const PART_REQ_NOTIFICATION_STORAGE_KEY = 'onhandPartReqNotifiedTransitions';
-  const PART_REQ_NOTIFICATION_FRESHNESS_MS = 15 * 60 * 1000;
+  const PART_REQ_CLOUD_TOPIC = (() => { try { return localStorage.getItem('onhandPartReqTopic') || 'h9_onhand_part_req_sync_v2_10430e51'; } catch (_) { return 'h9_onhand_part_req_sync_v2_10430e51'; } })();
+  const PART_REQ_SEEN_KEY = 'onhandPartReqSeenV3';
   const PART_REQ_RELAY_OUTBOX_STORAGE_KEY = 'onhandPartReqRelayOutbox';
-  const partReqNotifiedTransitions = new Set();
+  const PART_REQ_SHARED_API_URL = 'https://script.google.com/macros/s/AKfycbwOvGYHdiIEizehNTvSBNMsLHNozeRwjBOnZ2A6k3YhTU_37Mnl2WCZgLC4WrGSWTOG/exec';
+  const PART_REQ_API_SESSION_KEY = 'onhandPartReqApiSession';
+  const partReqRelaySeenEvents = new Set();
+  let partReqInitialSyncDone = false;
+  let partReqStreamHealthy = false;
+  let partReqRelayBackoffUntil = 0;
+  let partReqLastSeedFetchAt = 0;
+  let partReqLastRelayPollAt = 0;
   let partReqBroadcastChannel = null;
   let partReqEventSource = null;
   let partReqRelayOutbox = new Map();
   let partReqRelayFlushTimer = null;
   let partReqRelayFlushPromise = null;
   let partReqRelayStartupReconciled = false;
+  let partReqApiPullPromise = null;
+  let partReqApiReconcilePromise = null;
+  let partReqApiReconciledIdentity = '';
+  let partReqApiLastRecords = [];
+  let partReqApiLoginPromise = null;
+  const partReqApiLoginRetryAfter = new Map();
 
   function getPartReqRelayVersion(record) {
     if (!record?.reqId) return '';
-    const status = record.status === 'issued' ? 'issued' : 'pending';
-    const stamp = record.updatedAt || record.issuedAt || record.requestedAt || '';
+    const status = record.deleted ? 'deleted' : (record.status === 'issued' ? 'issued' : 'pending');
+    const stamp = record.updatedAt || record.deletedAt || record.issuedAt || record.requestedAt || '';
     return `${record.reqId}:${status}:${stamp}`;
   }
 
@@ -11665,123 +11715,151 @@
     } catch (_) {}
   }
 
-  function notifyFreshPartReqTransition(record, existing) {
-    const user = getCurrentUser();
-    if (!user || !record?.reqId) return false;
-
-    const status = record.status === 'issued' ? 'issued' : (record.status === 'pending' ? 'pending' : '');
-    if (!status) return false;
-    if (status === 'pending' && user.role !== 'warehouse') return false;
-    if (status === 'issued' && user.role !== 'requester') return false;
-
-    if (status === 'issued') {
-      const targetUsername = String(record.requesterUsername || '').trim().toLowerCase();
-      const currentUsername = String(user.username || '').trim().toLowerCase();
-      const targetName = String(record.requesterName || '').trim().toLowerCase();
-      const currentName = String(user.name || user.username || '').trim().toLowerCase();
-      if (targetUsername ? targetUsername !== currentUsername : (!targetName || targetName !== currentName)) return false;
+  // ===================== Part Requisition shared-data helpers (v3) =====================
+  function partReqStamp(r) {
+    return Date.parse(r?.updatedAt || r?.deletedAt || r?.issuedAt || r?.requestedAt || '') || 0;
+  }
+  // deleted (Admin ลบ) > issued (จ่ายแล้ว) > pending — สถานะไม่ย้อนกลับ แม้นาฬิกามือถือแต่ละเครื่องเดินไม่ตรงกัน
+  function partReqRank(r) {
+    return r?.deleted ? 2 : (r?.status === 'issued' ? 1 : 0);
+  }
+  function getVisiblePartReqs() {
+    return partRequisitionsList.filter(r => r && !r.deleted);
+  }
+  function partReqHasPhoto(r) {
+    return Boolean((r?.issuePhotoDataUrl && String(r.issuePhotoDataUrl).startsWith('data:image')) || r?.photoUrl);
+  }
+  function partReqPhotoSrc(r) {
+    if (r?.issuePhotoDataUrl && String(r.issuePhotoDataUrl).startsWith('data:image')) return r.issuePhotoDataUrl;
+    if (r?.photoUrl) {
+      try { return new URL(r.photoUrl, window.location.href).href; } catch (_) { return r.photoUrl; }
     }
-
-    const eventStamp = record.updatedAt || record.issuedAt || record.requestedAt || '';
-    const eventTime = Date.parse(eventStamp);
-    if (!Number.isFinite(eventTime) || Date.now() - eventTime > PART_REQ_NOTIFICATION_FRESHNESS_MS || eventTime > Date.now() + 60000) return false;
-    const existingTime = Date.parse(existing?.updatedAt || existing?.issuedAt || existing?.requestedAt || '') || 0;
-    if (existingTime > eventTime + 1000) return false;
-
-    const identity = `${user.role}:${String(user.username || user.name || '').trim().toLowerCase()}`;
-    const version = `${record.reqId}:${status}:${eventStamp}`;
-    const notificationKey = `${identity}:${version}`;
-    if (partReqNotifiedTransitions.has(notificationKey)) return false;
-    let notified = {};
-    try {
-      notified = JSON.parse(localStorage.getItem(PART_REQ_NOTIFICATION_STORAGE_KEY) || '{}') || {};
-    } catch (_) {}
-    const userEvents = Array.isArray(notified[identity]) ? notified[identity] : [];
-    if (userEvents.includes(version)) return false;
-
-    partReqNotifiedTransitions.add(notificationKey);
-    notified[identity] = [...userEvents, version].slice(-200);
-    try { localStorage.setItem(PART_REQ_NOTIFICATION_STORAGE_KEY, JSON.stringify(notified)); } catch (_) {}
-
-    if (status === 'pending') {
-      playWarehouseAlertBeep();
-      toast(`🔔 แจ้งเตือน Warehouse: มีใบเบิก Part ใหม่ (${record.materialCode} · ${fmtQty(record.requestQty)} ${record.unit || 'PCS'} · MO: ${record.moNumber})`);
-    } else {
-      toast(`✅ คลังจ่าย Part ใบเบิก ${record.reqId} เรียบร้อยแล้ว (${record.materialCode} · ${fmtQty(record.requestQty)} ${record.unit || 'PCS'})`);
-    }
-    return true;
+    return '';
+  }
+  function partReqIsMine(r, u) {
+    if (!r || !u) return false;
+    const ru = String(r.requesterUsername || '').trim().toLowerCase();
+    if (ru) return ru === String(u.username || '').trim().toLowerCase();
+    const rn = String(r.requesterName || '').trim().toLowerCase();
+    return Boolean(rn) && rn === String(u.name || u.username || '').trim().toLowerCase();
   }
 
-  function mergeIncomingPartRequisitions(incomingList, { silent = true } = {}) {
+  // ---- แจ้งเตือนข้ามเครื่อง: Warehouse เห็นใบเบิกใหม่ทุกใบที่ยังไม่เคยเห็น / คนเบิกเห็นเมื่อใบของตัวเองถูกจ่าย (ไม่จำกัดช่วงเวลา) ----
+  function loadPartReqSeen(identity) {
+    try {
+      const all = JSON.parse(localStorage.getItem(PART_REQ_SEEN_KEY) || '{}') || {};
+      return all[identity] || null;
+    } catch (_) { return null; }
+  }
+  function savePartReqSeen(identity, state) {
+    try {
+      const all = JSON.parse(localStorage.getItem(PART_REQ_SEEN_KEY) || '{}') || {};
+      all[identity] = { pending: (state.pending || []).slice(-600), issued: (state.issued || []).slice(-600) };
+      localStorage.setItem(PART_REQ_SEEN_KEY, JSON.stringify(all));
+    } catch (_) {}
+  }
+  function runPartReqNotifications() {
+    const u = getCurrentUser();
+    if (!u || !partReqInitialSyncDone) return;
+    if (u.role !== 'warehouse' && u.role !== 'requester') return;
+    const identity = `${u.role}:${String(u.username || u.name || '').trim().toLowerCase()}`;
+    const list = getVisiblePartReqs();
+    const pending = list.filter(r => r.status !== 'issued');
+    const issued = list.filter(r => r.status === 'issued');
+    let st = loadPartReqSeen(identity);
+    if (!st) {
+      // ครั้งแรกบนเครื่องนี้: ตั้งฐานข้อมูล ไม่เด้งย้อนหลังทีละใบ แต่สรุปจำนวนที่รอจ่ายให้ Warehouse ทราบ
+      savePartReqSeen(identity, { pending: pending.map(r => r.reqId), issued: issued.map(r => r.reqId) });
+      if (u.role === 'warehouse' && pending.length) {
+        playWarehouseAlertBeep();
+        toast(`🔔 Warehouse: มีใบเบิก Part รอจ่าย ${fmt(pending.length)} รายการ`);
+      }
+      return;
+    }
+    if (u.role === 'warehouse') {
+      const fresh = pending.filter(r => !st.pending.includes(r.reqId));
+      if (!fresh.length) return;
+      st.pending = [...st.pending, ...fresh.map(r => r.reqId)];
+      savePartReqSeen(identity, st);
+      playWarehouseAlertBeep();
+      const r0 = fresh[0];
+      toast(`🔔 ใบเบิก Part ใหม่ถึง Warehouse: ${r0.materialCode} · ${fmtQty(r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber}${fresh.length > 1 ? ` (และอีก ${fresh.length - 1} รายการ)` : ''}`);
+    } else {
+      const mine = issued.filter(r => !st.issued.includes(r.reqId));
+      if (!mine.length) return;
+      st.issued = [...st.issued, ...mine.map(r => r.reqId)];
+      savePartReqSeen(identity, st);
+      playWarehouseAlertBeep();
+      const r0 = mine[0];
+      toast(`✅ คลังจ่าย Part ให้คุณแล้ว: ${r0.materialCode} · ${fmtQty(r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber}${mine.length > 1 ? ` (และอีก ${mine.length - 1} รายการ)` : ''}`);
+    }
+  }
+
+  // ---- รวมข้อมูลจากทุกช่องทาง (เครื่องอื่น / Seed / Helper / Sheet) ----
+  function mergeIncomingPartRequisitions(incomingList) {
     if (!Array.isArray(incomingList) || !incomingList.length) return false;
     const map = new Map();
     for (const item of partRequisitionsList) {
       if (item?.reqId) map.set(item.reqId, item);
     }
     let changed = false;
-
-    for (const srvItem of incomingList) {
-      if (!srvItem?.reqId) continue;
-      const existing = map.get(srvItem.reqId);
-      notifyFreshPartReqTransition(srvItem, existing);
-      const srvTime = Date.parse(srvItem.updatedAt || srvItem.issuedAt || srvItem.requestedAt || '') || 0;
-      const locTime = existing ? (Date.parse(existing.updatedAt || existing.issuedAt || existing.requestedAt || '') || 0) : -1;
-      if (!existing || srvTime > locTime || (srvItem.status === 'issued' && existing.status !== 'issued') || (srvItem.issuePhotoDataUrl && !existing.issuePhotoDataUrl)) {
-        map.set(srvItem.reqId, {
-          ...(existing || {}),
-          ...srvItem,
-          issuePhotoDataUrl: (srvItem.issuePhotoDataUrl && srvItem.issuePhotoDataUrl.startsWith('data:image'))
-            ? srvItem.issuePhotoDataUrl
-            : (existing?.issuePhotoDataUrl || srvItem.issuePhotoDataUrl || '')
-        });
+    for (const inc of incomingList) {
+      if (!inc?.reqId) continue;
+      const ex = map.get(inc.reqId);
+      if (!ex) {
+        map.set(inc.reqId, { ...inc });
         changed = true;
+        continue;
       }
+      const ri = partReqRank(inc), re = partReqRank(ex);
+      const a = partReqStamp(inc), b = partReqStamp(ex);
+      const incWins = ri > re || (ri === re && a > b);
+      const incGainsPhoto = ri === re && partReqHasPhoto(inc) && !partReqHasPhoto(ex);
+      if (!incWins && !incGainsPhoto) continue;
+      const base64 = (inc.issuePhotoDataUrl && String(inc.issuePhotoDataUrl).startsWith('data:image'))
+        ? inc.issuePhotoDataUrl
+        : (ex.issuePhotoDataUrl || '');
+      map.set(inc.reqId, { ...ex, ...inc, issuePhotoDataUrl: inc.deleted ? '' : base64 });
+      changed = true;
     }
-
-    if (changed) {
-      partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
-      persistPartRequisitionsLocal();
-      updatePartReqBadges();
-      if (activePage === 'part-requisition' || activePage === 'part-issue') {
-        renderPartReqWarehouseAlert();
-        renderPartReqHistoryTable();
-      }
-      return true;
+    if (!changed) return false;
+    partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
+    persistPartRequisitionsLocal();
+    updatePartReqBadges();
+    if (activePage === 'part-requisition' || activePage === 'part-issue') {
+      renderPartReqWarehouseAlert();
+      renderPartReqHistoryTable();
     }
-    return false;
+    runPartReqNotifications();
+    return true;
   }
 
   function loadInitialPartRequisitions() {
-    const map = new Map();
+    partRequisitionsList = [];
     const seedItems = Array.isArray(window.PART_REQUISITIONS_SEED?.items) ? window.PART_REQUISITIONS_SEED.items : [];
-    for (const item of seedItems) {
-      if (item && item.reqId) map.set(item.reqId, { ...item });
-    }
     const dbItems = Array.isArray(db?.partRequisitions) ? db.partRequisitions : [];
-    for (const item of dbItems) {
-      if (item && item.reqId) map.set(item.reqId, { ...(map.get(item.reqId) || {}), ...item });
-    }
+    let localItems = [];
     try {
-      const localItems = JSON.parse(localStorage.getItem('onhandPartRequisitions') || '[]');
-      if (Array.isArray(localItems)) {
-        for (const item of localItems) {
-          if (item && item.reqId) map.set(item.reqId, { ...(map.get(item.reqId) || {}), ...item });
-        }
-      }
+      const parsed = JSON.parse(localStorage.getItem('onhandPartRequisitions') || '[]');
+      if (Array.isArray(parsed)) localItems = parsed;
     } catch (_) {}
-    partRequisitionsList = [...map.values()].sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
+    mergeIncomingPartRequisitions(seedItems);
+    mergeIncomingPartRequisitions(dbItems);
+    mergeIncomingPartRequisitions(localItems);
     db.partRequisitions = partRequisitionsList;
     updatePartReqBadges();
   }
 
   function persistPartRequisitionsLocal() {
-    db.partRequisitions = partRequisitionsList;
+    // รูปที่ Helper เก็บเป็นไฟล์แล้ว (photoUrl) ไม่ต้องเก็บ base64 ซ้ำในเครื่อง
+    const toStore = partRequisitionsList.map(r => (r.photoUrl && r.issuePhotoDataUrl) ? { ...r, issuePhotoDataUrl: '' } : r);
+    db.partRequisitions = toStore;
     try {
-      localStorage.setItem('onhandPartRequisitions', JSON.stringify(partRequisitionsList));
+      localStorage.setItem('onhandPartRequisitions', JSON.stringify(toStore));
     } catch (e) {
       // If quota exceeded due to many base64 photos, keep latest 40 photos in localStorage
       try {
-        const compact = partRequisitionsList.map((r, i) => i < 40 ? r : { ...r, issuePhotoDataUrl: r.issuePhotoDataUrl ? 'SAVED_ON_SERVER' : '' });
+        const compact = toStore.map((r, i) => i < 40 ? r : { ...r, issuePhotoDataUrl: r.issuePhotoDataUrl ? 'SAVED_ON_SERVER' : '' });
         localStorage.setItem('onhandPartRequisitions', JSON.stringify(compact));
       } catch (_) {}
     }
@@ -11810,6 +11888,88 @@
     return rec;
   }
 
+  async function ingestPartReqRelayEvent(evt) {
+    if (!evt || evt.event !== 'message' || !evt.id) return;
+    if (partReqRelaySeenEvents.has(evt.id)) return;
+    partReqRelaySeenEvents.add(evt.id);
+    if (partReqRelaySeenEvents.size > 4000) partReqRelaySeenEvents.clear();
+    const rec = await parseCloudRelayEvent(evt);
+    if (rec) mergeIncomingPartRequisitions([rec]);
+  }
+
+  function shouldRunPartReqRelay() {
+    const u = getCurrentUser();
+    return Boolean(u && ['requester', 'warehouse', 'admin'].includes(u.role));
+  }
+
+  function closePartReqStream() {
+    if (partReqEventSource) {
+      try { partReqEventSource.close(); } catch (_) {}
+      partReqEventSource = null;
+    }
+    partReqStreamHealthy = false;
+  }
+
+  // เชื่อม Cloud Relay แบบ stream 1 connection ต่อเครื่อง (ไม่ poll ถี่ ๆ เพื่อเลี่ยง rate limit ของคนที่ใช้ Wi-Fi/IP เดียวกันทั้งโรงงาน)
+  function ensurePartReqStream() {
+    if (!shouldRunPartReqRelay()) { closePartReqStream(); return; }
+    if (partReqEventSource || typeof EventSource === 'undefined') return;
+    try {
+      const es = new EventSource(`https://ntfy.sh/${PART_REQ_CLOUD_TOPIC}/sse?since=12h`);
+      partReqEventSource = es;
+      es.onopen = () => { partReqStreamHealthy = true; };
+      es.onmessage = (ev) => {
+        try { ingestPartReqRelayEvent(JSON.parse(ev.data)); } catch (_) {}
+      };
+      es.onerror = () => {
+        partReqStreamHealthy = false;
+        if (es.readyState === 2) {
+          partReqEventSource = null;
+          setTimeout(ensurePartReqStream, 8000);
+        }
+      };
+    } catch (_) {}
+  }
+
+  async function pollPartReqRelayOnce() {
+    if (Date.now() < partReqRelayBackoffUntil) return false;
+    partReqLastRelayPollAt = Date.now();
+    try {
+      const res = await fetchWithTimeout(`https://ntfy.sh/${PART_REQ_CLOUD_TOPIC}/json?poll=1&since=12h`, { cache: 'no-store' }, 6000);
+      if (res.status === 429) {
+        partReqRelayBackoffUntil = Date.now() + 90000;
+        return false;
+      }
+      if (!res.ok) return false;
+      const lines = (await res.text()).split('\n').map(l => l.trim()).filter(Boolean);
+      for (const line of lines) {
+        try { await ingestPartReqRelayEvent(JSON.parse(line)); } catch (_) {}
+      }
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  // ฐานข้อมูลถาวร: Seed ที่ Helper (เครื่อง Admin) บันทึก/Push ขึ้น GitHub — ใช้กู้ข้อมูลเมื่อ Relay หมดอายุ (Relay เก็บแค่ ~12 ชม.)
+  async function fetchPartReqSeedBaseline() {
+    partReqLastSeedFetchAt = Date.now();
+    try {
+      const url = new URL('PartRequisitionsSeed.js', window.location.href);
+      url.searchParams.set('t', String(Date.now()));
+      const res = await fetchWithTimeout(url.href, { cache: 'no-store' }, 6000);
+      if (!res.ok) return false;
+      const m = (await res.text()).match(/window\.PART_REQUISITIONS_SEED\s*=\s*([\s\S]*?);\s*$/);
+      if (!m) return false;
+      const parsed = JSON.parse(m[1]);
+      if (Array.isArray(parsed.items)) {
+        mergeIncomingPartRequisitions(parsed.items);
+        return true;
+      }
+    } catch (_) {}
+    return false;
+  }
+
   function startPartReqRealtimeStream() {
     if (!partReqRelayStartupReconciled) {
       partReqRelayStartupReconciled = true;
@@ -11818,14 +11978,20 @@
       try {
         const localItems = JSON.parse(localStorage.getItem('onhandPartRequisitions') || '[]');
         if (Array.isArray(localItems)) {
-          const recentCutoff = Date.now() - (72 * 60 * 60 * 1000);
+          const recentCutoff = Date.now() - (11 * 60 * 60 * 1000);
           for (const record of localItems) {
-            const stamp = Date.parse(record?.updatedAt || record?.issuedAt || record?.requestedAt || '') || 0;
+            const stamp = partReqStamp(record);
             if (record?.status !== 'issued' || stamp >= recentCutoff) queuePartReqRelayRecord(record);
           }
         }
       } catch (_) {}
-      window.addEventListener('online', () => flushPartReqRelayOutbox());
+      window.addEventListener('online', () => { flushPartReqRelayOutbox(); ensurePartReqStream(); });
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          ensurePartReqStream();
+          syncPartRequisitionsFromServer(true, true);
+        }
+      });
     }
 
     // 1. Same-browser cross-tab instant sync
@@ -11834,9 +12000,9 @@
         partReqBroadcastChannel = new BroadcastChannel('onhand_part_req_channel');
         partReqBroadcastChannel.onmessage = (ev) => {
           if (ev.data?.record) {
-            mergeIncomingPartRequisitions([ev.data.record], { silent: false });
+            mergeIncomingPartRequisitions([ev.data.record]);
           } else if (Array.isArray(ev.data?.items)) {
-            mergeIncomingPartRequisitions(ev.data.items, { silent: false });
+            mergeIncomingPartRequisitions(ev.data.items);
           }
         };
       }
@@ -11846,84 +12012,301 @@
       if (ev.key === 'onhandPartRequisitions' && ev.newValue) {
         try {
           const arr = JSON.parse(ev.newValue);
-          if (Array.isArray(arr)) mergeIncomingPartRequisitions(arr, { silent: false });
+          if (Array.isArray(arr)) mergeIncomingPartRequisitions(arr);
         } catch (_) {}
       }
     });
 
-    // 2. Cross-device (Mobile <-> Mobile <-> PC) instant HTTPS Server-Sent Events stream
-    try {
-      if (typeof EventSource !== 'undefined' && !partReqEventSource) {
-        partReqEventSource = new EventSource(`https://ntfy.sh/${PART_REQ_CLOUD_TOPIC}/sse?since=24h`);
-        partReqEventSource.onmessage = async (ev) => {
-          try {
-            const evt = JSON.parse(ev.data);
-            const rec = await parseCloudRelayEvent(evt);
-            if (rec) mergeIncomingPartRequisitions([rec], { silent: false });
-          } catch (_) {}
-        };
-        partReqEventSource.onerror = () => {
-          try { partReqEventSource.close(); } catch (_) {}
-          partReqEventSource = null;
-          setTimeout(startPartReqRealtimeStream, 6000);
-        };
-      }
-    } catch (_) {}
+    // 2. Cross-device instant stream
+    ensurePartReqStream();
   }
 
-  async function syncPartRequisitionsFromServer(silent = true) {
+  function partReqApiConfigured() {
+    return /^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec(?:\?.*)?$/.test(PART_REQ_SHARED_API_URL);
+  }
+
+  function partReqApiCanPostMessage() {
+    return partReqApiConfigured() && window.location.origin === 'https://somrudeebanthao09.github.io';
+  }
+
+  function postPartReqApiForm(fields, timeoutOverrideMs = null) {
+    if (!partReqApiCanPostMessage()) return Promise.reject(new Error('PART_API_ORIGIN_OR_CONFIG_UNAVAILABLE'));
+    const timeoutMs = Number(timeoutOverrideMs) > 0
+      ? Number(timeoutOverrideMs)
+      : (['list', 'save'].includes(String(fields?.action || '')) ? 14000 : 10000);
+    return new Promise((resolve, reject) => {
+      const requestId = `part-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      const frameName = `part_req_api_${requestId.replace(/[^a-z0-9_]/gi, '')}`;
+      const frame = document.createElement('iframe');
+      frame.name = frameName;
+      frame.title = 'Part requisition sync';
+      frame.setAttribute('aria-hidden', 'true');
+      frame.style.cssText = 'position:fixed;width:1px;height:1px;left:-10000px;top:-10000px;border:0';
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = PART_REQ_SHARED_API_URL;
+      form.target = frameName;
+      form.style.display = 'none';
+      const values = { ...fields, requestId };
+      Object.entries(values).forEach(([name, value]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = typeof value === 'string' ? value : String(value ?? '');
+        form.appendChild(input);
+      });
+      let settled = false;
+      const clean = () => {
+        window.removeEventListener('message', onMessage);
+        clearTimeout(timer);
+        form.remove();
+        setTimeout(() => frame.remove(), 0);
+      };
+      const finish = (error, result) => {
+        if (settled) return;
+        settled = true;
+        clean();
+        if (error) reject(error);
+        else resolve(result);
+      };
+      const onMessage = (event) => {
+        if (event.source !== frame.contentWindow) return;
+        let hostname = '';
+        try { hostname = new URL(event.origin).hostname; } catch (_) { return; }
+        if (hostname !== 'script.google.com' && !hostname.endsWith('.googleusercontent.com')) return;
+        if (!event.data || event.data.requestId !== requestId) return;
+        finish(null, event.data);
+      };
+      const timer = setTimeout(() => finish(new Error('PART_API_TIMEOUT')), timeoutMs);
+      window.addEventListener('message', onMessage);
+      document.body.append(frame, form);
+      try { form.submit(); } catch (err) { finish(err); }
+    });
+  }
+
+  async function derivePartReqApiVerifier(password, saltBase64, iterations) {
+    if (!window.crypto?.subtle || !window.TextEncoder || !window.atob) throw new Error('PART_API_WEBCRYPTO_UNAVAILABLE');
+    const salt = Uint8Array.from(window.atob(String(saltBase64 || '')), char => char.charCodeAt(0));
+    const key = await window.crypto.subtle.importKey('raw', new TextEncoder().encode(String(password || '')), 'PBKDF2', false, ['deriveBits']);
+    const bits = await window.crypto.subtle.deriveBits({
+      name: 'PBKDF2',
+      salt,
+      iterations: Math.max(1, Number(iterations) || 30000),
+      hash: 'SHA-256'
+    }, key, 256);
+    const binary = Array.from(new Uint8Array(bits), byte => String.fromCharCode(byte)).join('');
+    return window.btoa(binary);
+  }
+
+  async function ensurePartReqApiSession(preferredRole = null) {
+    const user = getCurrentUser();
+    if (!user) throw new Error('PART_API_ROLE_NOT_ALLOWED');
+    const targetRole = preferredRole || (user.role === 'requester' ? 'requester' : 'warehouse');
+    const username = targetRole === 'requester' ? 'req' : 'wh';
+    const sessionKey = `${PART_REQ_API_SESSION_KEY}_${username}`;
+    let saved = null;
+    try { saved = JSON.parse(sessionStorage.getItem(sessionKey) || 'null'); } catch (_) {}
+    if (saved?.token && saved.username === username && saved.expiresAt > Date.now() + 30000) return saved;
+    if (partReqApiLoginPromise) return partReqApiLoginPromise;
+    if (Date.now() < (partReqApiLoginRetryAfter.get(username) || 0)) throw new Error('PART_API_LOGIN_RETRY_DELAY');
+    partReqApiLoginPromise = (async () => {
+      const password = (String(user.username || '').trim().toLowerCase() === username && user.password)
+        ? String(user.password)
+        : '1234';
+      const challenge = await postPartReqApiForm({ action: 'challenge', username }, 10000);
+      if (!challenge?.ok || !challenge.salt) throw new Error(challenge?.error || 'PART_API_CHALLENGE_FAILED');
+      const verifier = await derivePartReqApiVerifier(password, challenge.salt, challenge.iterations);
+      const response = await postPartReqApiForm({ action: 'login', username, verifier }, 10000);
+      if (!response?.ok || !response.token) {
+        partReqApiLoginRetryAfter.set(username, Date.now() + 60 * 1000);
+        throw new Error(response?.error || 'PART_API_LOGIN_FAILED');
+      }
+      partReqApiLoginRetryAfter.delete(username);
+      const session = {
+        token: response.token,
+        username,
+        role: response.role,
+        expiresAt: Date.now() + (Math.max(60, Number(response.expiresIn) || 21600) * 1000)
+      };
+      sessionStorage.setItem(sessionKey, JSON.stringify(session));
+      return session;
+    })().finally(() => { partReqApiLoginPromise = null; });
+    return partReqApiLoginPromise;
+  }
+
+  async function callPartReqSharedApi(action, fields = {}, preferredRole = null) {
+    const session = await ensurePartReqApiSession(preferredRole);
+    const response = await postPartReqApiForm({ action, token: session.token, ...fields });
+    if (response?.error === 'SESSION_EXPIRED') {
+      sessionStorage.removeItem(`${PART_REQ_API_SESSION_KEY}_${session.username}`);
+      const renewed = await ensurePartReqApiSession(preferredRole);
+      return postPartReqApiForm({ action, token: renewed.token, ...fields });
+    }
+    return response;
+  }
+
+  function normalizePartReqApiRecord(record) {
+    let locations = Array.isArray(record?.locations) ? record.locations : [];
+    if (!locations.length && record?.locationsJson) {
+      try { const parsed = JSON.parse(record.locationsJson); if (Array.isArray(parsed)) locations = parsed; } catch (_) {}
+    }
+    let requestDate = String(record?.requestDate || '').trim();
+    if (/^\d{4}-\d{2}-\d{2}T/.test(requestDate)) {
+      try {
+        requestDate = new Date(requestDate).toLocaleDateString('en-CA', { timeZone: 'Asia/Bangkok' });
+      } catch (_) {
+        requestDate = requestDate.slice(0, 10);
+      }
+    } else if (!requestDate && record?.requestedAt) {
+      requestDate = String(record.requestedAt).slice(0, 10);
+    }
+    const isAdminDeleted = Boolean(record?.deleted) || String(record?.issuerNote || '').includes('[DELETED_BY_ADMIN]');
+    return {
+      ...record,
+      requestDate,
+      locations,
+      deleted: isAdminDeleted,
+      deletedAt: isAdminDeleted ? String(record?.deletedAt || record?.updatedAt || record?.issuedAt || '') : '',
+      hasPhoto: Boolean(record?.hasPhoto),
+      photoUrl: String(record?.photoAttachmentUrl || record?.photoUrl || ''),
+      issuePhotoDataUrl: ''
+    };
+  }
+
+  function replacePartReqRecordsFromApi(records) {
+    if (!Array.isArray(records) || !records.length) return false;
+    const normalized = records.filter(item => item?.reqId).map(normalizePartReqApiRecord);
+    return mergeIncomingPartRequisitions(normalized);
+  }
+
+  let partReqLastApiPullAt = 0;
+  async function pullPartReqSharedApiRecords() {
+    if (!partReqApiCanPostMessage()) return false;
+    if (partReqApiPullPromise) return partReqApiPullPromise;
+    partReqLastApiPullAt = Date.now();
+    partReqApiPullPromise = (async () => {
+      const response = await callPartReqSharedApi('list');
+      if (!response?.ok || !Array.isArray(response.items)) throw new Error(response?.error || 'PART_API_LIST_FAILED');
+      partReqApiLastRecords = response.items.map(normalizePartReqApiRecord);
+      replacePartReqRecordsFromApi(response.items);
+      return true;
+    })().finally(() => { partReqApiPullPromise = null; });
+    return partReqApiPullPromise;
+  }
+
+  async function savePartReqToSharedApi(record) {
+    if (!partReqApiCanPostMessage()) return { ok: false, skipped: true };
+    const isDeleted = Boolean(record?.deleted);
+    const isIssued = isDeleted || record?.status === 'issued';
+    const preferredRole = isIssued ? 'warehouse' : 'requester';
+    const apiRecord = {
+      ...record,
+      status: isIssued ? 'issued' : 'pending',
+      issuerNote: isDeleted ? '[DELETED_BY_ADMIN]' : String(record?.issuerNote || ''),
+      issuedAt: isDeleted ? (record.deletedAt || record.updatedAt || new Date().toISOString()) : String(record?.issuedAt || ''),
+      updatedAt: String(record?.updatedAt || record?.deletedAt || record?.issuedAt || record?.requestedAt || new Date().toISOString()),
+      hasPhoto: isDeleted ? false : partReqHasPhoto(record)
+    };
+    delete apiRecord.issuePhotoDataUrl;
+    const response = await callPartReqSharedApi('save', { record: JSON.stringify(apiRecord) }, preferredRole);
+    if (!response?.ok) throw new Error(response?.error || 'PART_API_SAVE_FAILED');
+    return response;
+  }
+
+  async function initializePartReqSharedApi() {
+    const user = getCurrentUser();
+    if (!user || !partReqApiCanPostMessage()) return false;
+    const identity = `${user.role}:${String(user.username || '').trim().toLowerCase()}`;
+    if (partReqApiReconciledIdentity === identity) return true;
+    if (partReqApiReconcilePromise) return partReqApiReconcilePromise;
+    partReqApiReconcilePromise = (async () => {
+      await pullPartReqSharedApiRecords();
+      const centralById = new Map(partReqApiLastRecords.filter(item => item?.reqId).map(item => [item.reqId, item]));
+      for (const record of partRequisitionsList) {
+        if (!record?.reqId) continue;
+        const remote = centralById.get(record.reqId);
+        const localRank = partReqRank(record);
+        const remoteRank = remote ? partReqRank(remote) : -1;
+        const localStamp = partReqStamp(record);
+        const remoteStamp = partReqStamp(remote);
+        if (remote && localRank < remoteRank) continue;
+        if (remote && localRank === remoteRank && localStamp <= remoteStamp) continue;
+        try { await savePartReqToSharedApi(record); } catch (err) {
+          console.warn('[PartReqAPI] local reconciliation skipped:', err?.message || err);
+        }
+      }
+      await pullPartReqSharedApiRecords();
+      partReqApiReconciledIdentity = identity;
+      return true;
+    })().finally(() => { partReqApiReconcilePromise = null; });
+    return partReqApiReconcilePromise;
+  }
+
+  async function syncPartRequisitionsFromServer(silent = true, force = false) {
     let anySuccess = false;
     try {
-      // 1. Check localStorage first (for cross-tab updates)
+      ensurePartReqStream();
+
+      // 1. localStorage (อัปเดตข้ามแท็บ)
       try {
         const localItems = JSON.parse(localStorage.getItem('onhandPartRequisitions') || '[]');
-        if (Array.isArray(localItems) && localItems.length) {
-          mergeIncomingPartRequisitions(localItems, { silent });
-        }
+        if (Array.isArray(localItems) && localItems.length) mergeIncomingPartRequisitions(localItems);
       } catch (_) {}
 
-      // 2. Fetch from HTTPS Cloud Realtime Relay (works across all mobile phones, 4G/5G/Wi-Fi, and PCs!)
-      try {
-        const cloudRes = await fetchWithTimeout(`https://ntfy.sh/${PART_REQ_CLOUD_TOPIC}/json?poll=1&since=72h`, { cache: 'no-store' }, 4500).catch(() => null);
-        if (cloudRes?.ok) {
-          const text = await cloudRes.text();
-          const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-          const cloudItems = [];
-          for (const line of lines) {
-            try {
-              const evt = JSON.parse(line);
-              const rec = await parseCloudRelayEvent(evt);
-              if (rec) cloudItems.push(rec);
-            } catch (_) {}
-          }
-          if (cloudItems.length) {
-            mergeIncomingPartRequisitions(cloudItems, { silent });
-          }
-          anySuccess = true;
-        }
-      } catch (_) {}
+      // 2. ฐานข้อมูลถาวร (Seed บน GitHub Pages / เครื่อง Helper) — ดึงทุก 25 วินาที
+      if (force || Date.now() - partReqLastSeedFetchAt > 25000) {
+        if (await fetchPartReqSeedBaseline()) anySuccess = true;
+      }
 
-      // 3. Fetch from Local Helper Server (if on Admin PC)
+      // 3. Cloud Relay: ปกติใช้ stream; poll เฉพาะตอน stream ใช้ไม่ได้ (ทุก 8 วินาที) หรือกดรีเฟรชเอง
+      if (shouldRunPartReqRelay() && (force || (!partReqStreamHealthy && Date.now() - partReqLastRelayPollAt > 8000))) {
+        if (await pollPartReqRelayOnce()) anySuccess = true;
+      } else if (partReqStreamHealthy) {
+        anySuccess = true;
+      }
+
+      // 4. Helper บนเครื่อง Admin / วง LAN (ซิงค์เร็ว < 1 วินาที และซิงค์ลง Google Sheet เบื้องหลัง)
       const helperBase = await checkHelperHealth();
       if (helperBase) {
         const res = await fetchWithTimeout(`${helperBase}/part-requisitions`, { cache: 'no-store' }, 2500).then(r => r.json()).catch(() => null);
         if (res?.ok && Array.isArray(res.items)) {
-          mergeIncomingPartRequisitions(res.items, { silent });
+          mergeIncomingPartRequisitions(res.items);
           anySuccess = true;
         }
       }
 
-      // 4. Fetch from Google Sheets (if inside Apps Script)
+      // 5. Google Sheets (เมื่อเปิดผ่าน Apps Script)
       if (hasGoogle()) {
         const rows = await callGoogle('listPartRequisitions').catch(() => null);
         if (Array.isArray(rows)) {
-          mergeIncomingPartRequisitions(rows, { silent });
+          mergeIncomingPartRequisitions(rows.map(r => ({
+            ...r,
+            locations: (() => { try { return JSON.parse(r.locationsJson || '[]'); } catch (_) { return []; } })(),
+            hasPhoto: String(r.hasPhoto || '').toLowerCase() === 'yes'
+          })));
           anySuccess = true;
         }
       }
 
+      // 6. Shared Part API (Google Sheet PartRequisitions): ดึงเบื้องหลังโดยไม่บล็อกหน้าจอ
+      const currentPartUser = getCurrentUser();
+      if (currentPartUser && partReqApiCanPostMessage() && (force || Date.now() - partReqLastApiPullAt > 18000)) {
+        const identity = `${currentPartUser.role}:${String(currentPartUser.username || '').trim().toLowerCase()}`;
+        const p = partReqApiReconciledIdentity === identity
+          ? pullPartReqSharedApiRecords()
+          : initializePartReqSharedApi();
+        p.catch(err => console.warn('[PartReqAPI] sync warn:', err?.message || err));
+        anySuccess = true;
+      }
+
+      if (anySuccess && !partReqInitialSyncDone) {
+        partReqInitialSyncDone = true;
+        runPartReqNotifications();
+      }
       if (!silent) {
-        toast(`✅ ซิงค์ข้อมูลใบเบิก Part ล่าสุดเรียบร้อย (${fmt(partRequisitionsList.length)} รายการ)`);
+        toast(anySuccess
+          ? `✅ ซิงค์ใบเบิก Part ล่าสุดเรียบร้อย (${fmt(getVisiblePartReqs().length)} รายการ)`
+          : '⚠️ ยังเชื่อมต่อแหล่งข้อมูลกลางไม่ได้ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่');
       }
       return anySuccess;
     } catch (err) {
@@ -11941,7 +12324,7 @@
           method: 'PUT',
           headers: { 'Filename': `${record.reqId || 'req'}.json` },
           body: JSON.stringify(record)
-        }, 8000).catch(() => null);
+        }, 12000).catch(() => null);
         if (putRes?.ok) {
           const putJson = await putRes.json().catch(() => null);
           if (putJson?.attachment?.url) {
@@ -11956,7 +12339,7 @@
       const relayRes = await fetchWithTimeout(`https://ntfy.sh/${PART_REQ_CLOUD_TOPIC}`, {
         method: 'POST',
         body: JSON.stringify(compactRecord)
-      }, 5000);
+      }, 6000);
       return Boolean(relayRes?.ok);
     } catch (e) {
       console.warn('[PartReq] Cloud relay push warn:', e);
@@ -11965,49 +12348,108 @@
   }
 
   async function savePartRequisitionEverywhere(record) {
-    const idx = partRequisitionsList.findIndex(x => x.reqId === record.reqId);
-    if (idx >= 0) {
-      partRequisitionsList[idx] = { ...partRequisitionsList[idx], ...record };
-    } else {
-      partRequisitionsList.unshift(record);
-    }
-    partRequisitionsList.sort((a, b) => (Date.parse(b.requestedAt || '') || 0) - (Date.parse(a.requestedAt || '') || 0));
-    persistPartRequisitionsLocal();
-    updatePartReqBadges();
+    const stamped = { ...record, updatedAt: record.updatedAt || new Date().toISOString() };
+    mergeIncomingPartRequisitions([stamped]);
 
-    // 0. Broadcast immediately to other open tabs in the same browser
+    // 0. Broadcast immediately to other open tabs in the same browser (0ms)
     try {
-      partReqBroadcastChannel?.postMessage({ record });
+      partReqBroadcastChannel?.postMessage({ record: stamped });
     } catch (_) {}
 
-    // 1. Push immediately over HTTPS Cloud Relay so Warehouse on ANY mobile phone or PC receives it in < 0.5s!
-    const relayNotified = await pushRecordToCloudRelay(record);
-    if (!relayNotified) queuePartReqRelayRecord(record, 5000);
+    // 1. ส่งแจ้งเตือนเรียลไทม์ผ่าน Cloud Relay + บันทึกผ่าน Helper พร้อมกันทันที (ไม่รอ iframe ของ Google Sheet ที่ช้า)
+    const relayPromise = pushRecordToCloudRelay(stamped).catch(() => false);
+    const helperPromise = checkHelperHealth().then(helperBase => {
+      if (!helperBase) return false;
+      return fetchWithTimeout(`${helperBase}/part-requisitions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ record: stamped })
+      }, 8000).then(r => Boolean(r?.ok)).catch(() => false);
+    }).catch(() => false);
 
-    // 2. Save to local helper server in background (writes PartRequisitionsSeed.js + Part-Requisitions-Google-Sheet-Log.xlsx + GitHub sync)
-    checkHelperHealth().then(helperBase => {
-      if (helperBase) {
-        fetchWithTimeout(`${helperBase}/part-requisitions`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ record })
-        }, 4000).catch(() => {});
-      }
-    }).catch(() => {});
-
-    // 3. Save to Google Sheets ("On-Hand Inventory Planner - H9 Assembly" -> tab "PartRequisitions")
-    if (hasGoogle()) {
-      callGoogle('savePartRequisition', record).catch(() => {});
+    // 2. ซิงค์ลง Google Sheet (PartRequisitions) เบื้องหลังผ่าน Shared API
+    let apiSaved = false;
+    if (partReqApiCanPostMessage()) {
+      savePartReqToSharedApi(stamped).then(() => { apiSaved = true; }).catch(err => {
+        console.warn('[PartReqAPI] background save warn:', err?.message || err);
+      });
     }
-    return { relayNotified };
+
+    // 3. Save to Google Sheets when the page is running inside Apps Script
+    if (hasGoogle()) {
+      callGoogle('savePartRequisition', stamped).catch(() => {});
+    }
+
+    const [relayNotified, helperSaved] = await Promise.all([relayPromise, helperPromise]);
+    if (!relayNotified) {
+      queuePartReqRelayRecord(stamped, 4000);
+    }
+    return { relayNotified: Boolean(relayNotified || helperSaved), apiSaved: Boolean(apiSaved || helperSaved) };
+  }
+
+  // ---- Admin ลบรายการ (มีป๊อปอัพยืนยันก่อนลบ) ----
+  let partReqDeleteTargetId = null;
+  function openPartReqDeleteModal(reqId) {
+    const u = getCurrentUser();
+    if (u?.role !== 'admin') {
+      toast('เฉพาะ Admin เท่านั้นที่ลบรายการเบิก Part ได้');
+      return;
+    }
+    const rec = partRequisitionsList.find(x => x.reqId === reqId && !x.deleted);
+    if (!rec) return;
+    partReqDeleteTargetId = reqId;
+    const desc = [rec.materialName, rec.specification].filter(Boolean).join(' · ') || '—';
+    const body = el('partReqDeleteModalBody');
+    if (body) {
+      body.innerHTML = `
+        <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.6;color:#7f1d1d">
+          <div><b>เลขใบเบิก:</b> ${esc(rec.reqId)}</div>
+          <div><b>MO:</b> ${esc(rec.moNumber)} ${rec.directTransferDocs ? `· <span style="color:#047857">${esc(rec.directTransferDocs)}</span>` : ''}</div>
+          <div><b>Part:</b> <strong>${esc(rec.materialCode)}</strong> ${esc(desc)}</div>
+          <div><b>จำนวน:</b> ${fmtQty(rec.requestQty)} ${esc(rec.unit || 'PCS')} · <b>ผู้เบิก:</b> ${esc(rec.requesterName || '—')}</div>
+          <div><b>สถานะ:</b> ${rec.status === 'issued' ? '✅ จ่าย Part แล้ว (รูปถ่ายยืนยันจะถูกลบด้วย)' : '⏳ ยังไม่ถูกจ่าย'}</div>
+        </div>
+        <p style="margin:12px 0 0;font-size:13.5px;color:#334155">ต้องการลบรายการนี้ออกจากระบบทุกเครื่อง (คนเบิก / Warehouse / Google Sheet) ใช่หรือไม่? <b style="color:#b91c1c">การลบไม่สามารถกู้คืนได้</b></p>`;
+    }
+    el('partReqDeleteModal')?.classList.add('show');
+  }
+  function closePartReqDeleteModal() {
+    partReqDeleteTargetId = null;
+    el('partReqDeleteModal')?.classList.remove('show');
+  }
+  async function confirmPartReqDelete() {
+    const u = getCurrentUser();
+    const rec = partRequisitionsList.find(x => x.reqId === partReqDeleteTargetId && !x.deleted);
+    if (u?.role !== 'admin' || !rec) { closePartReqDeleteModal(); return; }
+    const btn = el('partReqDeleteConfirmBtn');
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ กำลังลบ...'; }
+    const nowIso = new Date().toISOString();
+    const tomb = {
+      ...rec,
+      deleted: true,
+      deletedAt: nowIso,
+      deletedBy: String(u.name || u.username || 'Admin'),
+      updatedAt: nowIso,
+      issuePhotoDataUrl: '',
+      photoAttachmentUrl: ''
+    };
+    try {
+      await savePartRequisitionEverywhere(tomb);
+      toast(`🗑️ ลบใบเบิก ${rec.reqId} (${rec.materialCode}) เรียบร้อยแล้ว`);
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = '🗑️ ยืนยันลบรายการ'; }
+      closePartReqDeleteModal();
+      renderPartRequisitionPage();
+    }
   }
 
   let activePartReqTab = 'all';
 
   function updatePartReqBadges() {
-    const pendingList = partRequisitionsList.filter(r => r.status !== 'issued');
-    const issuedList = partRequisitionsList.filter(r => r.status === 'issued');
-    const zjdbLinkedList = partRequisitionsList.filter(r => r.directTransferDocs && String(r.directTransferDocs).includes('ZJDB'));
+    const visibleReqs = getVisiblePartReqs();
+    const pendingList = visibleReqs.filter(r => r.status !== 'issued');
+    const issuedList = visibleReqs.filter(r => r.status === 'issued');
+    const zjdbLinkedList = visibleReqs.filter(r => r.directTransferDocs && String(r.directTransferDocs).includes('ZJDB'));
     const pendingCount = pendingList.length;
 
     const sbBadge = el('sidebarPartReqPendingBadge');
@@ -12020,12 +12462,12 @@
       sbIssueBadge.textContent = String(pendingCount);
       sbIssueBadge.classList.toggle('hidden', pendingCount === 0);
     }
-    if (el('partReqMetricTotal')) el('partReqMetricTotal').textContent = fmt(partRequisitionsList.length);
+    if (el('partReqMetricTotal')) el('partReqMetricTotal').textContent = fmt(visibleReqs.length);
     if (el('partReqMetricPending')) el('partReqMetricPending').textContent = fmt(pendingCount);
     if (el('partReqMetricIssued')) el('partReqMetricIssued').textContent = fmt(issuedList.length);
     if (el('partReqMetricZjdb')) el('partReqMetricZjdb').textContent = fmt(zjdbLinkedList.length);
 
-    if (el('partReqTabAllCount')) el('partReqTabAllCount').textContent = fmt(partRequisitionsList.length);
+    if (el('partReqTabAllCount')) el('partReqTabAllCount').textContent = fmt(visibleReqs.length);
     if (el('partReqTabPendingCount')) el('partReqTabPendingCount').textContent = fmt(pendingCount);
     if (el('partReqTabIssuedCount')) el('partReqTabIssuedCount').textContent = fmt(issuedList.length);
   }
@@ -12412,7 +12854,7 @@
       return;
     }
 
-    const pending = partRequisitionsList.filter(r => r.status !== 'issued');
+    const pending = getVisiblePartReqs().filter(r => r.status !== 'issued');
     if (!pending.length) {
       banner.classList.add('hidden');
       return;
@@ -12433,12 +12875,13 @@
     // On `part-requisition` (หน้าคนเบิก Part), `canIssuePart` is ALWAYS false!
     const isWarehouseIssueView = (activePage === 'part-issue' || role === 'warehouse') && role !== 'requester';
     const canIssuePart = isWarehouseIssueView && (role === 'warehouse' || role === 'admin');
+    const canDeletePart = role === 'admin'; // เฉพาะ Admin ลบได้ (มีป๊อปอัพยืนยันก่อนลบทุกครั้ง)
 
     const q = String(el('partReqSearchInput')?.value || '').trim().toLowerCase();
     const shiftFilter = el('partReqShiftFilter')?.value || '';
     const dateFilter = el('partReqDateFilter')?.value || '';
 
-    const filtered = partRequisitionsList.filter(r => {
+    const filtered = getVisiblePartReqs().filter(r => {
       if (activePartReqTab === 'pending' && r.status === 'issued') return false;
       if (activePartReqTab === 'issued' && r.status !== 'issued') return false;
       if (shiftFilter && String(r.shift || 'A').toUpperCase() !== shiftFilter) return false;
@@ -12481,7 +12924,7 @@
         const locsText = Array.isArray(r.locations) && r.locations.length
           ? r.locations.map((l, idx) => `#${idx + 1}: ${esc(l.location)}${l.qty !== '' && l.qty != null ? ` (<b>${fmtQty(l.qty)}</b> ${esc(r.unit || 'PCS')})` : ''}`).join(' · ')
           : (r.locationsSummary ? esc(r.locationsSummary) : 'รอคลังระบุ Location');
-        const hasPhoto = Boolean(r.issuePhotoDataUrl && r.issuePhotoDataUrl.startsWith('data:image'));
+        const hasPhoto = partReqHasPhoto(r);
 
         let mobileActionSection = '';
         if (isIssued) {
@@ -12489,7 +12932,7 @@
             <div style="display:flex;gap:8px;flex-wrap:wrap">
               ${hasPhoto ? `
                 <button type="button" class="btn soft btn-view-req-photo" data-id="${esc(r.reqId)}" style="flex:1;height:40px;font-size:13px;font-weight:800;border-color:#86efac;background:#f0fdf4;color:#166534;display:inline-flex;align-items:center;justify-content:center;gap:6px">
-                  <img src="${r.issuePhotoDataUrl}" alt="Photo" style="width:24px;height:20px;object-fit:cover;border-radius:3px;border:1px solid #16a34a">
+                  <img src="${esc(partReqPhotoSrc(r))}" alt="Photo" style="width:24px;height:20px;object-fit:cover;border-radius:3px;border:1px solid #16a34a">
                   🔍 ดูรูปถ่ายยืนยันการจ่าย
                 </button>
               ` : `
@@ -12552,6 +12995,7 @@
             </div>
 
             ${mobileActionSection}
+            ${canDeletePart ? `<button type="button" class="btn danger btn-req-delete" data-id="${esc(r.reqId)}" style="width:100%;height:38px;margin-top:8px;font-size:12.5px;font-weight:700;justify-content:center">🗑️ ลบรายการนี้ (Admin)</button>` : ''}
           </div>
         `;
       }).join('');
@@ -12565,14 +13009,14 @@
         ? r.locations.map((l, idx) => `<div style="font-size:11.5px;color:#0f172a"><b>#${idx + 1}:</b> ${esc(l.location)}${l.qty !== '' && l.qty != null ? ` (<b>${fmtQty(l.qty)}</b> ${esc(r.unit || 'PCS')})` : ''}</div>`).join('')
         : (r.locationsSummary ? `<div style="font-size:11.5px;color:#0f172a">${esc(r.locationsSummary)}</div>` : '<span style="color:#94a3b8;font-size:11.5px">⏳ รอคลังระบุ Location</span>');
 
-      const hasPhoto = Boolean(r.issuePhotoDataUrl && r.issuePhotoDataUrl.startsWith('data:image'));
+      const hasPhoto = partReqHasPhoto(r);
       let photoAndActionHtml = '';
       if (isIssued) {
         photoAndActionHtml = `<div style="display:flex;flex-direction:column;align-items:center;gap:5px">
              <span class="badge green" style="font-weight:800;font-size:11.5px;padding:3px 9px">✅ จ่าย Part แล้ว</span>
              ${hasPhoto ? `
                <button type="button" class="btn soft btn-view-req-photo" data-id="${esc(r.reqId)}" style="padding:3px 8px;font-size:11.5px;display:inline-flex;align-items:center;gap:5px;border-color:#86efac;background:#f0fdf4;color:#166534;font-weight:700">
-                 <img src="${r.issuePhotoDataUrl}" alt="Photo" style="width:28px;height:22px;object-fit:cover;border-radius:3px;border:1px solid #16a34a">
+                 <img src="${esc(partReqPhotoSrc(r))}" alt="Photo" style="width:28px;height:22px;object-fit:cover;border-radius:3px;border:1px solid #16a34a">
                  🔍 ดูรูปถ่ายจริง
                </button>
              ` : ''}
@@ -12630,6 +13074,7 @@
           </td>
           <td style="padding:9px 8px;text-align:center">
             ${photoAndActionHtml}
+            ${canDeletePart ? `<div style="margin-top:7px"><button type="button" class="btn danger btn-req-delete" data-id="${esc(r.reqId)}" style="font-size:11px;padding:3px 9px;font-weight:700">🗑️ ลบ</button></div>` : ''}
           </td>
         </tr>
       `;
@@ -12891,7 +13336,8 @@
   }
 
   function exportPartRequisitionsCsv() {
-    if (!partRequisitionsList.length) {
+    const exportList = getVisiblePartReqs();
+    if (!exportList.length) {
       toast('ยังไม่มีประวัติการเบิก Part สำหรับส่งออก');
       return;
     }
@@ -12919,7 +13365,7 @@
       'ยืนยันถ่ายรูปตอนจ่าย'
     ];
     const lines = [headers.map(q).join(',')];
-    for (const r of partRequisitionsList) {
+    for (const r of exportList) {
       const desc = [r.materialName, r.specification].filter(Boolean).join(' · ');
       lines.push([
         r.reqId,
@@ -12941,7 +13387,7 @@
         r.issuerName,
         r.issuedAt ? time(r.issuedAt) : '',
         r.issuerNote,
-        r.issuePhotoDataUrl ? 'ถ่ายภาพยืนยันแล้ว' : 'ยังไม่ถ่ายภาพ'
+        partReqHasPhoto(r) ? 'ถ่ายภาพยืนยันแล้ว' : 'ยังไม่ถ่ายภาพ'
       ].map(q).join(','));
     }
     const blob = new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
@@ -12950,7 +13396,7 @@
     a.download = `Part_Requisitions_Log_${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(a.href);
-    toast(`📥 ส่งออกประวัติการเบิก–จ่าย Part (${fmt(partRequisitionsList.length)} รายการ) เรียบร้อยแล้ว`);
+    toast(`📥 ส่งออกประวัติการเบิก–จ่าย Part (${fmt(exportList.length)} รายการ) เรียบร้อยแล้ว`);
   }
 
   function setPartReqFilterTab(tab) {
@@ -12970,7 +13416,7 @@
     setInterval(() => {
       syncPartRequisitionsFromServer(true);
     }, 3500);
-    setTimeout(() => syncPartRequisitionsFromServer(true), 600);
+    setTimeout(() => syncPartRequisitionsFromServer(true, true), 600);
 
     // MO Autocomplete
     const moInp = el('reqMoInput');
@@ -13135,9 +13581,12 @@
         if (el('reqQtyInput')) el('reqQtyInput').value = '';
         if (el('reqNoteInput')) el('reqNoteInput').value = '';
         if (el('reqSelectedPartStockHint')) el('reqSelectedPartStockHint').classList.add('hidden');
-        toast(saveResult?.relayNotified
-          ? `✅ บันทึกใบเบิก ${newRec.materialCode} (${fmtQty(qty)} ${newRec.unit}) และส่งแจ้งเตือนไป Warehouse แล้ว`
-          : `✅ บันทึกใบเบิก ${newRec.materialCode} แล้ว แต่ยังยืนยันการส่งแจ้งเตือนไป Warehouse ไม่ได้`);
+        toast(saveResult?.apiSaved
+          ? `✅ บันทึกใบเบิก ${newRec.materialCode} ลง Google Sheet แล้ว และแจ้ง Warehouse แล้ว`
+          : `✅ บันทึกใบเบิก ${newRec.materialCode} แล้ว`);
+      } catch (err) {
+        console.warn('[PartReqAPI] requester save not confirmed:', err?.message || err);
+        showError('Google Sheet ยังไม่ยืนยันว่าบันทึกใบเบิกนี้ ข้อมูลค้างอยู่ในเครื่องนี้และจะลองซิงค์อีกครั้งเมื่อเชื่อมต่อได้', 'บันทึกใบเบิกไม่สำเร็จ');
       } finally {
         if (saveBtn) {
           saveBtn.disabled = false;
@@ -13161,11 +13610,16 @@
     el('partReqSearchInput')?.addEventListener('input', renderPartReqHistoryTable);
     el('partReqShiftFilter')?.addEventListener('change', renderPartReqHistoryTable);
     el('partReqDateFilter')?.addEventListener('change', renderPartReqHistoryTable);
-    el('refreshPartReqBtn')?.addEventListener('click', () => syncPartRequisitionsFromServer(false));
+    el('refreshPartReqBtn')?.addEventListener('click', () => syncPartRequisitionsFromServer(false, true));
     el('exportPartReqExcelBtn')?.addEventListener('click', exportPartRequisitionsCsv);
 
     // Open Warehouse Confirm Modal or Photo Viewer from Table
     document.addEventListener('click', (e) => {
+      const delBtn = e.target.closest('.btn-req-delete');
+      if (delBtn) {
+        openPartReqDeleteModal(delBtn.dataset.id);
+        return;
+      }
       const confirmBtn = e.target.closest('.btn-open-wh-confirm');
       if (confirmBtn) {
         openWhConfirmModal(confirmBtn.dataset.id);
@@ -13180,7 +13634,7 @@
           if (el('partReqPreviewModalBody')) {
             el('partReqPreviewModalBody').innerHTML = `
               <div style="text-align:center;margin-bottom:12px">
-                <img src="${rec.issuePhotoDataUrl}" alt="Verified Issue Photo" style="max-width:100%;max-height:420px;border-radius:10px;border:2px solid #16a34a;box-shadow:0 4px 16px rgba(0,0,0,0.16)">
+                <img src="${esc(partReqPhotoSrc(rec))}" alt="Verified Issue Photo" style="max-width:100%;max-height:420px;border-radius:10px;border:2px solid #16a34a;box-shadow:0 4px 16px rgba(0,0,0,0.16)">
               </div>
               <div style="background:#f8fafc;padding:12px 14px;border-radius:8px;border:1px solid #cbd5e1;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
                 <div><b>เลขใบเบิก:</b> ${esc(rec.reqId)}</div>
@@ -13242,6 +13696,13 @@
     };
     el('closeWhConfirmModalBtn')?.addEventListener('click', closeWhModal);
     el('cancelWhConfirmModalBtn')?.addEventListener('click', closeWhModal);
+
+    // Admin delete confirmation popup
+    el('partReqDeleteConfirmBtn')?.addEventListener('click', confirmPartReqDelete);
+    el('partReqDeleteCancelBtn')?.addEventListener('click', closePartReqDeleteModal);
+    el('partReqDeleteModal')?.addEventListener('click', (e) => {
+      if (e.target === el('partReqDeleteModal')) closePartReqDeleteModal();
+    });
 
     // Close Photo Preview Modal
     const closePhotoPreview = () => el('partReqPhotoPreviewModal')?.classList.remove('show');
@@ -13309,9 +13770,12 @@
         const saveResult = await savePartRequisitionEverywhere(updated);
         closeWhModal();
         renderPartRequisitionPage();
-        toast(saveResult?.relayNotified
-          ? `✅ ยืนยันจ่าย Part (${updated.materialCode}) พร้อม Location ${locations.length} จุดและรูปถ่ายแล้ว · แจ้งคนเบิกแล้ว`
-          : `✅ ยืนยันจ่าย Part (${updated.materialCode}) พร้อม Location ${locations.length} จุดและรูปถ่ายแล้ว · ยังยืนยันการส่งแจ้งเตือนให้คนเบิกไม่ได้`);
+        toast(saveResult?.apiSaved
+          ? `✅ บันทึกการจ่าย ${updated.materialCode} ลง Google Sheet แล้ว · แจ้งคนเบิกแล้ว`
+          : `✅ บันทึกการจ่าย ${updated.materialCode} แล้ว`);
+      } catch (err) {
+        console.warn('[PartReqAPI] warehouse issue not confirmed:', err?.message || err);
+        showError('Google Sheet ยังไม่ยืนยันว่าบันทึกการจ่ายนี้ ข้อมูลค้างอยู่ในเครื่อง Warehouse และจะลองซิงค์อีกครั้งเมื่อเชื่อมต่อได้', 'บันทึกการจ่ายไม่สำเร็จ');
       } finally {
         if (saveBtn) {
           saveBtn.textContent = '💾 Save ยืนยันการจ่าย Part (Stamp เวลาจ่าย)';
