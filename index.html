@@ -10359,6 +10359,18 @@
         const res = await postPartReqSharedApiForm({ action: 'member_login', username, password });
         if (res?.ok && res.user) {
           found = res.user;
+          if (res.token) {
+            const targetRole = res.user.role === 'requester' ? 'requester' : 'warehouse';
+            const apiUname = targetRole === 'requester' ? 'req' : 'wh';
+            try {
+              sessionStorage.setItem(`${PART_REQ_API_SESSION_KEY}_${apiUname}`, JSON.stringify({
+                token: res.token,
+                username: apiUname,
+                role: targetRole,
+                expiresAt: Date.now() + (Math.max(60, Number(res.expiresIn) || 21600) * 1000)
+              }));
+            } catch (_) {}
+          }
         } else if (res && res.error === 'INVALID_CREDENTIALS') {
           found = null;
         }
@@ -10703,7 +10715,6 @@
     if (!isPartReqSharedApiConfigured()) return false;
     try {
       const token = await ensurePartReqSharedApiSession().catch(() => '');
-      if (!token) return false;
       const res = await postPartReqSharedApiForm({ action: 'members_list', token });
       if (res?.ok && Array.isArray(res.users) && res.users.length) {
         const byName = new Map();
@@ -13140,6 +13151,19 @@
       return postPartReqApiForm({ action, token: renewed.token, ...fields });
     }
     return response;
+  }
+
+  function isPartReqSharedApiConfigured() {
+    return partReqApiConfigured();
+  }
+
+  function postPartReqSharedApiForm(fields, timeoutOverrideMs = null) {
+    return postPartReqApiForm(fields, timeoutOverrideMs);
+  }
+
+  async function ensurePartReqSharedApiSession(preferredRole = null) {
+    const session = await ensurePartReqApiSession(preferredRole);
+    return session?.token || '';
   }
 
   function normalizePartReqApiRecord(record) {

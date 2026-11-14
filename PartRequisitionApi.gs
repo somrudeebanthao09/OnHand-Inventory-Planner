@@ -32,6 +32,8 @@ function doPost(e) {
     } else if (params.action === 'member_register') {
       const regUser = JSON.parse(String(params.user || '{}'));
       result = partReqApiMemberRegister_(regUser);
+    } else if (params.action === 'members_list') {
+      result = { ok: true, users: partReqApiGetMembers_() };
     } else {
       const session = partReqApiGetSession_(params.token);
       if (!session) throw new Error('SESSION_EXPIRED');
@@ -55,8 +57,6 @@ function doPost(e) {
         result = partReqApiSaveOrderPdfToDrive_(doc);
       } else if (params.action === 'list_order_pdfs') {
         result = { ok: true, items: partReqApiListOrderPdfs_() };
-      } else if (params.action === 'members_list') {
-        result = { ok: true, users: partReqApiGetMembers_() };
       } else if (params.action === 'members_save') {
         const users = JSON.parse(String(params.users || '[]'));
         result = { ok: true, users: partReqApiSaveMembers_(users) };
@@ -533,8 +533,20 @@ function partReqApiMemberLogin_(usernameRaw, passwordRaw) {
   if (!found || found.password !== pwd) {
     return { ok: false, error: 'INVALID_CREDENTIALS' };
   }
+  let token = '';
+  if (found.status === 'approved') {
+    token = `${Utilities.getUuid()}${Utilities.getUuid().replace(/-/g, '')}`;
+    const apiRole = found.role === 'requester' ? 'requester' : 'warehouse';
+    CacheService.getScriptCache().put(
+      `part_req_session_${token}`,
+      JSON.stringify({ username: found.username, role: apiRole }),
+      PART_REQ_API_SESSION_TTL_SECONDS
+    );
+  }
   return {
     ok: true,
+    token,
+    expiresIn: PART_REQ_API_SESSION_TTL_SECONDS,
     user: {
       id: found.id,
       username: found.username,
