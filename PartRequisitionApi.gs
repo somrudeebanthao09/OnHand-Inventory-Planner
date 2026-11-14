@@ -99,13 +99,38 @@ function setupPartReqApiCredentials() {
   return { ok: true, users: ['req', 'wh'], plaintextRemoved: true };
 }
 
+function partReqApiGetAuthUsers_() {
+  const properties = PropertiesService.getScriptProperties();
+  let users = {};
+  try {
+    users = JSON.parse(properties.getProperty('PART_REQ_API_USERS') || '{}');
+  } catch (_) {}
+  if (users.req?.salt && users.req?.hash && users.wh?.salt && users.wh?.hash) {
+    return users;
+  }
+  let changed = false;
+  try {
+    const members = partReqApiGetMembers_(true);
+    ['req', 'wh'].forEach(uname => {
+      if (users[uname]?.salt && users[uname]?.hash) return;
+      const m = members.find(x => x.username.toLowerCase() === uname && x.status === 'approved' && x.password);
+      if (m) {
+        const salt = Utilities.base64Encode(Utilities.newBlob(Utilities.getUuid() + Utilities.getUuid()).getBytes());
+        users[uname] = { salt, hash: partReqApiPasswordHash_(m.password, salt) };
+        changed = true;
+      }
+    });
+    if (changed) {
+      properties.setProperty('PART_REQ_API_USERS', JSON.stringify(users));
+    }
+  } catch (_) {}
+  return users;
+}
+
 function partReqApiChallenge_(usernameValue) {
   const username = String(usernameValue || '').trim().toLowerCase();
   if (!['req', 'wh'].includes(username)) throw new Error('INVALID_CREDENTIALS');
-  let users = {};
-  try {
-    users = JSON.parse(PropertiesService.getScriptProperties().getProperty('PART_REQ_API_USERS') || '{}');
-  } catch (_) {}
+  const users = partReqApiGetAuthUsers_();
   const verifier = users[username];
   if (!verifier?.salt || !verifier?.hash) throw new Error('INVALID_CREDENTIALS');
   return {
@@ -129,10 +154,7 @@ function partReqApiLogin_(usernameValue, passwordValue, submittedVerifierValue) 
   const failedAttempts = Number(cache.get(failKey) || 0);
   if (failedAttempts >= 10) throw new Error('LOGIN_TEMPORARILY_LOCKED');
 
-  let users = {};
-  try {
-    users = JSON.parse(PropertiesService.getScriptProperties().getProperty('PART_REQ_API_USERS') || '{}');
-  } catch (_) {}
+  const users = partReqApiGetAuthUsers_();
   const verifier = users[username];
   const valid = verifier && (submittedVerifier
     ? partReqApiConstantTimeEqual_(submittedVerifier, String(verifier.hash || ''))
@@ -664,10 +686,12 @@ function setupAllPlannerSheets() {
   const members = partReqApiGetMembers_();
   const pushSheet = partReqApiGetPushSheet_();
   const pdfSheet = partReqApiGetOrderPdfSheet_();
+  const authUsers = partReqApiGetAuthUsers_();
   return {
     ok: true,
     sheets: [reqSheet.getName(), staff.sheetName || 'PartStaff', MEMBERS_SHEET_NAME, pushSheet.getName(), pdfSheet.getName()],
-    membersCount: members.length
+    membersCount: members.length,
+    apiAuthReady: Boolean(authUsers.req && authUsers.wh)
   };
 }
 

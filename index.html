@@ -13114,7 +13114,13 @@
     const sessionKey = `${PART_REQ_API_SESSION_KEY}_${username}`;
     let saved = null;
     try { saved = JSON.parse(sessionStorage.getItem(sessionKey) || 'null'); } catch (_) {}
-    if (saved?.token && saved.username === username && saved.expiresAt > Date.now() + 30000) return saved;
+    if ((!saved?.token || saved.expiresAt <= Date.now() + 30000) && user.role === 'admin' && username !== 'wh') {
+      try {
+        const whSaved = JSON.parse(sessionStorage.getItem(`${PART_REQ_API_SESSION_KEY}_wh`) || 'null');
+        if (whSaved?.token && whSaved.expiresAt > Date.now() + 30000) saved = whSaved;
+      } catch (_) {}
+    }
+    if (saved?.token && saved.expiresAt > Date.now() + 30000) return saved;
     if (partReqApiLoginPromise) return partReqApiLoginPromise;
     if (Date.now() < (partReqApiLoginRetryAfter.get(username) || 0)) throw new Error('PART_API_LOGIN_RETRY_DELAY');
     partReqApiLoginPromise = (async () => {
@@ -13265,7 +13271,7 @@
     }
 
     // 2. Also invoke standard iframe/session flow when possible
-    if (window.location.origin === 'https://somrudeebanthao09.github.io') {
+    if (partReqApiCanPostMessage()) {
       try {
         const response = await callPartReqSharedApi('save', { record: JSON.stringify(apiRecord) }, preferredRole);
         if (response?.ok) return response;
