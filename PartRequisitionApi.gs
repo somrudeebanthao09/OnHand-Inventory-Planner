@@ -226,6 +226,8 @@ function partReqApiSave_(session, record) {
         return { ok: true, reqId, status: 'issued', savedAt: existing.updatedAt || '', ignoredStaleUpdate: true };
       } else {
         const issuedAt = String(record.issuedAt || record.updatedAt || new Date().toISOString());
+        const drivePhotoUrl = savePartPhotoToDrive_({ ...(existing || {}), ...record, reqId, issuedAt });
+        const finalPhotoUrl = drivePhotoUrl || String(record.photoAttachmentUrl || record.photoUrl || existing?.photoUrl || '');
         merged = existing ? {
           ...existing,
           reqId,
@@ -238,9 +240,10 @@ function partReqApiSave_(session, record) {
           issuerUsername: session.username,
           issuerNote: String(record.issuerNote || ''),
           issuedAt,
-          hasPhoto: Boolean(record.hasPhoto || record.issuePhotoDataUrl || record.photoAttachmentUrl),
+          hasPhoto: Boolean(record.hasPhoto || record.issuePhotoDataUrl || finalPhotoUrl),
           photoTakenAt: String(record.photoTakenAt || issuedAt),
-          photoAttachmentUrl: String(record.photoAttachmentUrl || ''),
+          photoAttachmentUrl: finalPhotoUrl,
+          photoUrl: finalPhotoUrl,
           updatedAt: String(record.updatedAt || issuedAt)
         } : {
           ...record,
@@ -250,15 +253,83 @@ function partReqApiSave_(session, record) {
           status: 'issued',
           issuerUsername: session.username,
           issuedAt,
+          hasPhoto: Boolean(record.hasPhoto || record.issuePhotoDataUrl || finalPhotoUrl),
+          photoAttachmentUrl: finalPhotoUrl,
+          photoUrl: finalPhotoUrl,
           updatedAt: String(record.updatedAt || issuedAt)
         };
       }
     }
 
     const row = partReqApiWriteRecord_(sheet, merged, existing);
-    return { ok: true, reqId, status: row.status, savedAt: new Date().toISOString() };
+    return { ok: true, reqId, status: row.status, photoUrl: row.photoUrl || '', savedAt: new Date().toISOString() };
   } finally {
     lock.releaseLock();
+  }
+}
+
+function getOrCreateDriveSubFolder_(parentFolder, name) {
+  const it = parentFolder.getFoldersByName(name);
+  if (it.hasNext()) return it.next();
+  return parentFolder.createFolder(name);
+}
+
+// บันทึกรูปถ่ายยืนยันการจ่ายขึ้น Google Drive แบ่งโฟลเดอร์: วันที่ (YYYY-MM-DD) -> กะ (กะ A/B) -> <รหัสPart>_<reqId>.jpg
+function savePartPhotoToDrive_(record) {
+  try {
+    const dataUrl = String(record.issuePhotoDataUrl || '');
+    const m = /^data:image\/(jpeg|jpg|png|webp);base64,(.+)$/i.exec(dataUrl);
+    if (!m) return '';
+    const ext = m[1].toLowerCase() === 'png' ? 'png' : (m[1].toLowerCase() === 'webp' ? 'webp' : 'jpg');
+    const mime = ext === 'png' ? 'image/png' : (ext === 'webp' ? 'image/webp' : 'image/jpeg');
+
+    // หาวันที่ (YYYY-MM-DD) จาก issuedAt หรือ requestDate
+    let dateFolderName = '';
+    const dtStr = String(record.issuedAt || record.photoTakenAt || record.requestDate || '').replace(/[\u200B-\u200D\uFEFF']/g, '').trim();
+    const dmy = /^(\d{1,2})\/(\d{1,2})\/(\d{4})/.exec(dtStr);
+    if (dmy) {
+      let yyyy = Number(dmy[3]);
+      if (yyyy > 2400) yyyy -= 543;
+      dateFolderName = `${yyyy}-${String(dmy[2]).padStart(2, '0')}-${String(dmy[1]).padStart(2, '0')}`;
+    } else {
+      const th = new Date(Date.now() + 7 * 3600 * 1000);
+      dateFolderName = th.toISOString().slice(0, 10);
+    }
+
+    const shiftRaw = String(record.shift || 'A').trim().toUpperCase();
+    const shiftFolderName = `กะ ${shiftRaw === 'B' ? 'B' : 'A'}`;
+    const matCode = String(record.materialCode || 'PART').trim().replace(/[^A-Za-z0-9._-]/g, '_');
+    const reqId = String(record.reqId || 'REQ').trim().replace(/[^A-Za-z0-9._-]/g, '_');
+    const fileName = `${matCode}_${reqId}.${ext}`;
+
+    // วางโฟลเดอร์หลัก Part_Requisitions_Photos ไว้ข้าง Google Sheet (หรือ My Drive)
+    let baseParent = DriveApp.getRootFolder();
+    try {
+      const ssFile = DriveApp.getFileById(PART_REQ_API_SPREADSHEET_ID);
+      const parents = ssFile.getParents();
+      if (parents.hasNext()) baseParent = parents.next();
+    } catch (_) {}
+
+    const rootFolder = getOrCreateDriveSubFolder_(baseParent, 'Part_Requisitions_Photos');
+    const dateFolder = getOrCreateDriveSubFolder_(rootFolder, dateFolderName);
+    const shiftFolder = getOrCreateDriveSubFolder_(dateFolder, shiftFolderName);
+
+    // ลบไฟล์เดิมถ้ามี reqId ซ้ำ
+    const existingFiles = shiftFolder.getFilesByName(fileName);
+    while (existingFiles.hasNext()) {
+      existingFiles.next().setTrashed(true);
+    }
+
+    const bytes = Utilities.base64Decode(m[2]);
+    const blob = Utilities.newBlob(bytes, mime, fileName);
+    const file = shiftFolder.createFile(blob);
+    try {
+      file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    } catch (_) {}
+
+    return `https://drive.google.com/thumbnail?id=${file.getId()}&sz=w1200`;
+  } catch (err) {
+    return '';
   }
 }
 

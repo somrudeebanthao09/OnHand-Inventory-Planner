@@ -12827,6 +12827,8 @@
     const isIssued = isDeleted || record?.status === 'issued';
     const preferredRole = isIssued ? 'warehouse' : 'requester';
     const rawIssAt = isDeleted ? (record.deletedAt || record.updatedAt || new Date().toISOString()) : String(record?.issuedAt || '');
+    const existingPhotoUrl = String(record?.photoAttachmentUrl || record?.photoUrl || '');
+    const hasDrivePhoto = /drive\.google\.com/i.test(existingPhotoUrl);
     const apiRecord = {
       ...record,
       status: isIssued ? 'issued' : 'pending',
@@ -12838,7 +12840,9 @@
       updatedAt: formatPartReqDateTime(record?.updatedAt || record?.deletedAt || record?.issuedAt || record?.requestedAt || new Date().toISOString(), '', true),
       hasPhoto: isDeleted ? false : partReqHasPhoto(record)
     };
-    delete apiRecord.issuePhotoDataUrl;
+    if (!isIssued || isDeleted || hasDrivePhoto) {
+      delete apiRecord.issuePhotoDataUrl;
+    }
 
     // 1. Direct fast POST to Google Apps Script using pre-authenticated token from PartRequisitionsSeed.js (works from any origin/mobile without nested iframe postMessage)
     const seedTokens = window.PART_REQUISITIONS_SEED?.apiTokens || partReqSharedApiTokens || {};
