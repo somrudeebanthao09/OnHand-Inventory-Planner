@@ -12,9 +12,14 @@ const PART_REQ_API_HEADERS = [
 const PART_REQ_API_ITERATIONS = 30000;
 const PART_REQ_API_SESSION_TTL_SECONDS = 21600;
 const PART_REQ_API_ALLOWED_ORIGIN = '*';
-const PART_REQ_NTFY_WH_TOPIC = 'h9_wh_alert_10430e51';
-const PART_REQ_NTFY_REQ_TOPIC = 'h9_req_alert_10430e51';
 const PART_REQ_PLANNER_URL = 'https://somrudeebanthao09.github.io/OnHand-Inventory-Planner/';
+// แจ้งเตือนผ่าน Telegram (แนะนำ: ใช้ Wi-Fi โรงงานได้, ฟรีไม่จำกัดข้อความ)
+const PART_REQ_TELEGRAM_BOT_TOKEN = '';
+const PART_REQ_TELEGRAM_WH_CHAT_ID = '';
+const PART_REQ_TELEGRAM_REQ_CHAT_ID = '';
+// หรือแจ้งเตือนผ่าน Discord Webhook (ใส่ URL ห้องแชตถ้าต้องการใช้ Discord)
+const PART_REQ_DISCORD_WH_WEBHOOK = '';
+const PART_REQ_DISCORD_REQ_WEBHOOK = '';
 
 function doGet() {
   return ContentService.createTextOutput('Part requisition API is ready.')
@@ -324,7 +329,7 @@ function partReqApiSave_(session, record) {
     }
 
     const row = partReqApiWriteRecord_(sheet, merged, existing);
-    partReqApiSendNtfyAlert_(row);
+    partReqApiSendPushAlert_(row);
     return { ok: true, reqId, status: row.status, photoUrl: row.photoUrl || '', savedAt: new Date().toISOString() };
   } finally {
     lock.releaseLock();
@@ -1100,41 +1105,88 @@ function partReqApiPushList_() {
   return out;
 }
 
-function partReqApiSendNtfyAlert_(row) {
+function partReqApiSendPushAlert_(row) {
   try {
     if (!row || !row.reqId) return;
     const isIssued = row.status === 'issued';
-    const topic = isIssued ? PART_REQ_NTFY_REQ_TOPIC : PART_REQ_NTFY_WH_TOPIC;
     const desc = [row.materialName, row.specification].filter(Boolean).join(' | ') || '-';
     const title = isIssued
       ? `✅ คลังจ่าย Part แล้ว (${row.materialCode || '-'})`
       : `🔔 มีใบเบิก Part ใหม่ (${row.materialCode || '-'})`;
+    const targetUrl = `${PART_REQ_PLANNER_URL}${isIssued ? '#part-requisition' : '#part-issue'}`;
     const lines = isIssued
       ? [
+          title,
           `รายการ: ${desc}`,
           `จำนวน: ${row.requestQty || 0} ${row.unit || 'PCS'} | MO: ${row.moNumber || '-'}`,
           `Location: ${row.locationsSummary || '-'} | ผู้จ่าย: ${row.issuerName || '-'}`,
-          row.leadTimeSummary ? `⏱️ ใช้เวลา: ${row.leadTimeSummary}` : ''
+          row.leadTimeSummary ? `⏱️ ใช้เวลา: ${row.leadTimeSummary}` : '',
+          `เปิดระบบ: ${targetUrl}`
         ]
       : [
+          title,
           `รายการ: ${desc}`,
           `จำนวน: ${row.requestQty || 0} ${row.unit || 'PCS'} | MO: ${row.moNumber || '-'}`,
           `ผู้เบิก: ${row.requesterName || '-'} (กะ ${row.shift || 'A'})`,
-          `สาเหตุ: ${row.reason || '-'}`
+          `สาเหตุ: ${row.reason || '-'}`,
+          `เปิดระบบ: ${targetUrl}`
         ];
-    UrlFetchApp.fetch('https://ntfy.sh/', {
-      method: 'post',
-      contentType: 'application/json',
-      muteHttpExceptions: true,
-      payload: JSON.stringify({
-        topic,
-        title,
-        message: lines.filter(Boolean).join('\n'),
-        priority: isIssued ? 4 : 5,
-        click: `${PART_REQ_PLANNER_URL}${isIssued ? '#part-requisition' : '#part-issue'}`
-      })
-    });
+    const message = lines.filter(Boolean).join('\n');
+
+    const tgToken = String(PART_REQ_TELEGRAM_BOT_TOKEN || '').trim();
+    const tgChatId = String(isIssued ? PART_REQ_TELEGRAM_REQ_CHAT_ID : PART_REQ_TELEGRAM_WH_CHAT_ID).trim();
+    if (tgToken && tgChatId) {
+      UrlFetchApp.fetch(`https://api.telegram.org/bot${encodeURIComponent(tgToken)}/sendMessage`, {
+        method: 'post',
+        contentType: 'application/json',
+        muteHttpExceptions: true,
+        payload: JSON.stringify({
+          chat_id: tgChatId,
+          text: message,
+          disable_web_page_preview: true
+        })
+      });
+    }
+
+    const discordWebhook = String(isIssued ? PART_REQ_DISCORD_REQ_WEBHOOK : PART_REQ_DISCORD_WH_WEBHOOK).trim();
+    if (discordWebhook) {
+      UrlFetchApp.fetch(discordWebhook, {
+        method: 'post',
+        contentType: 'application/json',
+        muteHttpExceptions: true,
+        payload: JSON.stringify({ content: message })
+      });
+    }
   } catch (_) {}
+}
+
+function setupTelegramFindChatIds() {
+  const tgToken = String(PART_REQ_TELEGRAM_BOT_TOKEN || '').trim();
+  if (!tgToken) {
+    Logger.log('กรุณาใส่ PART_REQ_TELEGRAM_BOT_TOKEN ด้านบนไฟล์ก่อนครับ');
+    return;
+  }
+  const res = UrlFetchApp.fetch(`https://api.telegram.org/bot${encodeURIComponent(tgToken)}/getUpdates`, {
+    method: 'get',
+    muteHttpExceptions: true
+  });
+  const data = JSON.parse(res.getContentText() || '{}');
+  if (!data.ok) {
+    Logger.log('Telegram Error: ' + (data.description || res.getContentText()));
+    return;
+  }
+  const seen = {};
+  (data.result || []).forEach(u => {
+    const msg = u.message || u.channel_post || u.my_chat_member;
+    const chat = msg && msg.chat;
+    if (chat && !seen[chat.id]) {
+      seen[chat.id] = true;
+      Logger.log(`Chat ID: ${chat.id} | ชื่อ: ${chat.title || chat.username || chat.first_name || '-'} | ประเภท: ${chat.type}`);
+    }
+  });
+  if (!Object.keys(seen).length) {
+    Logger.log('ยังไม่พบข้อความใหม่ — ให้ส่งข้อความอะไรก็ได้ 1 ครั้งในแชต/กลุ่มที่มี Bot แล้วกด Run ใหม่อีกครั้งครับ');
+  }
 }
 
 function partReqApiMessage_(result) {
