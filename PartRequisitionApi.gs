@@ -45,6 +45,9 @@ function doPost(e) {
       } else if (params.action === 'save_staff') {
         const roster = JSON.parse(String(params.roster || '{}'));
         result = { ok: true, staffRoster: partReqApiSaveStaffRoster_(roster) };
+      } else if (params.action === 'save_order_pdf') {
+        const doc = JSON.parse(String(params.doc || '{}'));
+        result = partReqApiSaveOrderPdfToDrive_(doc);
       } else {
         throw new Error('UNKNOWN_ACTION');
       }
@@ -456,6 +459,43 @@ function partReqApiSaveStaffRoster_(roster) {
   }
   SpreadsheetApp.flush();
   return { sheetName: sheet.getName(), requesters: reqList, issuers: issList };
+}
+
+function setupPartStaffSheet() {
+  return partReqApiGetStaffRoster_();
+}
+
+function partReqApiSaveOrderPdfToDrive_(doc) {
+  const moNumber = String(doc?.moNumber || '').trim().replace(/[\\/:*?"<>|]/g, '_') || 'UNKNOWN_MO';
+  const rawFileName = String(doc?.fileName || `${moNumber}.pdf`).trim().replace(/[\\/:*?"<>|]/g, '_');
+  const fileName = /\.pdf$/i.test(rawFileName) ? rawFileName : `${rawFileName}.pdf`;
+  const htmlContent = String(doc?.html || '').trim();
+  if (!htmlContent) throw new Error('EMPTY_PDF_HTML');
+
+  const rootFolder = getOrCreateDriveSubFolder_(DriveApp.getRootFolder(), 'Production_Orders_PDF');
+  const moFolder = getOrCreateDriveSubFolder_(rootFolder, moNumber);
+
+  // แทนที่ไฟล์ชื่อเดียวกันในโฟลเดอร์ MO เดิมเพื่อไม่ให้ซ้ำ
+  const existingFiles = moFolder.getFilesByName(fileName);
+  while (existingFiles.hasNext()) {
+    try { existingFiles.next().setTrashed(true); } catch (_) {}
+  }
+
+  const htmlBlob = Utilities.newBlob(htmlContent, 'text/html; charset=utf-8', fileName.replace(/\.pdf$/i, '.html'));
+  const pdfBlob = htmlBlob.getAs('application/pdf').setName(fileName);
+  const file = moFolder.createFile(pdfBlob);
+  try {
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  } catch (_) {}
+
+  return {
+    ok: true,
+    moNumber,
+    fileName,
+    fileId: file.getId(),
+    fileUrl: file.getUrl(),
+    folderUrl: moFolder.getUrl()
+  };
 }
 
 function partReqApiGetSheet_() {
