@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-14T10:12:07.266Z",
+  "snapshotAt": "2026-11-14T10:21:53.704Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
   "count": 14403,
   "orders": [
@@ -311,7 +311,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productName": "Cover EZ100 600mm 18w Bending Coating(White)",
       "department": "Painting Production Line",
       "taskStatus": "Start",
-      "pickStatus": "Materials Not Issued",
+      "pickStatus": "Partially Issued",
       "materialCode": "5001ZW00259",
       "materialName": "Cover EZ100 600mm 18w Bending",
       "specification": "BRU53719",
@@ -323,13 +323,13 @@ window.PRODUCTION_ORDERS_SEED = {
       "directTransferQty": 0,
       "directTransferDocs": "",
       "ppbomDemandQty": 307,
-      "ppbomIssuedQty": 0,
-      "ppbomUnissuedQty": 307,
+      "ppbomIssuedQty": 7,
+      "ppbomUnissuedQty": 300,
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
       "consumedQty": 0,
-      "wipQty": 0,
+      "wipQty": 7,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Welding",
       "requiredTime": "2026-11-14 17:28:20"
     },
