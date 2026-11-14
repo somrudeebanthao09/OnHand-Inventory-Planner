@@ -42,6 +42,9 @@ function doPost(e) {
         result = partReqApiPushUnsubscribe_(String(params.endpoint || ''));
       } else if (params.action === 'push_list') {
         result = { ok: true, subscriptions: partReqApiPushList_() };
+      } else if (params.action === 'save_staff') {
+        const roster = JSON.parse(String(params.roster || '{}'));
+        result = { ok: true, staffRoster: partReqApiSaveStaffRoster_(roster) };
       } else {
         throw new Error('UNKNOWN_ACTION');
       }
@@ -430,6 +433,29 @@ function partReqApiGetStaffRoster_() {
   } catch (_) {
     return { sheetName: 'PartStaff', requesters: [], issuers: [] };
   }
+}
+
+function partReqApiSaveStaffRoster_(roster) {
+  const ss = SpreadsheetApp.openById(PART_REQ_API_SPREADSHEET_ID);
+  let sheet = ss.getSheetByName('PartStaff') || ss.getSheetByName('คนเบิกจ่าย') || ss.getSheetByName('Staff');
+  if (!sheet) {
+    sheet = ss.insertSheet('PartStaff');
+  }
+  const reqList = Array.isArray(roster?.requesters) ? roster.requesters.map(v => String(v || '').trim()).filter(Boolean) : [];
+  const issList = Array.isArray(roster?.issuers) ? roster.issuers.map(v => String(v || '').trim()).filter(Boolean) : [];
+  const maxRows = Math.max(reqList.length, issList.length);
+  sheet.clearContents();
+  sheet.getRange(1, 1, 1, 2).setValues([['คนเบิก Part', 'คนจ่าย Part']]);
+  sheet.setFrozenRows(1);
+  if (maxRows > 0) {
+    const rows = [];
+    for (let i = 0; i < maxRows; i++) {
+      rows.push([reqList[i] || '', issList[i] || '']);
+    }
+    sheet.getRange(2, 1, maxRows, 2).setValues(rows);
+  }
+  SpreadsheetApp.flush();
+  return { sheetName: sheet.getName(), requesters: reqList, issuers: issList };
 }
 
 function partReqApiGetSheet_() {

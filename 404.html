@@ -14858,12 +14858,25 @@
       if (el('partStaffIssuersTextarea')) el('partStaffIssuersTextarea').value = dedupeStaffNames([...parsed.issuers, ...curWh]).join('\n');
       toast(`✨ แยกรายชื่อสำเร็จ (คนเบิก +${parsed.requesters.length} · คนจ่าย +${parsed.issuers.length})`);
     });
-    el('savePartStaffRosterBtn')?.addEventListener('click', () => {
+    el('savePartStaffRosterBtn')?.addEventListener('click', async () => {
       const reqLines = (el('partStaffRequestersTextarea')?.value || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
       const whLines = (el('partStaffIssuersTextarea')?.value || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-      savePartStaffRoster({ requesters: reqLines, issuers: whLines }, true);
+      const rosterPayload = savePartStaffRoster({ requesters: reqLines, issuers: whLines }, true);
+      if (isPartReqSharedApiConfigured()) {
+        try {
+          const token = await ensurePartReqSharedApiSession().catch(() => '');
+          if (token) {
+            await fetch(PART_REQ_SHARED_API_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+              body: new URLSearchParams({ action: 'save_staff', token, roster: JSON.stringify(rosterPayload) }).toString()
+            });
+          }
+        } catch (_) {}
+      }
       closePartStaffModal();
-      toast(`✅ บันทึกรายชื่อคนเบิก (${reqLines.length} คน) และคนจ่าย (${whLines.length} คน) เรียบร้อยแล้ว`);
+      toast(`✅ บันทึกรายชื่อคนเบิก (${reqLines.length} คน) และคนจ่าย (${whLines.length} คน) ลงชีต PartStaff เรียบร้อยแล้ว`);
     });
 
     // Reason select ("อื่นๆ" toggles custom input)
