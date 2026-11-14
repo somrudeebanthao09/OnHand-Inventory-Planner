@@ -48,6 +48,8 @@ function doPost(e) {
       } else if (params.action === 'save_order_pdf') {
         const doc = JSON.parse(String(params.doc || '{}'));
         result = partReqApiSaveOrderPdfToDrive_(doc);
+      } else if (params.action === 'list_order_pdfs') {
+        result = { ok: true, items: partReqApiListOrderPdfs_() };
       } else {
         throw new Error('UNKNOWN_ACTION');
       }
@@ -465,12 +467,51 @@ function setupPartStaffSheet() {
   return partReqApiGetStaffRoster_();
 }
 
+const ORDER_PDF_LINKS_SHEET_NAME = 'OrderPdfLinks';
+const ORDER_PDF_LINKS_HEADERS = ['moNumber', 'docType', 'docNumber', 'fileName', 'fileId', 'fileUrl', 'previewUrl', 'folderUrl', 'updatedAt'];
+
+function partReqApiGetOrderPdfSheet_() {
+  const ss = SpreadsheetApp.openById(PART_REQ_API_SPREADSHEET_ID);
+  let sheet = ss.getSheetByName(ORDER_PDF_LINKS_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(ORDER_PDF_LINKS_SHEET_NAME);
+  }
+  const width = Math.max(sheet.getLastColumn(), ORDER_PDF_LINKS_HEADERS.length);
+  const firstRow = sheet.getLastRow() >= 1 ? sheet.getRange(1, 1, 1, width).getValues()[0] : [];
+  if (!firstRow.some(v => String(v || '').trim())) {
+    sheet.getRange(1, 1, 1, ORDER_PDF_LINKS_HEADERS.length).setValues([ORDER_PDF_LINKS_HEADERS]);
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function partReqApiListOrderPdfs_() {
+  const sheet = partReqApiGetOrderPdfSheet_();
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return [];
+  const rows = sheet.getRange(2, 1, lastRow - 1, ORDER_PDF_LINKS_HEADERS.length).getValues();
+  return rows.map(r => ({
+    moNumber: String(r[0] || '').trim(),
+    docType: String(r[1] || 'order').trim().toLowerCase(),
+    docNumber: String(r[2] || '').trim(),
+    fileName: String(r[3] || '').trim(),
+    fileId: String(r[4] || '').trim(),
+    fileUrl: String(r[5] || '').trim(),
+    previewUrl: String(r[6] || '').trim(),
+    folderUrl: String(r[7] || '').trim(),
+    updatedAt: String(r[8] || '').trim()
+  })).filter(x => x.moNumber && x.fileId);
+}
+
 function partReqApiSaveOrderPdfToDrive_(doc) {
   const moNumber = String(doc?.moNumber || '').trim().replace(/[\\/:*?"<>|]/g, '_') || 'UNKNOWN_MO';
-  const rawFileName = String(doc?.fileName || `${moNumber}.pdf`).trim().replace(/[\\/:*?"<>|]/g, '_');
+  const docType = String(doc?.docType || 'order').trim().toLowerCase() === 'transfer' ? 'transfer' : 'order';
+  const docNumber = String(doc?.docNumber || moNumber).trim();
+  const rawFileName = String(doc?.fileName || `${docNumber}.pdf`).trim().replace(/[\\/:*?"<>|]/g, '_');
   const fileName = /\.pdf$/i.test(rawFileName) ? rawFileName : `${rawFileName}.pdf`;
+  const pdfBase64 = String(doc?.pdfBase64 || '').replace(/^data:application\/pdf;base64,/i, '').trim();
   const htmlContent = String(doc?.html || '').trim();
-  if (!htmlContent) throw new Error('EMPTY_PDF_HTML');
+  if (!pdfBase64 && !htmlContent) throw new Error('EMPTY_PDF_CONTENT');
 
   const rootFolder = getOrCreateDriveSubFolder_(DriveApp.getRootFolder(), 'Production_Orders_PDF');
   const moFolder = getOrCreateDriveSubFolder_(rootFolder, moNumber);
@@ -481,20 +522,60 @@ function partReqApiSaveOrderPdfToDrive_(doc) {
     try { existingFiles.next().setTrashed(true); } catch (_) {}
   }
 
-  const htmlBlob = Utilities.newBlob(htmlContent, 'text/html; charset=utf-8', fileName.replace(/\.pdf$/i, '.html'));
-  const pdfBlob = htmlBlob.getAs('application/pdf').setName(fileName);
+  let pdfBlob;
+  if (pdfBase64) {
+    const bytes = Utilities.base64Decode(pdfBase64);
+    pdfBlob = Utilities.newBlob(bytes, 'application/pdf', fileName);
+  } else {
+    const htmlBlob = Utilities.newBlob(htmlContent, 'text/html; charset=utf-8', fileName.replace(/\.pdf$/i, '.html'));
+    pdfBlob = htmlBlob.getAs('application/pdf').setName(fileName);
+  }
   const file = moFolder.createFile(pdfBlob);
   try {
     file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
   } catch (_) {}
 
+  const fileId = file.getId();
+  const fileUrl = `https://drive.google.com/file/d/${fileId}/view`;
+  const previewUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+  const folderUrl = moFolder.getUrl();
+  const nowStr = formatPartReqDateTime_(new Date().toISOString(), '', true);
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+  try {
+    const sheet = partReqApiGetOrderPdfSheet_();
+    const lastRow = sheet.getLastRow();
+    let targetRow = lastRow + 1;
+    if (lastRow >= 2) {
+      const existing = sheet.getRange(2, 1, lastRow - 1, 3).getValues();
+      for (let i = 0; i < existing.length; i++) {
+        if (String(existing[i][0] || '').trim() === moNumber &&
+            String(existing[i][1] || '').trim().toLowerCase() === docType &&
+            String(existing[i][2] || '').trim() === docNumber) {
+          targetRow = i + 2;
+          break;
+        }
+      }
+    }
+    sheet.getRange(targetRow, 1, 1, ORDER_PDF_LINKS_HEADERS.length).setValues([[
+      moNumber, docType, docNumber, fileName, fileId, fileUrl, previewUrl, folderUrl, nowStr
+    ]]);
+    SpreadsheetApp.flush();
+  } finally {
+    lock.releaseLock();
+  }
+
   return {
     ok: true,
     moNumber,
+    docType,
+    docNumber,
     fileName,
-    fileId: file.getId(),
-    fileUrl: file.getUrl(),
-    folderUrl: moFolder.getUrl()
+    fileId,
+    fileUrl,
+    previewUrl,
+    folderUrl
   };
 }
 
