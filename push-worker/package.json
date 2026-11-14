@@ -1,0 +1,13 @@
+{
+  "name": "h9-part-push-worker",
+  "version": "1.0.0",
+  "description": "Cloud Web Push worker for OnHand Inventory Planner (Part Requisitions)",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "web-push": "^3.6.7"
+  }
+}

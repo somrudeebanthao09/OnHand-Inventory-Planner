@@ -13,6 +13,8 @@ const PART_REQ_API_ITERATIONS = 30000;
 const PART_REQ_API_SESSION_TTL_SECONDS = 21600;
 const PART_REQ_API_ALLOWED_ORIGIN = '*';
 const PART_REQ_PLANNER_URL = 'https://somrudeebanthao09.github.io/OnHand-Inventory-Planner/';
+// URL ของ Cloud Web Push Worker (เช่น https://h9-part-push-worker.onrender.com) เพื่อให้ปลุกและส่งแจ้งเตือนทันที
+const PART_REQ_PUSH_WORKER_URL = '';
 // แจ้งเตือนผ่าน Telegram (แนะนำ: ใช้ Wi-Fi โรงงานได้, ฟรีไม่จำกัดข้อความ)
 const PART_REQ_TELEGRAM_BOT_TOKEN = '';
 const PART_REQ_TELEGRAM_WH_CHAT_ID = '';
@@ -1155,6 +1157,14 @@ function partReqApiSendPushAlert_(row) {
         contentType: 'application/json',
         muteHttpExceptions: true,
         payload: JSON.stringify({ content: message })
+      });
+    }
+
+    const pushWorkerBase = String(PART_REQ_PUSH_WORKER_URL || '').trim().replace(/\/+$/, '');
+    if (pushWorkerBase) {
+      UrlFetchApp.fetch(`${pushWorkerBase}/trigger?reqId=${encodeURIComponent(row.reqId)}`, {
+        method: 'get',
+        muteHttpExceptions: true
       });
     }
   } catch (_) {}

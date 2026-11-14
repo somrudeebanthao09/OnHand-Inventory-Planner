@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: h9-part-push-worker
+    runtime: node
+    plan: free
+    rootDir: push-worker
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: VAPID_PUBLIC_KEY
+        sync: false
+      - key: VAPID_PRIVATE_KEY
+        sync: false
+      - key: PART_REQ_GAS_API_URL
+        value: https://script.google.com/macros/s/AKfycbwMkhvWJ3koge4dzElzg25YlMjSIePFeUmXeOp5H6Y-YqAqlTAenfBtgXqvq0yTsdrM/exec
