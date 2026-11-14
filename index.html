@@ -6109,14 +6109,14 @@
       let mo = moMap.get(modelCode);
       if (!mo) {
         const pOv = overrides.get(modelCode);
-        const invSpec = (db.inventory || []).find(x => String(x.materialCode || '').trim() === modelCode)?.specification || '';
-        const orderSpec = (window.PRODUCTION_ORDERS_SEED?.orders || []).find(o => String(o.productCode || '').trim() === modelCode)?.specification || '';
+        const invSpec = (db.inventory || []).find(x => String(x.materialCode || '').trim() === modelCode && String(x.specification || '').trim())?.specification || '';
+        const execSpec = Object.values(window.PRODUCTION_EXECUTION_SEED?.ordersByMo || {}).find(o => String(o.productCode || '').trim() === modelCode && String(o.specification || '').trim())?.specification || '';
         mo = {
           moNumber: modelCode,
           modelCode: modelCode,
           productCode: modelCode,
           productName: pOv?.materialName || r.modelName || modelCode,
-          specification: pOv?.specification || r.modelSpec || orderSpec || invSpec || '',
+          specification: pOv?.specification || invSpec || r.modelSpec || execSpec || '',
           department: pOv ? pOv.department : (normalizeDepartmentName(r.department) || 'ไม่ระบุแผนก'),
           itemsMap: new Map(),
           items: []
