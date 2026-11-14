@@ -14009,8 +14009,8 @@
   }
 
   function formatPartReqLeadTime(requestedVal, issuedVal) {
-    const startMs = parsePartReqStampMs(requestedVal);
-    const endMs = parsePartReqStampMs(issuedVal);
+    const startMs = parsePartReqDateTimeMs(requestedVal);
+    const endMs = parsePartReqDateTimeMs(issuedVal);
     if (!startMs || !endMs || endMs < startMs) return '';
     const totalSec = Math.round((endMs - startMs) / 1000);
     if (totalSec < 60) return `${totalSec} วินาที`;
