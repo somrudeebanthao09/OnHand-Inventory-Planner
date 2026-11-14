@@ -7,7 +7,7 @@ const PART_REQ_API_HEADERS = [
   'materialCode','materialName','specification','requestQty','unit','reason',
   'requesterName','requesterUsername','shift','requesterNote','requestedAt','status',
   'locationsSummary','locationsJson','issuerName','issuerUsername','issuerNote','issuedAt',
-  'hasPhoto','photoTakenAt','updatedAt','photoUrl'
+  'hasPhoto','photoTakenAt','updatedAt','photoUrl','leadTimeSummary'
 ];
 const PART_REQ_API_ITERATIONS = 30000;
 const PART_REQ_API_SESSION_TTL_SECONDS = 21600;
@@ -227,7 +227,10 @@ function partReqApiList_() {
       locations: Array.isArray(locations) ? locations : [],
       issuePhotoDataUrl: '',
       hasPhoto: !isDeleted && ['yes', 'true', '1'].includes(String(row.hasPhoto || '').trim().toLowerCase()),
-      photoAttachmentUrl: isDeleted ? '' : String(row.photoUrl || '')
+      photoAttachmentUrl: isDeleted ? '' : String(row.photoUrl || ''),
+      leadTimeSummary: row.status === 'issued'
+        ? (String(row.leadTimeSummary || '').trim() || formatPartReqLeadTime_(row.requestedAt || row.requestDate, row.issuedAt))
+        : ''
     };
   });
 }
@@ -410,6 +413,38 @@ function formatPartReqDateTime_(val, fallbackVal) {
   return `${pad2(th.getUTCDate())}/${pad2(th.getUTCMonth() + 1)}/${th.getUTCFullYear()}\u200B ${pad2(th.getUTCHours())}:${pad2(th.getUTCMinutes())}:${pad2(th.getUTCSeconds())}`;
 }
 
+function parsePartReqTimeMs_(val) {
+  const raw = String(val || '').replace(/[\u200B-\u200D\uFEFF']/g, '').trim();
+  if (!raw) return 0;
+  const dmy = /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/.exec(raw);
+  if (dmy) {
+    let yyyy = Number(dmy[3]);
+    if (yyyy > 2400) yyyy -= 543;
+    const ms = Date.UTC(yyyy, Number(dmy[2]) - 1, Number(dmy[1]), Number(dmy[4] || 0), Number(dmy[5] || 0), Number(dmy[6] || 0)) - 7 * 3600 * 1000;
+    return Number.isFinite(ms) ? ms : 0;
+  }
+  const ms = Date.parse(raw.replace(/\s*\([^)]*\)\s*$/, '').trim());
+  return Number.isFinite(ms) ? ms : 0;
+}
+
+function formatPartReqLeadTime_(requestedVal, issuedVal) {
+  const startMs = parsePartReqTimeMs_(requestedVal);
+  const endMs = parsePartReqTimeMs_(issuedVal);
+  if (!startMs || !endMs || endMs < startMs) return '';
+  const totalSec = Math.round((endMs - startMs) / 1000);
+  if (totalSec < 60) return `${totalSec} วินาที`;
+  const days = Math.floor(totalSec / 86400);
+  const hours = Math.floor((totalSec % 86400) / 3600);
+  const mins = Math.floor((totalSec % 3600) / 60);
+  const secs = totalSec % 60;
+  const parts = [];
+  if (days > 0) parts.push(`${days} วัน`);
+  if (hours > 0) parts.push(`${hours} ชม.`);
+  if (mins > 0) parts.push(`${mins} นาที`);
+  if (days === 0 && hours === 0 && secs > 0) parts.push(`${secs} วินาที`);
+  return parts.join(' ');
+}
+
 function partReqApiToRow_(record) {
   return {
     reqId: String(record.reqId || ''),
@@ -438,7 +473,10 @@ function partReqApiToRow_(record) {
     hasPhoto: Boolean(record.hasPhoto || record.issuePhotoDataUrl || record.photoUrl),
     photoTakenAt: (record.photoTakenAt || record.issuedAt) ? formatPartReqDateTime_(record.photoTakenAt || record.issuedAt) : '',
     updatedAt: formatPartReqDateTime_(record.updatedAt || record.issuedAt || record.requestedAt || new Date().toISOString()),
-    photoUrl: String(record.photoAttachmentUrl || record.photoUrl || '')
+    photoUrl: String(record.photoAttachmentUrl || record.photoUrl || ''),
+    leadTimeSummary: record.status === 'issued'
+      ? (String(record.leadTimeSummary || '').trim() || formatPartReqLeadTime_(record.requestedAt || record.requestDate, record.issuedAt))
+      : ''
   };
 }
 

@@ -14008,6 +14008,24 @@
     drop.classList.remove('hidden');
   }
 
+  function formatPartReqLeadTime(requestedVal, issuedVal) {
+    const startMs = parsePartReqStampMs(requestedVal);
+    const endMs = parsePartReqStampMs(issuedVal);
+    if (!startMs || !endMs || endMs < startMs) return '';
+    const totalSec = Math.round((endMs - startMs) / 1000);
+    if (totalSec < 60) return `${totalSec} วินาที`;
+    const days = Math.floor(totalSec / 86400);
+    const hours = Math.floor((totalSec % 86400) / 3600);
+    const mins = Math.floor((totalSec % 3600) / 60);
+    const secs = totalSec % 60;
+    const parts = [];
+    if (days > 0) parts.push(`${days} วัน`);
+    if (hours > 0) parts.push(`${hours} ชม.`);
+    if (mins > 0) parts.push(`${mins} นาที`);
+    if (days === 0 && hours === 0 && secs > 0) parts.push(`${secs} วินาที`);
+    return parts.join(' ');
+  }
+
   function renderPartReqWarehouseAlert() {
     const banner = el('whPendingAlertBanner');
     const countText = el('whAlertCountText');
@@ -14158,6 +14176,7 @@
                 <div style="margin-top:5px;padding-top:5px;border-top:1px dashed #cbd5e1;color:#14532d">
                   <div>📍 <b>Location ที่หยิบ:</b> ${locsText}</div>
                   <div>👤 <b>ผู้จ่าย:</b> <b>${esc(r.issuerName || '—')}</b> · 🕒 <b>จ่ายเมื่อ:</b> <span style="font-family:ui-monospace,Consolas,monospace">${esc(formatPartReqDateTime(r.issuedAt))}</span></div>
+                  ${(r.leadTimeSummary || formatPartReqLeadTime(r.requestedAt || r.requestDate, r.issuedAt)) ? `<div style="color:#0369a1;font-weight:800;margin-top:2px">⏱️ <b>สรุปเวลาเบิก-จ่าย:</b> ${esc(r.leadTimeSummary || formatPartReqLeadTime(r.requestedAt || r.requestDate, r.issuedAt))}</div>` : ''}
                   ${r.issuerNote ? `<div>💬 <b>หมายเหตุผู้จ่าย:</b> ${esc(r.issuerNote)}</div>` : ''}
                 </div>
               ` : ''}
@@ -14243,6 +14262,7 @@
             ${isIssued
               ? `<div><strong style="color:#15803d">${esc(r.issuerName || '—')}</strong></div>
                  <div style="font-size:11.5px;color:#047857;font-weight:700;margin-top:2px;font-family:ui-monospace,Consolas,monospace" title="Timestamp ตอนที่คลังบันทึกจ่าย">🕒 จ่าย: ${esc(issAtStr)}</div>
+                 ${(r.leadTimeSummary || formatPartReqLeadTime(r.requestedAt || r.requestDate, r.issuedAt)) ? `<div style="font-size:11.5px;color:#0369a1;font-weight:800;margin-top:2px">⏱️ ใช้เวลา: ${esc(r.leadTimeSummary || formatPartReqLeadTime(r.requestedAt || r.requestDate, r.issuedAt))}</div>` : ''}
                  <div style="margin-top:3px;color:#475569;font-size:11.5px">💬 <b>หมายเหตุผู้จ่าย:</b> ${esc(r.issuerNote || '—')}</div>`
               : `<span style="color:#94a3b8;font-size:11.5px">รอคลังบันทึกจ่ายและประทับเวลา</span>`}
           </td>
@@ -14835,12 +14855,16 @@
       'Confirm Location / พื้นที่จ่าย',
       'ผู้จ่าย (Warehouse)',
       'เวลาที่จ่าย (Timestamp)',
+      'สรุปเวลาเบิกจ่าย Part',
       'หมายเหตุผู้จ่าย',
       'ยืนยันถ่ายรูปตอนจ่าย'
     ];
     const lines = [headers.map(q).join(',')];
     for (const r of exportList) {
       const desc = [r.materialName, r.specification].filter(Boolean).join(' · ');
+      const leadTime = r.status === 'issued'
+        ? (r.leadTimeSummary || formatPartReqLeadTime(r.requestedAt || r.requestDate, r.issuedAt))
+        : '';
       lines.push([
         r.reqId,
         formatPartReqDateTime(r.requestDate, r.requestedAt) || r.requestDate,
@@ -14860,6 +14884,7 @@
         r.locationsSummary,
         r.issuerName,
         r.issuedAt ? (formatPartReqDateTime(r.issuedAt) || r.issuedAt) : '',
+        leadTime,
         r.issuerNote,
         partReqHasPhoto(r) ? 'ถ่ายภาพยืนยันแล้ว' : 'ยังไม่ถ่ายภาพ'
       ].map(q).join(','));
