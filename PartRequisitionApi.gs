@@ -31,7 +31,7 @@ function doPost(e) {
       const session = partReqApiGetSession_(params.token);
       if (!session) throw new Error('SESSION_EXPIRED');
       if (params.action === 'list') {
-        result = { ok: true, items: partReqApiList_() };
+        result = { ok: true, items: partReqApiList_(), staffRoster: partReqApiGetStaffRoster_() };
       } else if (params.action === 'save') {
         const record = JSON.parse(String(params.record || '{}'));
         result = partReqApiSave_(session, record);
@@ -290,6 +290,45 @@ function partReqApiToRow_(record) {
     updatedAt: String(record.updatedAt || record.issuedAt || record.requestedAt || ''),
     photoUrl: String(record.photoAttachmentUrl || record.photoUrl || '')
   };
+}
+
+function partReqApiGetStaffRoster_() {
+  try {
+    const ss = SpreadsheetApp.openById(PART_REQ_API_SPREADSHEET_ID);
+    const sheet = ss.getSheetByName('PartStaff') || ss.getSheetByName('คนเบิกจ่าย') || ss.getSheetByName('Staff');
+    if (!sheet) {
+      const created = ss.insertSheet('PartStaff');
+      created.getRange(1, 1, 1, 4).setValues([['คนเบิก Part', 'คนจ่าย Part', 'ชื่อ-นามสกุล', 'หน้าที่ (คนเบิก / คนจ่าย)']]);
+      created.setFrozenRows(1);
+      return { sheetName: 'PartStaff', requesters: [], issuers: [] };
+    }
+    const values = sheet.getDataRange().getValues();
+    const requesters = [];
+    const issuers = [];
+    if (values.length >= 2) {
+      const headers = values[0].map(h => String(h || '').trim().toLowerCase());
+      const reqCol = headers.findIndex(h => h.includes('คนเบิก') || h.includes('ผู้เบิก') || h === 'requester');
+      const whCol = headers.findIndex(h => h.includes('คนจ่าย') || h.includes('ผู้จ่าย') || h === 'warehouse' || h === 'issuer');
+      const nameCol = headers.findIndex(h => h.includes('ชื่อ') || h === 'name');
+      const roleCol = headers.findIndex(h => h.includes('หน้าที่') || h.includes('ตำแหน่ง') || h === 'role');
+      for (let r = 1; r < values.length; r++) {
+        const row = values[r];
+        if (reqCol >= 0 && String(row[reqCol] || '').trim()) requesters.push(String(row[reqCol]).trim());
+        if (whCol >= 0 && String(row[whCol] || '').trim()) issuers.push(String(row[whCol]).trim());
+        if (nameCol >= 0 && roleCol >= 0) {
+          const n = String(row[nameCol] || '').trim();
+          const rl = String(row[roleCol] || '').trim().toLowerCase();
+          if (n) {
+            if (rl.includes('เบิก') || rl.includes('req')) requesters.push(n);
+            if (rl.includes('จ่าย') || rl.includes('wh') || rl.includes('คลัง') || rl.includes('issu')) issuers.push(n);
+          }
+        }
+      }
+    }
+    return { sheetName: sheet.getName(), requesters, issuers };
+  } catch (_) {
+    return { sheetName: 'PartStaff', requesters: [], issuers: [] };
+  }
 }
 
 function partReqApiGetSheet_() {

@@ -19,7 +19,8 @@ const DB_TABS = {
     'requestedAt','status','locationsSummary','locationsJson',
     'issuerName','issuerUsername','issuerNote','issuedAt','hasPhoto','photoTakenAt',
     'updatedAt','photoUrl'
-  ]
+  ],
+  PartStaff: ['คนเบิก Part', 'คนจ่าย Part', 'ชื่อ-นามสกุล', 'หน้าที่ (คนเบิก / คนจ่าย)']
 };
 
 // Repo ที่ helper (เครื่อง Admin) push ข้อมูลล่าสุดขึ้นไป — ใช้ดึง PartRequisitions / On-Hand เข้า Google Sheet
@@ -129,15 +130,47 @@ function installPartRequisitionSyncTrigger() {
 function onOpen() {
   try {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
-    if (ss) ensureTab_(ss, 'PartRequisitions', DB_TABS.PartRequisitions);
+    if (ss) {
+      ensureTab_(ss, 'PartRequisitions', DB_TABS.PartRequisitions);
+      ensureTab_(ss, 'PartStaff', DB_TABS.PartStaff);
+    }
   } catch (_) {}
   SpreadsheetApp.getUi().createMenu('Material Planner')
-    .addItem('⚡ ซิงค์ข้อมูลล่าสุด (สร้างแท็บ PartRequisitions + อัปเดต On-Hand ล่าสุด)', 'syncLatestFromGitHub')
+    .addItem('⚡ ซิงค์ข้อมูลล่าสุด (สร้างแท็บ PartRequisitions / PartStaff + อัปเดต On-Hand ล่าสุด)', 'syncLatestFromGitHub')
     .addItem('⏱️ ตั้งให้ PartRequisitions อัปเดตเองทุก 5 นาที', 'installPartRequisitionSyncTrigger')
     .addSeparator()
     .addItem('เตรียมชีตระบบ (สร้างแท็บทั้งหมด)', 'setup')
     .addItem('เปิดหน้า Material Planner', 'showAppUrl')
     .addToUi();
+}
+
+function getPartStaffRoster() {
+  const ss = getPlannerSpreadsheet_();
+  const sheet = ensureTab_(ss, 'PartStaff', DB_TABS.PartStaff);
+  const values = sheet.getDataRange().getValues();
+  const requesters = [];
+  const issuers = [];
+  if (values.length >= 2) {
+    const headers = values[0].map(h => String(h || '').trim().toLowerCase());
+    const reqCol = headers.findIndex(h => h.includes('คนเบิก') || h.includes('ผู้เบิก') || h === 'requester');
+    const whCol = headers.findIndex(h => h.includes('คนจ่าย') || h.includes('ผู้จ่าย') || h === 'warehouse' || h === 'issuer');
+    const nameCol = headers.findIndex(h => h.includes('ชื่อ') || h === 'name');
+    const roleCol = headers.findIndex(h => h.includes('หน้าที่') || h.includes('ตำแหน่ง') || h === 'role');
+    for (let r = 1; r < values.length; r++) {
+      const row = values[r];
+      if (reqCol >= 0 && String(row[reqCol] || '').trim()) requesters.push(String(row[reqCol]).trim());
+      if (whCol >= 0 && String(row[whCol] || '').trim()) issuers.push(String(row[whCol]).trim());
+      if (nameCol >= 0 && roleCol >= 0) {
+        const n = String(row[nameCol] || '').trim();
+        const rl = String(row[roleCol] || '').trim().toLowerCase();
+        if (n) {
+          if (rl.includes('เบิก') || rl.includes('req')) requesters.push(n);
+          if (rl.includes('จ่าย') || rl.includes('wh') || rl.includes('คลัง') || rl.includes('issu')) issuers.push(n);
+        }
+      }
+    }
+  }
+  return { ok: true, sheetName: 'PartStaff', requesters, issuers };
 }
 
 function setup() {

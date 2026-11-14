@@ -2327,7 +2327,8 @@
             <h1 id="partReqMainTitle">📦 เบิก Part เพิ่มเติม &amp; ยืนยันการจ่ายคลัง</h1>
             <p id="partReqMainSub">บันทึกใบเบิกผูกเลข MO เชื่อมใบโอน Direct Transfer (ZJDB) ส่งแจ้งเตือนไปคลัง Warehouse ยืนยัน Location และถ่ายรูปสดก่อนจ่าย</p>
           </div>
-          <div class="row-actions" style="align-items:center">
+          <div class="row-actions" style="align-items:center;flex-wrap:wrap;gap:6px">
+            <button class="btn soft" id="openPartStaffRosterModalBtn" type="button" style="font-weight:750;background:#eff6ff;border-color:#93c5fd;color:#1d4ed8">👥 รายชื่อคนเบิก/คนจ่าย (ชีต PartStaff)</button>
             <a href="https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit" target="_blank" rel="noopener" id="openPartReqGoogleSheetBtn" class="btn soft part-req-admin-only" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-weight:700">
               <span>📊</span> <span>เปิด Google Sheet (On-Hand Inventory Planner - H9 Assembly)</span>
             </a>
@@ -2339,12 +2340,12 @@
         <!-- Google Sheet Info Notice (แสดงเฉพาะ Admin บนคอมพิวเตอร์) -->
         <div id="partReqGoogleSheetNotice" class="notice part-req-admin-only" style="margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#f0fdf4;border-color:#bbf7d0;color:#14532d">
           <div>
-            <strong>📄 ชื่อไฟล์ Google Sheet ที่ใช้บันทึกข้อมูล (ไฟล์เดียวกับที่อัปเดต On-Hand):</strong>
+            <strong>📄 ชื่อไฟล์ Google Sheet ที่ใช้บันทึกข้อมูล &amp; รายชื่อพนักงาน:</strong>
             <span style="font-weight:800;color:#0f766e;margin-left:6px;background:#fff;padding:2px 8px;border-radius:6px;border:1px solid #86efac">On-Hand Inventory Planner - H9 Assembly</span>
-            <span style="font-size:12.5px;color:#166534;margin-left:6px">(แท็บชีต: <code>PartRequisitions</code> และ <code>Inventory</code> ล่าสุด · รหัสชีต: <code>1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg</code>)</span>
+            <span style="font-size:12.5px;color:#166534;margin-left:6px">(แท็บชีตใบเบิก: <code>PartRequisitions</code> · แท็บรายชื่อคนเบิก/คนจ่าย: <code>PartStaff</code> [คอลัมน์ A = <code>คนเบิก Part</code>, คอลัมน์ B = <code>คนจ่าย Part</code>])</span>
           </div>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <a href="On-Hand-Inventory-Google-Sheet-Import.xlsx" download="On-Hand-Inventory-Google-Sheet-Import.xlsx" class="btn soft" style="padding:5px 11px;font-size:12.5px;font-weight:800;background:#dcfce7;border-color:#86efac;color:#14532d;text-decoration:none" title="ดาวน์โหลดไฟล์ .xlsx ที่มีแท็บ PartRequisitions + Inventory ข้อมูลล่าสุด เพื่อนำไป File -> Import -> Replace spreadsheet ใน Google Sheet">📥 ดาวน์โหลดไฟล์อัปเดต Google Sheet ครบทุกแท็บ (.xlsx)</a>
+            <a href="On-Hand-Inventory-Google-Sheet-Import.xlsx" download="On-Hand-Inventory-Google-Sheet-Import.xlsx" class="btn soft" style="padding:5px 11px;font-size:12.5px;font-weight:800;background:#dcfce7;border-color:#86efac;color:#14532d;text-decoration:none" title="ดาวน์โหลดไฟล์ .xlsx ที่มีแท็บ PartRequisitions + PartStaff + Inventory ข้อมูลล่าสุด เพื่อนำไป File -> Import -> Replace spreadsheet ใน Google Sheet">📥 ดาวน์โหลดไฟล์อัปเดต Google Sheet ครบทุกแท็บ (.xlsx)</a>
             <a href="https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit" target="_blank" rel="noopener" style="color:#0f766e;font-weight:800;font-size:13px;text-decoration:underline">คลิกเปิดไฟล์ Google Sheet ที่นี่ ↗</a>
           </div>
         </div>
@@ -2474,10 +2475,20 @@
                 </div>
               </div>
 
-              <!-- 9. ผู้เบิก -->
-              <div class="pr-col-requester">
-                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">ผู้เบิก <span style="color:#dc2626">*</span></label>
-                <input type="text" id="reqRequesterInput" class="field" placeholder="ชื่อผู้เบิก" style="width:100%;height:40px;font-size:13.5px;font-weight:600" required>
+              <!-- 9. ผู้เบิก (เลือกจาก Dropdown คนเบิก Part หรือพิมพ์ชื่อเองได้) -->
+              <div class="pr-col-requester" style="position:relative">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;margin-bottom:4px">
+                  <label style="font-size:12.5px;font-weight:700;color:#334155">ผู้เบิก (คนเบิก Part) <span style="color:#dc2626">*</span></label>
+                  <span style="font-size:11px;color:#087e78;font-weight:700">เลือกหรือพิมพ์ชื่อได้</span>
+                </div>
+                <div style="display:flex;gap:6px;align-items:center">
+                  <select id="reqRequesterSelect" class="field" title="เลือกชื่อผู้เบิกจากชีต PartStaff (เฉพาะคนเบิก Part)" style="width:46%;min-width:125px;height:40px;font-size:13px;font-weight:700;color:#0f766e;background:#f0fdf4;border-color:#86efac;padding:0 8px">
+                    <option value="">▼ เลือกชื่อคนเบิก...</option>
+                  </select>
+                  <input type="text" id="reqRequesterInput" class="field" list="reqRequesterDatalist" placeholder="หรือพิมพ์ชื่อผู้เบิกเอง..." autocomplete="off" style="flex:1;width:100%;height:40px;font-size:13.5px;font-weight:700" required>
+                </div>
+                <datalist id="reqRequesterDatalist"></datalist>
+                <div id="reqRequesterDropdown" class="hidden" style="position:absolute;top:68px;left:0;right:0;z-index:35;background:#fff;border:1.5px solid #087e78;border-radius:10px;max-height:220px;overflow-y:auto;box-shadow:0 10px 25px rgba(15,23,42,0.18)"></div>
               </div>
 
               <!-- 10. หมายเหตุของผู้เบิก -->
@@ -2594,11 +2605,21 @@
               <div id="whLocationsList" style="display:grid;gap:8px"></div>
             </div>
 
-            <!-- 2. ผู้จ่าย & หมายเหตุผู้จ่าย -->
+            <!-- 2. ผู้จ่าย & หมายเหตุผู้จ่าย (เลือกจาก Dropdown คนจ่าย Part หรือพิมพ์ชื่อเองได้) -->
             <div class="wh-issuer-grid">
-              <div>
-                <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">ชื่อผู้จ่าย (Warehouse) <span style="color:#dc2626">*</span></label>
-                <input type="text" id="whIssuerNameInput" class="field" placeholder="ดึงจากบัญชีผู้ใช้ปัจจุบัน" style="width:100%;height:40px;font-size:14px;font-weight:700" readonly required>
+              <div style="position:relative">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:4px;margin-bottom:4px">
+                  <label style="font-size:12.5px;font-weight:700;color:#334155">ชื่อผู้จ่าย (Warehouse / คนจ่าย Part) <span style="color:#dc2626">*</span></label>
+                  <span style="font-size:11px;color:#0369a1;font-weight:700">เลือกหรือพิมพ์ชื่อได้</span>
+                </div>
+                <div style="display:flex;gap:6px;align-items:center">
+                  <select id="whIssuerSelect" class="field" title="เลือกชื่อผู้จ่ายจากชีต PartStaff (เฉพาะคนจ่าย Part)" style="width:46%;min-width:130px;height:40px;font-size:13px;font-weight:700;color:#0369a1;background:#eff6ff;border-color:#93c5fd;padding:0 8px">
+                    <option value="">▼ เลือกชื่อคนจ่าย...</option>
+                  </select>
+                  <input type="text" id="whIssuerNameInput" class="field" list="whIssuerDatalist" placeholder="หรือพิมพ์ชื่อผู้จ่ายเอง..." autocomplete="off" style="flex:1;width:100%;height:40px;font-size:14px;font-weight:700" required>
+                </div>
+                <datalist id="whIssuerDatalist"></datalist>
+                <div id="whIssuerDropdown" class="hidden" style="position:absolute;top:68px;left:0;right:0;z-index:45;background:#fff;border:1.5px solid #0284c7;border-radius:10px;max-height:220px;overflow-y:auto;box-shadow:0 10px 25px rgba(15,23,42,0.18)"></div>
               </div>
               <div>
                 <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">หมายเหตุ (ผู้จ่าย / Warehouse)</label>
@@ -2675,6 +2696,59 @@
           <div class="modal-actions" style="margin-top:16px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">
             <button type="button" class="btn soft" id="partReqDeleteCancelBtn">ยกเลิก</button>
             <button type="button" class="btn danger" id="partReqDeleteConfirmBtn" style="font-weight:800">🗑️ ยืนยันลบรายการ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL 4: จัดการ & ซิงค์รายชื่อคนเบิก Part / คนจ่าย Part (ชีต PartStaff) -->
+      <div class="modal-backdrop" id="partStaffRosterModal" style="z-index:42">
+        <div class="modal" style="width:min(740px,95vw);max-height:92vh;overflow:auto;padding:20px 24px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px">
+            <div>
+              <h2 style="margin:0 0 4px;font-size:18px;color:#0f172a">👥 รายชื่อคนเบิก Part &amp; คนจ่าย Part (ซิงค์กับชีต <code>PartStaff</code>)</h2>
+              <p style="margin:0;font-size:12.5px;color:#475569;line-height:1.45">
+                ใน Google Sheet ให้สร้างแท็บชื่อ <b style="color:#0f766e;background:#f0fdf4;padding:1px 6px;border-radius:4px;border:1px solid #86efac">PartStaff</b>
+                โดยใส่หัวตาราง <b>คอลัมน์ A = <code>คนเบิก Part</code></b> และ <b>คอลัมน์ B = <code>คนจ่าย Part</code></b> (หรือใส่คอลัมน์ <code>ชื่อ-นามสกุล</code> คู่กับคอลัมน์ <code>หน้าที่</code> ระบุ <code>คนเบิก</code> / <code>คนจ่าย</code>)
+              </p>
+            </div>
+            <button type="button" class="btn" id="closePartStaffRosterModalBtn" style="padding:4px 10px;font-size:16px">✕</button>
+          </div>
+
+          <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:9px;padding:10px 12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12.5px;color:#0369a1">
+            <div>
+              📊 <b>ชื่อแท็บใน Google Sheet:</b> <code style="font-weight:800;font-size:13.5px;color:#0f172a;background:#fff;padding:2px 7px;border-radius:5px">PartStaff</code>
+              · ระบบแยกดึงเฉพาะ <b>คนเบิก Part</b> ไปที่ Dropdown ผู้เบิก และเฉพาะ <b>คนจ่าย Part</b> ไปที่ Dropdown ผู้จ่ายคลัง
+            </div>
+            <button type="button" class="btn soft" id="syncPartStaffFromSheetBtn" style="padding:5px 11px;font-size:12px;font-weight:750;background:#fff;border-color:#38bdf8;color:#0284c7">🔄 ดึงรายชื่อจากชีต PartStaff ทันที</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:12px">
+            <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:12px">
+              <label style="display:block;font-size:13.5px;font-weight:800;color:#166534;margin-bottom:4px">📝 รายชื่อ "คนเบิก Part" (1 บรรทัด = 1 ชื่อ)</label>
+              <small style="display:block;color:#15803d;font-size:11.5px;margin-bottom:6px">แสดงใน Dropdown ช่อง <b>ผู้เบิก</b> เท่านั้น (คัดลอกจากคอลัมน์ <code>คนเบิก Part</code> มาวางได้เลย)</small>
+              <textarea id="partStaffRequestersTextarea" class="field" rows="7" placeholder="เช่น&#10;สมชาย ใจดี&#10;วิภา สายผลิต&#10;อนันต์ H9" style="width:100%;font-size:13.5px;font-weight:600;line-height:1.5;padding:8px 10px"></textarea>
+            </div>
+            <div style="background:#eff6ff;border:1.5px solid #93c5fd;border-radius:10px;padding:12px">
+              <label style="display:block;font-size:13.5px;font-weight:800;color:#1e40af;margin-bottom:4px">📦 รายชื่อ "คนจ่าย Part / Warehouse" (1 บรรทัด = 1 ชื่อ)</label>
+              <small style="display:block;color:#1d4ed8;font-size:11.5px;margin-bottom:6px">แสดงใน Dropdown ช่อง <b>ชื่อผู้จ่าย (Warehouse)</b> เท่านั้น (คัดลอกจากคอลัมน์ <code>คนจ่าย Part</code> มาวางได้เลย)</small>
+              <textarea id="partStaffIssuersTextarea" class="field" rows="7" placeholder="เช่น&#10;นันท์นิภัส คลังวัตถุดิบ&#10;กิตติ คลัง H9&#10;สมฤดี บรรเทา" style="width:100%;font-size:13.5px;font-weight:600;line-height:1.5;padding:8px 10px"></textarea>
+            </div>
+          </div>
+
+          <div style="background:#f8fafc;border:1px dashed #cbd5e1;border-radius:8px;padding:9px 12px;margin-bottom:14px">
+            <label style="display:block;font-size:12px;font-weight:750;color:#334155;margin-bottom:4px">📋 หรือวางตารางที่ Copy มาจากชีต <code>PartStaff</code> ใน Google Sheet (รองรับทั้งแบบ 2 คอลัมน์ <code>คนเบิก | คนจ่าย</code> หรือ <code>ชื่อ | หน้าที่</code>):</label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="text" id="partStaffPasteTableInput" class="field" placeholder="กด Ctrl+V วางข้อมูลที่ก๊อปปี้จาก Google Sheet ที่นี่ แล้วกดปุ่มแปลงรายชื่อ..." style="flex:1;height:36px;font-size:12.5px">
+              <button type="button" class="btn soft" id="parsePartStaffPasteBtn" style="height:36px;padding:0 12px;font-size:12px;font-weight:700">✨ แยกคนเบิก/คนจ่าย</button>
+            </div>
+          </div>
+
+          <div class="modal-actions" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+            <span id="partStaffSyncStatusText" style="font-size:12px;color:#64748b">รายชื่อจะถูกซิงค์ไปยังโทรศัพท์ทุกเครื่องทันที</span>
+            <div style="display:flex;gap:8px">
+              <button type="button" class="btn soft" id="cancelPartStaffRosterModalBtn">ปิด</button>
+              <button type="button" class="btn primary" id="savePartStaffRosterBtn" style="font-weight:800;padding:8px 18px">💾 บันทึกรายชื่อคนเบิก / คนจ่าย</button>
+            </div>
           </div>
         </div>
       </div>
@@ -3370,11 +3444,9 @@
         ...(input?.settings?.security||{})
       }
     };
-      if(input?.settings?.autoLoginKingdee10m === undefined){
-      mergedSettings.autoLoginKingdee10m = false;
-      mergedSettings.autoSync10m = false;
-      mergedSettings.autoRefresh08 = false;
-    }
+    if (typeof mergedSettings.autoSync10m !== 'boolean') mergedSettings.autoSync10m = true;
+    if (typeof mergedSettings.autoRefresh08 !== 'boolean') mergedSettings.autoRefresh08 = true;
+    if (typeof mergedSettings.autoLoginKingdee10m !== 'boolean') mergedSettings.autoLoginKingdee10m = true;
     return {
       ...base,
       ...(input||{}),
@@ -3461,8 +3533,10 @@
     return local;
   }
   function isAutoSyncEnabled(){
-    // Disabled background Kingdee login permanently so the user's active Kingdee session is NEVER kicked out
-    return false;
+    if(db?.settings && typeof db.settings.autoSync10m === 'boolean'){
+      return db.settings.autoSync10m;
+    }
+    return true;
   }
   function updateConnectionNotice(){
     const notice=el('connectionNotice');
@@ -10643,6 +10717,8 @@
         rebuildStockRowsCache();
         renderAll();
         nextAutoSyncAtMs = Date.now() + AUTO_SYNC_INTERVAL_MS;
+      } else if(typeof fetchLatestSharedSeeds === 'function'){
+        await fetchLatestSharedSeeds(true).catch(() => null);
       }
     } catch (err) {
       console.warn('[AutoSync 10m] Cycle error:', err);
@@ -12416,6 +12492,13 @@
     partReqApiPullPromise = (async () => {
       const response = await callPartReqSharedApi('list');
       if (!response?.ok || !Array.isArray(response.items)) throw new Error(response?.error || 'PART_API_LIST_FAILED');
+      if (response.staffRoster && (response.staffRoster.requesters?.length || response.staffRoster.issuers?.length)) {
+        const cur = loadPartStaffRoster();
+        savePartStaffRoster({
+          requesters: [...(response.staffRoster.requesters || []), ...cur.requesters],
+          issuers: [...(response.staffRoster.issuers || []), ...cur.issuers]
+        }, false);
+      }
       partReqApiLastRecords = response.items.map(normalizePartReqApiRecord);
       replacePartReqRecordsFromApi(response.items);
       return true;
@@ -12531,6 +12614,13 @@
         const res = await fetchWithTimeout(`${helperBase}/part-requisitions`, { cache: 'no-store' }, 2500).then(r => r.json()).catch(() => null);
         if (res?.ok) {
           if (res.apiTokens?.req) partReqSharedApiTokens = res.apiTokens;
+          if (res.staffRoster && (res.staffRoster.requesters?.length || res.staffRoster.issuers?.length)) {
+            const cur = loadPartStaffRoster();
+            savePartStaffRoster({
+              requesters: [...(res.staffRoster.requesters || []), ...cur.requesters],
+              issuers: [...(res.staffRoster.issuers || []), ...cur.issuers]
+            }, false);
+          }
           if (Array.isArray(res.items)) mergeIncomingPartRequisitions(res.items);
           anySuccess = true;
         }
@@ -13448,13 +13538,294 @@
     if (dateInp && !dateInp.value) {
       dateInp.value = new Date().toISOString().slice(0, 10);
     }
+    renderPartStaffDropdowns();
     const reqNameInp = el('reqRequesterInput');
-    if (reqNameInp && !reqNameInp.value && u) {
-      reqNameInp.value = u.name || u.username || '';
+    if (reqNameInp && !reqNameInp.value) {
+      const savedReqName = localStorage.getItem('onhand_planner_last_requester_name') || '';
+      if (savedReqName) {
+        reqNameInp.value = savedReqName;
+      } else if (u) {
+        reqNameInp.value = u.name || u.username || '';
+      }
+      if (el('reqRequesterSelect')) {
+        const matchOpt = Array.from(el('reqRequesterSelect').options).find(o => o.value === reqNameInp.value);
+        el('reqRequesterSelect').value = matchOpt ? matchOpt.value : '';
+      }
     }
     renderPartReqWarehouseAlert();
     renderPartReqHistoryTable();
     syncPartRequisitionsFromServer(true);
+  }
+
+  // ===================== PartStaff Roster (คนเบิก Part / คนจ่าย Part จากชีต PartStaff) =====================
+  const PART_STAFF_STORAGE_KEY = 'onhand_planner_part_staff_roster_v1';
+  let partStaffRoster = {
+    sheetName: 'PartStaff',
+    requesters: [
+      'พนักงานเบิก Part (Production)',
+      'สมฤดี บรรเทา (Somrudee)'
+    ],
+    issuers: [
+      'เจ้าหน้าที่คลังจ่าย Part (Warehouse)',
+      'สมฤดี บรรเทา (Somrudee)'
+    ]
+  };
+
+  function dedupeStaffNames(arr) {
+    const seen = new Set();
+    const out = [];
+    for (const raw of (Array.isArray(arr) ? arr : [])) {
+      const name = String(raw || '').trim();
+      if (!name) continue;
+      const key = name.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(name);
+    }
+    return out;
+  }
+
+  function loadPartStaffRoster() {
+    let reqList = [...partStaffRoster.requesters];
+    let whList = [...partStaffRoster.issuers];
+    try {
+      const seedRoster = window.PART_REQUISITIONS_SEED?.staffRoster;
+      if (seedRoster) {
+        if (Array.isArray(seedRoster.requesters)) reqList.push(...seedRoster.requesters);
+        if (Array.isArray(seedRoster.issuers)) whList.push(...seedRoster.issuers);
+      }
+    } catch (_) {}
+    try {
+      const saved = JSON.parse(localStorage.getItem(PART_STAFF_STORAGE_KEY) || '{}');
+      if (Array.isArray(saved.requesters) && saved.requesters.length) reqList = [...saved.requesters, ...reqList];
+      if (Array.isArray(saved.issuers) && saved.issuers.length) whList = [...saved.issuers, ...whList];
+    } catch (_) {}
+    // Include registered users by role (`requester` -> คนเบิก Part, `warehouse` -> คนจ่าย Part)
+    try {
+      const users = loadUsers();
+      for (const usr of users) {
+        if (usr.status && usr.status !== 'approved') continue;
+        const displayName = String(usr.name || usr.username || '').trim();
+        if (!displayName) continue;
+        if (usr.role === 'requester') reqList.push(displayName);
+        else if (usr.role === 'warehouse') whList.push(displayName);
+      }
+    } catch (_) {}
+    // Include names from active requisitions
+    for (const r of getVisiblePartReqs()) {
+      if (r.requesterName) reqList.push(String(r.requesterName).trim());
+      if (r.issuerName) whList.push(String(r.issuerName).trim());
+    }
+    partStaffRoster = {
+      sheetName: 'PartStaff',
+      requesters: dedupeStaffNames(reqList),
+      issuers: dedupeStaffNames(whList)
+    };
+    return partStaffRoster;
+  }
+
+  function savePartStaffRoster(newRoster, broadcast = true) {
+    const cleanReq = dedupeStaffNames(newRoster?.requesters || partStaffRoster.requesters);
+    const cleanWh = dedupeStaffNames(newRoster?.issuers || partStaffRoster.issuers);
+    partStaffRoster = {
+      sheetName: 'PartStaff',
+      requesters: cleanReq.length ? cleanReq : ['พนักงานเบิก Part (Production)'],
+      issuers: cleanWh.length ? cleanWh : ['เจ้าหน้าที่คลังจ่าย Part (Warehouse)'],
+      updatedAt: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem(PART_STAFF_STORAGE_KEY, JSON.stringify(partStaffRoster));
+    } catch (_) {}
+    renderPartStaffDropdowns();
+    if (broadcast) {
+      checkHelperHealth().then(helperBase => {
+        if (!helperBase) return;
+        fetch(`${helperBase}/part-staff`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(partStaffRoster)
+        }).catch(() => {});
+      });
+    }
+    return partStaffRoster;
+  }
+
+  function parsePartStaffRowsText(textOrCsv) {
+    const lines = String(textOrCsv || '').split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    if (!lines.length) return { requesters: [], issuers: [] };
+    const splitLine = (line) => {
+      if (line.includes('\t')) return line.split('\t').map(c => c.replace(/^"|"$/g, '').trim());
+      const cells = [];
+      let cur = '', inQ = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (ch === '"') { inQ = !inQ; continue; }
+        if (ch === ',' && !inQ) { cells.push(cur.trim()); cur = ''; continue; }
+        cur += ch;
+      }
+      cells.push(cur.trim());
+      return cells;
+    };
+    const rows = lines.map(splitLine);
+    const h0 = rows[0].map(c => c.toLowerCase());
+    const hasHeader = h0.some(c => c.includes('คนเบิก') || c.includes('ผู้เบิก') || c.includes('คนจ่าย') || c.includes('ผู้จ่าย') || c.includes('ชื่อ') || c.includes('หน้าที่') || c.includes('role') || c.includes('requester') || c.includes('warehouse'));
+    const requesters = [];
+    const issuers = [];
+    if (hasHeader) {
+      const reqCol = h0.findIndex(c => c.includes('คนเบิก') || c.includes('ผู้เบิก') || c === 'requester');
+      const whCol = h0.findIndex(c => c.includes('คนจ่าย') || c.includes('ผู้จ่าย') || c === 'warehouse' || c === 'issuer');
+      const nameCol = h0.findIndex(c => c.includes('ชื่อ') || c === 'name');
+      const roleCol = h0.findIndex(c => c.includes('หน้าที่') || c.includes('ตำแหน่ง') || c === 'role');
+      for (let i = 1; i < rows.length; i++) {
+        const r = rows[i];
+        if (reqCol >= 0 && r[reqCol]) requesters.push(r[reqCol]);
+        if (whCol >= 0 && r[whCol]) issuers.push(r[whCol]);
+        if (nameCol >= 0 && roleCol >= 0 && r[nameCol]) {
+          const rl = String(r[roleCol] || '').toLowerCase();
+          if (rl.includes('เบิก') || rl.includes('req')) requesters.push(r[nameCol]);
+          if (rl.includes('จ่าย') || rl.includes('คลัง') || rl.includes('wh') || rl.includes('issu')) issuers.push(r[nameCol]);
+        }
+      }
+    } else {
+      // Fallback: if 2 columns without header, col 0 = คนเบิก Part, col 1 = คนจ่าย Part
+      for (const r of rows) {
+        if (r.length >= 2) {
+          const c1 = String(r[1] || '').toLowerCase();
+          if (c1 === 'คนเบิก' || c1 === 'เบิก' || c1 === 'คนเบิก part' || c1 === 'requester') {
+            if (r[0]) requesters.push(r[0]);
+          } else if (c1 === 'คนจ่าย' || c1 === 'จ่าย' || c1 === 'คนจ่าย part' || c1 === 'warehouse') {
+            if (r[0]) issuers.push(r[0]);
+          } else {
+            if (r[0]) requesters.push(r[0]);
+            if (r[1]) issuers.push(r[1]);
+          }
+        } else if (r[0]) {
+          requesters.push(r[0]);
+        }
+      }
+    }
+    return {
+      requesters: dedupeStaffNames(requesters),
+      issuers: dedupeStaffNames(issuers)
+    };
+  }
+
+  async function fetchPartStaffFromGoogleSheet(showFeedback = false) {
+    let updated = false;
+    // 1. Try Apps Script callGoogle('getPartStaffRoster') if hosted inside GAS
+    if (hasGoogle()) {
+      const res = await callGoogle('getPartStaffRoster').catch(() => null);
+      if (res?.ok && (res.requesters?.length || res.issuers?.length)) {
+        const cur = loadPartStaffRoster();
+        savePartStaffRoster({
+          requesters: [...res.requesters, ...cur.requesters],
+          issuers: [...res.issuers, ...cur.issuers]
+        });
+        updated = true;
+      }
+    }
+    // 2. Try Google Sheet gviz CSV endpoint for tab `PartStaff` (or `คนเบิกจ่าย`)
+    for (const tabName of ['PartStaff', 'คนเบิกจ่าย']) {
+      try {
+        const csvUrl = `https://docs.google.com/spreadsheets/d/${PART_REQ_GOOGLE_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
+        const resp = await fetchWithTimeout(csvUrl, { cache: 'no-store' }, 4500).catch(() => null);
+        if (resp?.ok) {
+          const text = await resp.text();
+          if (text && !text.trim().startsWith('<!DOCTYPE') && !text.trim().startsWith('<html')) {
+            const parsed = parsePartStaffRowsText(text);
+            if (parsed.requesters.length || parsed.issuers.length) {
+              const cur = loadPartStaffRoster();
+              savePartStaffRoster({
+                requesters: [...parsed.requesters, ...cur.requesters],
+                issuers: [...parsed.issuers, ...cur.issuers]
+              });
+              updated = true;
+              break;
+            }
+          }
+        }
+      } catch (_) {}
+    }
+    // 3. Try Helper Server `/part-staff`
+    const helperBase = await checkHelperHealth();
+    if (helperBase) {
+      const hRes = await fetchWithTimeout(`${helperBase}/part-staff`, { cache: 'no-store' }, 2500).then(r => r.json()).catch(() => null);
+      if (hRes?.ok && hRes.staffRoster) {
+        const cur = loadPartStaffRoster();
+        savePartStaffRoster({
+          requesters: [...(hRes.staffRoster.requesters || []), ...cur.requesters],
+          issuers: [...(hRes.staffRoster.issuers || []), ...cur.issuers]
+        }, false);
+        updated = true;
+      }
+    }
+    if (showFeedback) {
+      const r = loadPartStaffRoster();
+      toast(`✅ อัปเดตรายชื่อจากชีต PartStaff แล้ว (คนเบิก ${r.requesters.length} คน · คนจ่าย ${r.issuers.length} คน)`);
+    }
+    return updated;
+  }
+
+  function renderPartStaffDropdowns() {
+    const roster = loadPartStaffRoster();
+    // 1. Requester (`คนเบิก Part`) Select & Datalist
+    const reqSel = el('reqRequesterSelect');
+    const reqDl = el('reqRequesterDatalist');
+    const reqInp = el('reqRequesterInput');
+    if (reqSel) {
+      const curVal = reqInp?.value || reqSel.value || '';
+      reqSel.innerHTML = `<option value="">▼ เลือกชื่อคนเบิก (${roster.requesters.length})...</option>` +
+        roster.requesters.map(name => `<option value="${esc(name)}" ${name === curVal ? 'selected' : ''}>👤 ${esc(name)}</option>`).join('');
+    }
+    if (reqDl) {
+      reqDl.innerHTML = roster.requesters.map(name => `<option value="${esc(name)}"></option>`).join('');
+    }
+
+    // 2. Warehouse Issuer (`คนจ่าย Part`) Select & Datalist
+    const whSel = el('whIssuerSelect');
+    const whDl = el('whIssuerDatalist');
+    const whInp = el('whIssuerNameInput');
+    if (whSel) {
+      const curVal = whInp?.value || whSel.value || '';
+      whSel.innerHTML = `<option value="">▼ เลือกชื่อคนจ่าย (${roster.issuers.length})...</option>` +
+        roster.issuers.map(name => `<option value="${esc(name)}" ${name === curVal ? 'selected' : ''}>📦 ${esc(name)}</option>`).join('');
+    }
+    if (whDl) {
+      whDl.innerHTML = roster.issuers.map(name => `<option value="${esc(name)}"></option>`).join('');
+    }
+  }
+
+  function renderStaffPopupMenu(roleType, query = '') {
+    const roster = loadPartStaffRoster();
+    const isWh = roleType === 'warehouse';
+    const drop = el(isWh ? 'whIssuerDropdown' : 'reqRequesterDropdown');
+    if (!drop) return;
+    const list = isWh ? roster.issuers : roster.requesters;
+    const q = String(query || '').trim().toLowerCase();
+    const filtered = q ? list.filter(n => n.toLowerCase().includes(q)) : list;
+    const roleLabel = isWh ? 'คนจ่าย Part (Warehouse)' : 'คนเบิก Part (Production)';
+    const badgeColor = isWh ? '#0284c7' : '#087e78';
+    drop.innerHTML = `
+      <div style="padding:6px 10px;background:#f8fafc;border-bottom:1px solid #e2e8f0;font-size:11.5px;color:#334155;font-weight:750;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:2">
+        <span>👥 รายชื่อ${esc(roleLabel)} (${filtered.length} คน · ชีต <code>PartStaff</code>)</span>
+        <span style="color:${badgeColor}">แตะเพื่อเลือก หรือพิมพ์ชื่อเอง</span>
+      </div>
+      ${filtered.length ? filtered.map(name => `
+        <div class="staff-name-opt" data-role="${isWh ? 'wh' : 'req'}" data-name="${esc(name)}" style="padding:9px 12px;border-bottom:1px solid #f1f5f9;cursor:pointer;font-size:13.5px;font-weight:700;color:#0f172a;display:flex;align-items:center;justify-content:space-between" onmouseover="this.style.background='#f0f9ff'" onmouseout="this.style.background='#fff'">
+          <span>${isWh ? '📦' : '👤'} ${highlightMatch(name, q)}</span>
+          <span class="badge" style="font-size:10.5px;background:${isWh ? '#e0f2fe' : '#dcfce7'};color:${isWh ? '#0369a1' : '#166534'}">${isWh ? 'คนจ่าย Part' : 'คนเบิก Part'}</span>
+        </div>
+      `).join('') : `<div style="padding:10px 12px;font-size:12.5px;color:#64748b">ไม่พบในรายการ — สามารถพิมพ์ชื่อ <b>"${esc(query)}"</b> แล้วกด Save ได้เลย ระบบจะจำชื่อให้อัตโนมัติ</div>`}
+    `;
+    drop.classList.remove('hidden');
+  }
+
+  function openPartStaffRosterModal() {
+    const roster = loadPartStaffRoster();
+    if (el('partStaffRequestersTextarea')) el('partStaffRequestersTextarea').value = roster.requesters.join('\n');
+    if (el('partStaffIssuersTextarea')) el('partStaffIssuersTextarea').value = roster.issuers.join('\n');
+    if (el('partStaffPasteTableInput')) el('partStaffPasteTableInput').value = '';
+    el('partStaffRosterModal')?.classList.add('show');
   }
 
   // Warehouse Location dynamic rows (starts with 1 location, click + to add more)
@@ -13519,7 +13890,14 @@
     if (el('whModalReqIdBadge')) el('whModalReqIdBadge').textContent = rec.reqId;
     if (el('whModalMoBadge')) el('whModalMoBadge').textContent = rec.moNumber;
     if (el('whModalZjdbBadge')) el('whModalZjdbBadge').textContent = `🔗 ZJDB: ${rec.directTransferDocs || '—'}`;
-    if (el('whIssuerNameInput')) el('whIssuerNameInput').value = u ? (u.name || u.username || '') : '';
+    renderPartStaffDropdowns();
+    const savedWhName = localStorage.getItem('onhand_planner_last_wh_issuer_name') || '';
+    const defaultWhName = rec.issuerName || savedWhName || (u ? (u.name || u.username || '') : '');
+    if (el('whIssuerNameInput')) el('whIssuerNameInput').value = defaultWhName;
+    if (el('whIssuerSelect')) {
+      const matchWhOpt = Array.from(el('whIssuerSelect').options).find(o => o.value === defaultWhName);
+      el('whIssuerSelect').value = matchWhOpt ? matchWhOpt.value : '';
+    }
     if (el('whIssuerNoteInput')) el('whIssuerNoteInput').value = rec.issuerNote || '';
 
     const desc = [rec.materialName, rec.specification].filter(Boolean).join(' · ') || '—';
@@ -13817,6 +14195,114 @@
       if (!e.target.closest('#reqMatCodeInput') && !e.target.closest('#reqMatDropdown') && !e.target.closest('#reqFilterByMoBomChk')) {
         el('reqMatDropdown')?.classList.add('hidden');
       }
+      if (!e.target.closest('#reqRequesterInput') && !e.target.closest('#reqRequesterDropdown')) {
+        el('reqRequesterDropdown')?.classList.add('hidden');
+      }
+      if (!e.target.closest('#whIssuerNameInput') && !e.target.closest('#whIssuerDropdown')) {
+        el('whIssuerDropdown')?.classList.add('hidden');
+      }
+    });
+
+    // Staff Roster Dropdowns & Free-Text Inputs (คนเบิก Part / คนจ่าย Part)
+    renderPartStaffDropdowns();
+    setTimeout(() => fetchPartStaffFromGoogleSheet(false), 1200);
+    setInterval(() => fetchPartStaffFromGoogleSheet(false), 60000);
+
+    el('reqRequesterSelect')?.addEventListener('change', () => {
+      const val = el('reqRequesterSelect')?.value || '';
+      if (val && el('reqRequesterInput')) {
+        el('reqRequesterInput').value = val;
+        localStorage.setItem('onhand_planner_last_requester_name', val);
+      }
+    });
+    el('reqRequesterInput')?.addEventListener('focus', () => {
+      renderStaffPopupMenu('requester', '');
+    });
+    el('reqRequesterInput')?.addEventListener('input', () => {
+      const val = el('reqRequesterInput')?.value || '';
+      renderStaffPopupMenu('requester', val);
+      if (el('reqRequesterSelect')) {
+        const match = Array.from(el('reqRequesterSelect').options).find(o => o.value === val);
+        el('reqRequesterSelect').value = match ? match.value : '';
+      }
+    });
+    const selectReqStaffOpt = (e) => {
+      const opt = e.target.closest('.staff-name-opt[data-role="req"]');
+      if (!opt) return;
+      e.preventDefault();
+      const name = opt.dataset.name || '';
+      if (el('reqRequesterInput')) el('reqRequesterInput').value = name;
+      if (el('reqRequesterSelect')) el('reqRequesterSelect').value = name;
+      localStorage.setItem('onhand_planner_last_requester_name', name);
+      el('reqRequesterDropdown')?.classList.add('hidden');
+    };
+    el('reqRequesterDropdown')?.addEventListener('mousedown', selectReqStaffOpt);
+    el('reqRequesterDropdown')?.addEventListener('click', selectReqStaffOpt);
+
+    el('whIssuerSelect')?.addEventListener('change', () => {
+      const val = el('whIssuerSelect')?.value || '';
+      if (val && el('whIssuerNameInput')) {
+        el('whIssuerNameInput').value = val;
+        localStorage.setItem('onhand_planner_last_wh_issuer_name', val);
+      }
+    });
+    el('whIssuerNameInput')?.addEventListener('focus', () => {
+      renderStaffPopupMenu('warehouse', '');
+    });
+    el('whIssuerNameInput')?.addEventListener('input', () => {
+      const val = el('whIssuerNameInput')?.value || '';
+      renderStaffPopupMenu('warehouse', val);
+      if (el('whIssuerSelect')) {
+        const match = Array.from(el('whIssuerSelect').options).find(o => o.value === val);
+        el('whIssuerSelect').value = match ? match.value : '';
+      }
+    });
+    const selectWhStaffOpt = (e) => {
+      const opt = e.target.closest('.staff-name-opt[data-role="wh"]');
+      if (!opt) return;
+      e.preventDefault();
+      const name = opt.dataset.name || '';
+      if (el('whIssuerNameInput')) el('whIssuerNameInput').value = name;
+      if (el('whIssuerSelect')) el('whIssuerSelect').value = name;
+      localStorage.setItem('onhand_planner_last_wh_issuer_name', name);
+      el('whIssuerDropdown')?.classList.add('hidden');
+    };
+    el('whIssuerDropdown')?.addEventListener('mousedown', selectWhStaffOpt);
+    el('whIssuerDropdown')?.addEventListener('click', selectWhStaffOpt);
+
+    // PartStaff Roster Modal Buttons
+    el('openPartStaffRosterModalBtn')?.addEventListener('click', openPartStaffRosterModal);
+    const closePartStaffModal = () => el('partStaffRosterModal')?.classList.remove('show');
+    el('closePartStaffRosterModalBtn')?.addEventListener('click', closePartStaffModal);
+    el('cancelPartStaffRosterModalBtn')?.addEventListener('click', closePartStaffModal);
+    el('partStaffRosterModal')?.addEventListener('click', (e) => {
+      if (e.target === el('partStaffRosterModal')) closePartStaffModal();
+    });
+    el('syncPartStaffFromSheetBtn')?.addEventListener('click', async () => {
+      await fetchPartStaffFromGoogleSheet(true);
+      const roster = loadPartStaffRoster();
+      if (el('partStaffRequestersTextarea')) el('partStaffRequestersTextarea').value = roster.requesters.join('\n');
+      if (el('partStaffIssuersTextarea')) el('partStaffIssuersTextarea').value = roster.issuers.join('\n');
+    });
+    el('parsePartStaffPasteBtn')?.addEventListener('click', () => {
+      const raw = el('partStaffPasteTableInput')?.value || '';
+      if (!raw.trim()) {
+        toast('กรุณาวางข้อมูลที่ Copy จากชีต PartStaff ก่อน');
+        return;
+      }
+      const parsed = parsePartStaffRowsText(raw);
+      const curReq = (el('partStaffRequestersTextarea')?.value || '').split(/\r?\n/).filter(Boolean);
+      const curWh = (el('partStaffIssuersTextarea')?.value || '').split(/\r?\n/).filter(Boolean);
+      if (el('partStaffRequestersTextarea')) el('partStaffRequestersTextarea').value = dedupeStaffNames([...parsed.requesters, ...curReq]).join('\n');
+      if (el('partStaffIssuersTextarea')) el('partStaffIssuersTextarea').value = dedupeStaffNames([...parsed.issuers, ...curWh]).join('\n');
+      toast(`✨ แยกรายชื่อสำเร็จ (คนเบิก +${parsed.requesters.length} · คนจ่าย +${parsed.issuers.length})`);
+    });
+    el('savePartStaffRosterBtn')?.addEventListener('click', () => {
+      const reqLines = (el('partStaffRequestersTextarea')?.value || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      const whLines = (el('partStaffIssuersTextarea')?.value || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      savePartStaffRoster({ requesters: reqLines, issuers: whLines }, true);
+      closePartStaffModal();
+      toast(`✅ บันทึกรายชื่อคนเบิก (${reqLines.length} คน) และคนจ่าย (${whLines.length} คน) เรียบร้อยแล้ว`);
     });
 
     // Reason select ("อื่นๆ" toggles custom input)
@@ -13867,6 +14353,15 @@
         alert('กรุณากรอกข้อมูลที่มีเครื่องหมาย * ให้ครบถ้วน (เลขที่ MO, รหัส Part, จำนวนที่เบิก, สาเหตุการเบิก และชื่อผู้เบิก)');
         return;
       }
+
+      try {
+        localStorage.setItem('onhand_planner_last_requester_name', requesterName);
+        if (!partStaffRoster.requesters.includes(requesterName)) {
+          partStaffRoster.requesters.push(requesterName);
+          savePartStaffRoster(partStaffRoster, false);
+          renderPartStaffDropdowns();
+        }
+      } catch (_e) {}
 
       const matObj = getMaterialCatalogMap().get(matCode);
       const moObj = getMoCatalogMap().get(moNumber);
@@ -14074,11 +14569,20 @@
       }
 
       const issuer = getCurrentUser();
-      const issuerName = String(issuer?.name || issuer?.username || '').trim();
+      const issuerName = String(el('whIssuerNameInput')?.value || issuer?.name || issuer?.username || '').trim();
       if (!issuerName) {
-        alert('ไม่พบชื่อผู้ใช้ปัจจุบัน กรุณาเข้าสู่ระบบใหม่ก่อนยืนยันจ่าย Part');
+        alert('กรุณากรอกหรือเลือกชื่อผู้จ่าย (Warehouse) ก่อนยืนยันจ่าย Part');
+        el('whIssuerNameInput')?.focus();
         return;
       }
+      try {
+        localStorage.setItem('onhand_planner_last_wh_issuer_name', issuerName);
+        if (!partStaffRoster.issuers.includes(issuerName)) {
+          partStaffRoster.issuers.push(issuerName);
+          savePartStaffRoster(partStaffRoster, false);
+          renderPartStaffDropdowns();
+        }
+      } catch (_e) {}
       const issuerNote = (el('whIssuerNoteInput')?.value || '').trim();
       const issuedStamp = new Date().toISOString();
       const locationsSummary = locations.map((l, i) => `Loc#${i + 1}: ${l.location}${l.qty !== '' ? ` (${fmtQty(l.qty)} ${rec.unit || 'PCS'})` : ''}`).join(' | ');

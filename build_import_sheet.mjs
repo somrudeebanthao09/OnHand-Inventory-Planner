@@ -180,12 +180,12 @@ const importsAoA = [
 // Tab 7: Plans
 const plansAoA = [['department', 'modelCode', 'quantity']];
 
-// Tab 8: Settings (Showing latest Nov 6-7, 2026 dates!)
+// Tab 8: Settings
 const settingsAoA = [
   ['key', 'value'],
   ['activeDepts', JSON.stringify(['H9 Assembly Production Line', 'H1 Assembly Production Line', 'Assembly Production Line'])],
-  ['autoRefresh08', 'false'],
-  ['autoSync10m', 'false'],
+  ['autoRefresh08', 'true'],
+  ['autoSync10m', 'true'],
   ['lastInventoryAt', invStamp],
   ['lastBomAt', bomStamp],
   ['lastPartRequisitionAt', nowIso],
@@ -198,9 +198,23 @@ for (const o of overrides) {
   deptAoA.push([o.materialCode || '', o.materialName || '', o.specification || '', o.department || 'H1 Assembly Production Line', invDateFormatted]);
 }
 
+// Tab 10: PartStaff (รายชื่อคนเบิก Part / คนจ่าย Part)
+const staffRoster = global.window.PART_REQUISITIONS_SEED?.staffRoster || {
+  requesters: ['พนักงานเบิก Part (Production)', 'สมฤดี บรรเทา (Somrudee)'],
+  issuers: ['เจ้าหน้าที่คลังจ่าย Part (Warehouse)', 'สมฤดี บรรเทา (Somrudee)']
+};
+const partStaffAoA = [['คนเบิก Part', 'คนจ่าย Part', 'ชื่อ-นามสกุล', 'หน้าที่ (คนเบิก / คนจ่าย)']];
+const maxStaffLen = Math.max((staffRoster.requesters || []).length, (staffRoster.issuers || []).length);
+for (let i = 0; i < maxStaffLen; i++) {
+  const reqName = (staffRoster.requesters || [])[i] || '';
+  const whName = (staffRoster.issuers || [])[i] || '';
+  partStaffAoA.push([reqName, whName, reqName || whName, reqName ? 'คนเบิก Part' : 'คนจ่าย Part']);
+}
+
 XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(sheet1AoA), 'Sheet1');
 XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(invAoA), 'Inventory');
 XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(partReqAoA), 'PartRequisitions');
+XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(partStaffAoA), 'PartStaff');
 XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(bomAoA), 'BOM');
 XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(safetyAoA), 'SafetyStock');
 XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(importsAoA), 'Imports');
