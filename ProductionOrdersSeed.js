@@ -1,11 +1,11 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-14T08:10:45.186Z",
+  "snapshotAt": "2026-11-14T08:15:21.955Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
   "count": 14095,
   "orders": [
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -31,11 +31,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -61,11 +61,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -91,11 +91,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -121,11 +121,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -151,19 +151,19 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
       "department": "H9 Assembly Production Line",
       "taskStatus": "Start",
       "pickStatus": "Materials Not Issued",
-      "materialCode": "1005QT00168",
-      "materialName": "Lug WBS 100A",
+      "materialCode": "1005QT00583",
+      "materialName": "HI AMP WBS",
       "specification": "48020-043-05",
       "unit": "EA",
       "orderQty": 126,
@@ -181,11 +181,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -211,11 +211,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -241,11 +241,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -271,11 +271,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -301,11 +301,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -331,11 +331,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -361,11 +361,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -391,11 +391,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -421,11 +421,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -451,11 +451,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -481,11 +481,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -511,11 +511,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -541,11 +541,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -571,11 +571,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -601,11 +601,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -631,11 +631,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -661,11 +661,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -691,11 +691,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -721,11 +721,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -751,11 +751,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -781,11 +781,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -811,11 +811,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -841,11 +841,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -871,11 +871,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -901,11 +901,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -931,11 +931,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -961,11 +961,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -991,11 +991,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1021,11 +1021,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1051,11 +1051,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1081,11 +1081,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1111,11 +1111,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1141,11 +1141,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1171,11 +1171,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1201,11 +1201,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1231,11 +1231,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1261,11 +1261,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1291,11 +1291,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1321,11 +1321,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1351,11 +1351,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1381,11 +1381,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1411,11 +1411,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1441,11 +1441,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1471,11 +1471,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1501,11 +1501,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1531,11 +1531,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1561,11 +1561,11 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003523",
-      "ppbomNumber": "PPBOM-20261114-003818",
+      "ppbomNumber": "PPBOM-20261114-003819",
       "docStatus": "Approved",
       "productCode": "6001ZZ00307",
       "productName": "LOAD CENTER VS EZ 100A 24WAYS S/A",
@@ -1591,7 +1591,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "consumedQty": 0,
       "wipQty": 0,
       "issuingWarehouse": "H9 Assembly-Workshop Warehouse",
-      "requiredTime": "2026-11-14 16:06:59"
+      "requiredTime": "2026-11-14 16:09:24"
     },
     {
       "moNumber": "MO-20261114-003522",
