@@ -3756,7 +3756,9 @@
       if (Array.isArray(seed?.inventory) && seed.inventory.length) {
         const seedStamp = seed.snapshotAt || new Date().toISOString();
         const curStamp = db.settings?.lastInventoryAt || '';
-        if (forceRemote || !db.inventory?.length || !curStamp || Date.parse(seedStamp) >= Date.parse(curStamp) || db.inventory.length !== seed.inventory.length) {
+        const seedMs = Date.parse(seedStamp) || 0;
+        const curMs = Date.parse(curStamp) || 0;
+        if (!db.inventory?.length || !curMs || seedMs >= curMs || (forceRemote && seedMs === curMs && db.inventory.length !== seed.inventory.length)) {
           db.inventory = structuredClone(seed.inventory);
           db.settings.lastInventoryAt = seedStamp;
           const fname = seed.filename || 'Kingdee Shared Snapshot';
@@ -3765,9 +3767,13 @@
         }
       }
       if (Array.isArray(window.PRODUCTION_ORDERS_SEED?.orders) && window.PRODUCTION_ORDERS_SEED.orders.length) {
-        db.productionOrders = structuredClone(window.PRODUCTION_ORDERS_SEED.orders);
-        db.settings.lastOrdersAt = window.PRODUCTION_ORDERS_SEED.snapshotAt || '';
-        db.settings.lastProductionOrdersAt = window.PRODUCTION_ORDERS_SEED.snapshotAt || '';
+        const poMs = Date.parse(window.PRODUCTION_ORDERS_SEED.snapshotAt || '') || 0;
+        const curPoMs = Date.parse(db.settings?.lastProductionOrdersAt || '') || 0;
+        if (!db.productionOrders?.length || poMs >= curPoMs) {
+          db.productionOrders = structuredClone(window.PRODUCTION_ORDERS_SEED.orders);
+          db.settings.lastOrdersAt = window.PRODUCTION_ORDERS_SEED.snapshotAt || '';
+          db.settings.lastProductionOrdersAt = window.PRODUCTION_ORDERS_SEED.snapshotAt || '';
+        }
       }
       if (Array.isArray(window.PRODUCTION_MATERIAL_ISSUE_SEED?.normalizedRows) && window.PRODUCTION_MATERIAL_ISSUE_SEED.normalizedRows.length) {
         db.productionMaterialIssues = [];
@@ -7286,10 +7292,11 @@
       ];
       db.settings.lastMaterialIssueAt = new Date().toISOString();
       saveLocalDb(db);
+      persist(true).catch(() => {});
       computeOrderShortages();
       if (typeof renderOrdersPage === 'function') renderOrdersPage();
       if (typeof renderPoTrackingPage === 'function') renderPoTrackingPage();
-      toast(`✅ นำเข้า Production Material Issue (PPBOM) สำเร็จ (${fmt(parsedOrders.length)} รายการ)`);
+      toast(`✅ นำเข้า Production Material Issue (PPBOM) สำเร็จ (${fmt(parsedOrders.length)} รายการ · ซิงค์ขึ้นคลาวด์แล้ว)`);
     } catch (err) {
       console.error(err);
       toast('เกิดข้อผิดพลาดในการอ่านไฟล์ Production Material List');
@@ -9220,23 +9227,41 @@
             🔍 ดู Part (${mo.totalParts})
           </button>
         </td>
+        <td style="text-align:center;padding:8px 6px">
+          ${(() => {
+            const zjdbSet = new Set();
+            for (const p of (mo.parts || [])) {
+              String(p.directTransferDocs || '').split(/[,;]+/).map(s => s.trim()).filter(Boolean).forEach(d => zjdbSet.add(d));
+            }
+            const zjdbCount = zjdbSet.size;
+            return `<div style="display:flex;flex-direction:column;gap:4px;align-items:center">
+              <button type="button" class="btn soft" style="padding:4px 7px;font-size:10.5px;font-weight:700;border-radius:7px;white-space:nowrap;border:1px solid #cbd5e1;background:#ffffff;color:#0f172a;width:100%" onclick="window.appOpenPdfProductionOrder('${esc(mo.moNumber)}')" title="พิมพ์ / บันทึก PDF Production Order">
+                📄 PDF Order
+              </button>
+              <button type="button" class="btn soft" style="padding:4px 7px;font-size:10.5px;font-weight:700;border-radius:7px;white-space:nowrap;border:1px solid ${zjdbCount > 0 ? '#86efac' : '#e2e8f0'};background:${zjdbCount > 0 ? '#f0fdf4' : '#f8fafc'};color:${zjdbCount > 0 ? '#15803d' : '#64748b'};width:100%" onclick="window.appOpenPdfDirectTransfers('${esc(mo.moNumber)}')" title="พิมพ์ / บันทึก PDF Direct Transfer (ZJDB)${zjdbCount > 1 ? ' (' + zjdbCount + ' ใบ)' : ''}">
+                🚚 Transfer ${zjdbCount > 0 ? `(${zjdbCount})` : '(0)'}
+              </button>
+            </div>`;
+          })()}
+        </td>
       </tr>`;
     }).join('');
 
     el('poTrackingTableWrap').innerHTML = `
-      <table style="width:100%;min-width:1280px;table-layout:fixed;border-collapse:collapse;font-size:12.5px;white-space:normal">
+      <table style="width:100%;min-width:1360px;table-layout:fixed;border-collapse:collapse;font-size:12.5px;white-space:normal">
         <colgroup>
-          <col style="width:10%">
-          <col style="width:14%">
+          <col style="width:9.5%">
+          <col style="width:13%">
+          <col style="width:5.5%">
+          <col style="width:9.5%">
+          <col style="width:9.5%">
+          <col style="width:9.5%">
+          <col style="width:7.5%">
           <col style="width:6%">
-          <col style="width:10%">
-          <col style="width:10%">
-          <col style="width:10%">
-          <col style="width:8%">
           <col style="width:6%">
-          <col style="width:6%">
-          <col style="width:12%">
-          <col style="width:8%">
+          <col style="width:11%">
+          <col style="width:6.5%">
+          <col style="width:6.5%">
         </colgroup>
         <thead style="position:sticky;top:0;z-index:3;background:#f8fafc;box-shadow:0 1px 2px rgba(0,0,0,0.06)">
           <tr style="background:#f8fafc;border-bottom:2px solid #cbd5e1;color:#1e293b">
@@ -9298,6 +9323,7 @@
               </div>
             </th>
             <th style="padding:10px 6px;text-align:center;font-size:11.5px">เช็ค BOM</th>
+            <th style="padding:10px 6px;text-align:center;font-size:11.5px">เอกสาร PDF</th>
           </tr>
         </thead>
         <tbody>${rowsHtml}</tbody>
@@ -9784,6 +9810,226 @@
     poTrackingPage = 1;
     renderPoTrackingPage();
   };
+
+  function openPrintHtmlPreviewWindow(title, bodyHtml, landscape = true) {
+    const html = `<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>${esc(title)}</title>
+  <style>
+    @page { size: ${landscape ? 'A4 landscape' : 'A4 portrait'}; margin: 10mm; }
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Arial, sans-serif; }
+    body { margin: 0; padding: 16px; background: #e2e8f0; color: #0f172a; }
+    .toolbar { position: sticky; top: 0; z-index: 20; background: #0f172a; color: #fff; padding: 10px 16px; border-radius: 10px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .toolbar button { background: #10b981; color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-weight: 700; cursor: pointer; font-size: 13px; }
+    .toolbar button.secondary { background: #475569; }
+    .sheet { background: #fff; width: 100%; max-width: ${landscape ? '1060px' : '780px'}; margin: 0 auto 20px; padding: 24px 28px; box-shadow: 0 2px 14px rgba(0,0,0,0.12); page-break-after: always; }
+    .sheet:last-child { page-break-after: auto; }
+    .doc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .doc-title { font-size: 24px; font-weight: 700; text-align: center; flex: 1; padding-top: 8px; }
+    .meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 16px; font-size: 11.5px; margin-bottom: 14px; }
+    .meta-row { display: flex; gap: 6px; }
+    .meta-label { font-weight: 700; min-width: 115px; color: #1e293b; }
+    table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 8px; }
+    th, td { border: 1px solid #334155; padding: 6px 7px; text-align: left; vertical-align: middle; }
+    th { background: #f8fafc; font-weight: 700; text-align: center; }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .doc-footer { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 16px; font-size: 11px; margin-top: 18px; padding-top: 10px; border-top: 1px dashed #cbd5e1; }
+    .qr-box img { width: 76px; height: 76px; border: 1px solid #e2e8f0; }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .toolbar { display: none !important; }
+      .sheet { box-shadow: none; margin: 0; padding: 8px; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div><strong>📄 ${esc(title)}</strong> · กดปุ่มขวาเพื่อพิมพ์หรือ Save as PDF</div>
+    <div style="display:flex;gap:8px">
+      <button onclick="window.print()">🖨️ พิมพ์ / Save as PDF</button>
+      <button class="secondary" onclick="window.close()">ปิดหน้าต่าง</button>
+    </div>
+  </div>
+  ${bodyHtml}
+</body>
+</html>`;
+    const win = window.open('', '_blank', 'width=1140,height=820');
+    if (!win) {
+      toast('กรุณาอนุญาต Popup ในเบราว์เซอร์เพื่อเปิดเอกสาร PDF');
+      return;
+    }
+    win.document.open();
+    win.document.write(html);
+    win.document.close();
+  }
+
+  window.appOpenPdfProductionOrder = (moNumber) => {
+    const moKey = normalizeMoKey(moNumber);
+    const data = computePoTracking();
+    const mo = data.moMap.get(moKey);
+    if (!mo) return toast('ไม่พบข้อมูล Order นี้');
+    const ex = mo.execInfo || {};
+    const firstPart = (mo.parts || [])[0] || {};
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=${encodeURIComponent(mo.moNumber)}`;
+    const html = `
+      <div class="sheet">
+        <div class="doc-header">
+          <div style="width:80px"></div>
+          <div class="doc-title">Production Order</div>
+          <div class="qr-box"><img src="${qrUrl}" alt="QR ${esc(mo.moNumber)}"></div>
+        </div>
+        <div class="meta-grid" style="grid-template-columns:1fr 1fr">
+          <div class="meta-row"><span class="meta-label">Work Order Number:</span><span>${esc(mo.moNumber)}</span></div>
+          <div class="meta-row"><span class="meta-label">Production Organization:</span><span>Jinrong Electronic Technology(Thailand)Co.,LT</span></div>
+          <div class="meta-row"><span class="meta-label">Document Status:</span><span>${esc(ex.docStatus || firstPart.docStatus || 'Approved')}</span></div>
+          <div class="meta-row"><span class="meta-label">Delegating Organization:</span><span></span></div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Product Type</th>
+              <th>Material Code</th>
+              <th>Material Name</th>
+              <th>Specification</th>
+              <th>Material Version</th>
+              <th>Secondary Attribute</th>
+              <th>Production Unit</th>
+              <th>Quantity</th>
+              <th>Planned Start Time</th>
+              <th>Planned Completion Time</th>
+              <th>Production Department</th>
+              <th>BOM Code</th>
+              <th>Routing</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Main Product</td>
+              <td><b>${esc(mo.productCode || '—')}</b></td>
+              <td>${esc(mo.productName || '—')}</td>
+              <td>${esc(mo.specification || ex.specification || '—')}</td>
+              <td></td>
+              <td>${esc(mo.productCode || '')}</td>
+              <td>${esc(firstPart.unit || 'EA')}</td>
+              <td class="num"><b>${Number(mo.orderQty || 0).toFixed(3)}</b></td>
+              <td>${esc(ex.plannedStart || ex.actualStart || mo.barcodeDateStr || '—')}</td>
+              <td>${esc(ex.plannedEnd || ex.actualEnd || mo.barcodeEndDate || '—')}</td>
+              <td>${esc(mo.department || 'H9 Assembly Production Line')}</td>
+              <td>${esc(mo.ppbomNumber || '')}</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="doc-footer">
+          <div><b>Created By:</b> Somrudee Banthao</div>
+          <div><b>Modifier:</b> Kanyarat Khutwisai</div>
+          <div><b>Approver:</b> Kanyarat Khutwisai</div>
+          <div><b>Creation Time:</b> ${esc(ex.plannedStart || mo.barcodeDateStr || '—')}</div>
+          <div><b>Modified At:</b> ${esc(ex.actualStart || ex.plannedStart || '—')}</div>
+          <div><b>Approved At:</b> ${esc(ex.actualStart || ex.plannedStart || '—')}</div>
+        </div>
+      </div>
+    `;
+    openPrintHtmlPreviewWindow(`Production Order - ${mo.moNumber}`, html, true);
+  };
+
+  window.appOpenPdfDirectTransfers = (moNumber) => {
+    const moKey = normalizeMoKey(moNumber);
+    const data = computePoTracking();
+    const mo = data.moMap.get(moKey);
+    if (!mo) return toast('ไม่พบข้อมูล Order นี้');
+
+    const zjdbSet = new Set();
+    for (const p of (mo.parts || [])) {
+      String(p.directTransferDocs || '').split(/[,;]+/).map(s => s.trim()).filter(Boolean).forEach(d => zjdbSet.add(d));
+    }
+    const zjdbDocs = [...zjdbSet];
+    if (!zjdbDocs.length) {
+      return toast(`Order ${mo.moNumber} ยังไม่มีใบ Direct Transfer (ZJDB) ในระบบ`);
+    }
+
+    const docMap = window.PRODUCTION_EXECUTION_SEED?.directTransferDocsByDoc || {};
+    const totalPages = zjdbDocs.length;
+    const sheetsHtml = zjdbDocs.map((docNo, idx) => {
+      const detail = docMap[docNo];
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=${encodeURIComponent(docNo)}`;
+      let items = Array.isArray(detail?.items) && detail.items.length
+        ? detail.items
+        : (mo.parts || []).filter(p => String(p.directTransferDocs || '').includes(docNo)).map(p => ({
+            materialCode: p.materialCode,
+            materialName: p.materialName,
+            specification: p.specification,
+            lotNumber: '',
+            qty: p.directTransferQty || 0,
+            fromWarehouse: 'Customer Supplied Material Warehouse',
+            fromBin: '',
+            toWarehouse: p.issuingWarehouse || 'H9 Assembly-Workshop Warehouse',
+            toBin: ''
+          }));
+      const matCatalog = new Map((mo.parts || []).map(p => [String(p.materialCode || '').toUpperCase(), p]));
+      const rowsHtml = items.map(it => {
+        const mInfo = matCatalog.get(String(it.materialCode || '').toUpperCase());
+        const spec = it.specification || mInfo?.specification || '';
+        const name = it.materialName || mInfo?.materialName || '';
+        return `
+          <tr>
+            <td><b>${esc(it.materialCode)}</b></td>
+            <td>${esc(name)}</td>
+            <td>${esc(spec)}</td>
+            <td>${esc(it.lotNumber || '—')}</td>
+            <td class="num">${Number(it.qty || 0).toFixed(3)}</td>
+            <td>${esc(it.fromWarehouse || 'Customer Supplied Material Warehouse')}</td>
+            <td>${esc(it.fromBin || '')}</td>
+            <td>${esc(it.toWarehouse || 'H9 Assembly-Workshop Warehouse')}</td>
+            <td>${esc(it.toBin || '')}</td>
+          </tr>
+        `;
+      }).join('');
+
+      return `
+        <div class="sheet">
+          <div class="doc-header">
+            <div style="width:80px"></div>
+            <div class="doc-title">Direct Transfer</div>
+            <div class="qr-box"><img src="${qrUrl}" alt="QR ${esc(docNo)}"></div>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-row"><span class="meta-label">Document No:</span><span><b>${esc(docNo)}</b></span></div>
+            <div class="meta-row"><span class="meta-label">Transaction Type:</span><span>${esc(detail?.transactionType || 'Entrusted Processing Transfer')}</span></div>
+            <div class="meta-row"><span class="meta-label">Organization:</span><span>${esc(detail?.organization || 'Jinrong Electronic Technology(Thailand)Co.,LT')}</span></div>
+            <div class="meta-row"><span class="meta-label">Business Date:</span><span>${esc(detail?.businessDate || '—')}</span></div>
+            <div class="meta-row"><span class="meta-label">Transfer Type:</span><span>${esc(detail?.transferType || 'Intracompany Transfer')}</span></div>
+            <div class="meta-row"><span class="meta-label">Ref MO / PPBOM:</span><span>${esc(mo.moNumber)} · ${esc(mo.ppbomNumber || '')}</span></div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Material Code</th>
+                <th>Material Name</th>
+                <th>Specification</th>
+                <th>Lot Number</th>
+                <th>Quantity</th>
+                <th>From Warehouse</th>
+                <th>From Bin</th>
+                <th>To Warehouse</th>
+                <th>To Bin</th>
+              </tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+          <div class="doc-footer">
+            <div><b>Approver:</b> ${esc(detail?.approver || 'Kanyarat Khutwisai')}</div>
+            <div><b>Approve Time:</b> ${esc(detail?.approveTime || detail?.businessDate || '—')}</div>
+            <div style="text-align:right"><b>First ${idx + 1}/${totalPages} Page</b></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    openPrintHtmlPreviewWindow(`Direct Transfer (${zjdbDocs.length} ใบ) - ${mo.moNumber}`, sheetsHtml, true);
+  };
   window.appOpenPoTrackingDetail = openPoTrackingDetailModal;
   window.appOpenPoLotModal = openPoLotComparisonModal;
 
@@ -9793,7 +10039,7 @@
 
   function getSecuritySettings(){
     return {
-      autoLockMinutes: 15,
+      autoLockMinutes: 0,
       passcode: '1234',
       ...(db.settings?.security || {})
     };
@@ -9913,7 +10159,7 @@
       }
     }
     try {
-      const saved = JSON.parse(sessionStorage.getItem('onhandSessionUser') || 'null');
+      const saved = JSON.parse(localStorage.getItem('onhandSessionUser') || sessionStorage.getItem('onhandSessionUser') || 'null');
       if(!saved || !saved.username) return null;
       const found = (db.users || []).find(u => u.username.toLowerCase() === saved.username.toLowerCase() && u.status === 'approved');
       if(found){
@@ -9932,9 +10178,12 @@
   function setCurrentUser(u){
     currentAuthUser = u;
     if(u){
-      sessionStorage.setItem('onhandSessionUser', JSON.stringify(u));
+      const payload = JSON.stringify(u);
+      try { localStorage.setItem('onhandSessionUser', payload); } catch(_) {}
+      try { sessionStorage.setItem('onhandSessionUser', payload); } catch(_) {}
     } else {
-      sessionStorage.removeItem('onhandSessionUser');
+      try { localStorage.removeItem('onhandSessionUser'); } catch(_) {}
+      try { sessionStorage.removeItem('onhandSessionUser'); } catch(_) {}
     }
     updateAuthUI();
     if (u && typeof ensurePartReqStream === 'function') {
@@ -11515,6 +11764,18 @@
     el('syncProgressBar').style.width = '25%';
 
     try {
+      const ghToken = (localStorage.getItem('onhandGithubSyncToken') || db.settings?.githubActionsToken || '').trim();
+      if (ghToken) {
+        fetch('https://api.github.com/repos/somrudeebanthao09/OnHand-Inventory-Planner/actions/workflows/kingdee-sync.yml/dispatches', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/vnd.github+json',
+            'Authorization': `Bearer ${ghToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ ref: 'main' })
+        }).catch(() => null);
+      }
       const reqRes = await callGoogle('requestKingdeeSync');
       if (!reqRes || !reqRes.ok || !reqRes.request) {
         throw new Error(reqRes?.message || 'ส่งคำขอไปยังเครื่อง Admin ไม่สำเร็จ');

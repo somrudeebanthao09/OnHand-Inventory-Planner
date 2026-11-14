@@ -1,0 +1,52 @@
+name: Kingdee Auto-Sync (Cloud 24/7)
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-kingdee:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Chromium & Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser || sudo apt-get install -y chromium
+          npm install --no-save puppeteer-core xlsx
+
+      - name: Run Kingdee Cloud Sync & Rebuild Seeds
+        env:
+          KINGDEE_ACCOUNT: ${{ secrets.KINGDEE_ACCOUNT }}
+          KINGDEE_PASSWORD: ${{ secrets.KINGDEE_PASSWORD }}
+          CHROME_PATH: /usr/bin/chromium-browser
+        run: |
+          if [ -z "$KINGDEE_ACCOUNT" ] || [ -z "$KINGDEE_PASSWORD" ]; then
+            echo "KINGDEE_ACCOUNT / KINGDEE_PASSWORD secrets not set; skipping cloud Kingdee login."
+            exit 0
+          fi
+          node scripts/cloud_kingdee_sync.mjs
+
+      - name: Commit and Push Updated Seeds
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add OnHandSeed.js ProductionOrdersSeed.js ProductionMaterialIssueSeed.js ProductionExecutionSeed.js
+          if git diff --cached --quiet; then
+            echo "No seed changes to commit."
+          else
+            git commit -m "Cloud Auto-Sync Kingdee Seeds $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            git push
+          fi
