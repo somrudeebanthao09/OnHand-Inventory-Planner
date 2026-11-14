@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-14T04:27:27.491Z",
+  "updatedAt": "2026-11-14T04:31:20.183Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -9,6 +9,32 @@ window.PART_REQUISITIONS_SEED = {
     "expiresAt": 1794650762988
   },
   "items": [
+    {
+      "reqId": "REQ-20261114-79144",
+      "requestDate": "2026-11-14",
+      "requestedAt": "2026-11-14T04:31:19.144Z",
+      "moNumber": "MO-20261111-003332",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00688",
+      "materialName": "NEUTRAL TERMINAL 8H; 6SCR",
+      "specification": "75503580AA",
+      "requestQty": 10,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "A",
+      "requesterUsername": "req",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "2026-11-14T04:31:19.144Z"
+    },
     {
       "reqId": "REQ-20261114-01742",
       "requestDate": "2026-11-14",
