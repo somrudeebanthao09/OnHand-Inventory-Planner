@@ -1,12 +1,25 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-14T04:32:04.356Z",
+  "updatedAt": "2026-11-14T04:46:49.505Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "7e38376d-7930-4e58-8ada-b69daac8ca16678bdc65fb964b9081b404fa2590e498",
-    "wh": "06ad2583-e88a-440d-850c-b4c5cbc3a3d6814ef3f9e6184b08851f5660d8641962",
-    "expiresAt": 1794650762988
+    "req": "2b5e0347-668c-4428-8316-72e46c0360930b11f833d18f4737b55867522255cd42",
+    "wh": "cd8c5a5c-2c0d-4ac6-87fd-69462b40350bc068c81edf9c4f42a751250f7564d50f",
+    "expiresAt": 1794653186586
+  },
+  "staffRoster": {
+    "sheetName": "PartStaff",
+    "requesters": [
+      "พนักงานเบิก Part (Production)",
+      "สมฤดี บรรเทา (Somrudee)",
+      "A"
+    ],
+    "issuers": [
+      "เจ้าหน้าที่คลังจ่าย Part (Warehouse)",
+      "สมฤดี บรรเทา (Somrudee)"
+    ],
+    "updatedAt": "2026-11-14T04:01:00.000Z"
   },
   "items": [
     {
