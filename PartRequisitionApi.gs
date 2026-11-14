@@ -35,6 +35,13 @@ function doPost(e) {
       } else if (params.action === 'save') {
         const record = JSON.parse(String(params.record || '{}'));
         result = partReqApiSave_(session, record);
+      } else if (params.action === 'push_subscribe') {
+        const subRecord = JSON.parse(String(params.subscription || '{}'));
+        result = partReqApiPushSubscribe_(session, subRecord);
+      } else if (params.action === 'push_unsubscribe') {
+        result = partReqApiPushUnsubscribe_(String(params.endpoint || ''));
+      } else if (params.action === 'push_list') {
+        result = { ok: true, subscriptions: partReqApiPushList_() };
       } else {
         throw new Error('UNKNOWN_ACTION');
       }
@@ -487,6 +494,109 @@ function partReqApiWriteRecord_(sheet, record, existing) {
     throw new Error('PART_WRITE_VERIFY_FAILED');
   }
   return partRow;
+}
+
+const PART_REQ_PUSH_SHEET_NAME = 'PushSubscriptions';
+const PART_REQ_PUSH_HEADERS = ['endpoint', 'role', 'username', 'staffName', 'subscriptionJson', 'updatedAt'];
+
+function partReqApiGetPushSheet_() {
+  const spreadsheet = SpreadsheetApp.openById(PART_REQ_API_SPREADSHEET_ID);
+  let sheet = spreadsheet.getSheetByName(PART_REQ_PUSH_SHEET_NAME);
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet(PART_REQ_PUSH_SHEET_NAME);
+  }
+  const width = Math.max(sheet.getLastColumn(), PART_REQ_PUSH_HEADERS.length);
+  const firstRow = sheet.getLastRow() >= 1 ? sheet.getRange(1, 1, 1, width).getValues()[0] : [];
+  if (!firstRow.some(v => String(v || '').trim())) {
+    sheet.getRange(1, 1, 1, PART_REQ_PUSH_HEADERS.length).setValues([PART_REQ_PUSH_HEADERS]);
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function partReqApiPushSubscribe_(session, subRecord) {
+  const subscription = subRecord && subRecord.subscription ? subRecord.subscription : subRecord;
+  const endpoint = String(subscription && subscription.endpoint || '').trim();
+  if (!endpoint || !subscription.keys || !subscription.keys.p256dh || !subscription.keys.auth) {
+    throw new Error('INVALID_PUSH_SUBSCRIPTION');
+  }
+  const role = String(subRecord.role || session.role || '').trim().toLowerCase() || 'requester';
+  const username = String(subRecord.username || session.username || '').trim();
+  const staffName = String(subRecord.staffName || '').trim();
+  const nowStr = formatPartReqDateTime_(new Date().toISOString(), '', true);
+  const subJson = JSON.stringify(subscription);
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+  try {
+    const sheet = partReqApiGetPushSheet_();
+    const lastRow = sheet.getLastRow();
+    let targetRow = lastRow + 1;
+    if (lastRow >= 2) {
+      const endpoints = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+      for (let i = 0; i < endpoints.length; i++) {
+        if (String(endpoints[i][0] || '').trim() === endpoint) {
+          targetRow = i + 2;
+          break;
+        }
+      }
+    }
+    sheet.getRange(targetRow, 1, 1, 6).setValues([[endpoint, role, username, staffName, subJson, nowStr]]);
+    SpreadsheetApp.flush();
+    return { ok: true, endpoint, role };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function partReqApiPushUnsubscribe_(endpointRaw) {
+  const endpoint = String(endpointRaw || '').trim();
+  if (!endpoint) return { ok: true, removed: 0 };
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+  try {
+    const sheet = partReqApiGetPushSheet_();
+    const lastRow = sheet.getLastRow();
+    let removed = 0;
+    if (lastRow >= 2) {
+      const endpoints = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+      for (let i = endpoints.length - 1; i >= 0; i--) {
+        if (String(endpoints[i][0] || '').trim() === endpoint) {
+          sheet.deleteRow(i + 2);
+          removed++;
+        }
+      }
+    }
+    return { ok: true, removed };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function partReqApiPushList_() {
+  const sheet = partReqApiGetPushSheet_();
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return [];
+  const rows = sheet.getRange(2, 1, lastRow - 1, 6).getValues();
+  const out = [];
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const endpoint = String(row[0] || '').trim();
+    const subJson = String(row[4] || '').trim();
+    if (!endpoint || !subJson) continue;
+    try {
+      const subscription = JSON.parse(subJson);
+      out.push({
+        endpoint,
+        role: String(row[1] || 'requester').trim().toLowerCase(),
+        username: String(row[2] || '').trim(),
+        staffName: String(row[3] || '').trim(),
+        subscription,
+        updatedAt: String(row[5] || '').trim()
+      });
+    } catch (_) {}
+  }
+  return out;
 }
 
 function partReqApiMessage_(result) {

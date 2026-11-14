@@ -3,7 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f4f6f8">
+  <meta name="theme-color" content="#087e78">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <link rel="apple-touch-icon" href="./icon.svg">
   <title>Material Planner | ระบบวางแผนวัตถุดิบ</title>
   <style>
     html:not(.app-ready)::before{content:"กำลังเปิด Material Planner\Aกำลังอ่านข้อมูล กรุณารอสักครู่";white-space:pre;position:fixed;inset:0;z-index:2147483647;display:grid;place-content:center;text-align:center;background:#f4f6f8;color:#17252d;font:650 17px/1.8 "Segoe UI",Tahoma,Arial,sans-serif}
@@ -2328,6 +2333,7 @@
             <p id="partReqMainSub">บันทึกใบเบิกผูกเลข MO เชื่อมใบโอน Direct Transfer (ZJDB) ส่งแจ้งเตือนไปคลัง Warehouse ยืนยัน Location และถ่ายรูปสดก่อนจ่าย</p>
           </div>
           <div class="row-actions" style="align-items:center;flex-wrap:wrap;gap:6px">
+            <button class="btn soft" id="partReqPushToggleBtn" type="button" style="font-weight:750;background:#fff7ed;border-color:#fdba74;color:#c2410c" title="เปิดรับแจ้งเตือนเด้งบนหน้าจอมือถือเหมือน LINE แม้ปิดหน้าจอหรือไม่ได้เปิดเว็บค้างไว้">🔔 เปิดแจ้งเตือนบนมือถือ</button>
             <button class="btn soft" id="openPartStaffRosterModalBtn" type="button" style="font-weight:750;background:#eff6ff;border-color:#93c5fd;color:#1d4ed8">👥 รายชื่อคนเบิก/คนจ่าย (ชีต PartStaff)</button>
             <a href="https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit" target="_blank" rel="noopener" id="openPartReqGoogleSheetBtn" class="btn soft part-req-admin-only" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-weight:700">
               <span>📊</span> <span>เปิด Google Sheet (On-Hand Inventory Planner - H9 Assembly)</span>
@@ -12354,6 +12360,180 @@
     banner._hideTimer = setTimeout(() => { try { banner.remove(); } catch (_) {} }, 18000);
   }
 
+  const PART_REQ_VAPID_PUBLIC_KEY = 'BEkjQKiBSqdJk55k267X1nWqKXF6szAfMHlA4SRJXE4l5jUxHW9YlTZrsHUFUCc5uVH4u2KdxSQVhr5EmBstz8Q';
+  let partReqSwRegistration = null;
+
+  function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i);
+    return outputArray;
+  }
+
+  async function ensurePartReqServiceWorker() {
+    if (!('serviceWorker' in navigator)) return null;
+    if (partReqSwRegistration) return partReqSwRegistration;
+    try {
+      partReqSwRegistration = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+      return partReqSwRegistration;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  async function showLocalSystemNotification(title, body, url = './', tag = '') {
+    try {
+      if (!('Notification' in window) || Notification.permission !== 'granted') return;
+      const opts = {
+        body,
+        icon: './icon.svg',
+        badge: './icon.svg',
+        tag: tag || ('part-req-' + Date.now()),
+        renotify: true,
+        requireInteraction: true,
+        vibrate: [250, 120, 250],
+        data: { url }
+      };
+      const reg = await ensurePartReqServiceWorker();
+      if (reg && reg.showNotification) {
+        await reg.showNotification(title, opts);
+      } else {
+        const n = new Notification(title, opts);
+        n.onclick = () => { try { window.focus(); } catch (_) {} n.close(); };
+      }
+    } catch (_) {}
+  }
+
+  async function syncPartReqPushSubscription(sub) {
+    if (!sub) return false;
+    const u = getCurrentUser();
+    const role = u?.role || 'requester';
+    const username = u?.username || '';
+    const staffName = role === 'warehouse'
+      ? (el('partIssueIssuerName')?.value || u?.name || '')
+      : (el('partReqRequesterName')?.value || u?.name || '');
+    const payload = {
+      subscription: sub.toJSON ? sub.toJSON() : sub,
+      role,
+      username,
+      staffName: String(staffName || '').trim()
+    };
+    let savedAny = false;
+    try {
+      const helperBase = await checkHelperHealth();
+      if (helperBase) {
+        const r = await fetch(`${helperBase}/push/subscribe`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (r.ok) savedAny = true;
+      }
+    } catch (_) {}
+    try {
+      if (isPartReqSharedApiConfigured()) {
+        const token = await ensurePartReqSharedApiSession().catch(() => '');
+        if (token) {
+          await fetch(PART_REQ_SHARED_API_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+            body: new URLSearchParams({ action: 'push_subscribe', token, subscription: JSON.stringify(payload) }).toString()
+          });
+          savedAny = true;
+        }
+      }
+    } catch (_) {}
+    return savedAny;
+  }
+
+  async function updatePartReqPushBtnUI() {
+    const btn = el('partReqPushToggleBtn');
+    if (!btn) return;
+    if (!('Notification' in window) || !('serviceWorker' in navigator) || !('PushManager' in window)) {
+      btn.textContent = '🔕 มือถือรุ่นนี้ไม่รองรับ Push';
+      btn.style.background = '#f1f5f9';
+      btn.style.borderColor = '#cbd5e1';
+      btn.style.color = '#64748b';
+      return;
+    }
+    try {
+      const reg = await ensurePartReqServiceWorker();
+      const sub = reg ? await reg.pushManager.getSubscription() : null;
+      if (Notification.permission === 'granted' && sub) {
+        btn.textContent = '🔔 แจ้งเตือนมือถือ: เปิดอยู่';
+        btn.style.background = '#dcfce7';
+        btn.style.borderColor = '#86efac';
+        btn.style.color = '#166534';
+        return;
+      }
+      if (Notification.permission === 'denied') {
+        btn.textContent = '🚫 แจ้งเตือนถูกบล็อก (เปิดในตั้งค่าเบราว์เซอร์)';
+        btn.style.background = '#fee2e2';
+        btn.style.borderColor = '#fca5a5';
+        btn.style.color = '#991b1b';
+        return;
+      }
+    } catch (_) {}
+    btn.textContent = '🔔 เปิดแจ้งเตือนบนมือถือ';
+    btn.style.background = '#fff7ed';
+    btn.style.borderColor = '#fdba74';
+    btn.style.color = '#c2410c';
+  }
+
+  async function enablePartReqPushNotifications(interactive = true) {
+    const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent || '');
+    const isStandalone = window.matchMedia?.('(display-mode: standalone)')?.matches || window.navigator.standalone;
+    if (isIos && !isStandalone) {
+      if (interactive) {
+        alert('สำหรับ iPhone/iPad: กรุณากดปุ่ม แชร์ (Share ⬆️) ด้านล่าง แล้วเลือก "เพิ่มไปยังหน้าจอโฮม (Add to Home Screen)" จากนั้นเปิดแอปจากหน้าจอโฮมแล้วกดปุ่มนี้อีกครั้ง เพื่อรับแจ้งเตือนขณะปิดหน้าจอครับ');
+      }
+      return false;
+    }
+    if (!('Notification' in window) || !('serviceWorker' in navigator) || !('PushManager' in window)) {
+      if (interactive) toast('เบราว์เซอร์นี้ไม่รองรับแจ้งเตือนขณะปิดหน้าจอ (แนะนำเปิดผ่าน Chrome บน Android หรือ Add to Home Screen บน iPhone)');
+      return false;
+    }
+    try {
+      const perm = Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission();
+      if (perm !== 'granted') {
+        if (interactive) toast('กรุณากด "อนุญาต (Allow)" เพื่อให้แจ้งเตือนเด้งขึ้นหน้าจอ');
+        await updatePartReqPushBtnUI();
+        return false;
+      }
+      const reg = await ensurePartReqServiceWorker();
+      if (!reg) {
+        if (interactive) toast('ไม่สามารถลงทะเบียน Service Worker ได้');
+        return false;
+      }
+      await navigator.serviceWorker.ready;
+      let sub = await reg.pushManager.getSubscription();
+      if (!sub) {
+        sub = await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(PART_REQ_VAPID_PUBLIC_KEY)
+        });
+      }
+      await syncPartReqPushSubscription(sub);
+      await updatePartReqPushBtnUI();
+      if (interactive) {
+        toast('✅ เปิดแจ้งเตือนบนมือถือเรียบร้อย! จะเด้งแจ้งเตือนแม้ปิดหน้าจอ');
+        showLocalSystemNotification(
+          '🔔 เปิดแจ้งเตือนเบิก-จ่าย Part แล้ว',
+          'เมื่อมีการเบิกหรือจ่าย Part ระบบจะเด้งแจ้งเตือนขึ้นหน้าจอมือถือทันที',
+          './#part-requisition',
+          'part-req-enabled'
+        );
+      }
+      return true;
+    } catch (err) {
+      if (interactive) toast('เปิดแจ้งเตือนไม่สำเร็จ: ' + (err?.message || err));
+      return false;
+    }
+  }
+
   function runPartReqNotifications() {
     const u = getCurrentUser();
     if (!u || !partReqInitialSyncDone) return;
@@ -12369,6 +12549,12 @@
         playWarehouseAlertBeep();
         toast(`🔔 Warehouse: มีใบเบิก Part รอจ่าย ${fmt(pending.length)} รายการ`);
         showPartReqRealtimePopup({ roleType: 'warehouse', record: pending[0], extraCount: pending.length - 1 });
+        showLocalSystemNotification(
+          `🔔 มีใบเบิก Part รอจ่าย ${fmt(pending.length)} รายการ`,
+          `${pending[0].materialCode} · ${fmtQty(pending[0].requestQty)} ${pending[0].unit || 'PCS'} · MO: ${pending[0].moNumber}`,
+          './#part-issue',
+          `part-req-init-${pending[0].reqId}`
+        );
       }
       return;
     }
@@ -12381,6 +12567,12 @@
       const r0 = fresh[0];
       toast(`🔔 ใบเบิก Part ใหม่ถึง Warehouse: ${r0.materialCode} · ${fmtQty(r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber}${fresh.length > 1 ? ` (และอีก ${fresh.length - 1} รายการ)` : ''}`);
       showPartReqRealtimePopup({ roleType: 'warehouse', record: r0, extraCount: fresh.length - 1 });
+      showLocalSystemNotification(
+        `🔔 มีใบเบิก Part ใหม่ (${r0.materialCode})`,
+        `จำนวน ${fmtQty(r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber} · ผู้เบิก: ${r0.requesterName || '-'}${fresh.length > 1 ? ` (+อีก ${fresh.length - 1} รายการ)` : ''}`,
+        './#part-issue',
+        `part-req-pending-${r0.reqId}`
+      );
     } else if (u.role === 'requester' || u.role === 'admin') {
       const mine = issued.filter(r => !st.issued.includes(r.reqId));
       if (!mine.length) return;
@@ -12390,6 +12582,12 @@
       const r0 = mine[0];
       toast(`✅ คลังจ่าย Part ให้คุณแล้ว: ${r0.materialCode} · ${fmtQty(r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber}${mine.length > 1 ? ` (และอีก ${mine.length - 1} รายการ)` : ''}`);
       showPartReqRealtimePopup({ roleType: 'requester', record: r0, extraCount: mine.length - 1 });
+      showLocalSystemNotification(
+        `✅ คลังจ่าย Part ให้แล้ว (${r0.materialCode})`,
+        `จ่าย ${fmtQty(r0.issuedQty || r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber} · ผู้จ่าย: ${r0.issuerName || 'Warehouse'}${mine.length > 1 ? ` (+อีก ${mine.length - 1} รายการ)` : ''}`,
+        './#part-requisition',
+        `part-req-issued-${r0.reqId}`
+      );
     }
   }
 
@@ -14607,6 +14805,31 @@
     };
     el('whIssuerDropdown')?.addEventListener('mousedown', selectWhStaffOpt);
     el('whIssuerDropdown')?.addEventListener('click', selectWhStaffOpt);
+
+    // Web Push Notification Toggle & Auto-Sync
+    el('partReqPushToggleBtn')?.addEventListener('click', () => {
+      enablePartReqPushNotifications(true);
+    });
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event?.data?.type === 'OPEN_PART_REQ_PAGE' && event.data.url) {
+          const target = String(event.data.url).includes('#part-issue') ? 'part-issue' : 'part-requisition';
+          if (typeof setPage === 'function') setPage(target);
+        }
+      });
+      ensurePartReqServiceWorker().then(async (reg) => {
+        await updatePartReqPushBtnUI();
+        if (reg && 'Notification' in window && Notification.permission === 'granted') {
+          try {
+            const sub = await reg.pushManager.getSubscription();
+            if (sub) await syncPartReqPushSubscription(sub);
+            else await enablePartReqPushNotifications(false);
+          } catch (_) {}
+        }
+      });
+    } else {
+      updatePartReqPushBtnUI();
+    }
 
     // PartStaff Roster Modal Buttons
     el('openPartStaffRosterModalBtn')?.addEventListener('click', openPartStaffRosterModal);
