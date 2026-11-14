@@ -3403,8 +3403,9 @@
         accessIsAdmin = currentUser.role === 'admin';
         el('accessAdminPanel').classList.toggle('hidden',!accessIsAdmin);
       }
-      if (['requester', 'warehouse'].includes(currentUser.role)) {
+      if (['requester', 'warehouse', 'admin', 'user'].includes(currentUser.role)) {
         initializePartReqSharedApi().catch(err => console.warn('[PartReqAPI] startup sync failed:', err?.message || err));
+        syncMembersFromGoogleSheet().catch(() => {});
       }
       document.documentElement.classList.add('app-ready');
     }catch(err){
@@ -10676,12 +10677,72 @@
     }
   }
 
+  async function syncMembersFromGoogleSheet() {
+    if (!isPartReqSharedApiConfigured()) return false;
+    try {
+      const token = await ensurePartReqSharedApiSession().catch(() => '');
+      if (!token) return false;
+      const res = await postPartReqSharedApiForm({ action: 'members_list', token });
+      if (res?.ok && Array.isArray(res.users) && res.users.length) {
+        const byName = new Map();
+        for (const u of (db.users || [])) {
+          if (u?.username) byName.set(String(u.username).trim().toLowerCase(), u);
+        }
+        let changed = false;
+        for (const remote of res.users) {
+          const key = String(remote.username || '').trim().toLowerCase();
+          if (!key) continue;
+          const local = byName.get(key);
+          if (!local) {
+            byName.set(key, remote);
+            changed = true;
+          } else if (
+            local.role !== remote.role ||
+            local.status !== remote.status ||
+            local.password !== remote.password ||
+            local.name !== remote.name ||
+            local.department !== remote.department
+          ) {
+            byName.set(key, { ...local, ...remote });
+            changed = true;
+          }
+        }
+        if (changed) {
+          db.users = [...byName.values()];
+          persist(false);
+          if (activePage === 'users') renderUsersPage();
+          updateAuthUI();
+        }
+        return true;
+      }
+    } catch (_) {}
+    return false;
+  }
+
+  async function saveMembersToGoogleSheet() {
+    if (!isPartReqSharedApiConfigured()) return false;
+    try {
+      const token = await ensurePartReqSharedApiSession().catch(() => '');
+      if (!token) return false;
+      await fetch(PART_REQ_SHARED_API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body: new URLSearchParams({ action: 'members_save', token, users: JSON.stringify(db.users || []) }).toString()
+      });
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   function approveUser(userId){
     const u = (db.users || []).find(x => x.id === userId);
     if(!u) return;
     u.status = 'approved';
     u.approvedAt = new Date().toISOString();
     persist(true);
+    saveMembersToGoogleSheet();
     renderUsersPage();
     updateAuthUI();
     toast(`อนุมัติบัญชี "${u.name || u.username}" เรียบร้อยแล้ว สามารถเข้าสู่ระบบได้ทันที`);
@@ -10693,6 +10754,7 @@
     if(confirm(`ต้องการปฏิเสธคำขอของ "${u.name || u.username}" ใช่หรือไม่?`)){
       u.status = 'rejected';
       persist(true);
+      saveMembersToGoogleSheet();
       renderUsersPage();
       updateAuthUI();
       toast(`ปฏิเสธคำขอของ "${u.name || u.username}" แล้ว`);
@@ -10724,6 +10786,7 @@
     }
     u.role = newRole;
     persist(true);
+    saveMembersToGoogleSheet();
     renderUsersPage();
     updateAuthUI();
     toast(`เปลี่ยนสิทธิ์ของ "${u.name || u.username}" เป็น ${getRoleDisplayLabel(newRole)} สำเร็จ`);
@@ -10736,6 +10799,7 @@
     if(newPass && newPass.trim().length >= 4){
       u.password = newPass.trim();
       persist(true);
+      saveMembersToGoogleSheet();
       renderUsersPage();
       toast(`เปลี่ยนรหัสผ่านของ "${u.name || u.username}" เรียบร้อยแล้ว`);
     } else if(newPass !== null) {
@@ -10754,6 +10818,7 @@
     if(confirm(`ยืนยันการลบบัญชี "${u.name || u.username}" ออกจากระบบ?`)){
       db.users = (db.users || []).filter(x => x.id !== userId);
       persist(true);
+      saveMembersToGoogleSheet();
       renderUsersPage();
       updateAuthUI();
       toast(`ลบบัญชี "${u.name || u.username}" เรียบร้อยแล้ว`);

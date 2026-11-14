@@ -50,6 +50,11 @@ function doPost(e) {
         result = partReqApiSaveOrderPdfToDrive_(doc);
       } else if (params.action === 'list_order_pdfs') {
         result = { ok: true, items: partReqApiListOrderPdfs_() };
+      } else if (params.action === 'members_list') {
+        result = { ok: true, users: partReqApiGetMembers_() };
+      } else if (params.action === 'members_save') {
+        const users = JSON.parse(String(params.users || '[]'));
+        result = { ok: true, users: partReqApiSaveMembers_(users) };
       } else {
         throw new Error('UNKNOWN_ACTION');
       }
@@ -465,6 +470,94 @@ function partReqApiSaveStaffRoster_(roster) {
 
 function setupPartStaffSheet() {
   return partReqApiGetStaffRoster_();
+}
+
+const MEMBERS_SHEET_NAME = 'Members';
+const MEMBERS_HEADERS = ['id', 'username', 'name', 'department', 'role', 'password', 'status', 'approvedAt', 'createdAt'];
+
+function partReqApiGetMembersSheet_() {
+  const ss = SpreadsheetApp.openById(PART_REQ_API_SPREADSHEET_ID);
+  let sheet = ss.getSheetByName(MEMBERS_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(MEMBERS_SHEET_NAME);
+  }
+  const width = Math.max(sheet.getLastColumn(), MEMBERS_HEADERS.length);
+  const firstRow = sheet.getLastRow() >= 1 ? sheet.getRange(1, 1, 1, width).getValues()[0] : [];
+  if (!firstRow.some(v => String(v || '').trim())) {
+    sheet.getRange(1, 1, 1, MEMBERS_HEADERS.length).setValues([MEMBERS_HEADERS]);
+    sheet.setFrozenRows(1);
+    const nowIso = new Date().toISOString();
+    const defaults = [
+      ['usr-admin', 'admin', 'ผู้ดูแลระบบ (Admin)', 'ส่วนกลาง / Management', 'admin', 'admin1234', 'approved', nowIso, nowIso],
+      ['usr-user', 'user', 'ผู้ใช้งานทั่วไป (User)', 'H9 Assembly Production Line', 'admin', 'user1234', 'approved', nowIso, nowIso],
+      ['usr-req', 'req', 'พนักงานเบิก Part (Production)', 'H9 Assembly Production Line', 'requester', '1234', 'approved', nowIso, nowIso],
+      ['usr-wh', 'wh', 'เจ้าหน้าที่คลังจ่าย Part (Warehouse)', 'Warehouse / Logistics', 'warehouse', '1234', 'approved', nowIso, nowIso]
+    ];
+    sheet.getRange(2, 1, defaults.length, MEMBERS_HEADERS.length).setValues(defaults);
+    SpreadsheetApp.flush();
+  }
+  return sheet;
+}
+
+function partReqApiGetMembers_() {
+  const sheet = partReqApiGetMembersSheet_();
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return [];
+  const rows = sheet.getRange(2, 1, lastRow - 1, MEMBERS_HEADERS.length).getValues();
+  return rows.map(r => ({
+    id: String(r[0] || '').trim(),
+    username: String(r[1] || '').trim(),
+    name: String(r[2] || '').trim(),
+    department: String(r[3] || '').trim(),
+    role: String(r[4] || 'user').trim().toLowerCase(),
+    password: String(r[5] || '').trim(),
+    status: String(r[6] || 'approved').trim().toLowerCase(),
+    approvedAt: String(r[7] || '').trim(),
+    createdAt: String(r[8] || '').trim()
+  })).filter(u => u.username);
+}
+
+function partReqApiSaveMembers_(users) {
+  const list = Array.isArray(users) ? users.filter(u => u && u.username) : [];
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+  try {
+    const sheet = partReqApiGetMembersSheet_();
+    sheet.clearContents();
+    sheet.getRange(1, 1, 1, MEMBERS_HEADERS.length).setValues([MEMBERS_HEADERS]);
+    sheet.setFrozenRows(1);
+    if (list.length) {
+      const rows = list.map(u => [
+        String(u.id || ('usr-' + String(u.username || '').trim())),
+        String(u.username || '').trim(),
+        String(u.name || u.username || '').trim(),
+        String(u.department || '').trim(),
+        String(u.role || 'user').trim().toLowerCase(),
+        String(u.password || '').trim(),
+        String(u.status || 'approved').trim().toLowerCase(),
+        String(u.approvedAt || '').trim(),
+        String(u.createdAt || '').trim()
+      ]);
+      sheet.getRange(2, 1, rows.length, MEMBERS_HEADERS.length).setValues(rows);
+    }
+    SpreadsheetApp.flush();
+    return partReqApiGetMembers_();
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function setupAllPlannerSheets() {
+  const reqSheet = partReqApiGetSheet_();
+  const staff = partReqApiGetStaffRoster_();
+  const members = partReqApiGetMembers_();
+  const pushSheet = partReqApiGetPushSheet_();
+  const pdfSheet = partReqApiGetOrderPdfSheet_();
+  return {
+    ok: true,
+    sheets: [reqSheet.getName(), staff.sheetName || 'PartStaff', MEMBERS_SHEET_NAME, pushSheet.getName(), pdfSheet.getName()],
+    membersCount: members.length
+  };
 }
 
 const ORDER_PDF_LINKS_SHEET_NAME = 'OrderPdfLinks';
