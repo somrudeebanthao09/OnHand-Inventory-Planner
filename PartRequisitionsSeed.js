@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-14T09:58:17.714Z",
+  "updatedAt": "2026-11-14T10:02:11.042Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "33c98a14-f800-44d5-8257-e320e82dee0d0028b4585e344697bd6affd6db8455d0",
-    "wh": "b61b75c1-3435-4527-aa5f-c392908bda49fe217659e9f64110abe2091e80f1c692",
-    "expiresAt": 1794671888766
+    "wh": "abb0960a-7027-493a-8689-445eab6e1a84b2144f9c16884aaaa863d261af57ef13",
+    "expiresAt": 1794671893521
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -80,20 +80,25 @@ window.PART_REQUISITIONS_SEED = {
       "shift": "A",
       "requesterNote": "Test",
       "requestedAt": "14/11/2026 16:19:45",
-      "status": "pending",
-      "locationsSummary": "",
-      "locationsJson": "[]",
-      "issuerName": "",
-      "issuerUsername": "",
+      "status": "issued",
+      "locationsSummary": "Loc#1: GG (20 PCS)",
+      "locationsJson": "[{\"location\":\"GG\",\"qty\":20}]",
+      "issuerName": "บี",
+      "issuerUsername": "wh",
       "issuerNote": "",
-      "issuedAt": "",
-      "hasPhoto": false,
-      "photoTakenAt": "",
-      "updatedAt": "14/11/2026 16:19:46",
+      "issuedAt": "14/11/2026 17:01:58",
+      "hasPhoto": true,
+      "photoTakenAt": "14/11/2026 17:01:58",
+      "updatedAt": "14/11/2026 17:01:58",
       "photoUrl": "",
       "deleted": false,
       "deletedAt": "",
-      "locations": [],
+      "locations": [
+        {
+          "location": "GG",
+          "qty": 20
+        }
+      ],
       "issuePhotoDataUrl": "",
       "photoAttachmentUrl": ""
     },
