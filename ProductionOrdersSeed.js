@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-16T12:36:15.477Z",
+  "snapshotAt": "2026-11-16T12:48:13.471Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
   "count": 14744,
   "orders": [
@@ -5110,7 +5110,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "6001BZ00038",
       "productName": "CRADLE Stamping Plating packing(2021 Backup Die)",
       "department": "Electrical Post-Processing Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Partially Completed",
       "pickStatus": "Fully Issued",
       "materialCode": "5004BM00100",
       "materialName": "CRADLE Stamping Plating(2021 Backup Die)",
@@ -9508,8 +9508,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 188,
+      "consumedQty": 188,
+      "wipQty": 0,
       "issuingWarehouse": "Aluminum Die Casting Semi-Finished Product Warehouse-Waiting Packaging",
       "requiredTime": "2026-11-16 09:49:16"
     },
