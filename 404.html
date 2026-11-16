@@ -9185,9 +9185,9 @@
         </td>
         <td style="text-align:center;padding:8px 8px;vertical-align:middle">
           ${(() => {
-            const zjdbSet = new Set();
-            for (const p of (mo.parts || [])) {
-              String(p.directTransferDocs || '').split(/[,;]+/).map(s => s.trim()).filter(Boolean).forEach(d => zjdbSet.add(d));
+            const zjdbSet = new Set(String(mo.directTransferDocs || '').split(/[,;\s]+/).map(s => s.trim()).filter(Boolean));
+            for (const p of (mo.items || mo.parts || [])) {
+              String(p.directTransferDocs || '').split(/[,;\s]+/).map(s => s.trim()).filter(Boolean).forEach(d => zjdbSet.add(d));
             }
             const zjdbCount = zjdbSet.size;
             return `<div style="display:flex;flex-direction:column;gap:5px;align-items:center;width:100%;max-width:136px;margin:0 auto">
@@ -9829,7 +9829,7 @@
 
   function buildProductionOrderSheetHtml(mo) {
     const ex = mo.execInfo || {};
-    const firstPart = (mo.parts || [])[0] || {};
+    const firstPart = (mo.items || mo.parts || [])[0] || {};
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=${encodeURIComponent(mo.moNumber)}`;
     return `
       <div class="sheet">
@@ -9893,9 +9893,10 @@
   }
 
   function buildDirectTransferSheetList(mo) {
-    const zjdbSet = new Set();
-    for (const p of (mo.parts || [])) {
-      String(p.directTransferDocs || '').split(/[,;]+/).map(s => s.trim()).filter(Boolean).forEach(d => zjdbSet.add(d));
+    const moPartsList = mo.items || mo.parts || [];
+    const zjdbSet = new Set(String(mo.directTransferDocs || '').split(/[,;\s]+/).map(s => s.trim()).filter(Boolean));
+    for (const p of moPartsList) {
+      String(p.directTransferDocs || '').split(/[,;\s]+/).map(s => s.trim()).filter(Boolean).forEach(d => zjdbSet.add(d));
     }
     const zjdbDocs = [...zjdbSet];
     const docMap = window.PRODUCTION_EXECUTION_SEED?.directTransferDocsByDoc || {};
@@ -9905,7 +9906,7 @@
       const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=${encodeURIComponent(docNo)}`;
       let items = Array.isArray(detail?.items) && detail.items.length
         ? detail.items
-        : (mo.parts || []).filter(p => String(p.directTransferDocs || '').includes(docNo)).map(p => ({
+        : moPartsList.filter(p => String(p.directTransferDocs || '').includes(docNo)).map(p => ({
             materialCode: p.materialCode,
             materialName: p.materialName,
             specification: p.specification,
@@ -9916,7 +9917,7 @@
             toWarehouse: p.issuingWarehouse || 'H9 Assembly-Workshop Warehouse',
             toBin: ''
           }));
-      const matCatalog = new Map((mo.parts || []).map(p => [String(p.materialCode || '').toUpperCase(), p]));
+      const matCatalog = new Map(moPartsList.map(p => [String(p.materialCode || '').toUpperCase(), p]));
       const rowsHtml = items.map(it => {
         const mInfo = matCatalog.get(String(it.materialCode || '').toUpperCase());
         const spec = it.specification || mInfo?.specification || '';
@@ -10087,9 +10088,9 @@
     await refreshOrderPdfLinksFromDrive();
     let bucket = orderPdfLinksByMo.get(moKey);
     if (!bucket?.order?.fileUrl) {
-      const zjdbSet = new Set();
-      for (const p of (mo.parts || [])) {
-        String(p.directTransferDocs || '').split(/[,;]+/).map(s => s.trim()).filter(Boolean).forEach(d => zjdbSet.add(d));
+      const zjdbSet = new Set(String(mo.directTransferDocs || '').split(/[,;\s]+/).map(s => s.trim()).filter(Boolean));
+      for (const p of (mo.items || mo.parts || [])) {
+        String(p.directTransferDocs || '').split(/[,;\s]+/).map(s => s.trim()).filter(Boolean).forEach(d => zjdbSet.add(d));
       }
       bucket = await ensureKingdeePdfsOnDriveForMo(mo.moNumber, [...zjdbSet]) || bucket;
     }
