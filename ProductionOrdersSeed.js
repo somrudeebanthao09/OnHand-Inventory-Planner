@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-16T12:08:21.085Z",
+  "snapshotAt": "2026-11-16T12:18:32.865Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
   "count": 14744,
   "orders": [
@@ -11,7 +11,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productName": "METAL BOX 4/6 WAY-Step5 + Spot Welding",
       "department": "Welding & Riveting Production Line",
       "taskStatus": "Start",
-      "pickStatus": "Materials Not Issued",
+      "pickStatus": "Partially Issued",
       "materialCode": "5001CY00188",
       "materialName": "METAL BOX 4/6 WAY-Step5",
       "specification": "BRU30887",
@@ -23,13 +23,13 @@ window.PRODUCTION_ORDERS_SEED = {
       "directTransferQty": 0,
       "directTransferDocs": "",
       "ppbomDemandQty": 3084,
-      "ppbomIssuedQty": 0,
-      "ppbomUnissuedQty": 3084,
+      "ppbomIssuedQty": 1450,
+      "ppbomUnissuedQty": 1634,
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
       "consumedQty": 0,
-      "wipQty": 0,
+      "wipQty": 1450,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Welding",
       "requiredTime": "2026-11-16 19:49:36"
     },
