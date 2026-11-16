@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-16T10:58:11.740Z",
+  "snapshotAt": "2026-11-16T11:08:10.380Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
   "count": 14743,
   "orders": [
@@ -9958,8 +9958,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 480,
-      "wipQty": 549,
+      "consumedQty": 680,
+      "wipQty": 349,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Powder Coating",
       "requiredTime": "2026-11-16 09:15:26"
     },
