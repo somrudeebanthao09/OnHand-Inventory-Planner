@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-16T08:20:25.182Z",
+  "updatedAt": "2026-11-16T08:21:59.553Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "5fab2431-a9b1-4c32-8ada-6e16fe501544092ccc964f3b4cba8b882105f3f53f1a",
+    "req": "dc6c931a-8138-4ca9-895f-e90e538d4f713f2a340e438d405cbee6bb8b4222b3ba",
     "wh": "1e17849a-3880-4296-8811-a79dfc973a17e4667767c6db41f88f9dc1394b07fc5f",
-    "expiresAt": 1794817058796
+    "expiresAt": 1794833210019
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -43,15 +43,23 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "Part ขาด",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
-      "issuerName": "",
-      "issuedAt": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CH-04-03B",
+          "qty": 23
+        }
+      ],
+      "locationsSummary": "Loc#1: CH-04-03B (23 PCS)",
+      "issuerName": "นันทะกานต์",
+      "issuedAt": "16/11/2026 15:21:53",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "16/11/2026 15:20:21",
-      "photoTakenAt": ""
+      "updatedAt": "16/11/2026 15:21:53",
+      "photoTakenAt": "16/11/2026 15:21:53",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261116-21562.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261116-30203",
