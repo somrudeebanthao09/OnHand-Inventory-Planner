@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-16T06:30:13.694Z",
+  "updatedAt": "2026-11-16T06:31:41.970Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -19,7 +19,8 @@ window.PART_REQUISITIONS_SEED = {
     "issuers": [
       "เจ้าหน้าที่คลังจ่าย Part (Warehouse)",
       "สมฤดี บรรเทา (Somrudee)",
-      "บี"
+      "บี",
+      "นิตยา"
     ],
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
@@ -41,15 +42,28 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "ขาด",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
-      "issuerName": "",
-      "issuedAt": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CC01",
+          "qty": 100
+        }
+      ],
+      "locationsSummary": "Loc#1: CC01 (100 PCS)",
+      "issuerName": "นิตยา",
+      "issuedAt": "16/11/2026 13:31:16",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "16/11/2026 13:29:47",
-      "photoTakenAt": ""
+      "updatedAt": "16/11/2026 13:31:16",
+      "photoTakenAt": "16/11/2026 13:31:16",
+      "locationsJson": "[{\"location\":\"CC01\",\"qty\":100}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "1 นาที 29 วินาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261116-40120",
