@@ -2822,10 +2822,10 @@
     </div>
   </main>
 </div>
- <div id="stockFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์"><div class="stock-filter-popup-head"><strong id="stockFilterTitle">ตัวกรอง</strong><button id="stockFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><input id="stockFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา" autocomplete="off"><label class="stock-filter-select-all"><input id="stockFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="stockFilterCount" class="helper"></div><div id="stockFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="stockFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="stockFilterCancel" class="btn" type="button">ยกเลิก</button><button id="stockFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
+ <div id="stockFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์"><div class="stock-filter-popup-head"><strong id="stockFilterTitle">ตัวกรอง</strong><button id="stockFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><div style="display:flex;gap:6px;flex:0 0 auto"><button id="stockFilterSortAsc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬆️ น้อย → มาก</button><button id="stockFilterSortDesc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬇️ มาก → น้อย</button></div><input id="stockFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา" autocomplete="off"><label class="stock-filter-select-all"><input id="stockFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="stockFilterCount" class="helper"></div><div id="stockFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="stockFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="stockFilterCancel" class="btn" type="button">ยกเลิก</button><button id="stockFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
  <div id="ordersFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ Order"><div class="stock-filter-popup-head"><strong id="ordersFilterTitle">ตัวกรอง</strong><button id="ordersFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><div style="display:flex;gap:6px;flex:0 0 auto"><button id="ordersFilterSortAsc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬆️ น้อย → มาก</button><button id="ordersFilterSortDesc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬇️ มาก → น้อย</button></div><input id="ordersFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="ordersFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="ordersFilterCount" class="helper"></div><div id="ordersFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="ordersFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="ordersFilterCancel" class="btn" type="button">ยกเลิก</button><button id="ordersFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
- <div id="safetyFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ Safety Stock"><div class="stock-filter-popup-head"><strong id="safetyFilterTitle">ตัวกรอง</strong><button id="safetyFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><input id="safetyFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="safetyFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="safetyFilterCount" class="helper"></div><div id="safetyFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="safetyFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="safetyFilterCancel" class="btn" type="button">ยกเลิก</button><button id="safetyFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
- <div id="poTrackingFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ ติดตาม Order ผลิต"><div class="stock-filter-popup-head"><strong id="poTrackingFilterTitle">ตัวกรอง</strong><button id="poTrackingFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><input id="poTrackingFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="poTrackingFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="poTrackingFilterCount" class="helper"></div><div id="poTrackingFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="poTrackingFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="poTrackingFilterCancel" class="btn" type="button">ยกเลิก</button><button id="poTrackingFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
+ <div id="safetyFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ Safety Stock"><div class="stock-filter-popup-head"><strong id="safetyFilterTitle">ตัวกรอง</strong><button id="safetyFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><div style="display:flex;gap:6px;flex:0 0 auto"><button id="safetyFilterSortAsc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬆️ น้อย → มาก</button><button id="safetyFilterSortDesc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬇️ มาก → น้อย</button></div><input id="safetyFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="safetyFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="safetyFilterCount" class="helper"></div><div id="safetyFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="safetyFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="safetyFilterCancel" class="btn" type="button">ยกเลิก</button><button id="safetyFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
+ <div id="poTrackingFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ ติดตาม Order ผลิต"><div class="stock-filter-popup-head"><strong id="poTrackingFilterTitle">ตัวกรอง</strong><button id="poTrackingFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><div style="display:flex;gap:6px;flex:0 0 auto"><button id="poTrackingFilterSortAsc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬆️ น้อย → มาก</button><button id="poTrackingFilterSortDesc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬇️ มาก → น้อย</button></div><input id="poTrackingFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="poTrackingFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="poTrackingFilterCount" class="helper"></div><div id="poTrackingFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="poTrackingFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="poTrackingFilterCancel" class="btn" type="button">ยกเลิก</button><button id="poTrackingFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
  <div class="toast" id="toast" role="status"></div>
 <div class="modal-backdrop" id="fileErrorModal"><div class="modal"><h2 id="modalTitle">ไม่สามารถนำเข้าไฟล์</h2><p id="modalMessage"></p><div class="modal-actions"><button class="btn primary" id="modalClose">รับทราบ</button></div></div></div>
 
@@ -4723,6 +4723,18 @@
     popup.style.left = `${left}px`;
     popup.style.top = `${top}px`;
   }
+  let stockSort = { key: '', dir: '' }, safetySort = { key: '', dir: '' }, poTrackingSort = { key: '', dir: '' };
+  function compareFilterSortValues(valA, valB, dir) {
+    const mult = dir === 'desc' ? -1 : 1;
+    const sa = String(valA ?? '').trim();
+    const sb = String(valB ?? '').trim();
+    const na = Number(sa.replace(/,/g, ''));
+    const nb = Number(sb.replace(/,/g, ''));
+    if (sa !== '' && sb !== '' && !isNaN(na) && !isNaN(nb)) {
+      return (na - nb) * mult;
+    }
+    return sa.localeCompare(sb, 'th', { numeric: true, sensitivity: 'base' }) * mult;
+  }
   function positionStockFilter(){positionAnchoredFilterPopup(el('stockFilterPopup'),stockFilterAnchor)}
 
   function renderStockFilterOptions(){
@@ -4784,12 +4796,29 @@
     stockFilterBackupState=stockValueFilters[key]?structuredClone(stockValueFilters[key]):undefined;
     const active=stockValueFilters[key];
     stockFilterDraft=new Set(active===undefined?stockFilterCandidates:active.filter(value=>stockFilterCandidates.includes(value)));
-    el('stockFilterTitle').textContent=`กรอง ${spec[1]}`;
+    el('stockFilterTitle').textContent=`กรอง & เรียง ${spec[1]}`;
+    el('stockFilterSortAsc')?.classList.toggle('primary', stockSort.key === key && stockSort.dir === 'asc');
+    el('stockFilterSortDesc')?.classList.toggle('primary', stockSort.key === key && stockSort.dir === 'desc');
     el('stockFilterSearch').value='';
     el('stockFilterPopup').classList.remove('hidden');
     renderStockFilterOptions();
     positionStockFilter();
     if (window.innerWidth > 768) el('stockFilterSearch').focus({preventScroll:true});
+  }
+  function applyStockColumnSort(dir) {
+    const key = stockFilterKey;
+    if (!key) return;
+    if (stockSort.key === key && stockSort.dir === dir) {
+      stockSort = { key: '', dir: '' };
+      toast('ยกเลิกการเรียงลำดับคลังสินค้า');
+    } else {
+      stockSort = { key, dir };
+      const spec = stockFilterSpecs.find(x => x[0] === key);
+      toast(`เรียงตาม ${spec?.[1] || key} (${dir === 'asc' ? 'น้อย → มาก' : 'มาก → น้อย'})`);
+    }
+    closeStockFilter();
+    stockPage = 1;
+    renderStock();
   }
 
   function applyStockFilter(){
@@ -4865,6 +4894,9 @@
       });
       return globalMatch&&columnMatch;
     });
+    if (stockSort.key) {
+      rows.sort((a, b) => compareFilterSortValues(a.values[stockSort.key], b.values[stockSort.key], stockSort.dir));
+    }
     stockFilteredCount=rows.length;
     const totalPages=Math.max(1,Math.ceil(rows.length/stockPageSize));stockPage=Math.min(stockPage,totalPages);const startIndex=(stockPage-1)*stockPageSize,pageRows=rows.slice(startIndex,startIndex+stockPageSize),visibleFrom=rows.length?startIndex+1:0,visibleTo=Math.min(startIndex+stockPageSize,rows.length);
     el('stockCount').textContent=fmt(rows.length)+(stockViewMode==='grouped'?' รายการแยกคลัง':' แถว')+' · '+fmt(new Set(rows.map(row=>row.item.materialCode)).size)+' Part';
@@ -5049,12 +5081,28 @@
     const active = safetyValueFilters[key];
     safetyFilterDraft = new Set(active === undefined ? safetyFilterCandidates : active.filter(v => safetyFilterCandidates.includes(v)));
 
-    el('safetyFilterTitle').textContent = `กรอง ${colName}`;
+    el('safetyFilterTitle').textContent = `กรอง & เรียง ${colName}`;
+    el('safetyFilterSortAsc')?.classList.toggle('primary', safetySort.key === key && safetySort.dir === 'asc');
+    el('safetyFilterSortDesc')?.classList.toggle('primary', safetySort.key === key && safetySort.dir === 'desc');
     el('safetyFilterSearch').value = '';
     el('safetyFilterPopup').classList.remove('hidden');
     renderSafetyFilterOptions();
     positionSafetyFilter();
-    el('safetyFilterSearch').focus({ preventScroll: true });
+    if (window.innerWidth > 768) el('safetyFilterSearch').focus({ preventScroll: true });
+  }
+  function applySafetyColumnSort(dir) {
+    const key = safetyFilterKey;
+    if (!key) return;
+    if (safetySort.key === key && safetySort.dir === dir) {
+      safetySort = { key: '', dir: '' };
+      toast('ยกเลิกการเรียงลำดับ Safety Stock');
+    } else {
+      safetySort = { key, dir };
+      toast(`เรียงตาม ${SAFETY_COL_NAMES[key] || key} (${dir === 'asc' ? 'น้อย → มาก' : 'มาก → น้อย'})`);
+    }
+    closeSafetyFilter();
+    safetyPage = 1;
+    renderSafety();
   }
 
   function applySafetyFilter() {
@@ -5205,6 +5253,17 @@
     });
 
     filtered.sort((a,b) => {
+      if (safetySort.key) {
+        const getVal = (r, k) => {
+          if (k === 'specification') return r.specification || '';
+          if (k === 'department') return (r.departments || []).join(', ');
+          if (k === 'warehouse') return (r.warehouses || []).join(', ');
+          if (k === 'stockHealth') return r.health?.label || '';
+          if (k === 'unit') return r.unit || '';
+          return r[k] ?? '';
+        };
+        return compareFilterSortValues(getVal(a, safetySort.key), getVal(b, safetySort.key), safetySort.dir);
+      }
       const aPriority = a.health.status === 'low' ? 0 : a.health.status === 'over' ? 1 : a.health.status === 'ok' ? 2 : 3;
       const bPriority = b.health.status === 'low' ? 0 : b.health.status === 'over' ? 1 : b.health.status === 'ok' ? 2 : 3;
       return (aPriority - bPriority) || a.materialCode.localeCompare(b.materialCode, undefined, {numeric: true});
@@ -8108,12 +8167,28 @@
     const active = poTrackingColumnFilters[key];
     poTrackingFilterDraft = new Set(active === undefined ? poTrackingFilterCandidates : active.filter(v => poTrackingFilterCandidates.includes(v)));
 
-    if (el('poTrackingFilterTitle')) el('poTrackingFilterTitle').textContent = `กรอง ${colName}`;
+    if (el('poTrackingFilterTitle')) el('poTrackingFilterTitle').textContent = `กรอง & เรียง ${colName}`;
+    el('poTrackingFilterSortAsc')?.classList.toggle('primary', poTrackingSort.key === key && poTrackingSort.dir === 'asc');
+    el('poTrackingFilterSortDesc')?.classList.toggle('primary', poTrackingSort.key === key && poTrackingSort.dir === 'desc');
     if (el('poTrackingFilterSearch')) el('poTrackingFilterSearch').value = '';
     el('poTrackingFilterPopup')?.classList.remove('hidden');
     renderPoTrackingFilterOptions();
     positionPoTrackingFilter();
-    el('poTrackingFilterSearch')?.focus({ preventScroll: true });
+    if (window.innerWidth > 768) el('poTrackingFilterSearch')?.focus({ preventScroll: true });
+  }
+  function applyPoTrackingColumnSort(dir) {
+    const key = poTrackingFilterKey;
+    if (!key) return;
+    if (poTrackingSort.key === key && poTrackingSort.dir === dir) {
+      poTrackingSort = { key: '', dir: '' };
+      toast('ยกเลิกการเรียงลำดับ Order');
+    } else {
+      poTrackingSort = { key, dir };
+      toast(`เรียงตาม ${PO_TRACKING_COLS[key] || key} (${dir === 'asc' ? 'น้อย → มาก' : 'มาก → น้อย'})`);
+    }
+    closePoTrackingFilter();
+    poTrackingPage = 1;
+    renderPoTrackingPage();
   }
 
   function applyPoTrackingFilter() {
@@ -9127,6 +9202,9 @@
         const vals = getPoTrackingRowValues(mo);
         return activeColFilters.every(([k, chosen]) => chosen.includes(vals[k]));
       });
+    }
+    if (poTrackingSort.key) {
+      filtered.sort((a, b) => compareFilterSortValues(getPoTrackingRowValues(a)[poTrackingSort.key], getPoTrackingRowValues(b)[poTrackingSort.key], poTrackingSort.dir));
     }
 
     if (el('poTrackingResetBtn')) {
@@ -11429,6 +11507,8 @@
     else poTrackingFilterDraft.delete(input.dataset.value);
     syncPoTrackingFilterSelection();
   });
+  el('poTrackingFilterSortAsc')?.addEventListener('click', () => applyPoTrackingColumnSort('asc'));
+  el('poTrackingFilterSortDesc')?.addEventListener('click', () => applyPoTrackingColumnSort('desc'));
   el('poTrackingFilterApply')?.addEventListener('click', applyPoTrackingFilter);
   el('poTrackingFilterReset')?.addEventListener('click', resetCurrentPoTrackingFilter);
   el('poTrackingFilterCancel')?.addEventListener('click', cancelPoTrackingFilter);
@@ -11543,6 +11623,8 @@
     syncSafetyFilterSelection();
   });
 
+  el('safetyFilterSortAsc')?.addEventListener('click', () => applySafetyColumnSort('asc'));
+  el('safetyFilterSortDesc')?.addEventListener('click', () => applySafetyColumnSort('desc'));
   el('safetyFilterApply')?.addEventListener('click', applySafetyFilter);
   el('safetyFilterReset')?.addEventListener('click', resetCurrentSafetyFilter);
   el('safetyFilterCancel')?.addEventListener('click', cancelSafetyFilter);
@@ -11840,6 +11922,8 @@
      refreshStockFilterAnchor();
      syncStockFilterSelection();
    });
+   el('stockFilterSortAsc')?.addEventListener('click',()=>applyStockColumnSort('asc'));
+   el('stockFilterSortDesc')?.addEventListener('click',()=>applyStockColumnSort('desc'));
    el('stockFilterApply').addEventListener('click',applyStockFilter);
    el('stockFilterReset').addEventListener('click',resetCurrentStockFilter);
    el('stockFilterCancel').addEventListener('click',cancelStockFilter);
