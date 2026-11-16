@@ -4687,7 +4687,38 @@
   let stockFilterBackupState = undefined;
 
   function ensureStockRowsCache(){if(stockRowsCacheInventory!==db.inventory||stockRowsCacheBom!==db.bom||stockRowsCacheDepartmentMap!==db.departmentMap||stockRowsCacheViewMode!==stockViewMode)rebuildStockRowsCache()}
-  function positionStockFilter(){const popup=el('stockFilterPopup'),anchor=stockFilterAnchor;if(popup.classList.contains('hidden')||!anchor?.isConnected)return;const rect=anchor.getBoundingClientRect(),viewHeight=window.visualViewport?.height||window.innerHeight,viewWidth=window.visualViewport?.width||window.innerWidth;popup.style.left='10px';popup.style.top='10px';const width=popup.offsetWidth,below=Math.max(0,viewHeight-rect.bottom-10),above=Math.max(0,rect.top-10),openBelow=below>=180||below>=above,space=Math.max(160,Math.min(440,openBelow?below:above));popup.style.maxHeight=`${space}px`;popup.classList.toggle('compact',space<300);const height=popup.offsetHeight,left=Math.max(10,Math.min(rect.left,viewWidth-width-10)),top=openBelow?Math.min(rect.bottom+5,viewHeight-height-10):Math.max(10,rect.top-height-5);popup.style.left=`${left}px`;popup.style.top=`${top}px`}
+  function positionAnchoredFilterPopup(popup, anchor) {
+    if (!popup || popup.classList.contains('hidden')) return;
+    const viewHeight = window.visualViewport?.height || window.innerHeight;
+    const viewWidth = window.visualViewport?.width || window.innerWidth;
+    const vpTop = window.visualViewport?.offsetTop || 0;
+    if (viewWidth <= 768) {
+      const boxW = Math.min(360, viewWidth - 20);
+      const maxH = Math.max(200, Math.min(440, viewHeight - 24));
+      popup.style.width = `${boxW}px`;
+      popup.style.maxHeight = `${maxH}px`;
+      popup.style.left = `${Math.round((viewWidth - boxW) / 2)}px`;
+      popup.style.top = `${Math.round(vpTop + 12)}px`;
+      popup.classList.toggle('compact', maxH < 300);
+      return;
+    }
+    popup.style.width = '';
+    if (!anchor?.isConnected) return;
+    const rect = anchor.getBoundingClientRect();
+    const width = popup.offsetWidth || 290;
+    const below = Math.max(0, viewHeight - rect.bottom - 10);
+    const above = Math.max(0, rect.top - 10);
+    const openBelow = below >= 180 || below >= above;
+    const space = Math.max(160, Math.min(440, openBelow ? below : above));
+    popup.style.maxHeight = `${space}px`;
+    popup.classList.toggle('compact', space < 300);
+    const height = popup.offsetHeight;
+    const left = Math.max(10, Math.min(rect.left, viewWidth - width - 10));
+    const top = openBelow ? Math.min(rect.bottom + 5, viewHeight - height - 10) : Math.max(10, rect.top - height - 5);
+    popup.style.left = `${left}px`;
+    popup.style.top = `${top}px`;
+  }
+  function positionStockFilter(){positionAnchoredFilterPopup(el('stockFilterPopup'),stockFilterAnchor)}
 
   function renderStockFilterOptions(){
     const search=(el('stockFilterSearch').value||'').trim().toLocaleLowerCase();
@@ -4701,7 +4732,7 @@
     if(search){
       el('stockFilterCount').textContent=`เลือก ${fmt(selected)} · พบ ${fmt(matches.length)} จาก ${fmt(stockFilterCandidates.length)} ค่า${matches.length>250?' · แสดง 250 ค่าแรก':''}`;
     }else{
-      el('stockFilterCount').textContent=`เลือก ${fmt(stockFilterDraft.size)} · ทั้งหมด ${fmt(stockFilterCandidates.length)} ค่า${matches.length>250?' · แสดง 250 ค่าแรก':''}`;
+      el('stockFilterCount').textContent=`เลือก ${fmt(stockFilterDraft.size)} · ทั้งหมด ${fmt(stockFilterCandidates.length)} ค่า${stockFilterMatches.length>250?' · แสดง 250 ค่าแรก':''}`;
     }
     el('stockFilterOptions').innerHTML=matches.length?matches.slice(0,250).map(value=>`<label class="stock-filter-option"><input type="checkbox" data-value="${esc(value)}" ${stockFilterDraft.has(value)?'checked':''}><span>${esc(value)}</span></label>`).join(''):'<div class="stock-filter-empty">ไม่พบค่าที่ค้นหา</div>';
     positionStockFilter();
@@ -4717,7 +4748,7 @@
     if(search){
       el('stockFilterCount').textContent=`เลือก ${fmt(selected)} · พบ ${fmt(stockFilterMatches.length)} จาก ${fmt(stockFilterCandidates.length)} ค่า${stockFilterMatches.length>250?' · แสดง 250 ค่าแรก':''}`;
     }else{
-      el('stockFilterCount').textContent=`เลือก ${fmt(stockFilterDraft.size)} · ทั้งหมด ${fmt(stockFilterCandidates.length)} ค่า${matches.length>250?' · แสดง 250 ค่าแรก':''}`;
+      el('stockFilterCount').textContent=`เลือก ${fmt(stockFilterDraft.size)} · ทั้งหมด ${fmt(stockFilterCandidates.length)} ค่า${stockFilterMatches.length>250?' · แสดง 250 ค่าแรก':''}`;
     }
     el('stockFilterOptions').querySelectorAll('input[data-value]').forEach(input=>{
       input.checked=stockFilterDraft.has(input.dataset.value);
@@ -4753,7 +4784,7 @@
     el('stockFilterPopup').classList.remove('hidden');
     renderStockFilterOptions();
     positionStockFilter();
-    el('stockFilterSearch').focus({preventScroll:true});
+    if (window.innerWidth > 768) el('stockFilterSearch').focus({preventScroll:true});
   }
 
   function applyStockFilter(){
@@ -4940,26 +4971,7 @@
   };
 
   function positionSafetyFilter() {
-    const popup = el('safetyFilterPopup');
-    const anchor = safetyFilterAnchor;
-    if (!popup || popup.classList.contains('hidden') || !anchor?.isConnected) return;
-    const rect = anchor.getBoundingClientRect();
-    const viewHeight = window.visualViewport?.height || window.innerHeight;
-    const viewWidth = window.visualViewport?.width || window.innerWidth;
-    popup.style.left = '10px';
-    popup.style.top = '10px';
-    const width = popup.offsetWidth || 280;
-    const below = Math.max(0, viewHeight - rect.bottom - 10);
-    const above = Math.max(0, rect.top - 10);
-    const openBelow = below >= 180 || below >= above;
-    const space = Math.max(160, Math.min(440, openBelow ? below : above));
-    popup.style.maxHeight = `${space}px`;
-    popup.classList.toggle('compact', space < 300);
-    const height = popup.offsetHeight;
-    const left = Math.max(10, Math.min(rect.left, viewWidth - width - 10));
-    const top = openBelow ? Math.min(rect.bottom + 5, viewHeight - height - 10) : Math.max(10, rect.top - height - 5);
-    popup.style.left = `${left}px`;
-    popup.style.top = `${top}px`;
+    positionAnchoredFilterPopup(el('safetyFilterPopup'), safetyFilterAnchor);
   }
 
   function renderSafetyFilterOptions() {
@@ -5579,7 +5591,7 @@
     if(cu && cu.role === 'requester'){
       page = 'part-requisition';
     } else if(cu && cu.role === 'warehouse'){
-      page = 'part-issue';
+      if (page !== 'part-issue' && page !== 'stock' && page !== 'lot') page = 'part-issue';
     } else if((page === 'users') && (!cu || cu.role !== 'admin')) {
       page = 'overview';
     }
@@ -5890,26 +5902,7 @@
   }
 
   function positionOrdersFilter() {
-    const popup = el('ordersFilterPopup');
-    const anchor = ordersFilterAnchor;
-    if (!popup || popup.classList.contains('hidden') || !anchor?.isConnected) return;
-    const rect = anchor.getBoundingClientRect();
-    const viewHeight = window.visualViewport?.height || window.innerHeight;
-    const viewWidth = window.visualViewport?.width || window.innerWidth;
-    popup.style.left = '10px';
-    popup.style.top = '10px';
-    const width = popup.offsetWidth || 280;
-    const below = Math.max(0, viewHeight - rect.bottom - 10);
-    const above = Math.max(0, rect.top - 10);
-    const openBelow = below >= 180 || below >= above;
-    const space = Math.max(160, Math.min(440, openBelow ? below : above));
-    popup.style.maxHeight = `${space}px`;
-    popup.classList.toggle('compact', space < 300);
-    const height = popup.offsetHeight;
-    const left = Math.max(10, Math.min(rect.left, viewWidth - width - 10));
-    const top = openBelow ? Math.min(rect.bottom + 5, viewHeight - height - 10) : Math.max(10, rect.top - height - 5);
-    popup.style.left = `${left}px`;
-    popup.style.top = `${top}px`;
+    positionAnchoredFilterPopup(el('ordersFilterPopup'), ordersFilterAnchor);
   }
 
   function renderOrdersFilterOptions() {
@@ -7909,26 +7902,7 @@
   }
 
   function positionPoTrackingFilter() {
-    const popup = el('poTrackingFilterPopup');
-    const anchor = poTrackingFilterAnchor;
-    if (!popup || popup.classList.contains('hidden') || !anchor?.isConnected) return;
-    const rect = anchor.getBoundingClientRect();
-    const viewHeight = window.visualViewport?.height || window.innerHeight;
-    const viewWidth = window.visualViewport?.width || window.innerWidth;
-    popup.style.left = '10px';
-    popup.style.top = '10px';
-    const width = popup.offsetWidth || 280;
-    const below = Math.max(0, viewHeight - rect.bottom - 10);
-    const above = Math.max(0, rect.top - 10);
-    const openBelow = below >= 180 || below >= above;
-    const space = Math.max(160, Math.min(440, openBelow ? below : above));
-    popup.style.maxHeight = `${space}px`;
-    popup.classList.toggle('compact', space < 300);
-    const height = popup.offsetHeight;
-    const left = Math.max(10, Math.min(rect.left, viewWidth - width - 10));
-    const top = openBelow ? Math.min(rect.bottom + 5, viewHeight - height - 10) : Math.max(10, rect.top - height - 5);
-    popup.style.left = `${left}px`;
-    popup.style.top = `${top}px`;
+    positionAnchoredFilterPopup(el('poTrackingFilterPopup'), poTrackingFilterAnchor);
   }
 
   function renderPoTrackingFilterOptions() {
@@ -10554,7 +10528,7 @@
       if (u?.role === 'requester') {
         btn.classList.toggle('hidden', p !== 'part-requisition');
       } else if (u?.role === 'warehouse') {
-        btn.classList.toggle('hidden', p !== 'part-issue');
+        btn.classList.toggle('hidden', p !== 'part-issue' && p !== 'stock');
       } else if (p === 'users') {
         btn.classList.toggle('hidden', !isAdmin);
       } else {
@@ -10608,7 +10582,7 @@
     // Guard active page by role
     if(u?.role === 'requester' && activePage !== 'part-requisition'){
       goto('part-requisition');
-    } else if(u?.role === 'warehouse' && activePage !== 'part-issue'){
+    } else if(u?.role === 'warehouse' && activePage !== 'part-issue' && activePage !== 'stock' && activePage !== 'lot'){
       goto('part-issue');
     } else if(activePage === 'users' && !isAdmin){
       goto('overview');
