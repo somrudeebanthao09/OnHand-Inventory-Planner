@@ -2511,6 +2511,7 @@
               <div class="part-req-status-tabs">
                 <button type="button" class="safety-pill active" data-req-tab="all" id="partReqTabAllBtn">ทั้งหมด (<span id="partReqTabAllCount">0</span>)</button>
                 <button type="button" class="safety-pill" data-req-tab="pending" id="partReqTabPendingBtn" style="border-color:#f59e0b;color:#b45309">⏳ รอจ่าย (<span id="partReqTabPendingCount">0</span>)</button>
+                <button type="button" class="safety-pill" data-req-tab="partial" id="partReqTabPartialBtn" style="border-color:#f97316;color:#c2410c">⚠️ จ่ายแล้วแต่ไม่ครบ (<span id="partReqTabPartialCount">0</span>)</button>
                 <button type="button" class="safety-pill" data-req-tab="issued" id="partReqTabIssuedBtn" style="border-color:#22c55e;color:#15803d">✅ จ่ายแล้ว (<span id="partReqTabIssuedCount">0</span>)</button>
               </div>
               <div class="part-req-filter-inputs" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
@@ -13774,9 +13775,12 @@
     if (el('partReqMetricIssued')) el('partReqMetricIssued').textContent = fmt(issuedList.length);
     if (el('partReqMetricZjdb')) el('partReqMetricZjdb').textContent = fmt(zjdbLinkedList.length);
 
+    const partialIssuedList = issuedList.filter(r => getPartReqIssueProgress(r).isPartial);
+    const completeIssuedList = issuedList.filter(r => !getPartReqIssueProgress(r).isPartial);
     if (el('partReqTabAllCount')) el('partReqTabAllCount').textContent = fmt(visibleReqs.length);
     if (el('partReqTabPendingCount')) el('partReqTabPendingCount').textContent = fmt(pendingCount);
-    if (el('partReqTabIssuedCount')) el('partReqTabIssuedCount').textContent = fmt(issuedList.length);
+    if (el('partReqTabPartialCount')) el('partReqTabPartialCount').textContent = fmt(partialIssuedList.length);
+    if (el('partReqTabIssuedCount')) el('partReqTabIssuedCount').textContent = fmt(completeIssuedList.length);
   }
 
   // Build MO catalog with linked Direct Transfer (ZJDB), PPBOM numbers, AND full Master BOM parts
@@ -14284,7 +14288,8 @@
 
     const filtered = getVisiblePartReqs().filter(r => {
       if (activePartReqTab === 'pending' && r.status === 'issued') return false;
-      if (activePartReqTab === 'issued' && r.status !== 'issued') return false;
+      if (activePartReqTab === 'partial' && !getPartReqIssueProgress(r).isPartial) return false;
+      if (activePartReqTab === 'issued' && (r.status !== 'issued' || getPartReqIssueProgress(r).isPartial)) return false;
       if (shiftFilter && String(r.shift || 'A').toUpperCase() !== shiftFilter) return false;
       if (dateFilter && partReqDateYMD(r.requestDate, r.requestedAt) !== dateFilter) return false;
       if (q) {
@@ -15220,7 +15225,7 @@
 
   function setPartReqFilterTab(tab) {
     activePartReqTab = tab;
-    ['partReqTabAllBtn', 'partReqTabPendingBtn', 'partReqTabIssuedBtn'].forEach(id => {
+    ['partReqTabAllBtn', 'partReqTabPendingBtn', 'partReqTabPartialBtn', 'partReqTabIssuedBtn'].forEach(id => {
       const b = el(id);
       if (b) b.classList.toggle('active', b.dataset.reqTab === tab);
     });
