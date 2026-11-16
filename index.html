@@ -2823,7 +2823,7 @@
   </main>
 </div>
  <div id="stockFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์"><div class="stock-filter-popup-head"><strong id="stockFilterTitle">ตัวกรอง</strong><button id="stockFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><input id="stockFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา" autocomplete="off"><label class="stock-filter-select-all"><input id="stockFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="stockFilterCount" class="helper"></div><div id="stockFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="stockFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="stockFilterCancel" class="btn" type="button">ยกเลิก</button><button id="stockFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
- <div id="ordersFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ Order"><div class="stock-filter-popup-head"><strong id="ordersFilterTitle">ตัวกรอง</strong><button id="ordersFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><input id="ordersFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="ordersFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="ordersFilterCount" class="helper"></div><div id="ordersFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="ordersFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="ordersFilterCancel" class="btn" type="button">ยกเลิก</button><button id="ordersFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
+ <div id="ordersFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ Order"><div class="stock-filter-popup-head"><strong id="ordersFilterTitle">ตัวกรอง</strong><button id="ordersFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><div style="display:flex;gap:6px;flex:0 0 auto"><button id="ordersFilterSortAsc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬆️ น้อย → มาก</button><button id="ordersFilterSortDesc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬇️ มาก → น้อย</button></div><input id="ordersFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="ordersFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="ordersFilterCount" class="helper"></div><div id="ordersFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="ordersFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="ordersFilterCancel" class="btn" type="button">ยกเลิก</button><button id="ordersFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
  <div id="safetyFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ Safety Stock"><div class="stock-filter-popup-head"><strong id="safetyFilterTitle">ตัวกรอง</strong><button id="safetyFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><input id="safetyFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="safetyFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="safetyFilterCount" class="helper"></div><div id="safetyFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="safetyFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="safetyFilterCancel" class="btn" type="button">ยกเลิก</button><button id="safetyFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
  <div id="poTrackingFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ ติดตาม Order ผลิต"><div class="stock-filter-popup-head"><strong id="poTrackingFilterTitle">ตัวกรอง</strong><button id="poTrackingFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><input id="poTrackingFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="poTrackingFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="poTrackingFilterCount" class="helper"></div><div id="poTrackingFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="poTrackingFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="poTrackingFilterCancel" class="btn" type="button">ยกเลิก</button><button id="poTrackingFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
  <div class="toast" id="toast" role="status"></div>
@@ -5835,6 +5835,7 @@
 
   let orderShortageCache = null, ordersViewMode = 'mo', currentDetailMaterialCode = '', currentDetailMoNumber = '', ordersPage = 1, ordersPageSize = 50, ordersFilteredCount = 0;
   let ordersMaterialFilters = {}, ordersMoFilters = {};
+  let ordersMaterialSort = { key: '', dir: '' }, ordersMoSort = { key: '', dir: '' };
   let ordersFilterKey = '', ordersFilterAnchor = null, ordersFilterDraft = new Set(), ordersFilterCandidates = [], ordersFilterMatches = [], ordersFilterBackupState = undefined;
 
   function isH9WorkshopWarehouseRow(item) {
@@ -5859,6 +5860,7 @@
 
   const ORDERS_MO_COLS = {
     productCode: 'รหัสรุ่น (Model Code)',
+    specification: 'Specification',
     productName: 'ชื่อรุ่น / สินค้า (Model)',
     department: 'แผนกผลิต',
     totalParts: 'Part ทั้งหมดใน BOM',
@@ -5894,6 +5896,7 @@
       : (mo.missingParts <= 2 ? `🟡 เกือบพร้อม (ขาด ${mo.missingParts} Part)` : `🔴 ขาดสต็อก (${mo.missingParts}/${mo.totalParts} Part)`);
     return {
       productCode: String(mo.productCode || '—'),
+      specification: String(mo.specification || '—'),
       productName: String(mo.productName || '—'),
       department: String(mo.department || '—'),
       totalParts: String(mo.totalParts || 0),
@@ -5980,12 +5983,64 @@
     const active = filters[key];
     ordersFilterDraft = new Set(active === undefined ? ordersFilterCandidates : active.filter(v => ordersFilterCandidates.includes(v)));
 
-    el('ordersFilterTitle').textContent = `กรอง ${colName}`;
+    el('ordersFilterTitle').textContent = `กรอง & เรียง ${colName}`;
+    const sortState = isMo ? ordersMoSort : ordersMaterialSort;
+    const ascBtn = el('ordersFilterSortAsc');
+    const descBtn = el('ordersFilterSortDesc');
+    if (ascBtn) ascBtn.classList.toggle('primary', sortState.key === key && sortState.dir === 'asc');
+    if (descBtn) descBtn.classList.toggle('primary', sortState.key === key && sortState.dir === 'desc');
     el('ordersFilterSearch').value = '';
     el('ordersFilterPopup').classList.remove('hidden');
     renderOrdersFilterOptions();
     positionOrdersFilter();
-    el('ordersFilterSearch').focus({ preventScroll: true });
+    if (window.innerWidth > 768) el('ordersFilterSearch').focus({ preventScroll: true });
+  }
+
+  function applyOrdersColumnSort(dir) {
+    const key = ordersFilterKey;
+    if (!key) return;
+    const isMo = ordersViewMode === 'mo';
+    const sortState = isMo ? ordersMoSort : ordersMaterialSort;
+    const specs = isMo ? ORDERS_MO_COLS : ORDERS_MATERIAL_COLS;
+    if (sortState.key === key && sortState.dir === dir) {
+      sortState.key = '';
+      sortState.dir = '';
+      toast(`ยกเลิกการเรียงตาม ${specs[key] || ''}`);
+    } else {
+      sortState.key = key;
+      sortState.dir = dir;
+      toast(`เรียงตาม ${specs[key] || ''} (${dir === 'asc' ? 'น้อย → มาก' : 'มาก → น้อย'})`);
+    }
+    closeOrdersFilter();
+    ordersPage = 1;
+    if (isMo) renderOrdersByMo();
+    else renderOrdersByMaterial();
+  }
+
+  function compareOrdersByCol(a, b, key, dir, isMo) {
+    const mult = dir === 'desc' ? -1 : 1;
+    if (isMo && key === 'maxBuildableSets') {
+      const va = a.isReady ? n(a.maxBuildableSets) : n(a.potentialBuildableSets);
+      const vb = b.isReady ? n(b.maxBuildableSets) : n(b.potentialBuildableSets);
+      if (va !== vb) return (va - vb) * mult;
+    }
+    if (isMo && key === 'totalParts') {
+      const va = n(a.totalParts), vb = n(b.totalParts);
+      if (va !== vb) return (va - vb) * mult;
+    }
+    if (!isMo && (key === 'availableStock' || key === 'h9WarehouseStock')) {
+      const va = n(a[key]), vb = n(b[key]);
+      if (va !== vb) return (va - vb) * mult;
+    }
+    const extractor = isMo ? getMoRowValues : getMaterialRowValues;
+    const sa = String(extractor(a)[key] ?? '');
+    const sb = String(extractor(b)[key] ?? '');
+    const na = Number(sa.replace(/,/g, ''));
+    const nb = Number(sb.replace(/,/g, ''));
+    if (sa !== '' && sb !== '' && !isNaN(na) && !isNaN(nb)) {
+      return (na - nb) * mult;
+    }
+    return sa.localeCompare(sb, 'th', { numeric: true, sensitivity: 'base' }) * mult;
   }
 
   function applyOrdersFilter() {
@@ -6035,6 +6090,11 @@
     const specs = isMo ? ORDERS_MO_COLS : ORDERS_MATERIAL_COLS;
     if (ordersFilterKey) {
       delete filters[ordersFilterKey];
+      const sortState = isMo ? ordersMoSort : ordersMaterialSort;
+      if (sortState.key === ordersFilterKey) {
+        sortState.key = '';
+        sortState.dir = '';
+      }
       toast(`ล้างตัวกรอง ${specs[ordersFilterKey] || ''} แล้ว`);
     }
     closeOrdersFilter();
@@ -6464,6 +6524,9 @@
     }
 
     list.sort((a, b) => {
+      if (ordersMaterialSort.key) {
+        return compareOrdersByCol(a, b, ordersMaterialSort.key, ordersMaterialSort.dir, false);
+      }
       if ((b.buildableModelsCount > 0) !== (a.buildableModelsCount > 0)) {
         return b.buildableModelsCount > 0 ? 1 : -1;
       }
@@ -6538,7 +6601,7 @@
       </tr>`;
     }).join('');
 
-    const fActive = k => Boolean(ordersMaterialFilters[k]);
+    const fActive = k => Boolean(ordersMaterialFilters[k]) || ordersMaterialSort.key === k;
 
     el('ordersTableWrap').innerHTML = `<table style="width:100%;min-width:1080px;table-layout:fixed;border-collapse:collapse;font-size:14px;white-space:normal">
       <colgroup>
@@ -6640,6 +6703,9 @@
     }
 
     list.sort((a, b) => {
+      if (ordersMoSort.key) {
+        return compareOrdersByCol(a, b, ordersMoSort.key, ordersMoSort.dir, true);
+      }
       if (a.isReady !== b.isReady) return a.isReady ? -1 : 1;
       if (sortMode === 'code_asc') {
         return a.productCode.localeCompare(b.productCode, undefined, { numeric: true });
@@ -6781,7 +6847,7 @@
       </tr>`;
     }).join('');
 
-    const fActive = k => Boolean(ordersMoFilters[k]);
+    const fActive = k => Boolean(ordersMoFilters[k]) || ordersMoSort.key === k;
 
     el('ordersTableWrap').innerHTML = `<table style="width:100%;min-width:1100px;table-layout:fixed;border-collapse:collapse;font-size:14px;white-space:normal">
       <colgroup>
@@ -11283,6 +11349,8 @@
     if (el('ordersSortSelect')) el('ordersSortSelect').value = 'main_first';
     ordersMaterialFilters = {};
     ordersMoFilters = {};
+    ordersMaterialSort = { key: '', dir: '' };
+    ordersMoSort = { key: '', dir: '' };
     ordersPage = 1;
     renderOrdersPage();
     toast('ล้างตัวกรองทั้งหมดเรียบร้อยแล้ว');
@@ -11432,6 +11500,8 @@
     syncOrdersFilterSelection();
   });
 
+  el('ordersFilterSortAsc')?.addEventListener('click', () => applyOrdersColumnSort('asc'));
+  el('ordersFilterSortDesc')?.addEventListener('click', () => applyOrdersColumnSort('desc'));
   el('ordersFilterApply').addEventListener('click', applyOrdersFilter);
   el('ordersFilterReset').addEventListener('click', resetCurrentOrdersFilter);
   el('ordersFilterCancel').addEventListener('click', cancelOrdersFilter);
