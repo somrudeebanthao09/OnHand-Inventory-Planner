@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-16T12:44:01.608Z",
+  "updatedAt": "2026-11-16T13:06:02.258Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "dc6c931a-8138-4ca9-895f-e90e538d4f713f2a340e438d405cbee6bb8b4222b3ba",
-    "wh": "1e17849a-3880-4296-8811-a79dfc973a17e4667767c6db41f88f9dc1394b07fc5f",
-    "expiresAt": 1794833210019
+    "wh": "25c64467-0244-42c0-99c4-783e38cd00106156f14fb8114386b41cce05d5abefa2",
+    "expiresAt": 1794838869416
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -15,7 +15,8 @@ window.PART_REQUISITIONS_SEED = {
       "สมฤดี บรรเทา (Somrudee)",
       "A",
       "ภาคภูมิ",
-      "อรรถพร"
+      "อรรถพร",
+      "จักรกฤษ"
     ],
     "issuers": [
       "เจ้าหน้าที่คลังจ่าย Part (Warehouse)",
@@ -28,6 +29,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261116-61964",
+      "requestDate": "16/11/2026 20:06:00",
+      "requestedAt": "16/11/2026 20:06:00",
+      "moNumber": "MO-20261111-003332",
+      "ppbomNumber": "PPBOM-20261111-003619",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00550",
+      "materialName": "EZ250A LINK (connector)",
+      "specification": "75170114AA",
+      "requestQty": 100,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "จักรกฤษ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CH-04-03B (Customer Supplied Material Warehouse) | CG-03-03A (Customer Supplied Material Warehouse) | CC-02-05B (Customer Supplied Material Warehouse) | CC-01-04A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CC-01-01A (Customer Supplied Material Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | ไม่ระบุ Location (Sealed Inventory Warehouse)",
+      "lotSummary": "2026090901, 2026100601, 2026083001, 2026100201, 2026090702, 2026090801, 2026091002, 2026091001, 2026090701, 2026090703, 2026090704",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "16/11/2026 20:06:01",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261116-27120",
       "requestDate": "16/11/2026 18:18:46",
