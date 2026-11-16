@@ -9191,10 +9191,10 @@
             }
             const zjdbCount = zjdbSet.size;
             return `<div style="display:flex;flex-direction:column;gap:5px;align-items:center;width:100%;max-width:136px;margin:0 auto">
-              <button type="button" class="btn soft" style="padding:5px 8px;font-size:10.5px;font-weight:700;border-radius:7px;white-space:nowrap;border:1px solid #cbd5e1;background:#ffffff;color:#0f172a;width:100%;display:inline-flex;align-items:center;justify-content:center;gap:4px" onclick="window.appOpenPdfProductionOrder('${esc(mo.moNumber)}')" title="เปิด PDF Production Order (จาก Google Drive / Kingdee)">
+              <button type="button" class="btn soft" style="padding:5px 8px;font-size:10.5px;font-weight:700;border-radius:7px;white-space:nowrap;border:1px solid #cbd5e1;background:#ffffff;color:#0f172a;width:100%;display:inline-flex;align-items:center;justify-content:center;gap:4px" onclick="window.appOpenPdfProductionOrder('${esc(mo.moNumber)}', this)" title="เปิด PDF Production Order (จาก Google Drive / Kingdee)">
                 <span>📄</span><span>PDF Order</span>
               </button>
-              <button type="button" class="btn soft" style="padding:5px 8px;font-size:10.5px;font-weight:700;border-radius:7px;white-space:nowrap;border:1px solid ${zjdbCount > 0 ? '#86efac' : '#e2e8f0'};background:${zjdbCount > 0 ? '#f0fdf4' : '#f8fafc'};color:${zjdbCount > 0 ? '#15803d' : '#64748b'};width:100%;display:inline-flex;align-items:center;justify-content:center;gap:4px" onclick="window.appOpenPdfDirectTransfers('${esc(mo.moNumber)}')" title="เปิด PDF Direct Transfer (ZJDB)${zjdbCount > 1 ? ' (' + zjdbCount + ' ใบ)' : ''} จาก Google Drive / Kingdee">
+              <button type="button" class="btn soft" style="padding:5px 8px;font-size:10.5px;font-weight:700;border-radius:7px;white-space:nowrap;border:1px solid ${zjdbCount > 0 ? '#86efac' : '#e2e8f0'};background:${zjdbCount > 0 ? '#f0fdf4' : '#f8fafc'};color:${zjdbCount > 0 ? '#15803d' : '#64748b'};width:100%;display:inline-flex;align-items:center;justify-content:center;gap:4px" onclick="window.appOpenPdfDirectTransfers('${esc(mo.moNumber)}', this)" title="เปิด PDF Direct Transfer (ZJDB)${zjdbCount > 1 ? ' (' + zjdbCount + ' ใบ)' : ''} จาก Google Drive / Kingdee">
                 <span>🚚</span><span>Transfer ${zjdbCount > 0 ? `(${zjdbCount})` : '(0)'}</span>
               </button>
             </div>`;
@@ -10081,29 +10081,52 @@
     win.document.close();
   }
 
-  window.appOpenPdfProductionOrder = async (moNumber) => {
+  async function withPdfButtonLoading(btn, toastText, fn) {
+    if (btn && btn.disabled) return;
+    const prevHtml = btn ? btn.innerHTML : '';
+    const prevOpacity = btn ? btn.style.opacity : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.style.opacity = '0.75';
+      btn.innerHTML = '<span class="sync-spin-icon spinning">⏳</span><span>กำลังโหลด...</span>';
+    }
+    if (toastText) toast(toastText);
+    try {
+      await fn();
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.style.opacity = prevOpacity;
+        btn.innerHTML = prevHtml;
+      }
+    }
+  }
+
+  window.appOpenPdfProductionOrder = async (moNumber, btn) => {
     const moKey = normalizeMoKey(moNumber);
     const data = computePoTracking();
     const mo = data.moMap.get(moKey);
     if (!mo) return toast('ไม่พบข้อมูล Order นี้');
-    await refreshOrderPdfLinksFromDrive();
-    let bucket = orderPdfLinksByMo.get(moKey);
-    if (!bucket?.order?.fileUrl) {
-      const zjdbSet = new Set(String(mo.directTransferDocs || '').split(/[,;\s]+/).map(s => s.trim()).filter(Boolean));
-      for (const p of (mo.items || mo.parts || [])) {
-        String(p.directTransferDocs || '').split(/[,;\s]+/).map(s => s.trim()).filter(Boolean).forEach(d => zjdbSet.add(d));
+    await withPdfButtonLoading(btn, `⏳ กำลังโหลดข้อมูล PDF Order (${mo.moNumber})...`, async () => {
+      await refreshOrderPdfLinksFromDrive();
+      let bucket = orderPdfLinksByMo.get(moKey);
+      if (!bucket?.order?.fileUrl) {
+        const zjdbSet = new Set(String(mo.directTransferDocs || '').split(/[,;\s]+/).map(s => s.trim()).filter(Boolean));
+        for (const p of (mo.items || mo.parts || [])) {
+          String(p.directTransferDocs || '').split(/[,;\s]+/).map(s => s.trim()).filter(Boolean).forEach(d => zjdbSet.add(d));
+        }
+        bucket = await ensureKingdeePdfsOnDriveForMo(mo.moNumber, [...zjdbSet]) || bucket;
       }
-      bucket = await ensureKingdeePdfsOnDriveForMo(mo.moNumber, [...zjdbSet]) || bucket;
-    }
-    if (bucket?.order?.fileUrl) {
-      openGoogleDrivePdfViewer(`Production Order (Google Drive) - ${mo.moNumber}`, [bucket.order]);
-      return;
-    }
-    const html = buildProductionOrderSheetHtml(mo);
-    openPrintHtmlPreviewWindow(`Production Order - ${mo.moNumber}`, html, true, mo.moNumber);
+      if (bucket?.order?.fileUrl) {
+        openGoogleDrivePdfViewer(`Production Order (Google Drive) - ${mo.moNumber}`, [bucket.order]);
+        return;
+      }
+      const html = buildProductionOrderSheetHtml(mo);
+      openPrintHtmlPreviewWindow(`Production Order - ${mo.moNumber}`, html, true, mo.moNumber);
+    });
   };
 
-  window.appOpenPdfDirectTransfers = async (moNumber) => {
+  window.appOpenPdfDirectTransfers = async (moNumber, btn) => {
     const moKey = normalizeMoKey(moNumber);
     const data = computePoTracking();
     const mo = data.moMap.get(moKey);
@@ -10112,19 +10135,21 @@
     if (!list.length) {
       return toast(`Order ${mo.moNumber} ยังไม่มีใบ Direct Transfer (ZJDB) ในระบบ`);
     }
-    const zjdbDocs = list.map(x => x.docNo);
-    await refreshOrderPdfLinksFromDrive();
-    let bucket = orderPdfLinksByMo.get(moKey);
-    const hasAllOnDrive = bucket && zjdbDocs.every(d => bucket.transfers.has(d));
-    if (!hasAllOnDrive) {
-      bucket = await ensureKingdeePdfsOnDriveForMo(mo.moNumber, zjdbDocs) || bucket;
-    }
-    const driveItems = zjdbDocs.map(d => bucket?.transfers?.get(d)).filter(Boolean);
-    if (driveItems.length) {
-      openGoogleDrivePdfViewer(`Direct Transfer (${driveItems.length} ใบ · Google Drive) - ${mo.moNumber}`, driveItems);
-      return;
-    }
-    openPrintHtmlPreviewWindow(`Direct Transfer (${list.length} ใบ) - ${mo.moNumber}`, list.map(x => x.sheetHtml).join(''), true, mo.moNumber);
+    await withPdfButtonLoading(btn, `⏳ กำลังโหลดข้อมูลใบ Transfer (${list.length} ใบ)...`, async () => {
+      const zjdbDocs = list.map(x => x.docNo);
+      await refreshOrderPdfLinksFromDrive();
+      let bucket = orderPdfLinksByMo.get(moKey);
+      const hasAllOnDrive = bucket && zjdbDocs.every(d => bucket.transfers.has(d));
+      if (!hasAllOnDrive) {
+        bucket = await ensureKingdeePdfsOnDriveForMo(mo.moNumber, zjdbDocs) || bucket;
+      }
+      const driveItems = zjdbDocs.map(d => bucket?.transfers?.get(d)).filter(Boolean);
+      if (driveItems.length) {
+        openGoogleDrivePdfViewer(`Direct Transfer (${driveItems.length} ใบ · Google Drive) - ${mo.moNumber}`, driveItems);
+        return;
+      }
+      openPrintHtmlPreviewWindow(`Direct Transfer (${list.length} ใบ) - ${mo.moNumber}`, list.map(x => x.sheetHtml).join(''), true, mo.moNumber);
+    });
   };
 
   window.appSaveMoPdfsToDrive = async (moNumber) => {
