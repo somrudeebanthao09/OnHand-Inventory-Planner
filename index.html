@@ -2585,11 +2585,16 @@
                   </label>
                   <small style="color:#b45309;font-size:11.5px">หากดึงมาจาก 2 ที่หรือมากกว่านั้น กดปุ่ม <b>"＋ เพิ่ม Location"</b></small>
                 </div>
-                <button type="button" class="btn soft" id="whAddLocationBtn" style="padding:6px 12px;font-size:12.5px;font-weight:700;background:#fef3c7;border-color:#f59e0b;color:#92400e">
-                  ＋ เพิ่ม Location
-                </button>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+                  <button type="button" class="btn soft" id="whCheckOnHandLocBtn" style="padding:6px 12px;font-size:12.5px;font-weight:700;background:#e0f2fe;border-color:#38bdf8;color:#0369a1">
+                    📍 ดูโลเคชั่น (On-Hand)
+                  </button>
+                  <button type="button" class="btn soft" id="whAddLocationBtn" style="padding:6px 12px;font-size:12.5px;font-weight:700;background:#fef3c7;border-color:#f59e0b;color:#92400e">
+                    ＋ เพิ่ม Location
+                  </button>
+                </div>
               </div>
-              <div id="whSuggestedLocationsHint" style="font-size:11.5px;color:#0369a1;margin-bottom:8px;line-height:1.6"></div>
+              <div id="whSuggestedLocationsHint" class="hidden" style="font-size:12px;color:#0369a1;margin-bottom:10px;line-height:1.5;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:8px 10px"></div>
               <div id="whLocationsList" style="display:grid;gap:8px"></div>
             </div>
 
@@ -14712,8 +14717,17 @@
         : [{ location: '', qty: rec.requestQty }];
       locListEl.innerHTML = initLocs.map((l, idx) => createWhLocationRowHtml(idx, l.location, l.qty)).join('');
     }
+    const locHintRows = getPartOnHandLocationsSummary(rec.materialCode);
+    const checkLocBtn = el('whCheckOnHandLocBtn');
+    if (checkLocBtn) {
+      checkLocBtn.textContent = `📍 ดูโลเคชั่น On-Hand (${locHintRows.length})`;
+      checkLocBtn.dataset.materialCode = String(rec.materialCode || '');
+    }
     const hintEl = el('whSuggestedLocationsHint');
-    if (hintEl) hintEl.textContent = '';
+    if (hintEl) {
+      hintEl.innerHTML = '';
+      hintEl.classList.add('hidden');
+    }
 
     // Photo state: if already issued with photo, show existing photo; otherwise require new live camera capture
     capturedWhPhotoDataUrl = (rec.status === 'issued' && rec.issuePhotoDataUrl && rec.issuePhotoDataUrl.startsWith('data:image'))
@@ -14733,6 +14747,72 @@
 
     updateWhSaveButtonLockState();
     el('whConfirmIssueModal')?.classList.add('show');
+  }
+
+  function getPartOnHandLocationsSummary(materialCode) {
+    const code = String(materialCode || '').trim().toUpperCase();
+    if (!code) return [];
+    const invRows = (Array.isArray(db.inventory) && db.inventory.length)
+      ? db.inventory
+      : (Array.isArray(window.ONHAND_SEED?.inventory) ? window.ONHAND_SEED.inventory : []);
+    const byLoc = new Map();
+    for (const r of invRows) {
+      const rCode = String(r.materialCode || r.partCode || '').trim().toUpperCase();
+      if (rCode !== code) continue;
+      const warehouse = String(r.warehouse || 'ไม่ระบุคลัง').trim();
+      const storage = String(r.storage || r.location || 'ไม่ระบุ Location').trim();
+      const key = `${warehouse}::${storage}`;
+      const onHand = n(r.onHandQty ?? r.onHand);
+      const available = n(r.availableQty ?? r.available ?? onHand);
+      const reserved = n(r.reserved);
+      const unit = String(r.unit || 'PCS').trim();
+      const prev = byLoc.get(key) || { warehouse, storage, onHand: 0, available: 0, reserved: 0, unit, lots: 0 };
+      prev.onHand += onHand;
+      prev.available += available;
+      prev.reserved += reserved;
+      prev.lots += 1;
+      byLoc.set(key, prev);
+    }
+    const all = [...byLoc.values()];
+    const positive = all.filter(x => x.onHand > 0 || x.available > 0);
+    const list = positive.length ? positive : all;
+    return list.sort((a, b) => (b.available - a.available) || (b.onHand - a.onHand));
+  }
+
+  function toggleWhOnHandLocationsHint(materialCode) {
+    const hintEl = el('whSuggestedLocationsHint');
+    if (!hintEl) return;
+    if (!hintEl.classList.contains('hidden')) {
+      hintEl.classList.add('hidden');
+      return;
+    }
+    const rows = getPartOnHandLocationsSummary(materialCode);
+    if (!rows.length) {
+      hintEl.innerHTML = `<div style="color:#64748b">ไม่พบสต็อก On-Hand ของรหัส <b>${esc(materialCode)}</b> ในระบบ</div>`;
+      hintEl.classList.remove('hidden');
+      return;
+    }
+    hintEl.innerHTML = `
+      <div style="font-weight:800;color:#0c4a6e;margin-bottom:6px">📦 สต็อก On-Hand ของ ${esc(materialCode)} (${rows.length} Location)</div>
+      <div style="display:grid;gap:6px;max-height:190px;overflow-y:auto">
+        ${rows.map(r => `
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff;border:1px solid #bae6fd;border-radius:7px;padding:6px 9px;flex-wrap:wrap">
+            <div style="min-width:0">
+              <div style="font-weight:800;color:#0f172a;font-size:13px">📍 ${esc(r.storage)} <span style="font-weight:600;color:#475569;font-size:11.5px">(${esc(r.warehouse)})</span></div>
+              <div style="font-size:11.5px;color:#0369a1">
+                พร้อมใช้: <b style="color:#15803d">${fmtQty(r.available)} ${esc(r.unit)}</b>
+                · คงเหลือ: <b>${fmtQty(r.onHand)}</b>
+                ${r.reserved > 0 ? `· จอง: <b style="color:#b45309">${fmtQty(r.reserved)}</b>` : ''}
+              </div>
+            </div>
+            <button type="button" class="btn soft whPickSuggestedLocBtn" data-loc="${esc(r.storage)}" style="padding:4px 10px;font-size:11.5px;font-weight:700;background:#ecfdf5;border-color:#6ee7b7;color:#047857;white-space:nowrap">
+              ✓ ใช้ Location นี้
+            </button>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    hintEl.classList.remove('hidden');
   }
 
   async function startWhLiveCamera() {
@@ -15360,6 +15440,25 @@
       capturedWhPhotoDataUrl = '';
       updateWhSaveButtonLockState();
       startWhLiveCamera();
+    });
+
+    // Toggle On-Hand Locations lookup inside Warehouse Confirm Modal
+    el('whCheckOnHandLocBtn')?.addEventListener('click', (e) => {
+      const code = e.currentTarget?.dataset?.materialCode || '';
+      toggleWhOnHandLocationsHint(code);
+    });
+    el('whSuggestedLocationsHint')?.addEventListener('click', (e) => {
+      const btn = e.target.closest('.whPickSuggestedLocBtn');
+      if (!btn) return;
+      const locName = String(btn.dataset.loc || '').trim();
+      if (!locName) return;
+      const inputs = Array.from(document.querySelectorAll('#whLocationsList .wh-loc-name-input'));
+      const target = inputs.find(inp => !String(inp.value || '').trim()) || inputs[0];
+      if (target) {
+        target.value = locName;
+        target.focus();
+        toast(`ใส่ Location "${locName}" เรียบร้อย`);
+      }
     });
 
     // Close Warehouse Confirm Modal
