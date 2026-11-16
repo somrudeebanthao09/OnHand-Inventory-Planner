@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-16T01:24:08.218Z",
+  "updatedAt": "2026-11-16T02:17:21.474Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -24,6 +24,33 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261116-40120",
+      "requestDate": "16/11/2026 09:17:19",
+      "requestedAt": "16/11/2026 09:17:19",
+      "moNumber": "MO-20261114-003524",
+      "ppbomNumber": "PPBOM-20261114-003820",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00291",
+      "materialName": "BASE 2 + 4",
+      "specification": "75170030AA",
+      "requestQty": 10,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "req",
+      "shift": "A",
+      "requesterNote": "จ่ายไม่ครบ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "16/11/2026 09:17:20",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261114-41054",
       "requestDate": "14/11/2026 16:35:40",
