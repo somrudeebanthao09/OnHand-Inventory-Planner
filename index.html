@@ -12458,7 +12458,7 @@
     return r?.deleted ? 2 : (r?.status === 'issued' ? 1 : 0);
   }
   function getVisiblePartReqs() {
-    return partRequisitionsList.filter(r => r && !r.deleted).sort((a, b) => partReqStamp(a) - partReqStamp(b));
+    return partRequisitionsList.filter(r => r && !r.deleted).sort((a, b) => partReqStamp(b) - partReqStamp(a));
   }
   function partReqHasPhoto(r) {
     return Boolean((r?.issuePhotoDataUrl && String(r.issuePhotoDataUrl).startsWith('data:image')) || r?.photoUrl);
@@ -12816,7 +12816,7 @@
       changed = true;
     }
     if (!changed) return false;
-    partRequisitionsList = [...map.values()].sort((a, b) => partReqStamp(a) - partReqStamp(b));
+    partRequisitionsList = [...map.values()].sort((a, b) => partReqStamp(b) - partReqStamp(a));
     persistPartRequisitionsLocal();
     updatePartReqBadges();
     if (activePage === 'part-requisition' || activePage === 'part-issue') {
@@ -13216,7 +13216,7 @@
       const t = partReqStamp(r);
       return t > 0 && (nowMs - t) < 15000;
     });
-    const nextList = [...inFlight, ...normalized].sort((a, b) => partReqStamp(a) - partReqStamp(b));
+    const nextList = [...inFlight, ...normalized].sort((a, b) => partReqStamp(b) - partReqStamp(a));
     const prevSig = JSON.stringify((partRequisitionsList || []).map(r => [r.reqId, r.status, r.updatedAt, r.issuedAt, r.deleted]));
     const nextSig = JSON.stringify(nextList.map(r => [r.reqId, r.status, r.updatedAt, r.issuedAt, r.deleted]));
     partRequisitionsList = nextList;
