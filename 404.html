@@ -12466,6 +12466,19 @@
   function getVisiblePartReqs() {
     return partRequisitionsList.filter(r => r && !r.deleted).sort((a, b) => partReqStamp(b) - partReqStamp(a));
   }
+  function getPartReqIssueProgress(r) {
+    const reqQty = n(r?.requestQty);
+    const locs = Array.isArray(r?.locations) ? r.locations : [];
+    const hasExplicitQty = locs.some(l => l && l.qty !== '' && l.qty !== null && l.qty !== undefined);
+    const sumLocQty = locs.reduce((s, l) => s + n(l?.qty), 0);
+    const isIssued = r?.status === 'issued';
+    const issuedQty = isIssued ? (hasExplicitQty ? +sumLocQty.toFixed(4) : reqQty) : 0;
+    const shortageQty = isIssued && hasExplicitQty && reqQty > 0
+      ? Math.max(0, +(reqQty - issuedQty).toFixed(4))
+      : 0;
+    const isPartial = isIssued && shortageQty > 1e-6;
+    return { reqQty, issuedQty, shortageQty, isIssued, isPartial };
+  }
   function partReqHasPhoto(r) {
     return Boolean((r?.issuePhotoDataUrl && String(r.issuePhotoDataUrl).startsWith('data:image')) || r?.photoUrl);
   }
@@ -14111,10 +14124,13 @@
 
     if (mobileList) {
       mobileList.innerHTML = filtered.map((r) => {
-        const isIssued = r.status === 'issued';
+        const prog = getPartReqIssueProgress(r);
+        const isIssued = prog.isIssued;
+        const isPartial = prog.isPartial;
+        const unitLabel = r.unit || 'PCS';
         const desc = [r.materialName, r.specification].filter(Boolean).join(' · ') || '—';
         const locsText = Array.isArray(r.locations) && r.locations.length
-          ? r.locations.map((l, idx) => `#${idx + 1}: ${esc(l.location)}${l.qty !== '' && l.qty != null ? ` (<b>${fmtQty(l.qty)}</b> ${esc(r.unit || 'PCS')})` : ''}`).join(' · ')
+          ? r.locations.map((l, idx) => `#${idx + 1}: ${esc(l.location)}${l.qty !== '' && l.qty != null ? ` (<b>${fmtQty(l.qty)}</b> ${esc(unitLabel)})` : ''}`).join(' · ')
           : (r.locationsSummary ? esc(r.locationsSummary) : 'รอคลังระบุ Location');
         const hasPhoto = partReqHasPhoto(r);
 
@@ -14128,10 +14144,15 @@
                   🔍 ดูรูปถ่ายยืนยันการจ่าย
                 </button>
               ` : `
-                <div style="width:100%;padding:8px 10px;border-radius:8px;background:#f0fdf4;border:1px solid #86efac;color:#166534;font-size:12.5px;font-weight:800;text-align:center">
-                  ✅ สถานะ: คลังจ่าย Part รายการนี้เรียบร้อยแล้ว
+                <div style="width:100%;padding:8px 10px;border-radius:8px;background:${isPartial ? '#fff7ed' : '#f0fdf4'};border:1px solid ${isPartial ? '#fdba74' : '#86efac'};color:${isPartial ? '#c2410c' : '#166534'};font-size:12.5px;font-weight:800;text-align:center">
+                  ${isPartial ? `⚠️ จ่ายแล้ว ${fmtQty(prog.issuedQty)} / ${fmtQty(prog.reqQty)} ${esc(unitLabel)} (ขาด ${fmtQty(prog.shortageQty)})` : '✅ สถานะ: คลังจ่าย Part รายการนี้เรียบร้อยแล้ว'}
                 </div>
               `}
+              ${canIssuePart && isPartial ? `
+                <button type="button" class="btn primary btn-open-wh-add-issue" data-id="${esc(r.reqId)}" style="width:100%;height:40px;background:#ea580c;border-color:#c2410c;font-size:13.5px;font-weight:800;justify-content:center">
+                  ➕ จ่ายเพิ่ม (ขาด ${fmtQty(prog.shortageQty)} ${esc(unitLabel)})
+                </button>
+              ` : ''}
               ${canIssuePart ? `
                 <button type="button" class="btn soft btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="height:40px;padding:0 14px;font-size:12.5px;font-weight:700">
                   ✏️ แก้ไขการจ่าย
@@ -14154,10 +14175,10 @@
         }
 
         return `
-          <div style="border:1.5px solid ${isIssued ? '#bbf7d0' : '#fcd34d'};background:${isIssued ? '#ffffff' : '#fffdf5'};border-radius:12px;padding:12px 13px;box-shadow:0 2px 8px rgba(15,23,42,0.05)">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px">
-              <span class="badge ${isIssued ? 'green' : 'amber'}" style="font-size:12px;font-weight:800;padding:4px 10px">
-                ${isIssued ? '✅ สถานะ: จ่าย Part แล้ว' : '⏳ สถานะ: ยังไม่ถูกจ่าย (รอคลังจ่าย)'}
+          <div style="border:1.5px solid ${isPartial ? '#fb923c' : (isIssued ? '#bbf7d0' : '#fcd34d')};background:${isPartial ? '#fffaf5' : (isIssued ? '#ffffff' : '#fffdf5')};border-radius:12px;padding:12px 13px;box-shadow:0 2px 8px rgba(15,23,42,0.05)">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+              <span class="badge ${isPartial ? 'amber' : (isIssued ? 'green' : 'amber')}" style="font-size:12px;font-weight:800;padding:4px 10px">
+                ${isPartial ? `⚠️ จ่ายไม่ครบ (ขาด ${fmtQty(prog.shortageQty)} ${esc(unitLabel)})` : (isIssued ? '✅ สถานะ: จ่าย Part แล้ว' : '⏳ สถานะ: ยังไม่ถูกจ่าย (รอคลังจ่าย)')}
               </span>
               <span style="font-size:11.5px;color:#475569;font-weight:700;font-family:ui-monospace,Consolas,monospace">🕒 เบิก: ${esc(formatPartReqDateTime(r.requestedAt || r.requestDate, r.requestDate))}</span>
             </div>
@@ -14170,7 +14191,8 @@
               </div>
               <div style="text-align:right;flex-shrink:0;background:#f0fdf4;border:1px solid #bbf7d0;padding:5px 10px;border-radius:9px">
                 <div style="font-size:17px;font-weight:900;color:#166534;line-height:1.1">${fmtQty(r.requestQty)}</div>
-                <div style="font-size:11px;font-weight:800;color:#0f766e">${esc(r.unit || 'PCS')}</div>
+                <div style="font-size:11px;font-weight:800;color:#0f766e">${esc(unitLabel)}</div>
+                ${isPartial ? `<div style="font-size:11px;font-weight:800;color:#0369a1;margin-top:3px">จ่ายแล้ว ${fmtQty(prog.issuedQty)}</div><div style="font-size:11px;font-weight:900;color:#dc2626">ขาด ${fmtQty(prog.shortageQty)}</div>` : ''}
               </div>
             </div>
 
@@ -14197,23 +14219,29 @@
 
     if (!tbody) return;
     tbody.innerHTML = filtered.map((r) => {
-      const isIssued = r.status === 'issued';
+      const prog = getPartReqIssueProgress(r);
+      const isIssued = prog.isIssued;
+      const isPartial = prog.isPartial;
+      const unitLabel = r.unit || 'PCS';
       const desc = [r.materialName, r.specification].filter(Boolean).join(' · ') || '—';
       const locs = Array.isArray(r.locations) && r.locations.length
-        ? r.locations.map((l, idx) => `<div style="font-size:11.5px;color:#0f172a"><b>#${idx + 1}:</b> ${esc(l.location)}${l.qty !== '' && l.qty != null ? ` (<b>${fmtQty(l.qty)}</b> ${esc(r.unit || 'PCS')})` : ''}</div>`).join('')
+        ? r.locations.map((l, idx) => `<div style="font-size:11.5px;color:#0f172a"><b>#${idx + 1}:</b> ${esc(l.location)}${l.qty !== '' && l.qty != null ? ` (<b>${fmtQty(l.qty)}</b> ${esc(unitLabel)})` : ''}</div>`).join('')
         : (r.locationsSummary ? `<div style="font-size:11.5px;color:#0f172a">${esc(r.locationsSummary)}</div>` : '<span style="color:#94a3b8;font-size:11.5px">⏳ รอคลังระบุ Location</span>');
 
       const hasPhoto = partReqHasPhoto(r);
       let photoAndActionHtml = '';
       if (isIssued) {
         photoAndActionHtml = `<div style="display:flex;flex-direction:column;align-items:center;gap:5px">
-             <span class="badge green" style="font-weight:800;font-size:11.5px;padding:3px 9px">✅ จ่าย Part แล้ว</span>
+             ${isPartial
+               ? `<span class="badge amber" style="font-weight:800;font-size:11.5px;padding:3px 9px">⚠️ จ่ายไม่ครบ (ขาด ${fmtQty(prog.shortageQty)} ${esc(unitLabel)})</span>`
+               : `<span class="badge green" style="font-weight:800;font-size:11.5px;padding:3px 9px">✅ จ่าย Part แล้ว</span>`}
              ${hasPhoto ? `
                <button type="button" class="btn soft btn-view-req-photo" data-id="${esc(r.reqId)}" style="padding:3px 8px;font-size:11.5px;display:inline-flex;align-items:center;gap:5px;border-color:#86efac;background:#f0fdf4;color:#166534;font-weight:700">
                  <img src="${esc(partReqPhotoSrc(r))}" alt="Photo" style="width:28px;height:22px;object-fit:cover;border-radius:3px;border:1px solid #16a34a">
                  🔍 ดูรูปถ่ายจริง
                </button>
              ` : ''}
+             ${canIssuePart && isPartial ? `<button type="button" class="btn primary btn-open-wh-add-issue" data-id="${esc(r.reqId)}" style="background:#ea580c;border-color:#c2410c;font-size:11.5px;padding:4px 10px;font-weight:800">➕ จ่ายเพิ่ม (ขาด ${fmtQty(prog.shortageQty)})</button>` : ''}
              ${canIssuePart ? `<button type="button" class="btn soft btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="font-size:10.5px;padding:2px 7px">✏️ ดู/แก้ไข</button>` : ''}
            </div>`;
       } else if (canIssuePart) {
@@ -14250,8 +14278,9 @@
             <div style="font-size:14.5px;color:#0f172a;font-weight:800;margin-top:2px;line-height:1.35">${esc(r.materialName || desc)}</div>
             ${r.specification ? `<div style="display:inline-block;margin-top:3px;padding:2px 8px;border-radius:6px;background:#fef9c3;border:1px solid #facc15;font-size:14.5px;font-weight:900;color:#713f12;line-height:1.3">${esc(r.specification)}</div>` : ''}
           </td>
-          <td class="num" style="padding:9px 8px;background:#f0fdf4;font-size:14.5px;font-weight:800;color:#166534">
-            ${fmtQty(r.requestQty)} <span class="badge teal" style="font-size:11px;padding:1px 6px">${esc(r.unit || 'PCS')}</span>
+          <td class="num" style="padding:9px 8px;background:${isPartial ? '#fff7ed' : '#f0fdf4'};font-size:14.5px;font-weight:800;color:${isPartial ? '#c2410c' : '#166534'}">
+            <div>${fmtQty(r.requestQty)} <span class="badge teal" style="font-size:11px;padding:1px 6px">${esc(unitLabel)}</span></div>
+            ${isPartial ? `<div style="font-size:11px;color:#0369a1;margin-top:3px;font-weight:700">จ่ายแล้ว: ${fmtQty(prog.issuedQty)}</div><div style="font-size:11px;color:#dc2626;font-weight:900">ขาด: ${fmtQty(prog.shortageQty)}</div>` : ''}
           </td>
           <td style="padding:9px 8px;font-size:12px">
             <div style="font-weight:700;color:#dc2626">${esc(r.reason || '—')}</div>
@@ -14663,7 +14692,8 @@
     }
   }
 
-  function openWhConfirmModal(reqId) {
+  let whConfirmAddMoreMode = false;
+  function openWhConfirmModal(reqId, addMoreMode = false) {
     const u = getCurrentUser();
     const isWarehouseIssueView = (activePage === 'part-issue' || u?.role === 'warehouse') && u?.role !== 'requester';
     if (!isWarehouseIssueView || (u?.role !== 'warehouse' && u?.role !== 'admin')) {
@@ -14672,6 +14702,8 @@
     }
     const rec = partRequisitionsList.find(x => x.reqId === reqId);
     if (!rec) return;
+    const prog = getPartReqIssueProgress(rec);
+    whConfirmAddMoreMode = Boolean(addMoreMode && prog.isPartial);
     whActiveConfirmReqId = reqId;
     stopWhCameraStream();
     if (el('whModalReqIdInput')) el('whModalReqIdInput').value = reqId;
@@ -14709,13 +14741,24 @@
       `;
     }
 
-    // Populate initial Location(s): starts with 1 location row (or existing saved locations)
+    // Populate initial Location(s): in addMoreMode show previous summary + 1 fresh row for remaining shortage
     const locListEl = el('whLocationsList');
     if (locListEl) {
-      const initLocs = Array.isArray(rec.locations) && rec.locations.length
-        ? rec.locations
-        : [{ location: '', qty: rec.requestQty }];
-      locListEl.innerHTML = initLocs.map((l, idx) => createWhLocationRowHtml(idx, l.location, l.qty)).join('');
+      if (whConfirmAddMoreMode) {
+        const prevLocsHtml = (rec.locations || []).map((l, idx) => `#${idx + 1}: <b>${esc(l.location)}</b> (${fmtQty(l.qty)} ${esc(rec.unit || 'PCS')})`).join(' · ');
+        locListEl.innerHTML = `
+          <div style="padding:8px 10px;border-radius:8px;background:#fff7ed;border:1px solid #fb923c;color:#9a3412;font-size:12px;line-height:1.5">
+            <div>➕ <b>โหมดจ่ายเพิ่ม (จ่ายแล้ว ${fmtQty(prog.issuedQty)} / ${fmtQty(prog.reqQty)} ${esc(rec.unit || 'PCS')} · ขาดอีก ${fmtQty(prog.shortageQty)} ${esc(rec.unit || 'PCS')})</b></div>
+            ${prevLocsHtml ? `<div style="margin-top:2px;color:#475569">📍 จ่ายก่อนหน้า: ${prevLocsHtml}</div>` : ''}
+          </div>
+          ${createWhLocationRowHtml(0, '', prog.shortageQty)}
+        `;
+      } else {
+        const initLocs = Array.isArray(rec.locations) && rec.locations.length
+          ? rec.locations
+          : [{ location: '', qty: rec.requestQty }];
+        locListEl.innerHTML = initLocs.map((l, idx) => createWhLocationRowHtml(idx, l.location, l.qty)).join('');
+      }
     }
     const locHintRows = getPartOnHandLocationsSummary(rec.materialCode);
     const checkLocBtn = el('whCheckOnHandLocBtn');
@@ -14729,8 +14772,8 @@
       hintEl.classList.add('hidden');
     }
 
-    // Photo state: if already issued with photo, show existing photo; otherwise require new live camera capture
-    capturedWhPhotoDataUrl = (rec.status === 'issued' && rec.issuePhotoDataUrl && rec.issuePhotoDataUrl.startsWith('data:image'))
+    // Photo state: in addMoreMode require fresh camera capture; otherwise keep existing photo if present
+    capturedWhPhotoDataUrl = (!whConfirmAddMoreMode && rec.status === 'issued' && rec.issuePhotoDataUrl && rec.issuePhotoDataUrl.startsWith('data:image'))
       ? rec.issuePhotoDataUrl
       : '';
 
@@ -15373,9 +15416,14 @@
         openPartReqDeleteModal(delBtn.dataset.id);
         return;
       }
+      const addIssueBtn = e.target.closest('.btn-open-wh-add-issue');
+      if (addIssueBtn) {
+        openWhConfirmModal(addIssueBtn.dataset.id, true);
+        return;
+      }
       const confirmBtn = e.target.closest('.btn-open-wh-confirm');
       if (confirmBtn) {
-        openWhConfirmModal(confirmBtn.dataset.id);
+        openWhConfirmModal(confirmBtn.dataset.id, false);
         return;
       }
       const photoBtn = e.target.closest('.btn-view-req-photo');
@@ -15527,12 +15575,15 @@
       } catch (_e) {}
       const issuerNote = (el('whIssuerNoteInput')?.value || '').trim();
       const issuedStamp = formatPartReqDateTime(new Date());
-      const locationsSummary = locations.map((l, i) => `Loc#${i + 1}: ${l.location}${l.qty !== '' ? ` (${fmtQty(l.qty)} ${rec.unit || 'PCS'})` : ''}`).join(' | ');
+      const finalLocations = whConfirmAddMoreMode
+        ? [...(Array.isArray(rec.locations) ? rec.locations : []), ...locations]
+        : locations;
+      const locationsSummary = finalLocations.map((l, i) => `Loc#${i + 1}: ${l.location}${l.qty !== '' ? ` (${fmtQty(l.qty)} ${rec.unit || 'PCS'})` : ''}`).join(' | ');
 
       const updated = {
         ...rec,
         status: 'issued',
-        locations,
+        locations: finalLocations,
         locationsSummary,
         issuerName,
         issuerUsername: String(issuer?.username || '').trim(),
