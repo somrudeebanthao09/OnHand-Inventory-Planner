@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-16T09:33:12.009Z",
+  "updatedAt": "2026-11-16T09:54:21.574Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -26,6 +26,33 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261116-60510",
+      "requestDate": "16/11/2026 16:54:20",
+      "requestedAt": "16/11/2026 16:54:20",
+      "moNumber": "MO-20261111-003332",
+      "ppbomNumber": "PPBOM-20261111-003619",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00131",
+      "materialName": "Hinge Cap",
+      "specification": "BRU53753",
+      "requestQty": 100,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "req",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "16/11/2026 16:54:20",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261116-21562",
       "requestDate": "16/11/2026 15:20:20",
