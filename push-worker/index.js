@@ -28,7 +28,18 @@ const sentEventKeys = new Set();
 
 function parseMs(val) {
   if (!val) return 0;
-  const t = Date.parse(String(val));
+  if (val instanceof Date) return Number.isFinite(val.getTime()) ? val.getTime() : 0;
+  if (typeof val === "number") return Number.isFinite(val) ? val : 0;
+  const s = String(val).replace(/[\u200B-\u200D\uFEFF']/g, "").trim();
+  if (!s) return 0;
+  const dmy = /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/.exec(s);
+  if (dmy) {
+    let yyyy = Number(dmy[3]);
+    if (yyyy > 2400) yyyy -= 543;
+    const ms = Date.UTC(yyyy, Number(dmy[2]) - 1, Number(dmy[1]), Number(dmy[4] || 0) - 7, Number(dmy[5] || 0), Number(dmy[6] || 0));
+    return Number.isFinite(ms) ? ms : 0;
+  }
+  const t = Date.parse(s.replace(/\s*\([^)]*\)\s*$/, "").trim());
   return Number.isFinite(t) ? t : 0;
 }
 
