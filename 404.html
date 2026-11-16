@@ -14849,12 +14849,17 @@
   }
 
   // Warehouse Location dynamic rows (starts with 1 location, click + to add more)
-  function createWhLocationRowHtml(index, locValue = '', qtyValue = '') {
+  function createWhLocationRowHtml(index, locValue = '', qtyValue = '', lotValue = '') {
     return `
       <div class="wh-location-row" data-idx="${index}">
-        <div>
-          <label style="font-size:12px;font-weight:800;color:#0f6a66;display:block;margin-bottom:3px">📍 Location / พื้นที่จัดเก็บที่ ${index + 1} <span style="color:#dc2626">*</span></label>
-          <input type="text" class="field wh-loc-name-input" value="${esc(locValue)}" placeholder="พิมพ์ Location / พื้นที่จัดเก็บ" required style="width:100%;font-weight:700;font-size:13.5px;height:40px">
+        <div style="display:grid;gap:6px">
+          <div>
+            <label style="font-size:12px;font-weight:800;color:#0f6a66;display:block;margin-bottom:3px">📍 Location / พื้นที่จัดเก็บที่ ${index + 1} <span style="color:#dc2626">*</span></label>
+            <input type="text" class="field wh-loc-name-input" value="${esc(locValue)}" placeholder="พิมพ์ Location / พื้นที่จัดเก็บ" required style="width:100%;font-weight:700;font-size:13.5px;height:40px">
+          </div>
+          <div>
+            <input type="text" class="field wh-loc-lot-input" value="${esc(lotValue)}" placeholder="🏷️ เลข Lot (ถ้ามี เช่น 2026101501)" style="width:100%;font-weight:600;font-size:12.5px;height:34px;color:#0369a1;background:#f8fafc">
+          </div>
         </div>
         <div>
           <label style="font-size:12px;font-weight:700;color:#475569;display:block;margin-bottom:3px">จำนวนที่ดึง</label>
@@ -14960,7 +14965,7 @@
         const initLocs = Array.isArray(rec.locations) && rec.locations.length
           ? rec.locations
           : [{ location: '', qty: rec.requestQty }];
-        locListEl.innerHTML = initLocs.map((l, idx) => createWhLocationRowHtml(idx, l.location, l.qty)).join('');
+        locListEl.innerHTML = initLocs.map((l, idx) => createWhLocationRowHtml(idx, l.location, l.qty, l.lot || '')).join('');
       }
     }
     const locHintRows = getPartOnHandLocationsSummary(rec.materialCode);
@@ -15012,14 +15017,16 @@
       const available = n(r.availableQty ?? r.available ?? onHand);
       const reserved = n(r.reserved);
       const unit = String(r.unit || 'PCS').trim();
-      const prev = byLoc.get(key) || { warehouse, storage, onHand: 0, available: 0, reserved: 0, unit, lots: 0 };
+      const lotNum = String(r.lotNumber || '').trim();
+      const prev = byLoc.get(key) || { warehouse, storage, onHand: 0, available: 0, reserved: 0, unit, lots: 0, lotSet: new Set() };
       prev.onHand += onHand;
       prev.available += available;
       prev.reserved += reserved;
       prev.lots += 1;
+      if (lotNum) prev.lotSet.add(lotNum);
       byLoc.set(key, prev);
     }
-    const all = [...byLoc.values()];
+    const all = [...byLoc.values()].map(x => ({ ...x, lotText: [...x.lotSet].join(', ') }));
     const positive = all.filter(x => x.onHand > 0 || x.available > 0);
     const list = positive.length ? positive : all;
     return list.sort((a, b) => (b.available - a.available) || (b.onHand - a.onHand));
@@ -15049,9 +15056,10 @@
                 พร้อมใช้: <b style="color:#15803d">${fmtQty(r.available)} ${esc(r.unit)}</b>
                 · คงเหลือ: <b>${fmtQty(r.onHand)}</b>
                 ${r.reserved > 0 ? `· จอง: <b style="color:#b45309">${fmtQty(r.reserved)}</b>` : ''}
+                ${r.lotText ? `<div style="margin-top:2px;color:#475569">🏷️ Lot: <b>${esc(r.lotText)}</b></div>` : ''}
               </div>
             </div>
-            <button type="button" class="btn soft whPickSuggestedLocBtn" data-loc="${esc(r.storage)}" style="padding:4px 10px;font-size:11.5px;font-weight:700;background:#ecfdf5;border-color:#6ee7b7;color:#047857;white-space:nowrap">
+            <button type="button" class="btn soft whPickSuggestedLocBtn" data-loc="${esc(r.storage)}" data-lot="${esc(r.lotText || '')}" style="padding:4px 10px;font-size:11.5px;font-weight:700;background:#ecfdf5;border-color:#6ee7b7;color:#047857;white-space:nowrap">
               ✓ ใช้ Location นี้
             </button>
           </div>
@@ -15539,6 +15547,9 @@
       const matSpec = el('reqMatSpecInput')?.value || matObj?.specification || moPart?.specification || '';
       const ymdCompact = (partReqDateYMD(reqDate, nowStamp) || new Date().toISOString().slice(0, 10)).replace(/-/g, '');
 
+      const onHandLocRows = getPartOnHandLocationsSummary(matCode);
+      const onHandLocation = onHandLocRows.map(x => `${x.storage} (${x.warehouse})`).join(' | ');
+      const onHandLotSummary = [...new Set(onHandLocRows.flatMap(x => x.lotText ? x.lotText.split(',').map(s => s.trim()).filter(Boolean) : []))].join(', ');
       const newRec = {
         reqId: `REQ-${ymdCompact}-${String(Date.now()).slice(-5)}`,
         requestDate: reqDate,
@@ -15559,6 +15570,8 @@
         status: 'pending',
         locations: [],
         locationsSummary: '',
+        onHandLocation,
+        lotSummary: onHandLotSummary,
         issuerName: '',
         issuedAt: '',
         issuerNote: '',
@@ -15703,11 +15716,17 @@
       const btn = e.target.closest('.whPickSuggestedLocBtn');
       if (!btn) return;
       const locName = String(btn.dataset.loc || '').trim();
+      const lotText = String(btn.dataset.lot || '').trim();
       if (!locName) return;
       const inputs = Array.from(document.querySelectorAll('#whLocationsList .wh-loc-name-input'));
       const target = inputs.find(inp => !String(inp.value || '').trim()) || inputs[0];
       if (target) {
         target.value = locName;
+        const rowEl = target.closest('.wh-location-row');
+        const lotInp = rowEl?.querySelector('.wh-loc-lot-input');
+        if (lotInp && lotText && !String(lotInp.value || '').trim()) {
+          lotInp.value = lotText;
+        }
         target.focus();
         toast(`ใส่ Location "${locName}" เรียบร้อย`);
       }
@@ -15749,12 +15768,18 @@
       if (!rec) return;
 
       const locRows = Array.from(document.querySelectorAll('#whLocationsList .wh-location-row'));
+      const onHandLocRows = getPartOnHandLocationsSummary(rec.materialCode);
       const locations = [];
       for (const r of locRows) {
         const locName = (r.querySelector('.wh-loc-name-input')?.value || '').trim();
         const locQty = r.querySelector('.wh-loc-qty-input')?.value;
+        let locLot = (r.querySelector('.wh-loc-lot-input')?.value || '').trim();
+        if (!locLot && locName) {
+          const matchedLoc = onHandLocRows.find(x => x.storage.toLowerCase() === locName.toLowerCase());
+          if (matchedLoc?.lotText) locLot = matchedLoc.lotText;
+        }
         if (locName) {
-          locations.push({ location: locName, qty: locQty !== '' ? n(locQty) : '' });
+          locations.push({ location: locName, qty: locQty !== '' ? n(locQty) : '', lot: locLot });
         }
       }
       if (!locations.length) {
@@ -15782,13 +15807,17 @@
       const finalLocations = whConfirmAddMoreMode
         ? [...(Array.isArray(rec.locations) ? rec.locations : []), ...locations]
         : locations;
-      const locationsSummary = finalLocations.map((l, i) => `Loc#${i + 1}: ${l.location}${l.qty !== '' ? ` (${fmtQty(l.qty)} ${rec.unit || 'PCS'})` : ''}`).join(' | ');
+      const locationsSummary = finalLocations.map((l, i) => `Loc#${i + 1}: ${l.location}${l.qty !== '' ? ` (${fmtQty(l.qty)} ${rec.unit || 'PCS'})` : ''}${l.lot ? ` [Lot: ${l.lot}]` : ''}`).join(' | ');
+      const onHandLocation = onHandLocRows.map(x => `${x.storage} (${x.warehouse})`).join(' | ') || String(rec.onHandLocation || '');
+      const lotSummary = [...new Set(finalLocations.flatMap(l => l.lot ? String(l.lot).split(',').map(s => s.trim()).filter(Boolean) : []))].join(', ') || String(rec.lotSummary || '');
 
       const updated = {
         ...rec,
         status: 'issued',
         locations: finalLocations,
         locationsSummary,
+        onHandLocation,
+        lotSummary,
         issuerName,
         issuerUsername: String(issuer?.username || '').trim(),
         issuedAt: issuedStamp,

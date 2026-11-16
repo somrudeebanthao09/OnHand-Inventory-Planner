@@ -7,7 +7,7 @@ const PART_REQ_API_HEADERS = [
   'materialCode','materialName','specification','requestQty','unit','reason',
   'requesterName','requesterUsername','shift','requesterNote','requestedAt','status',
   'locationsSummary','locationsJson','issuerName','issuerUsername','issuerNote','issuedAt',
-  'hasPhoto','photoTakenAt','updatedAt','photoUrl','leadTimeSummary'
+  'hasPhoto','photoTakenAt','updatedAt','photoUrl','leadTimeSummary','onHandLocation','lotSummary'
 ];
 const PART_REQ_API_ITERATIONS = 30000;
 const PART_REQ_API_SESSION_TTL_SECONDS = 21600;
@@ -487,7 +487,9 @@ function partReqApiToRow_(record) {
     photoUrl: String(record.photoAttachmentUrl || record.photoUrl || ''),
     leadTimeSummary: record.status === 'issued'
       ? (String(record.leadTimeSummary || '').trim() || formatPartReqLeadTime_(record.requestedAt || record.requestDate, record.issuedAt))
-      : ''
+      : '',
+    onHandLocation: String(record.onHandLocation || ''),
+    lotSummary: String(record.lotSummary || '')
   };
 }
 
