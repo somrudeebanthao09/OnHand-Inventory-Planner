@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-16T06:44:01.581Z",
+  "updatedAt": "2026-11-16T07:13:51.466Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "5fab2431-a9b1-4c32-8ada-6e16fe501544092ccc964f3b4cba8b882105f3f53f1a",
-    "wh": "f60dd6f6-d297-4ed0-b239-e304cb396beb4f7625a029a948e3a03b32f113af7f42",
-    "expiresAt": 1794811639252
+    "wh": "1e17849a-3880-4296-8811-a79dfc973a17e4667767c6db41f88f9dc1394b07fc5f",
+    "expiresAt": 1794817058796
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -25,6 +25,33 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261116-30203",
+      "requestDate": "16/11/2026 14:13:49",
+      "requestedAt": "16/11/2026 14:13:49",
+      "moNumber": "MO-20261111-003332",
+      "ppbomNumber": "PPBOM-20261111-003619",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00550",
+      "materialName": "EZ250A LINK (connector)",
+      "specification": "75170114AA",
+      "requestQty": 200,
+      "unit": "PCS",
+      "reason": "ชำรุด/ตกหล่นระหว่างประกอบ",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "req",
+      "shift": "A",
+      "requesterNote": "Part ขาด",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "16/11/2026 14:13:50",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261116-87913",
       "requestDate": "16/11/2026 13:29:47",
