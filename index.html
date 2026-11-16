@@ -6094,6 +6094,34 @@
       }
     }
 
+    // Build fast O(1) Model Specification lookup from Inventory + Execution/Barcode Seeds + BOM Models
+    const modelSpecMap = new Map();
+    for (const inv of (db.inventory || [])) {
+      const mc = String(inv.materialCode || inv.partCode || '').trim();
+      const sp = String(inv.specification || '').trim();
+      if (mc && sp && !modelSpecMap.has(mc)) modelSpecMap.set(mc, sp);
+    }
+    for (const inv of (window.ONHAND_SEED?.inventory || [])) {
+      const mc = String(inv.materialCode || inv.partCode || '').trim();
+      const sp = String(inv.specification || '').trim();
+      if (mc && sp && !modelSpecMap.has(mc)) modelSpecMap.set(mc, sp);
+    }
+    for (const ex of Object.values(window.PRODUCTION_EXECUTION_SEED?.executionByMo || {})) {
+      const mc = String(ex.materialCode || ex.productCode || '').trim();
+      const sp = String(ex.specification || '').trim();
+      if (mc && sp && !modelSpecMap.has(mc)) modelSpecMap.set(mc, sp);
+    }
+    for (const bc of Object.values(window.PRODUCTION_EXECUTION_SEED?.barcodeByMo || {})) {
+      const mc = String(bc.materialCode || bc.productCode || '').trim();
+      const sp = String(bc.specification || '').trim();
+      if (mc && sp && !modelSpecMap.has(mc)) modelSpecMap.set(mc, sp);
+    }
+    for (const bm of (window.BOM_SEED?.models || [])) {
+      const mc = String(bm.code || bm.modelCode || '').trim();
+      const sp = String(bm.specification || bm.spec || '').trim();
+      if (mc && sp && !modelSpecMap.has(mc)) modelSpecMap.set(mc, sp);
+    }
+
     // 2. Group BOM rows by Model (modelCode) and track Material usage across BOM models
     const moMap = new Map();
     const materialMap = new Map();
@@ -6107,14 +6135,12 @@
       let mo = moMap.get(modelCode);
       if (!mo) {
         const pOv = overrides.get(modelCode);
-        const invSpec = (db.inventory || []).find(x => String(x.materialCode || '').trim() === modelCode && String(x.specification || '').trim())?.specification || '';
-        const execSpec = Object.values(window.PRODUCTION_EXECUTION_SEED?.ordersByMo || {}).find(o => String(o.productCode || '').trim() === modelCode && String(o.specification || '').trim())?.specification || '';
         mo = {
           moNumber: modelCode,
           modelCode: modelCode,
           productCode: modelCode,
           productName: pOv?.materialName || r.modelName || modelCode,
-          specification: pOv?.specification || invSpec || r.modelSpec || execSpec || '',
+          specification: pOv?.specification || r.modelSpec || modelSpecMap.get(modelCode) || '',
           department: pOv ? pOv.department : (normalizeDepartmentName(r.department) || 'ไม่ระบุแผนก'),
           itemsMap: new Map(),
           items: []
@@ -6151,6 +6177,7 @@
       let readyPartsCount = 0;
       let missingPartsCount = 0;
       let minSets = Infinity;
+      let minReadySets = Infinity;
       let bottleneckPart = null;
 
       for (const comp of comps) {
@@ -6167,6 +6194,7 @@
 
         if (isPartSufficient) {
           readyPartsCount++;
+          if (maxSetsFromPart < minReadySets) minReadySets = maxSetsFromPart;
         } else {
           missingPartsCount++;
         }
@@ -6248,6 +6276,8 @@
       mo.isReady = isBuildable;
       mo.isFinished = false;
       mo.maxBuildableSets = maxBuildableSets;
+      mo.potentialBuildableSets = (!isBuildable && readyPartsCount > 0 && Number.isFinite(minReadySets)) ? minReadySets : 0;
+      mo.missingPartsList = comps.filter(c => c.isShortage);
       mo.bottleneckPart = bottleneckPart;
 
       if (isBuildable) {
@@ -6706,15 +6736,22 @@
       }
 
       // Simple & Direct: สามารถขึ้นได้กี่ตัว
+      const missingCodesText = (mo.missingPartsList || []).map(p => p.materialCode).filter(Boolean).join(', ');
       const maxSetsHtml = mo.isReady
         ? `<div style="display:flex;flex-direction:column;align-items:center;gap:3px">
              <div style="display:inline-flex;align-items:baseline;gap:6px;background:#dcfce7;color:#15803d;padding:6px 16px;border-radius:20px;border:1.5px solid #86efac;font-weight:800;font-size:19px">${fmt(mo.maxBuildableSets)} <span style="font-size:14px;font-weight:750">ตัว</span></div>
              <span style="font-size:12px;color:#15803d;font-weight:700">ขึ้นงานได้ทันที (Part ไม่ขาด)</span>
            </div>`
-        : `<div style="display:flex;flex-direction:column;align-items:center;gap:3px">
-             <span style="color:#94a3b8;font-weight:800;font-size:17px">0 ตัว</span>
-             <span style="font-size:12px;color:var(--red);font-weight:600">ยังขึ้นไม่ได้ (ขาด ${mo.missingParts} Part)</span>
-           </div>`;
+        : (mo.missingParts <= 2 && mo.potentialBuildableSets > 0
+          ? `<div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+               <span style="color:#94a3b8;font-weight:800;font-size:15px">0 ตัว <span style="font-size:11.5px;color:var(--red);font-weight:600">(ขาด ${mo.missingParts} Part)</span></span>
+               <div style="display:inline-flex;align-items:baseline;gap:4px;background:#fef3c7;color:#b45309;padding:4px 10px;border-radius:12px;border:1px solid #fcd34d;font-weight:800;font-size:12.5px">💡 ถ้าครบขึ้นได้ <b>${fmt(mo.potentialBuildableSets)}</b> ตัว</div>
+               ${missingCodesText ? `<span style="font-size:11px;color:#b45309;font-weight:600;max-width:175px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Part ที่ขาด: ${esc(missingCodesText)}">รอ: ${esc(missingCodesText)}</span>` : ''}
+             </div>`
+          : `<div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+               <span style="color:#94a3b8;font-weight:800;font-size:17px">0 ตัว</span>
+               <span style="font-size:12px;color:var(--red);font-weight:600">ยังขึ้นไม่ได้ (ขาด ${mo.missingParts} Part)</span>
+             </div>`);
 
       return `<tr style="cursor:pointer;${mo.isReady ? '' : 'background:#fcfdfd'}" onclick="if(!event.target.closest('button')) window.appOpenMoDetail('${esc(mo.productCode)}')">
         <td style="text-align:center;color:var(--muted);font-size:14px;font-weight:600;padding:12px 6px">${rowNum}</td>
