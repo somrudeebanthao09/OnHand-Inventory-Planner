@@ -128,13 +128,7 @@ async function dispatchForRecord(prevItem, nextItem, subs, token) {
     );
   }
 
-  const reqNameLower = String(nextItem.requesterName || "").trim().toLowerCase();
-  const targets = subs.filter(s => {
-    if (s.role === "admin") return true;
-    if (s.role !== "requester") return false;
-    const subStaff = String(s.staffName || "").trim().toLowerCase();
-    return !subStaff || !reqNameLower || subStaff === reqNameLower;
-  });
+  const targets = subs.filter(s => s.role === "requester" || s.role === "admin");
   return sendWebPush(
     targets,
     {
