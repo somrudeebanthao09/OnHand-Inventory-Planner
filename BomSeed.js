@@ -8,4922 +8,5906 @@ window.BOM_SEED = {
     {
       "code": "6001ZZ00244",
       "name": "4 + 4W SPLIT BB CONSUMER UNIT - RCCB40 S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL14X4RCCB40-S"
     },
     {
       "code": "6001ZZ00245",
       "name": "4 + 4W SPLIT BB CONSUMER UNIT RCCB40 S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL14X4RCCB40-T-S"
     },
     {
       "code": "6001ZZ00246",
       "name": "4 + 4W SPLIT BB CONSUMER UNIT - RCCB63 S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL14X4RCCB63-S"
     },
     {
       "code": "6001ZZ00247",
       "name": "4 + 4W SPLIT BB CONSUMER UNIT  RCCB63 S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL14X4RCCB63-T-S"
     },
     {
       "code": "6001ZZ00217",
       "name": "4DBE EARTHING CONDUCTOR TAG S/A",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDL4DBE-S"
     },
     {
       "code": "6001ZZ00180",
       "name": "4 WAYS CONSUMER UNIT",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL14-S"
     },
     {
       "code": "6001ZZ00182",
       "name": "6 WAYS CONSUMER UNIT",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL16-S"
     },
     {
       "code": "6001ZZ00186",
       "name": "8 + 4W SPLIT BB CONSUMER UNIT RCCB40",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL18X4RCCB40-T-S"
     },
     {
       "code": "6001ZZ00187",
       "name": "8 + 4W SPLIT BB CONSUMER UNIT  RCCB63",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL18X4RCCB63-T-S"
     },
     {
       "code": "6001ZZ00249",
       "name": "8 + 4W SPLIT BB CONSUMER UNIT - RCCB63 S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL18X4RCCB63-S"
     },
     {
       "code": "6001ZZ00248",
       "name": "8 + 4W split busbar BB CONSUMER UNIT S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL18X4RCCB40-S"
     },
     {
       "code": "6001ZZ00251",
       "name": "8 + 8W SPLIT BB CONSUMER UNIT RCCB40 S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL18X8RCCB40-T-S"
     },
     {
       "code": "6001ZZ00252",
       "name": "8 + 8W SPLIT BB CONSUMER UNIT RCCB63 S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL18X8RCCB63-T-S"
     },
     {
       "code": "6001ZZ00183",
       "name": "10 WAYS CONSUMER UNIT",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL110-S"
     },
     {
       "code": "6001ZZ00184",
       "name": "14 WAYS CONSUMER UNIT",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL114-S"
     },
     {
       "code": "6001ZZ00185",
       "name": "18 WAYS CONSUMER UNIT",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL118-S"
     },
     {
       "code": "5001ZW00284",
       "name": "450BOX Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53714"
     },
     {
       "code": "5001CY00078",
       "name": "450BOX Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53714"
     },
     {
       "code": "5001ZZ00290",
       "name": "450 Box S/A Diffuse Assembly",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "BOXSA450D"
     },
     {
       "code": "5001ZZ00294",
       "name": "450 Box S/A Project Assembly",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BOXSA450P"
     },
     {
       "code": "5001ZW00285",
       "name": "600 BOX Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53715"
     },
     {
       "code": "5001CY00081",
       "name": "600 BOX Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53715"
     },
     {
       "code": "5001ZZ00291",
       "name": "600 Box S/A Diffuse Assembly",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "BOXSA600D"
     },
     {
       "code": "5001ZZ00295",
       "name": "600 Box S/A Project Assembly",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BOXSA600P"
     },
     {
       "code": "5001TK00237",
       "name": "600BOX Stamping Bending Welding Tapping",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "BRU53715"
     },
     {
       "code": "5001CY00030",
       "name": "600 BOX WARP Stamping Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "75170145"
     },
     {
       "code": "5001ZW00252",
       "name": "600 BOX WARP Stamping Process 2 Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "75170145"
     },
     {
       "code": "5001HJ00204",
       "name": "600 BOX WARP Stamping Process 2 Bending Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "75170145"
     },
     {
       "code": "5004PT00004",
       "name": "600 BOX WARP Stamping Process 2 Bending Welding Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "75170145"
     },
     {
       "code": "5001TK00234",
       "name": "600 BOX WARP Stamping Process 2 Bending Welding Tapping",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "75170145"
     },
     {
       "code": "5001CY00034",
       "name": "600 FLAT DOOR Stamping Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "75170162AA"
     },
     {
       "code": "5001ZW00254",
       "name": "600 FLAT DOOR Stamping Process 2 Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "75170162AA"
     },
     {
       "code": "5001HJ00205",
       "name": "600 FLAT DOOR Stamping Process 2 Bending Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "75170162AA"
     },
     {
       "code": "5004PT00007",
       "name": "600 FLAT DOOR Stamping Process 2 Bending Welding Coating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "75170162AA"
     },
     {
       "code": "5001ZZ00292",
       "name": "750 Box S/A Diffuse Assembly",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "BOXSA750D"
     },
     {
       "code": "5001ZZ00296",
       "name": "750 Box S/A Project Assembly",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BOXSA750P"
     },
     {
       "code": "5001ZZ00293",
       "name": "900 Box S/A Diffuse Assembly",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BOXSA900D"
     },
     {
       "code": "5001ZZ00297",
       "name": "900 Box S/A Project Assembly",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BOXSA900P"
     },
     {
       "code": "5002CY00062",
       "name": "ACTIVE ASSEMBLY(Bracket092-1-2)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-092-1-2"
     },
     {
       "code": "5002HJ00094",
       "name": "ACTIVE ASSEMBLY Weld(Bracket092-1 Spot Welding Welding)",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "SB-092C-1"
     },
     {
       "code": "6002BZ00046",
       "name": "ACTIVE ASSEMBLY Weld Packing(Bracket092-1 Spot Welding Welding Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SB-092C-1"
     },
     {
       "code": "5002CY00061",
       "name": "ACTIVE BRACKET UPPER(Bracket092-1-1)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-092-1-1"
     },
     {
       "code": "5002CY00059",
       "name": "ACTUATOR CUP STAMPING",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "TM-867A-1"
     },
     {
       "code": "5005BM00013",
       "name": "ACTUATOR CUP STAMPING EDP Coating",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TM-867A-1"
     },
     {
       "code": "6002BZ00044",
       "name": "ACTUATOR CUP STAMPING EDP Coating PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TM-867A-1"
     },
     {
       "code": "5002CY00068",
       "name": "AH BUCKLE BRACKET(Bracket6603)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1186603-AA"
     },
     {
       "code": "5005BM00014",
       "name": "AH BUCKLE BRACKET EDP EDP Coating(Bracket6603 Grinding EDP Coating)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1186603-AA"
     },
     {
       "code": "6002BZ00047",
       "name": "AH BUCKLE BRACKET FG(Bracket6603 Grinding EDP Coating Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1186603-AA"
     },
     {
       "code": "6002BZ00010",
       "name": "ANTI-ROTATION CLIP Packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "5037028-AA"
     },
     {
       "code": "5002CY00011",
       "name": "ANTI-ROTATION CLIP stamping",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "5037028-AA"
     },
     {
       "code": "5004BM00214",
       "name": "ARC PLATE -CHINA NI-PLATING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "51207117AD1"
     },
     {
       "code": "5004BM00220",
       "name": "ARC PLATE STAMPING-CHINA NI PLATING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "51207117"
     },
     {
       "code": "5001CY00166",
       "name": "ARC PLATE STAMPING TH (2021  12CAV)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "5120711701"
     },
     {
       "code": "5004BM00116",
       "name": "ARC PLATE STAMPING TH (2021  12CAV) NI PLATING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "5120711701"
     },
     {
       "code": "5001ZZ00304",
       "name": "ARC STACK ASSEMBLY MEDIUM w/o GCB",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "S1A23982"
     },
     {
       "code": "6001BZ00069",
       "name": "ARC STACK ASSEMBLY MEDIUM w/o GCB PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1A23982"
     },
     {
       "code": "5001CY00143",
       "name": "ARC STACK SIDE-LEFT New",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187102"
     },
     {
       "code": "5001CY00142",
       "name": "ARC STACK SIDE-RIGHT New",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187110"
     },
     {
       "code": "5001CY00159",
       "name": "Armature High Amp Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187063"
     },
     {
       "code": "5004BM00109",
       "name": "Armature High Amp Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187063"
     },
     {
       "code": "6001BZ00047",
       "name": "Armature High Amp Stamping Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187063"
     },
     {
       "code": "5002CY00034",
       "name": "Assembly Sleeve185-1",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SN-185B-1"
     },
     {
       "code": "6002BZ00025",
       "name": "Assembly Sleeve185-1 Packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SN-185B-1"
     },
     {
       "code": "6001ZZ00243",
       "name": "Big terminal lug for <50 Sq.mm.cable S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDALUG50-S"
     },
     {
       "code": "6001BZ00052",
       "name": "BIMETAL STRUT Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W013890020111"
     },
     {
       "code": "5001CY00311",
       "name": "BIMETAL SUPPORT GRECO (2023）",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "51207070"
     },
     {
       "code": "5004BM00131",
       "name": "BIMETAL SUPPORT GRECO COPPER PLATING  (2023）",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "51207070"
     },
     {
       "code": "6001BZ00072",
       "name": "BIMETAL SUPPORT GRECO COPPER PLATING PACKING (2023）",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "51207070"
     },
     {
       "code": "6001BZ00056",
       "name": "BIMETAL SUPPORT (HI RATING 22-32) Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1B83820"
     },
     {
       "code": "6001BZ00057",
       "name": "BIMETAL SUPPORT (LOW RATING 04-21) Packing(GV2Low-Rating Bimetal Support Cleaning Packing)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1B22374"
     },
     {
       "code": "5001CY00093",
       "name": "BOX 2 + 6,6 WAY Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "NVE96520"
     },
     {
       "code": "5001CY00104",
       "name": "BOX 2 + 10,10 WAY Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "NVE96528"
     },
     {
       "code": "5001HJ00216",
       "name": "BOX 2 + 10,10 WAY Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "NVE96530"
     },
     {
       "code": "5001CY00109",
       "name": "BOX 2 + 14,14 WAY Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "NVE96535"
     },
     {
       "code": "5001HJ00218",
       "name": "BOX 2 + 14,14 WAY Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "NVE96535"
     },
     {
       "code": "5001CY00116",
       "name": "BOX 2 + 18,18 WAY Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "NVE96543"
     },
     {
       "code": "5001HJ00221",
       "name": "BOX 2 + 18,18 WAY Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "NVE96543"
     },
     {
       "code": "6001ZZ00002",
       "name": "BOX ASSY 600 100A LUGS sub-contract",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "75503826BA-S-J"
     },
     {
       "code": "6001ZZ00005",
       "name": "BOX ASSY 600 250A EZ sub-contract",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "75503826BD-S-J"
     },
     {
       "code": "6001ZZ00003",
       "name": "BOX ASSY 600 250A LUGS sub-contract",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "75503826BB-S-J"
     },
     {
       "code": "5004PT00012",
       "name": "BOX Painted 450 Diffuse Welding Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU93569"
     },
     {
       "code": "5001TK00235",
       "name": "BOX Painted 450 Diffuse Welding Tapping",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "BRU93569"
     },
     {
       "code": "5004PT00037",
       "name": "BOX Painted 450 Project Welding Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20557"
     },
     {
       "code": "5004PT00013",
       "name": "BOX Painted 600 Diffuse Welding Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU93570"
     },
     {
       "code": "5004PT00038",
       "name": "BOX Painted 600 Project Welding Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20558"
     },
     {
       "code": "5004PT00014",
       "name": "BOX Painted 750 Diffuse Welding Coating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "BRU93571"
     },
     {
       "code": "5004PT00039",
       "name": "BOX Painted 750 Project Welding Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20559"
     },
     {
       "code": "5004PT00015",
       "name": "BOX Painted 900 Diffuse Welding Coating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "BRU93572"
     },
     {
       "code": "5004PT00040",
       "name": "BOX Painted 900 Project Welding Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20560"
     },
     {
       "code": "5002HJ00091",
       "name": "Bracket042-2 Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "SB-042B-2"
     },
     {
       "code": "6002BZ00027",
       "name": "Bracket042-2 Welding Packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SB-042C-2"
     },
     {
       "code": "5002CY00073",
       "name": "Bracket538-2-1",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "TH-538-2-1"
     },
     {
       "code": "5002CY00043",
       "name": "Bracket818-1 CUP",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "TM-818A-1"
     },
     {
       "code": "6002BZ00032",
       "name": "Bracket818-1 Welding Adhesive Application Packing CUP welding riveting packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TM-818A-1"
     },
     {
       "code": "5002DH00092",
       "name": "Bracket818-1 Welding CUP welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "TM-818A-1"
     },
     {
       "code": "5002CY00057",
       "name": "Bracket8183",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1118183-AB（1118183-AC0）"
     },
     {
       "code": "5003YZ00040",
       "name": "BRACKET CASTING",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "SB-075B-1-1"
     },
     {
       "code": "5003PW00010",
       "name": "BRACKET CASTING DEBURR SHOT BALST",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "SB-075B-1-1"
     },
     {
       "code": "5003JJ00021",
       "name": "BRACKET CASTING DEBURR SHOT BALST CNC",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "SB-075B-1-1"
     },
     {
       "code": "6003BZ00010",
       "name": "BRACKET CASTING DEBURR SHOT BALST CNC PACKING",
-      "department": "Aluminum Die Casting - Packaging Production Line"
+      "department": "Aluminum Die Casting - Packaging Production Line",
+      "specification": "SB-075B-1-1"
     },
     {
       "code": "5003YZ00048",
       "name": "BRKT (AL) CASTING",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "TH-524B-1"
     },
     {
       "code": "5003PW00014",
       "name": "BRKT (AL) CASTING DEBURR SHOT BLAST",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "TH-524B-1"
     },
     {
       "code": "5003JJ00027",
       "name": "BRKT (AL) CASTING DEBURR SHOT BLAST CNC",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "TH-524B-1"
     },
     {
       "code": "6003BZ00016",
       "name": "BRKT (AL) CASTING DEBURR SHOT BLASTCNC PACKING",
-      "department": "Aluminum Die Casting - Packaging Production Line"
+      "department": "Aluminum Die Casting - Packaging Production Line",
+      "specification": "TH-524B-1"
     },
     {
       "code": "5003PW00013",
       "name": "BRKT (AL) FG(Cast Aluminum Bracket523-1 Deburring Shot Blasting) Deburr shot blast",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "TH-523A-1"
     },
     {
       "code": "5003JJ00026",
       "name": "BRKT (AL) FG(Cast Aluminum Bracket523-1 Deburring Shot Blasting Machining)Deburr shot blast CNC",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "TH-523A-1"
     },
     {
       "code": "6003BZ00015",
       "name": "BRKT (AL) FG(Cast Aluminum Bracket523-1 Deburring Shot Blasting Machining Packing)Packing",
-      "department": "Aluminum Die Casting - Packaging Production Line"
+      "department": "Aluminum Die Casting - Packaging Production Line",
+      "specification": "TH-523-1"
     },
     {
       "code": "5003YZ00047",
       "name": "BRKT (AL) FG(Cast Aluminum Bracket523-1)Die Casting Diecasting",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "TH-523A-1"
     },
     {
       "code": "5003YZ00036",
       "name": "BRKT-ENG; #4 Die casting",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "M101 39 081 020"
     },
     {
       "code": "5003PW00015",
       "name": "BRKT-ENG;#4 Die casting Deburr Shot blast",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "M101 39 081 020"
     },
     {
       "code": "5003JJ00019",
       "name": "BRKT-ENG; #4 Die casting Deburr Shot blast CNC",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "M101 39 081 020"
     },
     {
       "code": "6003BZ00007",
       "name": "BRKT-ENG; #4 Die casting Deburr Shot blast CNC PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "M101 39 081 020"
     },
     {
       "code": "5002CY00007",
       "name": "BRKT(FE)[Bracket104-1-1]",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-104A-1-1"
     },
     {
       "code": "5002CY00081",
       "name": "BRKT(FE)[Bracket104-1-2]",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-104A-1-2"
     },
     {
       "code": "5002CY00072",
       "name": "BRKT(FE)FG(Bracket538-1)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "TH-538-1"
     },
     {
       "code": "5005BM00016",
       "name": "BRKT(FE)FG(Bracket538-1 EDP Coating)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TH-538-1"
     },
     {
       "code": "6002BZ00052",
       "name": "BRKT(FE)FG(Bracket538-1 EDP Coating Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TH-538-1"
     },
     {
       "code": "5002CY00026",
       "name": "BRKT-INST N01 RHD STAMPING",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "M101-G0275"
     },
     {
       "code": "5002CY00025",
       "name": "BRKT-INST N02 RHD STAMPING",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "M101-G0276"
     },
     {
       "code": "6002BZ00018",
       "name": "BRKT-INST RHD PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "M101-64278"
     },
     {
       "code": "5002CY00024",
       "name": "BRKT-INST RHD STAMPING",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "M101-64278"
     },
     {
       "code": "5002HJ00087",
       "name": "BRKT-INST RHD WELDING",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "M101-64275"
     },
     {
       "code": "5003YZ00037",
       "name": "BRKT RR DIFF MTG Die casting",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "TH-403B-1"
     },
     {
       "code": "5003DM00038",
       "name": "BRKT RR DIFF MTG Die casting Deburr",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "TH-403B-1"
     },
     {
       "code": "5003JJ00020",
       "name": "BRKT RR DIFF MTGDie casting Deburr CNC",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "TH-403B-1"
     },
     {
       "code": "6003BZ00019",
       "name": "BRKT RR DIFF MTGDie casting Deburr CNC PAKCING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TH-403B-1"
     },
     {
       "code": "5002HJ00084",
       "name": "BRKT SUB ASSY[Bracket104-1 Welding ]",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "SB-104A-1"
     },
     {
       "code": "6002BZ00057",
       "name": "BRKT SUB ASSY[Bracket104-1 Welding Packing]",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SB-104A-1"
     },
     {
       "code": "5002HJ00096",
       "name": "BRKT SUB ASSY FG(Bracket538-2 Welding)",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "TH-538-2"
     },
     {
       "code": "5005BM00017",
       "name": "BRKT SUB ASSY FG(Bracket538-2 Welding EDP Coating)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TH-538-2"
     },
     {
       "code": "6002BZ00053",
       "name": "BRKT SUB ASSY FG(Bracket538-2 Welding EDP Coating Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TH-538-2"
     },
     {
       "code": "5004BM00118",
       "name": "C60Arc Plate Nickel Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "72570400"
     },
     {
       "code": "5001CY00169",
       "name": "C60Arc Plate(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "72570400"
     },
     {
       "code": "5003YZ00046",
       "name": "Cast Aluminum Bracket092-2 Deburring Shot Blasting Deburr Shot blast",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "SB-092B-2"
     },
     {
       "code": "5003JJ00025",
       "name": "Cast Aluminum Bracket092-2 Deburring Shot Blasting Machining Deburr shot blast CNC",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "SB-092B-2"
     },
     {
       "code": "6003BZ00014",
       "name": "Cast Aluminum Bracket092-2 Deburring Shot Blasting Machining Packing Deburr shot balst CNC Packing",
-      "department": "Aluminum Die Casting - Packaging Production Line"
+      "department": "Aluminum Die Casting - Packaging Production Line",
+      "specification": "SB-092B-2"
     },
     {
       "code": "5003YZ00045",
       "name": "Cast Aluminum Bracket092-2 Diecasting",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "SB-092B-2"
     },
     {
       "code": "5002CY00082",
       "name": "CE BASE FRAME RR 5900(Base5900)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1185900-AB"
     },
     {
       "code": "5002MJ00107",
       "name": "CE BASE UNIT RR 5677(Base Assembly5677 Riveting)",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "1185677-AB"
     },
     {
       "code": "5005BM00018",
       "name": "CE BASE UNIT RR 5677 Coating(Base Assembly5677 Riveting EDP Coating)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1185677-AB"
     },
     {
       "code": "6002BZ00058",
       "name": "CE BASE UNITRR 5677 PACKING(Base Assembly5677 Riveting EDP Coating Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1185677-AB"
     },
     {
       "code": "5002CY00017",
       "name": "CG BASE 91827",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1191827-AA"
     },
     {
       "code": "5002CY00055",
       "name": "CG BASE RH 21416(U-Shaped Bracket1416)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1185509-AA"
     },
     {
       "code": "5005BM00012",
       "name": "CG BASE UNIT RR EDP",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "2567475-AD"
     },
     {
       "code": "6002BZ00043",
       "name": "CG BASE UNIT RR  PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "2567475-AD"
     },
     {
       "code": "5002MJ00106",
       "name": "CG BASE UNIT RR WIP ASSY",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "2567475-AD"
     },
     {
       "code": "5002CY00056",
       "name": "CG BRACKET RH",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "2567476-AA"
     },
     {
       "code": "5002CY00066",
       "name": "CG TIE BAR",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1118183-AB"
     },
     {
       "code": "5002CY00067",
       "name": "CG TIE BAR 92295",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1112163-AA"
     },
     {
       "code": "5002CY00020",
       "name": "CJ BASE B IEA 8709",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "5038709-AA"
     },
     {
       "code": "5002CY00014",
       "name": "CJ BASE LH stamping(Bracket1189791)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1189791-AA"
     },
     {
       "code": "5002CY00019",
       "name": "CJ BASE RH stamping(Bracket1189790)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1189790-AA"
     },
     {
       "code": "5002MJ00102",
       "name": "CJ BASE UNIT LH(Bracket Assembly1188862)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1188862-AA"
     },
     {
       "code": "5005BM00002",
       "name": "CJ BASE UNIT LH EDP(Bracket Assembly1188862 EDP Coating)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1188862-AA"
     },
     {
       "code": "6002BZ00012",
       "name": "CJ BASE UNIT LH PACKING(Bracket Assembly1188862 EDP Coating Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1188862-AA"
     },
     {
       "code": "5002MJ00101",
       "name": "CJ BASE UNIT RH(Bracket Assembly1188861)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1188861-AA"
     },
     {
       "code": "5005BM00001",
       "name": "CJ BASE UNIT RH EDP(Bracket Assembly1188861 EDP Coating)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1188861-AA"
     },
     {
       "code": "6002BZ00011",
       "name": "CJ BASE UNIT RH PACKING(Bracket Assembly1188861 EDP Coating Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1188861-AA"
     },
     {
       "code": "6002ZZ00015",
       "name": "CJOST BASE UNIT FR, LH ASSY",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "5038788-AC"
     },
     {
       "code": "5005BM00005",
       "name": "CJOST BASE UNIT FR, LH EDP",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "5038788-AC"
     },
     {
       "code": "6002BZ00016",
       "name": "CJOST BASE UNIT FR, LH EDP PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "5038788-AC"
     },
     {
       "code": "6002ZZ00014",
       "name": "CJOST BASE UNIT FR, RH ASSY",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "5038789-AB"
     },
     {
       "code": "5005BM00006",
       "name": "CJOST BASE UNIT FR, RH EDP",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "5038789-AB"
     },
     {
       "code": "6002BZ00017",
       "name": "CJOST BASE UNIT FR, RH EDP PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "5038789-AB"
     },
     {
       "code": "5002CY00021",
       "name": "CJ TIE BAR 8710",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "5038710-AA"
     },
     {
       "code": "5002CY00022",
       "name": "CJ UPPER STAY FR, LH",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "5038515-AA"
     },
     {
       "code": "5002CY00023",
       "name": "CJ UPPER STAY FR, RH (ALR SENSOR)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "5038517-AA"
     },
     {
       "code": "5001CY00158",
       "name": "CLAMP PLATE Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187311"
     },
     {
       "code": "5004BM00108",
       "name": "CLAMP PLATE Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187311"
     },
     {
       "code": "6001BZ00046",
       "name": "CLAMP PLATE Stamping Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187311"
     },
     {
       "code": "6001ZZ00188",
       "name": "Classic + CU 4 way",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL14-S"
     },
     {
       "code": "6001ZZ00345",
       "name": "Classic + CU 4 way",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL14-S-J"
     },
     {
       "code": "6001ZZ00239",
       "name": "Classic + CU 4 way S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL14E-S"
     },
     {
       "code": "6001ZZ00347",
       "name": "Classic + CU 4 way S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL14E-S-J"
     },
     {
       "code": "6001ZZ00154",
       "name": "Classic + CU 6 way",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL16-S"
     },
     {
       "code": "6001ZZ00342",
       "name": "Classic + CU 6 way",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL16-S"
     },
     {
       "code": "6001ZZ00240",
       "name": "Classic + CU 6 way S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL16E-S"
     },
     {
       "code": "6001ZZ00348",
       "name": "Classic + CU 6 way S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL16E-S-J"
     },
     {
       "code": "6001ZZ00146",
       "name": "Classic + CU 10 way",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL110-S"
     },
     {
       "code": "6001ZZ00190",
       "name": "Classic + CU 10 way",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL110-S-J"
     },
     {
       "code": "6001ZZ00181",
       "name": "Classic + CU 10 way S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL110E-S"
     },
     {
       "code": "6001ZZ00350",
       "name": "Classic + CU 10 way S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL110E-S-J"
     },
     {
       "code": "6001ZZ00191",
       "name": "Classic + CU 14 way",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL114-S"
     },
     {
       "code": "6001ZZ00346",
       "name": "Classic + CU 14 way",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL114-S-J"
     },
     {
       "code": "6001ZZ00189",
       "name": "Classic + CU 14 way S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL114E-S-J"
     },
     {
       "code": "6001ZZ00349",
       "name": "Classic + CU 14 way S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL114E-S"
     },
     {
       "code": "6001ZZ00192",
       "name": "Classic + CU 18 way",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL118-S"
     },
     {
       "code": "6001ZZ00343",
       "name": "Classic + CU 18 way",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL118-S-J"
     },
     {
       "code": "6001ZZ00238",
       "name": "Classic + CU 18 way S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL118E-S"
     },
     {
       "code": "6001ZZ00133",
       "name": "Classic+ CU Split 4X4 way RCCB40A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL14X4R40-S-J"
     },
     {
       "code": "6001ZZ00193",
       "name": "Classic + CU Split 4X4 way RCCB40A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL14X4R40-S"
     },
     {
       "code": "6001ZZ00194",
       "name": "Classic + CU Split 4X4 way RCCB63A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL14X4R63-S"
     },
     {
       "code": "6001ZZ00355",
       "name": "Classic + CU Split 4X4 way RCCB63A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL14X4R63-S-J"
     },
     {
       "code": "6001ZZ00195",
       "name": "Classic + CU Split 8X4 way RCCB40A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL18X4R40-S"
     },
     {
       "code": "6001ZZ00354",
       "name": "Classic + CU Split 8X4 way RCCB40A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL18X4R40-S-J"
     },
     {
       "code": "6001ZZ00049",
       "name": "Classic + CU Split 8X4 way RCCB63A S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL18X4R63-S-J"
     },
     {
       "code": "6001ZZ00241",
       "name": "Classic + CU Split 8X4 way RCCB63A S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL18X4R63-S"
     },
     {
       "code": "6001ZZ00242",
       "name": "Classic + CU Split 8X8 way RCCB40A S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL18X8R40-S"
     },
     {
       "code": "6001ZZ00353",
       "name": "Classic + CU Split 8X8 way RCCB40A S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL18X8R40-S-J"
     },
     {
       "code": "6001ZZ00223",
       "name": "Classic + CU Split 8X8 way RCCB63A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL18X8R63-S"
     },
     {
       "code": "6001ZZ00341",
       "name": "Classic + CU Split 8X8 way RCCB63A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HCL18X8R63-S-J"
     },
     {
       "code": "5001TK00244",
       "name": "Coil TerminalA1 Tapping(Thailand)",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "MFR73710"
     },
     {
       "code": "5001CY00174",
       "name": "Coil TerminalA1(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "MFR73710"
     },
     {
       "code": "6001BZ00063",
       "name": "Coil TerminalA1 Tin Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "MFR73710"
     },
     {
       "code": "5004BM00123",
       "name": "Coil TerminalA1 Tin Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "MFR73710"
     },
     {
       "code": "5001TK00245",
       "name": "Coil TerminalA2 Tapping(Thailand)",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "MFR73711"
     },
     {
       "code": "5001CY00175",
       "name": "Coil TerminalA2(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "MFR73711"
     },
     {
       "code": "6001BZ00064",
       "name": "Coil TerminalA2 Tin Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "MFR73711"
     },
     {
       "code": "5004BM00124",
       "name": "Coil TerminalA2 Tin Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "MFR73711"
     },
     {
       "code": "5001CY00176",
       "name": "Coil TerminalB1(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "MFR73712"
     },
     {
       "code": "6001BZ00065",
       "name": "Coil TerminalB1 Tin Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "MFR73712"
     },
     {
       "code": "5004BM00125",
       "name": "Coil TerminalB1 Tin Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "MFR73712"
     },
     {
       "code": "5001CY00177",
       "name": "Coil TerminalB2(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "MFR73713"
     },
     {
       "code": "6001BZ00066",
       "name": "Coil TerminalB2 Tin Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "MFR73713"
     },
     {
       "code": "5004BM00126",
       "name": "Coil TerminalB2 Tin Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "MFR73713"
     },
     {
       "code": "5001CY00135",
       "name": "Corne d'arc Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "AAV95851"
     },
     {
       "code": "5004BM00172",
       "name": "Corne d'arc Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV95851"
     },
     {
       "code": "6001BZ00002",
       "name": "Corne d'arc Stamping Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV95851"
     },
     {
       "code": "6003BZ00013",
       "name": "Cover_3DU RESOLVER COVERT Packing/Cast Aluminum3DUCover Deburring + Shot Blasting Machining Cleaning Air Leak Test Packing",
-      "department": "Aluminum Die Casting - Packaging Production Line"
+      "department": "Aluminum Die Casting - Packaging Production Line",
+      "specification": "0135-0800005"
     },
     {
       "code": "5001CY00036",
       "name": "COVER 100EZ 600 Stamping Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "75170154"
     },
     {
       "code": "5001ZW00256",
       "name": "COVER 100EZ 600 Stamping Process 2 Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "75170154"
     },
     {
       "code": "5004PT00009",
       "name": "COVER 100EZ 600 Stamping Process 2 Bending Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "75170154"
     },
     {
       "code": "5001CY00033",
       "name": "COVER 100LUGS 600 Stamping Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "75170152"
     },
     {
       "code": "5001ZW00253",
       "name": "COVER 100LUGS 600 Stamping Process 2 Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "75170152"
     },
     {
       "code": "5004PT00006",
       "name": "COVER 100LUGS 600 Stamping Process 2 Bending Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "75170152"
     },
     {
       "code": "5001CY00037",
       "name": "COVER 250EZ 600 Stamping Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "75170155"
     },
     {
       "code": "5001ZW00257",
       "name": "COVER 250EZ 600 Stamping Process 2 Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "75170155"
     },
     {
       "code": "5004PT00010",
       "name": "COVER 250EZ 600 Stamping Process 2 Bending Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "75170155"
     },
     {
       "code": "5001CY00035",
       "name": "COVER 250LUGS 600 Stamping Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "75170153"
     },
     {
       "code": "5001ZW00255",
       "name": "COVER 250LUGS 600 Stamping Process 2 Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "75170153"
     },
     {
       "code": "5004PT00008",
       "name": "COVER 250LUGS 600 Stamping Process 2 Bending Coating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "75170153"
     },
     {
       "code": "5001ZW00258",
       "name": "Cover EZ100 450mm 12w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53718"
     },
     {
       "code": "5004PT00020",
       "name": "Cover EZ100 450mm 12w Bending Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53718"
     },
     {
       "code": "5001CY00041",
       "name": "Cover EZ100 450mm 12w Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53718"
     },
     {
       "code": "5004PT00046",
       "name": "Cover EZ100 450mm 12w Project Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20562"
     },
     {
       "code": "5001ZW00259",
       "name": "Cover EZ100 600mm 18w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53719"
     },
     {
       "code": "5004PT00021",
       "name": "Cover EZ100 600mm 18w Bending Coating(White)",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53719"
     },
     {
       "code": "5001CY00042",
       "name": "Cover EZ100 600mm 18w Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53719"
     },
     {
       "code": "5004PT00047",
       "name": "Cover EZ100 600mm 18w Project Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20563"
     },
     {
       "code": "5001ZW00260",
       "name": "Cover EZ100 600mm 24w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53720"
     },
     {
       "code": "5004PT00022",
       "name": "Cover EZ100 600mm 24w Bending Coating(White)",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53720"
     },
     {
       "code": "5001CY00053",
       "name": "Cover EZ100 600mm 24w Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53720"
     },
     {
       "code": "5004PT00048",
       "name": "Cover EZ100 600mm 24w Project Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20564"
     },
     {
       "code": "5001ZW00261",
       "name": "Cover EZ100 600mm 30w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53721"
     },
     {
       "code": "5004PT00023",
       "name": "Cover EZ100 600mm 30w Bending Coating(White)",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53721"
     },
     {
       "code": "5001CY00044",
       "name": "Cover EZ100 600mm 30w Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53721"
     },
     {
       "code": "5001CY00054",
       "name": "Cover EZ100 600mm 30w Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53721"
     },
     {
       "code": "5004PT00049",
       "name": "Cover EZ100 600mm 30w Project Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20565"
     },
     {
       "code": "5001ZW00262",
       "name": "Cover EZ100 750mm 36w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53722"
     },
     {
       "code": "5004PT00024",
       "name": "Cover EZ100 750mm 36w Bending Coating(White)",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53722"
     },
     {
       "code": "5001CY00055",
       "name": "Cover EZ100 750mm 36w Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53722"
     },
     {
       "code": "5004PT00050",
       "name": "Cover EZ100 750mm 36w Project Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20566"
     },
     {
       "code": "5001ZW00263",
       "name": "Cover EZ100 750mm 42w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53723"
     },
     {
       "code": "5004PT00025",
       "name": "Cover EZ100 750mm 42w Bending Coating(White)",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53723"
     },
     {
       "code": "5001CY00046",
       "name": "Cover EZ100 750mm 42w Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53723"
     },
     {
       "code": "5001CY00056",
       "name": "Cover EZ100 750mm 42w Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53723"
     },
     {
       "code": "5004PT00051",
       "name": "Cover EZ100 750mm 42w Project Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20567"
     },
     {
       "code": "5001ZW00270",
       "name": "Cover EZ250 600mm 12w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53730"
     },
     {
       "code": "5001PT00230",
       "name": "Cover EZ250 600mm 12w Bending Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53730"
     },
     {
       "code": "5004PT00052",
       "name": "Cover EZ250 600mm 12w Project Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20568"
     },
     {
       "code": "5001CY00069",
       "name": "Cover EZ250 600mm 12w Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53730"
     },
     {
       "code": "5001ZW00271",
       "name": "Cover EZ250 600mm 18w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53731"
     },
     {
       "code": "5001PT00229",
       "name": "Cover EZ250 600mm 18w Bending Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53731"
     },
     {
       "code": "5004PT00053",
       "name": "Cover EZ250 600mm 18w Project Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20569"
     },
     {
       "code": "5001CY00070",
       "name": "Cover EZ250 600mm 18w Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53731"
     },
     {
       "code": "5001ZW00272",
       "name": "Cover EZ250 750mm 24w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53732"
     },
     {
       "code": "5004PT00054",
       "name": "Cover EZ250 750mm 24w Project Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20570"
     },
     {
       "code": "5001CY00071",
       "name": "Cover EZ250 750mm 24w Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53732"
     },
     {
       "code": "5001ZW00273",
       "name": "Cover EZ250 750mm 30w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53734"
     },
     {
       "code": "5001PT00002",
       "name": "Cover EZ250 750mm 30w Bending Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53734"
     },
     {
       "code": "5004PT00055",
       "name": "Cover EZ250 750mm 30w Project Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20571"
     },
     {
       "code": "5001CY00072",
       "name": "Cover EZ250 750mm 30w Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53734"
     },
     {
       "code": "5001ZW00274",
       "name": "Cover EZ250 900mm 36w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53735"
     },
     {
       "code": "6001PT00001",
       "name": "Cover EZ250 900mm 36w Bending Coating",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "BRU53735"
     },
     {
       "code": "5004PT00056",
       "name": "Cover EZ250 900mm 36w Project Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20572"
     },
     {
       "code": "5001CY00073",
       "name": "Cover EZ250 900mm 36w Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53735"
     },
     {
       "code": "5001ZW00275",
       "name": "Cover EZ250 900mm 42w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53736"
     },
     {
       "code": "5004PT00057",
       "name": "Cover EZ250 900mm 42w Project Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20573"
     },
     {
       "code": "5001CY00074",
       "name": "Cover EZ250 900mm 42w Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53736"
     },
     {
       "code": "5001ZW00276",
       "name": "Cover EZ250 900mm 48w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53737"
     },
     {
       "code": "5001CY00075",
       "name": "Cover EZ250 900mm 48w Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53737"
     },
     {
       "code": "5001PT00231",
       "name": "Cover EZ250750mm 24w Bending Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53732"
     },
     {
       "code": "5001ZW00264",
       "name": "Cover LUG100 450mm 12w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53724"
     },
     {
       "code": "5004PT00026",
       "name": "Cover LUG100 450mm 12w Bending Coating(White)",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53724"
     },
     {
       "code": "5001CY00057",
       "name": "Cover LUG100 450mm 12w Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53724"
     },
     {
       "code": "5001ZW00265",
       "name": "Cover LUG100 450mm 18w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53725"
     },
     {
       "code": "5004PT00027",
       "name": "Cover LUG100 450mm 18w Bending Coating(White)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "BRU53725"
     },
     {
       "code": "5001CY00058",
       "name": "Cover LUG100 450mm 18w Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53725"
     },
     {
       "code": "5001ZW00266",
       "name": "Cover LUG100 600mm 24w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53726"
     },
     {
       "code": "5004PT00028",
       "name": "Cover LUG100 600mm 24w Bending Coating(White)",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53726"
     },
     {
       "code": "5001CY00059",
       "name": "Cover LUG100 600mm 24w Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53726"
     },
     {
       "code": "5001ZW00267",
       "name": "Cover LUG100 600mm 30w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53727"
     },
     {
       "code": "5004PT00029",
       "name": "Cover LUG100 600mm 30w Bending Coating(White)",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53727"
     },
     {
       "code": "5001CY00060",
       "name": "Cover LUG100 600mm 30w Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53727"
     },
     {
       "code": "5001ZW00268",
       "name": "Cover LUG100 600mm 36w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53728"
     },
     {
       "code": "5004PT00030",
       "name": "Cover LUG100 600mm 36w Bending Coating(White)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "BRU53728"
     },
     {
       "code": "5001CY00061",
       "name": "Cover LUG100 600mm 36w Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53728"
     },
     {
       "code": "5001ZW00269",
       "name": "Cover LUG100 750mm 42w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53729"
     },
     {
       "code": "5004PT00031",
       "name": "Cover LUG100 750mm 42w Bending Coating(White)",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53729"
     },
     {
       "code": "5001CY00062",
       "name": "Cover LUG100 750mm 42w Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53729"
     },
     {
       "code": "5001ZW00277",
       "name": "Cover LUG250 450mm 12w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53738"
     },
     {
       "code": "5004PT00032",
       "name": "Cover LUG250 450mm 12w Bending Coating(White)",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53738"
     },
     {
       "code": "5001CY00063",
       "name": "Cover LUG250 450mm 12w Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53738"
     },
     {
       "code": "5001ZW00278",
       "name": "Cover LUG250 600mm 18w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53739"
     },
     {
       "code": "5004PT00033",
       "name": "Cover LUG250 600mm 18w Bending Coating(White)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "BRU53739"
     },
     {
       "code": "5001CY00064",
       "name": "Cover LUG250 600mm 18w Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53739"
     },
     {
       "code": "5001ZW00279",
       "name": "Cover LUG250 600mm 24w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53740"
     },
     {
       "code": "5004PT00034",
       "name": "Cover LUG250 600mm 24w Bending Coating(White)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "BRU53740"
     },
     {
       "code": "5001CY00068",
       "name": "Cover LUG250 600mm 24w Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53740"
     },
     {
       "code": "5001ZW00280",
       "name": "Cover LUG250 600mm 30w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53741"
     },
     {
       "code": "5004PT00035",
       "name": "Cover LUG250 600mm 30w Bending Coating(White)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "BRU53741"
     },
     {
       "code": "5001CY00066",
       "name": "Cover LUG250 600mm 30w Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53741"
     },
     {
       "code": "5001ZW00281",
       "name": "Cover LUG250 750mm 36w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53742"
     },
     {
       "code": "5004PT00036",
       "name": "Cover LUG250 750mm 36w Bending Coating(White)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "BRU53742"
     },
     {
       "code": "5001CY00312",
       "name": "Cover LUG250 750mm 36w 二序",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53742"
     },
     {
       "code": "5001ZW00282",
       "name": "Cover LUG250 750mm 42w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53745"
     },
     {
       "code": "5004PT00155",
       "name": "Cover LUG250 750mm 42w bending powder(white )",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "BRU53745"
     },
     {
       "code": "5001CY00067",
       "name": "Cover LUG250 750mm 42w Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53745"
     },
     {
       "code": "5001ZW00283",
       "name": "Cover LUG250 900mm 48w Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53746"
     },
     {
       "code": "5001CY00076",
       "name": "Cover LUG250 900mm 48w Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53746"
     },
     {
       "code": "5001CY00148",
       "name": "CRADLE Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187058AA"
     },
     {
       "code": "5001CY00153",
       "name": "CRADLE Stamping(2021 Backup Die)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187058AA"
     },
     {
       "code": "5004BM00092",
       "name": "CRADLE Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187058AA"
     },
     {
       "code": "5004BM00100",
       "name": "CRADLE Stamping Plating(2021 Backup Die)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187058AA"
     },
     {
       "code": "6001BZ00029",
       "name": "CRADLE Stamping Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187058AA"
     },
     {
       "code": "6001BZ00038",
       "name": "CRADLE Stamping Plating packing(2021 Backup Die)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187058AA"
     },
     {
       "code": "5001TK00242",
       "name": "CT3 Coil TerminalA1 Tapping(Thailand)",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "W117239700111"
     },
     {
       "code": "5001CY00172",
       "name": "CT3 Coil TerminalA1(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "W117239700111"
     },
     {
       "code": "6001BZ00061",
       "name": "CT3 Coil TerminalA1 Tin Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W117239700111"
     },
     {
       "code": "5004BM00121",
       "name": "CT3 Coil TerminalA1 Tin Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W117239700111"
     },
     {
       "code": "5001TK00243",
       "name": "CT3 Coil TerminalA2 Tapping(Thailand)",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "W117239710111"
     },
     {
       "code": "5001CY00173",
       "name": "CT3 Coil TerminalA2(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "W117239710111"
     },
     {
       "code": "6001BZ00062",
       "name": "CT3 Coil TerminalA2 Tin Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W117239710111"
     },
     {
       "code": "5004BM00122",
       "name": "CT3 Coil TerminalA2 Tin Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W117239710111"
     },
     {
       "code": "5001HJ00220",
       "name": "CU FRONT COVER 2+18, 18 WAY Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "NVE96544"
     },
     {
       "code": "5004PT00071",
       "name": "CU FRONT COVER 2+18, 18 WAY Welding 喷涂",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NVE96544"
     },
     {
       "code": "5004SY00072",
       "name": "CU FRONT COVER 2+18, 18 WAY Welding 喷涂 丝印",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NVE96544"
     },
     {
       "code": "6001ZZ00352",
       "name": "Cut Chamber Beta PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "00725905A"
     },
     {
       "code": "6001ZZ00150",
       "name": "CUT CHAMBER GRECO JR",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "51207116JR"
     },
     {
       "code": "5001ZZ00307",
       "name": "CUT CHAMBER GRECO JR PACKING",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "51207116JR"
     },
     {
       "code": "6001ZZ00203",
       "name": "DBF10 D-BOARD 10WAY SE",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBF10-S"
     },
     {
       "code": "6001ZZ00204",
       "name": "DBF15/23 POLE FILLER STRIP PKD",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBF15/23-S"
     },
     {
       "code": "6001ZZ00206",
       "name": "DBF15 D-BOARD FLUSH 15WAY SE",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBF15-S"
     },
     {
       "code": "6001ZZ00208",
       "name": "DBF30 D-BOARD FLUSH 30WAY SE",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBF30-S"
     },
     {
       "code": "6001ZZ00209",
       "name": "DBF45 D-BOARD FLUSH 45 WAY SE",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBF45-S"
     },
     {
       "code": "6001ZZ00211",
       "name": "DBF60 D-BOARD FLUSH 60 WA SE",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBF60-S"
     },
     {
       "code": "6001ZZ00232",
       "name": "DBS15 D-BOARD SURF 15WAY SE",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBS15-S"
     },
     {
       "code": "6001ZZ00212",
       "name": "DBS30 D-BOARD SURF 30WAY SE",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBS30-S"
     },
     {
       "code": "6001ZZ00213",
       "name": "DBS45 D-BOARD SURF 45WAY SE",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBS45-S"
     },
     {
       "code": "6001ZZ00144",
       "name": "DBSET LC SPARE DOOR HANDLE GREEN",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDDH"
     },
     {
       "code": "6001ZZ00145",
       "name": "DBSET LC SPARE FILLER WHITE",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDPF"
     },
     {
       "code": "5004BM00138",
       "name": "DEMI CULASSE Heat treatment",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113790760123"
     },
     {
       "code": "6001BZ00086",
       "name": "DEMI CULASSE PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113790760123"
     },
     {
       "code": "5004BM00139",
       "name": "DEMI CULASSE Zinc phosphate",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113790760123"
     },
     {
       "code": "6002BZ00035",
       "name": "DIAPHRAGM Packing(Housing064-1 Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SB-064A-1"
     },
     {
       "code": "5002CY00046",
       "name": "DIAPHRAGM Stamping(Housing064-1)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-064A-1"
     },
     {
       "code": "6002BZ00048",
       "name": "DIFFUSER FG Heat-Insulating Steel Plate5583 Cleaning Packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1185583-AA"
     },
     {
       "code": "5002CY00069",
       "name": "DIFFUSER Heat-Insulating Steel Plate5583",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1185583-AA"
     },
     {
       "code": "5001CY00079",
       "name": "Door 450 Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53743"
     },
     {
       "code": "5001HJ00208",
       "name": "Door 450 Process 2 Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "BRU53743"
     },
     {
       "code": "5001CY00082",
       "name": "Door 600 Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53744"
     },
     {
       "code": "5001HJ00209",
       "name": "Door 600 Process 2 Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "BRU53744"
     },
     {
       "code": "5001CY00085",
       "name": "Door 750mm Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53747"
     },
     {
       "code": "5001HJ00210",
       "name": "Door 750 Process 2 Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "BRU53747"
     },
     {
       "code": "5001CY00088",
       "name": "Door 900mm Process 2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53749"
     },
     {
       "code": "5001HJ00211",
       "name": "Door 900 Process 2 Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "BRU53749"
     },
     {
       "code": "5004PT00016",
       "name": "Door ASM 450mm Diffuse Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU93578"
     },
     {
       "code": "5004PT00041",
       "name": "Door ASM 450mm Project Welding Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20574"
     },
     {
       "code": "5004PT00017",
       "name": "Door ASM 600mm Diffuse Welding Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU93579"
     },
     {
       "code": "5004PT00042",
       "name": "Door ASM 600mm Project Welding Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20575"
     },
     {
       "code": "5004PT00018",
       "name": "Door ASM 750mm Diffuse Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU93580"
     },
     {
       "code": "5004PT00043",
       "name": "Door ASM 750mm Project Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20576"
     },
     {
       "code": "5004PT00019",
       "name": "Door ASM 900mm Diffuse Welding Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU93581"
     },
     {
       "code": "5004PT00044",
       "name": "Door ASM 900mm Project Welding Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NAT20577"
     },
     {
       "code": "5003YZ00043",
       "name": "DU RESOLVER COVER CASTING",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "0135-0800005"
     },
     {
       "code": "5003PW00044",
       "name": "DU RESOLVER COVER CASTING DEBURR SHOTBLAST",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "0135-0800005"
     },
     {
       "code": "5003JJ00024",
       "name": "DU RESOLVER COVER CASTING DEBURR SHOTBLAST CNC",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "0135-0800005"
     },
     {
       "code": "5003QX00028",
       "name": "DU RESOLVER COVER CASTING DEBURR SHOTBLAST CNC DEGREAS",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "0135-0800005"
     },
     {
       "code": "6002BZ00067",
       "name": "DU RESOLVER COVER CASTING DEBURR SHOTBLAST CNC DEGREAS PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "0135-0800005"
     },
     {
       "code": "6001ZZ00178",
       "name": "EasyPact Box",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZBOX100-S"
     },
     {
       "code": "5001CY00154",
       "name": "EPTArc ChamberAArc Chute PlateA Medium Arc Platel Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187097AA"
     },
     {
       "code": "5004BM00101",
       "name": "EPTArc ChamberAArc Chute PlateA Nickel Plating Medium Arc Platel Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187097AA"
     },
     {
       "code": "5001CY00155",
       "name": "EPTArc ChamberAArc Chute PlateB Arc Stack Top Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187104AA"
     },
     {
       "code": "5004BM00102",
       "name": "EPTArc ChamberAArc Chute PlateB Nickel Plating Arc Stack Top Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187104AA"
     },
     {
       "code": "6001BZ00040",
       "name": "EPTArc ChamberA Packing(Thailand)ARC STACK ASSEMBLY MEDIUM PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1A23976-D"
     },
     {
       "code": "5001ZZ00302",
       "name": "EPTArc ChamberA(Thailand)ARC STACK ASSEMBLY MEDIUM",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "S1A23976-D"
     },
     {
       "code": "5001CY00232",
       "name": "EPTArc ChamberBArc Chute PlateA High Arc Plate PLATE Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187053AA"
     },
     {
       "code": "5004BM00103",
       "name": "EPTArc ChamberBArc Chute PlateA Nickel Plating High Arc Plate Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187053AA"
     },
     {
       "code": "5001CY00233",
       "name": "EPTArc ChamberBArc Chute PlateB Arc Stack Plate Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187199AA"
     },
     {
       "code": "5004BM00104",
       "name": "EPTArc ChamberBArc Chute PlateB Nickel Plating Arc Stack Plate Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187199AA"
     },
     {
       "code": "6001BZ00041",
       "name": "EPTArc ChamberB Packing(Thailand)ARC STACK ASSEMBLY HIGH PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1A23969-D"
     },
     {
       "code": "5001ZZ00111",
       "name": "EPTArc ChamberB(Thailand)ARC STACK ASSEMBLY HIGH",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "S1A23969-D-JR"
     },
     {
       "code": "5001ZZ00303",
       "name": "EPTArc ChamberB(Thailand)ARC STACK ASSEMBLY HIGH",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "S1A23969-D"
     },
     {
       "code": "6001BZ00042",
       "name": "EPTFixed ContactA Tin Plating Packing(Thailand)LANCED LINE TERM.-LOW PLATING PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187095AA"
     },
     {
       "code": "5004BM00105",
       "name": "EPTFixed ContactA Tin Plating(Thailand)LANCED LINE TERM.-LOW PLATING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187095AA"
     },
     {
       "code": "5004BM00106",
       "name": "EPTFixed ContactB Tin Plating(Thailand)LANCED LINE TERM.-HIGH PLATING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187094AA"
     },
     {
       "code": "6001BZ00023",
       "name": "EPTFixed ContactC Plating Packing(Thailand)LOOP LINE TERM-LOW",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187251"
     },
     {
       "code": "5004BM00082",
       "name": "EPTFixed ContactC Plating(Thailand)LOOP LINE TERM-LOW",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187251"
     },
     {
       "code": "5004BM00083",
       "name": "EPTFixed ContactD Tapping Plating(Thailand)LOOP LINE TERM-HIGH",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187051AA"
     },
     {
       "code": "6001BZ00016",
       "name": "EPTFixed ContactD Tapping Plating(Thailand)Packing LOOP LINE TERM-HIGH",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187051AA"
     },
     {
       "code": "5001CY00138",
       "name": "EPTFixed ContactD Tapping(Thailand)LOOP LINE TERM-HIGH",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187051AA"
     },
     {
       "code": "5001CY00157",
       "name": "EPTHandle Support Arm Handle Arm Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187057AA"
     },
     {
       "code": "5004BM00107",
       "name": "EPTHandle Support Arm Zinc Plating Handle Arm Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187057AA"
     },
     {
       "code": "6001BZ00045",
       "name": "EPTHandle Support Arm Zinc Plating Packing Handle Arm Stamping Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187057AA"
     },
     {
       "code": "6001BZ00024",
       "name": "EPTLatch LeverA Plating Packing(Thailand)Primary Latch",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187061AA"
     },
     {
       "code": "5004BM00088",
       "name": "EPTLatch LeverA Plating(Thailand) Primary Latch",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187061AA"
     },
     {
       "code": "5001CY00132",
       "name": "EPTLatch LeverA(Thailand) Primary Latch",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187061AA"
     },
     {
       "code": "6001BZ00025",
       "name": "EPTLatch LeverB Plating Packing(Thailand)Primary Latc -4 Pole",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1B14877"
     },
     {
       "code": "5004BM00087",
       "name": "EPTLatch LeverB Plating(Thailand)Primary Latc -4 Pole",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1B14877"
     },
     {
       "code": "5001CY00136",
       "name": "EPTLatch LeverB(Thailand)Primary Latc -4 Pole",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "S1B14877"
     },
     {
       "code": "6001BZ00077",
       "name": "EPTLower Link Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187059"
     },
     {
       "code": "5004BM00135",
       "name": "EPTLower Link Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187059"
     },
     {
       "code": "5001CY00184",
       "name": "EPTLower Link(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187059"
     },
     {
       "code": "6001BZ00076",
       "name": "EPTMagnetic Latch Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187068"
     },
     {
       "code": "5004BM00134",
       "name": "EPTMagnetic Latch Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187068"
     },
     {
       "code": "5001TK00183",
       "name": "EPTMagnetic Latch(Thailand)",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "48187068"
     },
     {
       "code": "6001BZ00043",
       "name": "EPTMoving ContactB Tin Plating Packing(Thailand)LANCED LINE TERM.-HIGH PLATING PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187094AA"
     },
     {
       "code": "6001BZ00075",
       "name": "EPTSlide Latch Lever Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187086"
     },
     {
       "code": "5004BM00133",
       "name": "EPTSlide Latch Lever Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187086"
     },
     {
       "code": "5001TK00182",
       "name": "EPTSlide Latch Lever(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187086"
     },
     {
       "code": "6001BZ00074",
       "name": "EPTSpacer Frame Tapping Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187084"
     },
     {
       "code": "5004BM00132",
       "name": "EPTSpacer Frame Tapping Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187084"
     },
     {
       "code": "5001TK00246",
       "name": "EPTSpacer Frame Tapping(Thailand)",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "48187084"
     },
     {
       "code": "5001CY00181",
       "name": "EPTSpacer Frame(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187084"
     },
     {
       "code": "6001ZZ00143",
       "name": "Extension box Diffuse",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QWKDEB"
     },
     {
       "code": "5001CY00313",
       "name": "Extension box 二序",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "NAT18070"
     },
     {
       "code": "6001ZZ00081",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 4W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9CU14-S"
     },
     {
       "code": "6001ZZ00137",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 4W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9EPL104E"
     },
     {
       "code": "6001ZZ00336",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 4W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9EPL104-S"
     },
     {
       "code": "6001ZZ00082",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 6W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9CU16-S"
     },
     {
       "code": "6001ZZ00138",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 6W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9EPL106E"
     },
     {
       "code": "6001ZZ00337",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 6W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9EPL106-S"
     },
     {
       "code": "6001ZZ00083",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 8W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9CU18-S"
     },
     {
       "code": "6001ZZ00139",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 8W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9EPL108E"
     },
     {
       "code": "6001ZZ00338",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 8W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9EPL108-S"
     },
     {
       "code": "6001ZZ00084",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 10W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9CU110-S"
     },
     {
       "code": "6001ZZ00140",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 10W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9EPL110E"
     },
     {
       "code": "6001ZZ00339",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 10W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9EPL110-S"
     },
     {
       "code": "6001ZZ00085",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 14W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9CU114-S"
     },
     {
       "code": "6001ZZ00141",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 14W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9EPL114E"
     },
     {
       "code": "6001ZZ00340",
       "name": "EZ9 PLUG-ON CONSUMER UNIT 14W",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "EZ9EPL114-S"
     },
     {
       "code": "5001CY00091",
       "name": "FRONT COVER 2 + 4,4 WAY Process 4",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "QGH11468"
     },
     {
       "code": "5001HJ00212",
       "name": "FRONT COVER 2 + 4,4 WAY Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "QGH11470"
     },
     {
       "code": "5001CY00099",
       "name": "FRONT COVER 2 + 6,6 WAY Process 4",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "NVE96519"
     },
     {
       "code": "5001HJ00214",
       "name": "FRONT COVER 2 + 6,6 WAY Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "NVE96521"
     },
     {
       "code": "5001CY00102",
       "name": "FRONT COVER 2 + 10,10 WAY Process 4",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "NVE96526"
     },
     {
       "code": "5001CY00107",
       "name": "FRONT COVER 2 + 14,14 WAY Process 4",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "NVE96533"
     },
     {
       "code": "5001HJ00217",
       "name": "FRONT COVER 2 + 14,14 WAY Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "NVE96533"
     },
     {
       "code": "5001CY00314",
       "name": "FRONT COVER 2+18，18 WAY process 4",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "NVE96542"
     },
     {
       "code": "5001CY00112",
       "name": "FRONT COVER FOR 4 + 4 WAY SPLIT Process 4",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "QGH13944"
     },
     {
       "code": "5001HJ00219",
       "name": "FRONT COVER FOR 4 + 4 WAY SPLIT Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "QGH13944"
     },
     {
       "code": "5001CY00119",
       "name": "FRONT COVER FOR 8 + 4 WAY SPLIT Process 4",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "QGH14027"
     },
     {
       "code": "5001HJ00222",
       "name": "FRONT COVER FOR 8 + 4 WAY SPLIT Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "QGH14027"
     },
     {
       "code": "5001CY00122",
       "name": "FRONT COVER FOR 8 + 8 WAY SPLIT Process 4",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "QGH14032"
     },
     {
       "code": "5001HJ00223",
       "name": "FRONT COVER FOR 8 + 8 WAY SPLIT Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "QGH14032"
     },
     {
       "code": "5004PT00058",
       "name": "FRONT COVER SUB ASSEMBLY 2 + 4, 4 WAY Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "QGH11470"
     },
     {
       "code": "5004SY00059",
       "name": "FRONT COVER SUB ASSEMBLY 2 + 4, 4 WAY Coating Screen",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "QGH11470"
     },
     {
       "code": "5004PT00061",
       "name": "FRONT COVER SUB ASSEMBLY 2 + 6, 6 WAY Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "NVE96521"
     },
     {
       "code": "5004SY00062",
       "name": "FRONT COVER SUB ASSEMBLY 2 + 6, 6 WAY Coating Screen",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "NVE96521"
     },
     {
       "code": "5001HJ00215",
       "name": "FRONT COVER SUB ASSEMBLY 2 + 10, 10 WAY Welding step 1",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "NVE96529"
     },
     {
       "code": "5001DH00203",
       "name": "FRONT COVER SUB ASSEMBLY 2 + 10, 10 WAY Welding step 2",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "NVE96529"
     },
     {
       "code": "5004PT00063",
       "name": "FRONT COVER SUB ASSEMBLY 2 + 10, 10 WAY Welding step 2 Powder",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "NVE96529"
     },
     {
       "code": "5004SY00064",
       "name": "FRONT COVER SUB ASSEMBLY 2 + 10, 10 WAY Welding step 2 Powder Screen",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "NVE96529"
     },
     {
       "code": "5004PT00066",
       "name": "FRONT COVER SUB ASSEMBLY 2 + 14, 14 WAY Coating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NVE96537"
     },
     {
       "code": "5004SY00067",
       "name": "FRONT COVER SUB ASSEMBLY 2 + 14, 14 WAY Coating Screen",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NVE96537"
     },
     {
       "code": "5004PT00069",
       "name": "FRONT COVER SUB ASSEMBLY 4 + 4 WAY SPLIT Coating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "QGH13951"
     },
     {
       "code": "5004SY00070",
       "name": "FRONT COVER SUB ASSEMBLY 4 + 4 WAY SPLIT Coating Screen",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "QGH13951"
     },
     {
       "code": "5004PT00074",
       "name": "FRONT COVER SUB ASSEMBLY 8 + 4 WAY SPLIT Coating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "QGH14030"
     },
     {
       "code": "5004SY00075",
       "name": "FRONT COVER SUB ASSEMBLY 8 + 4 WAY SPLIT Coating Screen",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "QGH14030"
     },
     {
       "code": "5004PT00076",
       "name": "FRONT COVER SUB ASSEMBLY 8 + 8 WAY SPLIT Coating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "QGH14035"
     },
     {
       "code": "5004SY00077",
       "name": "FRONT COVER SUB ASSEMBLY 8 + 8 WAY SPLIT Coating Screen",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "QGH14035"
     },
     {
       "code": "1005CY00919",
       "name": "FRONT SIDE COVER stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "NVE96548"
     },
     {
       "code": "5001CY00032",
       "name": "GLAND PLATE (BLUE GRAY) Stamping Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "75170148"
     },
     {
       "code": "5004PT00005",
       "name": "GLAND PLATE (BLUE GRAY) Stamping Process 3 Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "75170148"
     },
     {
       "code": "5001PT00316",
       "name": "GLAND PLATE  (CREAM) STEP3 COATING SDVS",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "75170148"
     },
     {
       "code": "5004PT00045",
       "name": "Gland plate painted Coating(Gray)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "TME99188"
     },
     {
       "code": "5001CY00038",
       "name": "Gland plate painted Process 1",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53717"
     },
     {
       "code": "5001CY00040",
       "name": "Gland plate painted Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53717"
     },
     {
       "code": "5001HJ00206",
       "name": "Gland plate painted Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "BRU53717"
     },
     {
       "code": "5004PT00011",
       "name": "Gland plate painted Welding Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU53717"
     },
     {
       "code": "6001ZZ00090",
       "name": "Greco coil 10A 8 turns wir dia 1.12",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S1B29288-JR"
     },
     {
       "code": "6001ZZ00091",
       "name": "Greco coil 16A 6 turns wir dia 1.4",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S1B71819-JR"
     },
     {
       "code": "6001ZZ00092",
       "name": "Greco coil 20A 5 turns wir dia 1.7",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S1B29292-JR"
     },
     {
       "code": "6001ZZ00093",
       "name": "Greco coil 25/32A 4 turns wir dia 2.24",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "51207080HC-JR"
     },
     {
       "code": "6001ZZ00094",
       "name": "Greco coil 25/32A 4 turns wir dia 2.24",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "51207080HC-CF"
     },
     {
       "code": "6001BZ00020",
       "name": "Greco fixed contact round chip PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1B38101B-BOI"
     },
     {
       "code": "6001BZ00147",
       "name": "Greco fixed contact round chip PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1B38101B"
     },
     {
       "code": "5001CY00161",
       "name": "GV2Arc Plate Arc plate GV2 Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "W113893530111"
     },
     {
       "code": "5004BM00111",
       "name": "GV2Arc Plate Copper Plating Arc plate GV2 Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113893530111"
     },
     {
       "code": "6001BZ00050",
       "name": "GV2Arc Plate Copper Plating Packing Arc plate GV2 Stamping Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113893530111"
     },
     {
       "code": "6001ZZ00333",
       "name": "GV2 BLOC AILETTES JR",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "W813890060190-JR"
     },
     {
       "code": "5001ZZ00305",
       "name": "GV2 BLOC AILETTES JR PACKING",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "W813890060190-JR"
     },
     {
       "code": "6001BZ00058",
       "name": "GV2L32 SHUNT CUIVRE PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W213898050111"
     },
     {
       "code": "6001BZ00078",
       "name": "GV2Moving LeverA Copper Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113890070111"
     },
     {
       "code": "5004BM00136",
       "name": "GV2Moving LeverA Copper Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113890070111"
     },
     {
       "code": "5001CY00234",
       "name": "GV2Moving LeverA(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "W113890070111"
     },
     {
       "code": "6001BZ00079",
       "name": "GV2Moving LeverB Copper Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113890870111"
     },
     {
       "code": "5004BM00137",
       "name": "GV2Moving LeverB Copper Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113890870111"
     },
     {
       "code": "5001CY00236",
       "name": "GV2Moving LeverB(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "W113890870111"
     },
     {
       "code": "6001ZZ00332",
       "name": "GV2P BLOC AILETTES CAMBR JR",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "W813890890211-S"
     },
     {
       "code": "6001ZZ00334",
       "name": "GV2P BLOC AILETTES CAMBR JR",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "W813890890211-JR"
     },
     {
       "code": "5001ZZ00306",
       "name": "GV2P BLOC AILETTES CAMBR JR PACKING",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "W813890890211-JR"
     },
     {
       "code": "6001BZ00034",
       "name": "GV2Terminal Copper Plating Packing(Steel)Terminal Connexion Steel Stamping Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W116365250211"
     },
     {
       "code": "5004BM00099",
       "name": "GV2Terminal Copper Plating(Steel)Terminal Connexion Steel Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W116365250211"
     },
     {
       "code": "6002BZ00039",
       "name": "HEAT SHIELD Packing(Heat Shield070-1 Cleaning Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SB-070B-1"
     },
     {
       "code": "5002CY00052",
       "name": "HEAT SHIELD Stamping(Heat Shield070-1)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-070B-1"
     },
     {
       "code": "6001BZ00060",
       "name": "High-Rating Terminal Silver Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1A28861"
     },
     {
       "code": "5004BM00120",
       "name": "High-Rating Terminal Silver Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1A28861"
     },
     {
       "code": "1005CY01062",
       "name": "High-Rating Terminal(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "S1A28861"
     },
     {
       "code": "5002CY00040",
       "name": "Housing771-1 OUTER",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "TM-771A-1"
     },
     {
       "code": "6002BZ00029",
       "name": "Housing771-1 Packing OUTER PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TM-771A-1"
     },
     {
       "code": "5002CY00041",
       "name": "Housing791-1 OUTER",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "TM-791-1"
     },
     {
       "code": "6002BZ00030",
       "name": "Housing791-1 Packing OUTER PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TM-791-1"
     },
     {
       "code": "5002CY00044",
       "name": "Housing806-1(OUTER)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "TM-806A-1"
     },
     {
       "code": "5002CY00054",
       "name": "Housing860-1",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "TM-860A-1"
     },
     {
       "code": "6002BZ00041",
       "name": "Housing860-1 Packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TM-860A-1"
     },
     {
       "code": "5001CY00140",
       "name": "Incoming Terminal Plate [2015 Backup Die]",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "51207042A"
     },
     {
       "code": "5004BM00084",
       "name": "Incoming Terminal Plate [2015 Backup Die] Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "51207042A"
     },
     {
       "code": "6001BZ00017",
       "name": "Incoming Terminal Plate [2015 Backup Die] Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "51207042A"
     },
     {
       "code": "6001BZ00054",
       "name": "Incoming Terminal Plate Plating Packing(Thailand)INPUT CONNECTOR Stamping Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "51207042AA"
     },
     {
       "code": "5004BM00117",
       "name": "Incoming Terminal Plate Plating (Thailand)INPUT CONNECTOR Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "51207042AA"
     },
     {
       "code": "5001CY00167",
       "name": "Incoming Terminal Plate(Thailand)INPUT CONNECTOR Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "51207042AA"
     },
     {
       "code": "6002BZ00009",
       "name": "INFLATOR BARCKET LH PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "5036909-AA"
     },
     {
       "code": "6002BZ00008",
       "name": "INFLATOR BARCKET RH PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "5037025-AA"
     },
     {
       "code": "5002CY00010",
       "name": "INFLATOR BRACKET LH stamping",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "5036909-AA"
     },
     {
       "code": "5002CY00008",
       "name": "INFLATOR BRACKET RH stamping",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "5037025-AA"
     },
     {
       "code": "5003YZ00029",
       "name": "INNER(Al) Die casting",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "11-712A-1"
     },
     {
       "code": "5003YZ00034",
       "name": "INNER(Al) Die casting",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "11-728A-1"
     },
     {
       "code": "5003YZ00035",
       "name": "INNER(Al) Die casting",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "11-711C-1"
     },
     {
       "code": "5003DM00001",
       "name": "INNER(Al) Die casting Deburr Shot blast",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "11-712A-1"
     },
     {
       "code": "5003DM00006",
       "name": "INNER(Al) Die casting Deburr Shot blast",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "11-728A-1"
     },
     {
       "code": "5003DM00007",
       "name": "INNER(Al) Die casting Deburr Shot blast",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "11-711C-1"
     },
     {
       "code": "5003JJ00016",
       "name": "INNER(Al) Die casting Deburr Shot blast CNC",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "11-712A-1"
     },
     {
       "code": "5003JJ00017",
       "name": "INNER(Al) Die casting Deburr Shot blast CNC",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "11-728A-1"
     },
     {
       "code": "5003JJ00018",
       "name": "INNER(Al) Die casting Deburr Shot blast CNC",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "11-711C-1"
     },
     {
       "code": "6003BZ00005",
       "name": "INNER(Al) Die casting Deburr Shot blast CNC PACKING",
-      "department": "Aluminum Die Casting - Packaging Production Line"
+      "department": "Aluminum Die Casting - Packaging Production Line",
+      "specification": "11-728A-1"
     },
     {
       "code": "6003BZ00006",
       "name": "INNER(Al) Die casting Deburr Shot blast CNC PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "11-711C-1"
     },
     {
       "code": "6003BZ00018",
       "name": "INNER(Al) Die casting Deburr Shot blast CNC PACKINGCast Aluminum Bracket712-1 Deburring Shot Blasting Packing",
-      "department": "Aluminum Die Casting - Packaging Production Line"
+      "department": "Aluminum Die Casting - Packaging Production Line",
+      "specification": "11-712A-1"
     },
     {
       "code": "5003YZ00042",
       "name": "INNER Casting",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "TM-865A-2"
     },
     {
       "code": "5003PW00012",
       "name": "INNER Casting Deburring Shot Blasting",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "TM-865A-2"
     },
     {
       "code": "5003JJ00023",
       "name": "INNER Casting  Deburring Shot Blasting Machining",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "TM-865A-2"
     },
     {
       "code": "6003BZ00012",
       "name": "INNER Casting Deburring Shot Blasting Machining Packing",
-      "department": "Aluminum Die Casting - Packaging Production Line"
+      "department": "Aluminum Die Casting - Packaging Production Line",
+      "specification": "TM-865A-2"
     },
     {
       "code": "5002CY00070",
       "name": "INNER(Inner Plate Sleeve669-2)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "11-669A-2"
     },
     {
       "code": "6002BZ00050",
       "name": "INNER PACKING(Inner Plate Sleeve669-2 Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "11-669A-2"
     },
     {
       "code": "6001BZ00358",
       "name": "INPUT TERMINAL RCCB C60 Steel Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "HRB64569"
     },
     {
       "code": "5004BM00176",
       "name": "INPUT TERMINAL RCCB C60 Steel Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "HRB64569"
     },
     {
       "code": "5001CY00137",
       "name": "INPUT TERMINAL RCCB C60 Steel Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "HRB64569"
     },
     {
       "code": "6001ZZ00095",
       "name": "LC DIFFUSE 100A EZ 12 WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QWKDE3100EZ12-S"
     },
     {
       "code": "6001ZZ00096",
       "name": "LC DIFFUSE 100A EZ 18 WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QWKDE3100EZ18-S"
     },
     {
       "code": "6001ZZ00097",
       "name": "LC DIFFUSE 100A EZ 24 WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QWKDE3100EZ24-S"
     },
     {
       "code": "6001ZZ00098",
       "name": "LC DIFFUSE 100A EZ 30 WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QWKDE3100EZ30-S"
     },
     {
       "code": "6001ZZ00099",
       "name": "LC DIFFUSE 100A EZ 36 WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QWKDE3100EZ36-S"
     },
     {
       "code": "6001ZZ00100",
       "name": "LC DIFFUSE 100A EZ 42 WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QWKDE3100EZ42-S"
     },
     {
       "code": "6001ZZ00108",
       "name": "LC DIFFUSE 100A LU 12 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3100LU12-S"
     },
     {
       "code": "6001ZZ00109",
       "name": "LC DIFFUSE 100A LU 18 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3100LU18-S"
     },
     {
       "code": "6001ZZ00110",
       "name": "LC DIFFUSE 100A LU 24 WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QWKDE3100LU24-S"
     },
     {
       "code": "6001ZZ00111",
       "name": "LC DIFFUSE 100A LU 30 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3100LU30-S"
     },
     {
       "code": "6001ZZ00112",
       "name": "LC DIFFUSE 100A LU 36 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3100LU36-S"
     },
     {
       "code": "6001ZZ00113",
       "name": "LC DIFFUSE 100A LU 42 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3100LU42-S"
     },
     {
       "code": "6001ZZ00101",
       "name": "LC DIFFUSE 250A EZ 12 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3250EZ12-S"
     },
     {
       "code": "6001ZZ00102",
       "name": "LC DIFFUSE 250A EZ 18 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3250EZ18-S"
     },
     {
       "code": "6001ZZ00103",
       "name": "LC DIFFUSE 250A EZ 24 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3250EZ24-S"
     },
     {
       "code": "6001ZZ00104",
       "name": "LC DIFFUSE 250A EZ 30 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3250EZ30-S"
     },
     {
       "code": "6001ZZ00105",
       "name": "LC DIFFUSE 250A EZ 36 WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QWKDE3250EZ36-S"
     },
     {
       "code": "6001ZZ00106",
       "name": "LC DIFFUSE 250A EZ 42 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3250EZ42-S"
     },
     {
       "code": "6001ZZ00107",
       "name": "LC DIFFUSE 250A EZ 48 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3250EZ48-S"
     },
     {
       "code": "6001ZZ00114",
       "name": "LC DIFFUSE 250A LU 12 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3250LU12-S"
     },
     {
       "code": "6001ZZ00115",
       "name": "LC DIFFUSE 250A LU 18 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3250LU18-S"
     },
     {
       "code": "6001ZZ00116",
       "name": "LC DIFFUSE 250A LU 24 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3250LU24-S"
     },
     {
       "code": "6001ZZ00117",
       "name": "LC DIFFUSE 250A LU 30 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3250LU30-S"
     },
     {
       "code": "6001ZZ00118",
       "name": "LC DIFFUSE 250A LU 36 WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QWKDE3250LU36-S"
     },
     {
       "code": "6001ZZ00119",
       "name": "LC DIFFUSE 250A LU 42 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3250LU42-S"
     },
     {
       "code": "6001ZZ00120",
       "name": "LC DIFFUSE 250A LU 48 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKDE3250LU48-S"
     },
     {
       "code": "6001ZZ00121",
       "name": "LC PROJECT 100A EZ 12 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKPE3100EZ12-S"
     },
     {
       "code": "6001ZZ00122",
       "name": "LC PROJECT 100A EZ 18 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKPE3100EZ18-S"
     },
     {
       "code": "6001ZZ00123",
       "name": "LC PROJECT 100A EZ 24 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKPE3100EZ24-S"
     },
     {
       "code": "6001ZZ00124",
       "name": "LC PROJECT 100A EZ 30 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKPE3100EZ30-S"
     },
     {
       "code": "6001ZZ00125",
       "name": "LC PROJECT 100A EZ 36 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKPE3100EZ36-S"
     },
     {
       "code": "6001ZZ00126",
       "name": "LC PROJECT 100A EZ 42 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKPE3100EZ42-S"
     },
     {
       "code": "6001ZZ00127",
       "name": "LC PROJECT 250A EZ 12 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKPE3250EZ12-S"
     },
     {
       "code": "6001ZZ00128",
       "name": "LC PROJECT 250A EZ 18 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKPE3250EZ18-S"
     },
     {
       "code": "6001ZZ00129",
       "name": "LC PROJECT 250A EZ 24 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKPE3250EZ24-S"
     },
     {
       "code": "6001ZZ00130",
       "name": "LC PROJECT 250A EZ 30 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKPE3250EZ30-S"
     },
     {
       "code": "6001ZZ00131",
       "name": "LC PROJECT 250A EZ 36 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKPE3250EZ36-S"
     },
     {
       "code": "6001ZZ00132",
       "name": "LC PROJECT 250A EZ 42 WAYS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "QWKPE3250EZ42-S"
     },
     {
       "code": "6001ZZ00222",
       "name": "LOAD CENTER EZ 100A 12WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100EZ12G/SN-S"
     },
     {
       "code": "6001ZZ00253",
       "name": "LOAD CENTER EZ 100A 12WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100EZ12G/SNE-S"
     },
     {
       "code": "6001ZZ00227",
       "name": "LOAD CENTER EZ 100A 12WAYS W bottom feed",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HLC312EZ100E-S"
     },
     {
       "code": "6001ZZ00254",
       "name": "LOAD CENTER EZ 100A 18WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100EZ18G/SN-S"
     },
     {
       "code": "6001ZZ00255",
       "name": "LOAD CENTER EZ 100A 18WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100EZ18G/SNE-S"
     },
     {
       "code": "6001ZZ00300",
       "name": "LOAD CENTER EZ 100A 18W bottom feed S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HLC318EZ100E-S"
     },
     {
       "code": "6001ZZ00136",
       "name": "LOAD CENTER EZ 100A 24WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100EZ24G/SN-S-J"
     },
     {
       "code": "6001ZZ00148",
       "name": "LOAD CENTER EZ 100A 24WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100EZ24G/SN-S"
     },
     {
       "code": "6001ZZ00256",
       "name": "LOAD CENTER EZ 100A 24WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100EZ24G/SNE-S"
     },
     {
       "code": "6001ZZ00301",
       "name": "LOAD CENTER EZ 100A 24W bottom feed S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HLC324EZ100E-S"
     },
     {
       "code": "6001ZZ00257",
       "name": "LOAD CENTER EZ 100A 30WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100EZ30G/SN-S"
     },
     {
       "code": "6001ZZ00258",
       "name": "LOAD CENTER EZ 100A 30WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100EZ30G/SNE-S"
     },
     {
       "code": "6001ZZ00302",
       "name": "LOAD CENTER EZ 100A 30W bottom feed S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HLC330EZ100E-S"
     },
     {
       "code": "6001ZZ00259",
       "name": "LOAD CENTER EZ 100A 36WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100EZ36G/SN-S"
     },
     {
       "code": "6001ZZ00260",
       "name": "LOAD CENTER EZ 100A 36WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100EZ36G/SNE-S"
     },
     {
       "code": "6001ZZ00303",
       "name": "LOAD CENTER EZ 100A 36W bottom feed S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "S9HLC336EZ100E-S"
     },
     {
       "code": "6001ZZ00218",
       "name": "LOAD CENTER EZ 100A 42WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100EZ42G/SN-S"
     },
     {
       "code": "6001ZZ00261",
       "name": "LOAD CENTER EZ 100A 42WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100EZ42G/SNE-S"
     },
     {
       "code": "6001ZZ00274",
       "name": "LOAD CENTER EZ 250A 12WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ12G/SN-S"
     },
     {
       "code": "6001ZZ00275",
       "name": "LOAD CENTER EZ 250A 12WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ12G/SNE-S"
     },
     {
       "code": "6001ZZ00277",
       "name": "LOAD CENTER EZ 250A 18WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ18G/SNE-S"
     },
     {
       "code": "6001ZZ00279",
       "name": "LOAD CENTER EZ 250A 24WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ24G/SNE-S"
     },
     {
       "code": "6001ZZ00281",
       "name": "LOAD CENTER EZ 250A 30WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ30G/SNE-S"
     },
     {
       "code": "6001ZZ00283",
       "name": "LOAD CENTER EZ 250A 36WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ36G/SNE-S"
     },
     {
       "code": "6001ZZ00285",
       "name": "LOAD CENTER EZ 250A 42WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ42G/SNE-S"
     },
     {
       "code": "6001ZZ00219",
       "name": "LOAD CENTER EZ 250A 48WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ48G/SN-S"
     },
     {
       "code": "6001ZZ00286",
       "name": "LOAD CENTER EZ 250A 48WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ48G/SNE-S"
     },
     {
       "code": "6001ZZ00262",
       "name": "LOAD CENTER LUG 100A 12WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100L12G/SN-S"
     },
     {
       "code": "6001ZZ00264",
       "name": "LOAD CENTER LUG 100A 18WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100L18G/SN-S"
     },
     {
       "code": "6001ZZ00265",
       "name": "LOAD CENTER LUG 100A 18WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100L18G/SNE-S"
     },
     {
       "code": "6001ZZ00266",
       "name": "LOAD CENTER LUG 100A 24WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100L24G/SN-S"
     },
     {
       "code": "6001ZZ00267",
       "name": "LOAD CENTER LUG 100A 24WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100L24G/SNE-S"
     },
     {
       "code": "6001ZZ00268",
       "name": "LOAD CENTER LUG 100A 30WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100L30G/SN-S"
     },
     {
       "code": "6001ZZ00269",
       "name": "LOAD CENTER LUG 100A 30WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100L30G/SNE-S"
     },
     {
       "code": "6001ZZ00270",
       "name": "LOAD CENTER LUG 100A 36WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100L36G/SN-S"
     },
     {
       "code": "6001ZZ00271",
       "name": "LOAD CENTER LUG 100A 36WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100L36G/SNE-S"
     },
     {
       "code": "6001ZZ00272",
       "name": "LOAD CENTER LUG 100A 42WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100L42G/SN-S"
     },
     {
       "code": "6001ZZ00273",
       "name": "LOAD CENTER LUG 100A 42WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-100L42G/SNE-S"
     },
     {
       "code": "6001ZZ00216",
       "name": "LOAD CENTER LUG 250A 12WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250L12G/SN-S"
     },
     {
       "code": "6001ZZ00287",
       "name": "LOAD CENTER LUG 250A 12WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250L12G/SNE-S"
     },
     {
       "code": "6001ZZ00288",
       "name": "LOAD CENTER LUG 250A 18WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250L18G/SN-S"
     },
     {
       "code": "6001ZZ00289",
       "name": "LOAD CENTER LUG 250A 18WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250L18G/SNE-S"
     },
     {
       "code": "6001ZZ00290",
       "name": "LOAD CENTER LUG 250A 24WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250L24G/SN-S"
     },
     {
       "code": "6001ZZ00291",
       "name": "LOAD CENTER LUG 250A 24WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250L24G/SNE-S"
     },
     {
       "code": "6001ZZ00292",
       "name": "LOAD CENTER LUG 250A 30WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250L30G/SN-S"
     },
     {
       "code": "6001ZZ00293",
       "name": "LOAD CENTER LUG 250A 30WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250L30G/SNE-S"
     },
     {
       "code": "6001ZZ00294",
       "name": "LOAD CENTER LUG 250A 36WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250L36G/SN-S"
     },
     {
       "code": "6001ZZ00295",
       "name": "LOAD CENTER LUG 250A 36WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250L36G/SNE-S"
     },
     {
       "code": "6001ZZ00296",
       "name": "LOAD CENTER LUG 250A 42WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250L42G/SN-S"
     },
     {
       "code": "6001ZZ00221",
       "name": "LOAD CENTER LUG 250A 48WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250L48G/SN-S"
     },
     {
       "code": "6001ZZ00305",
       "name": "LOAD CENTER VS EZ 100A 12WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3100EZ12G/S-S"
     },
     {
       "code": "6001ZZ00306",
       "name": "LOAD CENTER VS EZ 100A 18WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3100EZ18G/S-S"
     },
     {
       "code": "6001ZZ00307",
       "name": "LOAD CENTER VS EZ 100A 24WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3100EZ24G/S-S"
     },
     {
       "code": "6001ZZ00308",
       "name": "LOAD CENTER VS EZ 100A 30WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3100EZ30G/S-S"
     },
     {
       "code": "6001ZZ00309",
       "name": "LOAD CENTER VS EZ 100A 36WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3100EZ36G/S-S"
     },
     {
       "code": "6001ZZ00310",
       "name": "LOAD CENTER VS EZ 100A 42WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3100EZ42G/S-S"
     },
     {
       "code": "6001ZZ00220",
       "name": "LOAD CENTER VS EZ 250A 12WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250EZ12G/S-S"
     },
     {
       "code": "6001ZZ00276",
       "name": "LOAD CENTER VS EZ 250A 18WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ18G/SN-S"
     },
     {
       "code": "6001ZZ00317",
       "name": "LOAD CENTER VS EZ 250A 18WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250EZ18G/S-S"
     },
     {
       "code": "6001ZZ00278",
       "name": "LOAD CENTER VS EZ 250A 24WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ24G/SN-S"
     },
     {
       "code": "6001ZZ00318",
       "name": "LOAD CENTER VS EZ 250A 24WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250EZ24G/S-S"
     },
     {
       "code": "6001ZZ00280",
       "name": "LOAD CENTER VS EZ 250A 30WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ30G/SN-S"
     },
     {
       "code": "6001ZZ00319",
       "name": "LOAD CENTER VS EZ 250A 30WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250EZ30G/S-S"
     },
     {
       "code": "6001ZZ00282",
       "name": "LOAD CENTER VS EZ 250A 36WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ36G/SN-S"
     },
     {
       "code": "6001ZZ00320",
       "name": "LOAD CENTER VS EZ 250A 36WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250EZ36G/S-S"
     },
     {
       "code": "6001ZZ00284",
       "name": "LOAD CENTER VS EZ 250A 42WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-250EZ42G/SN-S"
     },
     {
       "code": "6001ZZ00321",
       "name": "LOAD CENTER VS EZ 250A 42WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250EZ42G/S-S"
     },
     {
       "code": "6001ZZ00215",
       "name": "LOAD CENTER VS EZ 250A 48WAYS",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250EZ48G/S-S"
     },
     {
       "code": "6001ZZ00311",
       "name": "LOAD CENTER VS MAIN LUG 100A 12WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3100L12G/S-S"
     },
     {
       "code": "6001ZZ00312",
       "name": "LOAD CENTER VS MAIN LUG 100A 18WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3100L18G/S-S"
     },
     {
       "code": "6001ZZ00313",
       "name": "LOAD CENTER VS MAIN LUG 100A 24WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3100L24G/S-S"
     },
     {
       "code": "6001ZZ00314",
       "name": "LOAD CENTER VS MAIN LUG 100A 30WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3100L30G/S-S"
     },
     {
       "code": "6001ZZ00315",
       "name": "LOAD CENTER VS MAIN LUG 100A 36WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3100L36G/S-S"
     },
     {
       "code": "6001ZZ00316",
       "name": "LOAD CENTER VS MAIN LUG 100A 42WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3100L42G/S-S"
     },
     {
       "code": "6001ZZ00322",
       "name": "LOAD CENTER VS MAIN LUG 250A 12WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250L12G/S-S"
     },
     {
       "code": "6001ZZ00323",
       "name": "LOAD CENTER VS MAIN LUG 250A 18WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250L18G/S-S"
     },
     {
       "code": "6001ZZ00324",
       "name": "LOAD CENTER VS MAIN LUG 250A 24WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250L24G/S-S"
     },
     {
       "code": "6001ZZ00325",
       "name": "LOAD CENTER VS MAIN LUG 250A 30WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250L30G/S-S"
     },
     {
       "code": "6001ZZ00326",
       "name": "LOAD CENTER VS MAIN LUG 250A 36WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250L36G/S-S"
     },
     {
       "code": "6001ZZ00327",
       "name": "LOAD CENTER VS MAIN LUG 250A 42WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250L42G/S-S"
     },
     {
       "code": "6001ZZ00328",
       "name": "LOAD CENTER VS MAIN LUG 250A 48WAYS S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3250L48G/S-S"
     },
     {
       "code": "1005CY01065",
       "name": "LOAD TERM-HI",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187055AA"
     },
     {
       "code": "5001TK00144",
       "name": "LOAD TERM-HI Clinching",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "48187055AA"
     },
     {
       "code": "5001BM00145",
       "name": "LOAD TERM-HI Clinching Plating",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187055AA"
     },
     {
       "code": "6001BZ03297",
       "name": "LOAD TERM-HI Clinching Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187055AA"
     },
     {
       "code": "1005CY00918",
       "name": "LOAD TERM-LOW",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187255AA"
     },
     {
       "code": "5001TK00240",
       "name": "LOAD TERM-LOW Clinching",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187255AA"
     },
     {
       "code": "5004BM00089",
       "name": "LOAD TERM-LOW Clinching Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187255AA"
     },
     {
       "code": "6001BZ00027",
       "name": "LOAD TERM-LOW Clinching Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187255AA"
     },
     {
       "code": "5002CY00038",
       "name": "LOWER BASE",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-042B-2-2-1"
     },
     {
       "code": "6002BZ00022",
       "name": "LOWER BRACKET STAMPING PAKCING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1188934-AA"
     },
     {
       "code": "5004BM00129",
       "name": "Lower Coil Terminal Heat Treatment(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113791670114"
     },
     {
       "code": "6001BZ00068",
       "name": "Lower Coil Terminal Heat Treatment Tin Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113791670114"
     },
     {
       "code": "5004BM00130",
       "name": "Lower Coil Terminal Heat Treatment Tin Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113791670114"
     },
     {
       "code": "5001CY00179",
       "name": "Lower Coil Terminal(Thailand)In-Die Tapping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "W113791670114"
     },
     {
       "code": "5002CY00003",
       "name": "LOWER HOUSING Lower Sheet Metal3173",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "10383173"
     },
     {
       "code": "6002BZ00003",
       "name": "LOWER HOUSING PACKING Lower Sheet Metal3173 Packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "10383173"
     },
     {
       "code": "5002CY00036",
       "name": "LOWER PLATE",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-042B-2-1"
     },
     {
       "code": "5002CY00015",
       "name": "LOWER SHEET METAL ASSEMBLY Lower Sheet Metal3086(After Design Change)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "10383086"
     },
     {
       "code": "5002HJ00086",
       "name": "LOWER SHEET METAL ASSEMBLY WELDING Lower Sheet Metal3086 Welding(After Design Change)",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "10383086"
     },
     {
       "code": "5002JJ00098",
       "name": "LOWER SHEET METAL ASSEMBLY WELDING REVIT CNC Lower Sheet Metal3086 Welding Punch Riveting CNC(After Design Change)",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "10383086"
     },
     {
       "code": "6002BZ00015",
       "name": "LOWER SHEET METAL ASSEMBLY WELDING REVIT CNC PAKCING Lower Sheet Metal3086 Welding Punch Riveting CNC Packing(After Design Change)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "10383086"
     },
     {
       "code": "5002CY00016",
       "name": "LOWER SHEET METAL ASSEMBLY WELDING RIVETLower Sheet Metal3086 Welding Punch Riveting(After Design Change)",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "10383086"
     },
     {
       "code": "5002CY00002",
       "name": "LOW HOUSING Lower Sheet Metal3180",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "10383180"
     },
     {
       "code": "6002BZ00002",
       "name": "LOW HOUSING PACKING Lower Sheet Metal3180 Packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "10383180"
     },
     {
       "code": "6001BZ00059",
       "name": "Low-Rating Terminal Silver Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1A64409"
     },
     {
       "code": "5004BM00119",
       "name": "Low-Rating Terminal Silver Plating(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1A64409"
     },
     {
       "code": "1005CY01066",
       "name": "Low-Rating Terminal(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "S1A64409"
     },
     {
       "code": "6002BZ00034",
       "name": "LWR PLATE Packing(Lower Bracket103-2 Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "MC-103A-2"
     },
     {
       "code": "5002CY00045",
       "name": "LWR PLATE Stamping(Lower Bracket103-2)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "MC-103A-2"
     },
     {
       "code": "5001CY00149",
       "name": "Magnet Loop Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187070AA"
     },
     {
       "code": "5004BM00093",
       "name": "Magnet Loop Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187070AA"
     },
     {
       "code": "6001BZ00030",
       "name": "Magnet Loop Stamping Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187070AA"
     },
     {
       "code": "5004BM00095",
       "name": "Magtrip frame 03(Thailand) Degreasing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187065AA"
     },
     {
       "code": "6001BZ00021",
       "name": "Magtrip frame 03(Thailand) Degreasing Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187065AA"
     },
     {
       "code": "5004BM00096",
       "name": "Magtrip frame 04(Thailand) Degreasing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187065AA"
     },
     {
       "code": "6001BZ00022",
       "name": "Magtrip frame 04(Thailand) Degreasing Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187065AA"
     },
     {
       "code": "6001ZZ00179",
       "name": "MAX9 Enclosure 1 row 15 Mod Flush",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "MX9E2115F-S"
     },
     {
       "code": "6001ZZ00196",
       "name": "MAX9 Enclosure 1 row 15 Mod Surface",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "MX9E2115S-S"
     },
     {
       "code": "6001ZZ00197",
       "name": "MAX9 Enclosure 2 row 15 Mod Flush",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "MX9E2215F-S"
     },
     {
       "code": "6001ZZ00198",
       "name": "MAX9 Enclosure 2 row 15 Mod Surface",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "MX9E2215S-S"
     },
     {
       "code": "6001ZZ00199",
       "name": "MAX9 Enclosure 3 row 15 Mod Flush",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "MX9E2315F-S"
     },
     {
       "code": "6001ZZ00200",
       "name": "MAX9 Enclosure 3 row 15 Mod Surface",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "MX9E2315S-S"
     },
     {
       "code": "6001ZZ00201",
       "name": "MAX9 Enclosure 4 row 15 Mod Flush",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "MX9E2415F-S"
     },
     {
       "code": "6001ZZ00202",
       "name": "MAX9 Enclosure 4 row 15 Mod Surface",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "MX9E2415S-S"
     },
     {
       "code": "5001CY00133",
       "name": "Mechanism Left Side Plate(L)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187088AA"
     },
     {
       "code": "5001TK00298",
       "name": "Mechanism Left Side Plate(L)Tapping",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "48187088AA"
     },
     {
       "code": "5004BM00079",
       "name": "Mechanism Left Side Plate(L) Tapping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187088AA"
     },
     {
       "code": "6001BZ00015",
       "name": "Mechanism Left Side Plate(L) Tapping Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187088AA"
     },
     {
       "code": "5001CY00134",
       "name": "Mechanism Right Side Plate(R)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187089AA"
     },
     {
       "code": "5001TK00299",
       "name": "Mechanism Right Side Plate(R)Tapping",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "48187089AA"
     },
     {
       "code": "5004BM00080",
       "name": "Mechanism Right Side Plate(R) Tapping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187089AA"
     },
     {
       "code": "6001BZ00019",
       "name": "Mechanism Right Side Plate(R) Tapping Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187089AA"
     },
     {
       "code": "5001SY00004",
       "name": "METAL BOX + COVER 4 WAY + Powder caoting + Screen",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "NMS-4W"
     },
     {
       "code": "5001SY00005",
       "name": "METAL BOX + COVER 6 WAY + Powder caoting + Screen",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "NMS-6W"
     },
     {
       "code": "5001SY00006",
       "name": "METAL BOX + COVER 8 WAY + Powder caoting + Screen",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "NMS-8W"
     },
     {
       "code": "5001SY00007",
       "name": "METAL BOX + COVER 10 WAY + Powder caoting + Screen",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "NMS-10W"
     },
     {
       "code": "5001SY00008",
       "name": "METAL BOX + COVER 14 WAY + Powder caoting + Screen",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "NMS-14W"
     },
     {
       "code": "5001CY00188",
       "name": "METAL BOX 4/6 WAY-Step5",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU30887"
     },
     {
       "code": "5001HJ00009",
       "name": "METAL BOX 4/6 WAY-Step5 + Spot Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "BRU30887"
     },
     {
       "code": "5001PT00022",
       "name": "METAL BOX 4/6 WAY-Step5 + Spot Welding + Powder caoting",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU30887"
     },
     {
       "code": "5001CY00192",
       "name": "METAL BOX 8/10 WAY-Step5",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU30888"
     },
     {
       "code": "5001HJ00010",
       "name": "METAL BOX 8/10 WAY-Step5 + Spot Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "BRU30888"
     },
     {
       "code": "5001PT00023",
       "name": "METAL BOX 8/10 WAY-Step5 + Spot Welding + Powder caoting",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU30888"
     },
     {
       "code": "5001CY00196",
       "name": "METAL BOX 14 WAY-Step5",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU30889"
     },
     {
       "code": "5001HJ00011",
       "name": "METAL BOX 14 WAY-Step5 + Spot Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "BRU30889"
     },
     {
       "code": "5001PT00024",
       "name": "METAL BOX 14 WAY-Step5 + Spot Welding + Powder caoting",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU30889"
     },
     {
       "code": "5002HJ00001",
       "name": "METAL BOX ASSEMBLY 2 + 6, 6 WAY Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "NVE96523"
     },
     {
       "code": "5004PT00060",
       "name": "METAL BOX ASSEMBLY 2 + 6, 6 WAY Welding Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "NVE96523"
     },
     {
       "code": "5001CY00025",
       "name": "Metal BoxDBF45 Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "826849-S-J"
     },
     {
       "code": "5001MJ00224",
       "name": "Metal BoxDBF45 Stamping Riveting",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "826849-S-J"
     },
     {
       "code": "5001ZW00247",
       "name": "Metal BoxDBF45 Stamping Riveting Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "826849-S-J"
     },
     {
       "code": "5001CY00027",
       "name": "Metal BoxDBF60 Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "826936-S-J"
     },
     {
       "code": "5001MJ00226",
       "name": "Metal BoxDBF60 Stamping Riveting",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "826936-S-J"
     },
     {
       "code": "5001ZW00249",
       "name": "Metal BoxDBF60 Stamping Riveting Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "826936-S-J"
     },
     {
       "code": "5001CY00026",
       "name": "Metal BoxDBS30 Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "827111-S-J"
     },
     {
       "code": "5001MJ00225",
       "name": "Metal BoxDBS30 Stamping Riveting",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "827111-S-J"
     },
     {
       "code": "5001ZW00248",
       "name": "Metal BoxDBS30 Stamping Riveting Bending",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "827111-S-J"
     },
     {
       "code": "5004PT00001",
       "name": "Metal BoxDBS30 Stamping Riveting Bending Coating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "827111-S-J"
     },
     {
       "code": "5001CY00028",
       "name": "Metal BoxDBS45 Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "827198-S-J"
     },
     {
       "code": "5001MJ00227",
       "name": "Metal BoxDBS45 Stamping Riveting",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "827198-S-J"
     },
     {
       "code": "5001ZW00250",
       "name": "Metal BoxDBS45 Stamping Riveting Bending",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "827198-S-J"
     },
     {
       "code": "5004PT00002",
       "name": "Metal BoxDBS45 Stamping Riveting Bending Coating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "827198-S-J"
     },
     {
       "code": "5001CY00029",
       "name": "Metal BoxDBS60 Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "827285-S-J"
     },
     {
       "code": "5001MJ00228",
       "name": "Metal BoxDBS60 Stamping Riveting",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "827285-S-J"
     },
     {
       "code": "5001ZW00251",
       "name": "Metal BoxDBS60 Stamping Riveting Bending",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "827285-S-J"
     },
     {
       "code": "5004PT00003",
       "name": "Metal BoxDBS60 Stamping Riveting Bending Coating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "827285-S-J"
     },
     {
       "code": "5004PT00065",
       "name": "METAL BOX SUB ASSEMBLY 2 + 10, 10 WAY Welding Coating",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "NVE96530"
     },
     {
       "code": "5004PT00068",
       "name": "METAL BOX SUB ASSEMBLY 2 + 14, 14 WAY Coating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NVE96538"
     },
     {
       "code": "5004PT00073",
       "name": "METAL BOX SUB ASSEMBLY 2 + 18, 18 WAY Coating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NVE96545"
     },
     {
       "code": "5001CY00197",
       "name": "METAL COVER 4 WAY-Step2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU30890"
     },
     {
       "code": "5001PT00012",
       "name": "METAL COVER 4 WAY-Step2 + Powder caoting",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU30890"
     },
     {
       "code": "5001SY00017",
       "name": "METAL COVER 4 WAY-Step2 + Powder caoting + Screen",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU30890"
     },
     {
       "code": "5001CY00198",
       "name": "METAL COVER 6 WAY-Step2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU30891"
     },
     {
       "code": "5001PT00013",
       "name": "METAL COVER 6 WAY-Step2 + Powder caoting",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU30891"
     },
     {
       "code": "5001SY00018",
       "name": "METAL COVER 6 WAY-Step2 + Powder caoting + Screen",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU30891"
     },
     {
       "code": "5001CY00199",
       "name": "METAL COVER 8 WAY-Step2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU30892"
     },
     {
       "code": "5001PT00014",
       "name": "METAL COVER 8 WAY-Step2 + Powder caoting",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU30892"
     },
     {
       "code": "5001SY00019",
       "name": "METAL COVER 8 WAY-Step2 + Powder caoting + Screen",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU30892"
     },
     {
       "code": "5001ZW00288",
       "name": "METAL COVER 10WAY-Step2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU30893"
     },
     {
       "code": "5001PT00015",
       "name": "METAL COVER 10WAY-Step2 + Powder caoting",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU30893"
     },
     {
       "code": "5001SY00020",
       "name": "METAL COVER 10WAY-Step2 + Powder caoting + Screen",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU30893"
     },
     {
       "code": "5001ZW00289",
       "name": "METAL COVER 14WAY-Step2",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU30894"
     },
     {
       "code": "5001PT00016",
       "name": "METAL COVER 14WAY-Step2 + Powder caoting",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU30894"
     },
     {
       "code": "5001SY00021",
       "name": "METAL COVER 14WAY-Step2 + Powder caoting + Screen",
-      "department": "Powder Coating Production Line"
+      "department": "Powder Coating Production Line",
+      "specification": "BRU30894"
     },
     {
       "code": "6002BZ00031",
       "name": "Metal Plate795-1 Packing PLATE PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TM-795-1"
     },
     {
       "code": "5002CY00042",
       "name": "Metal Plate795-1 PLATE",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "TM-795-1"
     },
     {
       "code": "5001CY00147",
       "name": "MIDDLE TERMINAL Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187096AA"
     },
     {
       "code": "5001TK00300",
       "name": "MIDDLE TERMINAL Stamping Clinching",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "48187096AA"
     },
     {
       "code": "5004BM00091",
       "name": "MIDDLE TERMINAL Stamping Clinching Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187096AA"
     },
     {
       "code": "5004BZ00146",
       "name": "MIDDLE TERMINAL Stamping Clinching Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187096AA"
     },
     {
       "code": "5001CY00168",
       "name": "MID-TERM/HEATER-1JR Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187254"
     },
     {
       "code": "6001BZ00055",
       "name": "MID-TERM/HEATER-1JR Stamping Cleaning Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187254"
     },
     {
       "code": "5001TK00241",
       "name": "MID-TERM/HEATER-1JR Stamping Tapping",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "48187254"
     },
     {
       "code": "5004QX00154",
       "name": "MID-TERM/HEATER-1JR Stamping Tapping Cleaning",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187254"
     },
     {
       "code": "6001BZ00039",
       "name": "Moving Contact BridgeB Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W213898370211C"
     },
     {
       "code": "6001BZ00080",
       "name": "MOVING CONTACT PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "00726093AG"
     },
     {
       "code": "6001BZ00110",
       "name": "MOVING CONTACT PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "00726093A-BOI"
     },
     {
       "code": "6001ZZ00304",
       "name": "Neutral terminal kit S/A",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "SDANB13-S"
     },
     {
       "code": "6001ZZ00235",
       "name": "NEW 08 45 WAY DOOR ASS DBF/DBS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBF45ASSYNT-S"
     },
     {
       "code": "6002BZ00038",
       "name": "ORIFICE PLATE Packing(Metal Plate062-2 Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SB-062A-2"
     },
     {
       "code": "5002CY00051",
       "name": "ORIFICE PLATE Stamping(Metal Plate062-2)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-062A-2"
     },
     {
       "code": "5002CY00075",
       "name": "OUTER (FE) Bracket100-1",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-100B-1"
     },
     {
       "code": "6002BZ00054",
       "name": "OUTER (FE) PACKING Bracket100-1 Packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SB-100B-1"
     },
     {
       "code": "5002CY00060",
       "name": "OUTER(Housing087-1)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-087-1"
     },
     {
       "code": "6002BZ00033",
       "name": "OUTER PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TM-806A-1"
     },
     {
       "code": "6002BZ00045",
       "name": "OUTER Packing(Housing087-1 Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SB-087-1"
     },
     {
       "code": "5002CY00053",
       "name": "OUTER STAMPING",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "TM-865A-1"
     },
     {
       "code": "6002BZ00040",
       "name": "OUTER STAMPING PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TM-865A-1"
     },
     {
       "code": "5004BM00085",
       "name": "Outgoing Terminal Plate [2015 Backup Die] Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "51207029A"
     },
     {
       "code": "6001BZ00018",
       "name": "Outgoing Terminal Plate [2015 Backup Die] Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "51207029A"
     },
     {
       "code": "6001BZ00051",
       "name": "Outgoing Terminal PlateS/AAssembly Packing(Thailand)OUTPUT PHASE CONNECTOR ASSEMBLY PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1B13956"
     },
     {
       "code": "5001ZZ00301",
       "name": "Outgoing Terminal PlateS/AAssembly(Thailand)OUTPUT PHASE CONNECTOR ASSEMBLY",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "S1B13956"
     },
     {
       "code": "5001CY00163",
       "name": "Outgoing Terminal PlateS/AReinforcing Plate Local Reinforcing Plate Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "GHM12023"
     },
     {
       "code": "5004BM00113",
       "name": "Outgoing Terminal PlateS/AReinforcing Plate Zinc Plating Local Reinforcing Plate Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "GHM12023"
     },
     {
       "code": "5004BM00112",
       "name": "Outgoing Terminal PlateS/A Tin Plating(Thailand)OUTPUT PHASE CONNECTOR Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1B13954"
     },
     {
       "code": "5001CY00310",
       "name": "Output [15年备模]",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "51207029A"
     },
     {
       "code": "6001BZ00289",
       "name": "OUTPUT TERMINAL RCCB C60 steel Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "HRB64565"
     },
     {
       "code": "5004BM00174",
       "name": "OUTPUT TERMINAL RCCB C60 steel Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "HRB64565"
     },
     {
       "code": "5001CY00124",
       "name": "OUTPUT TERMINAL RCCB C60 steel Stampimg",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "HRB64565"
     },
     {
       "code": "5001CY00150",
       "name": "PADLOCKING Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187864AA"
     },
     {
       "code": "5004BM00094",
       "name": "PADLOCKING Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187864AA"
     },
     {
       "code": "6001BZ00031",
       "name": "PADLOCKING Stamping Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187864AA"
     },
     {
       "code": "5002MJ00037",
       "name": "PASSIVE BRACKET ASSEMBLY",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "SB-042B-2-2"
     },
     {
       "code": "5003YZ00054",
       "name": "PASSIVE BRACKET CASTING",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "SB-068C-2"
     },
     {
       "code": "5003PW00008",
       "name": "PASSIVE BRACKET CASTING DEBURR SHOT BLAST",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "SB-068C-2"
     },
     {
       "code": "5003JJ00009",
       "name": "PASSIVE BRACKET CASTING DEBURR SHOT BLAST CNC",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "SB-068C-2"
     },
     {
       "code": "6003BZ00009",
       "name": "PASSIVE BRACKET CASTING DEBURR SHOT BLAST CNC PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SB-068C-2"
     },
     {
       "code": "5003YZ00030",
       "name": "PF Inner base-LH(LHD) Die Casting",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "7186910112"
     },
     {
       "code": "5003DM00002",
       "name": "PF Inner base-LH(LHD) Die Casting Deburring",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "7186910112"
     },
     {
       "code": "6003BZ00001",
       "name": "PF Inner base-LH(LHD) Die Casting Deburring Packing",
-      "department": "Aluminum Die Casting - Packaging Production Line"
+      "department": "Aluminum Die Casting - Packaging Production Line",
+      "specification": "7186910112"
     },
     {
       "code": "5003YZ00032",
       "name": "PF Inner base-LH(RHD) Die Casting",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "7186910122"
     },
     {
       "code": "5003DM00004",
       "name": "PF Inner base-LH(RHD) Die Casting Deburring",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "7186910122"
     },
     {
       "code": "6003BZ00003",
       "name": "PF Inner base-LH(RHD) Die Casting Deburring Packing",
-      "department": "Aluminum Die Casting - Packaging Production Line"
+      "department": "Aluminum Die Casting - Packaging Production Line",
+      "specification": "7186910122"
     },
     {
       "code": "5003YZ00031",
       "name": "PF Inner base-RH(LHD) Die Casting",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "8186910112"
     },
     {
       "code": "5003DM00003",
       "name": "PF Inner base-RH(LHD) Die Casting Deburring",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "8186910112"
     },
     {
       "code": "6003BZ00002",
       "name": "PF Inner base-RH(LHD) Die Casting Deburring Packing",
-      "department": "Aluminum Die Casting - Packaging Production Line"
+      "department": "Aluminum Die Casting - Packaging Production Line",
+      "specification": "8186910112"
     },
     {
       "code": "5003YZ00033",
       "name": "PF Inner base-RH(RHD) Die Casting",
-      "department": "Aluminum Die Casting - Die Casting Production Line"
+      "department": "Aluminum Die Casting - Die Casting Production Line",
+      "specification": "8186910122"
     },
     {
       "code": "5003DM00005",
       "name": "PF Inner base-RH(RHD) Die Casting Deburring",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "8186910122"
     },
     {
       "code": "6003BZ00004",
       "name": "PF Inner base-RH(RHD) Die Casting Deburring Packing",
-      "department": "Aluminum Die Casting - Packaging Production Line"
+      "department": "Aluminum Die Casting - Packaging Production Line",
+      "specification": "8186910122"
     },
     {
       "code": "5004BM00144",
       "name": "PLAQUE DE CDE MOTEUR CONT Heat treatment",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113791700123"
     },
     {
       "code": "6001BZ00089",
       "name": "PLAQUE DE CDE MOTEUR CONT NOYAU PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113791700123"
     },
     {
       "code": "5004BM00145",
       "name": "PLAQUE DE CDE MOTEUR CONT Zinc phosphate",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113791700123"
     },
     {
       "code": "5004BM00142",
       "name": "PLAQUE DE NOYAU Heat treatment",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113790780113"
     },
     {
       "code": "6001BZ00088",
       "name": "PLAQUE DE NOYAU PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113790780113"
     },
     {
       "code": "5004BM00143",
       "name": "PLAQUE DE NOYAU Zinc phosphate",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113790780113"
     },
     {
       "code": "5005BM00015",
       "name": "PLATE EDP(Metal Plate658-3 EDP Coating)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "11-658A-3"
     },
     {
       "code": "5004BM00140",
       "name": "PLATE MAGNET Heat treatment",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113790770133"
     },
     {
       "code": "6001BZ00087",
       "name": "PLATE MAGNET PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113790770133"
     },
     {
       "code": "5004BM00141",
       "name": "PLATE MAGNET Zinc phosphate",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113790770133"
     },
     {
       "code": "5002CY00071",
       "name": "PLATE(Metal Plate658-3)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "11-658A-3"
     },
     {
       "code": "6002BZ00051",
       "name": "PLATE PACKING(Metal Plate658-3 EDP Coating Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "11-658A-3"
     },
     {
       "code": "5002CY00058",
       "name": "PLATE(Plate6500)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1186500-AA"
     },
     {
       "code": "5005BM00011",
       "name": "PLATE(Plate6500 EDP Coating)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1186500-AA"
     },
     {
       "code": "6002BZ00042",
       "name": "PLATE(Plate6500 EDP Coating Packing)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1186500-AA"
     },
     {
       "code": "5001CY00123",
       "name": "PLATE SLIDE Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187114AA"
     },
     {
       "code": "5004BM00078",
       "name": "PLATE SLIDE Stamping Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187114AA"
     },
     {
       "code": "6001BZ00006",
       "name": "PLATE SLIDE Stamping Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187114AA"
     },
     {
       "code": "6001ZZ00004",
       "name": "PRE ASSY BOX LC600",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "75503826-LC600"
     },
     {
       "code": "6001ZZ00156",
       "name": "Resi9 circuit ID label sheet",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9ACIL-S"
     },
     {
       "code": "6001ZZ00149",
       "name": "Resi9 Earth conductor tag",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9AECT-S"
     },
     {
       "code": "6001ZZ00152",
       "name": "Resi9 ME 1 row 2 modules surface",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9HME102S-S"
     },
     {
       "code": "6001ZZ00166",
       "name": "Resi9 ME 1 row 4 modules surface",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9HME104S-S"
     },
     {
       "code": "6001ZZ00167",
       "name": "Resi9 ME 1 row 6 modules surface",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9HME106S-S"
     },
     {
       "code": "6001ZZ00171",
       "name": "Resi9 pin type busbar 15M 100A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9XPH115-S"
     },
     {
       "code": "6001ZZ00169",
       "name": "Resi9 pole filler 8 modules",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9APF08-S"
     },
     {
       "code": "6001ZZ00170",
       "name": "Resi9 RCD neutral/earth bar 4 ways",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9ANB04-S"
     },
     {
       "code": "6001ZZ00155",
       "name": "Resi9 SB 1 row 10 modules flush",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9HSB110F-S"
     },
     {
       "code": "6001ZZ00158",
       "name": "Resi9 SB 1 row 15 modules flush",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9HSB115F-S"
     },
     {
       "code": "6001ZZ00161",
       "name": "Resi9 SB 1 row 15 modules surface",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9HSB115S-S"
     },
     {
       "code": "6001ZZ00153",
       "name": "Resi9 SB 2 rows 15 modules flush",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9HSB215F-S"
     },
     {
       "code": "6001ZZ00162",
       "name": "Resi9 SB 2 rows 15 modules surface",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9HSB215S-S"
     },
     {
       "code": "6001ZZ00160",
       "name": "Resi9 SB 3 rows 15 modules flush",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9HSB315F-S"
     },
     {
       "code": "6001ZZ00163",
       "name": "Resi9 SB 3 rows 15 modules surface",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9HSB315S-S"
     },
     {
       "code": "6001ZZ00151",
       "name": "Resi9 SB 4 rows 15 modules flush",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9HSB415F-S"
     },
     {
       "code": "6001ZZ00164",
       "name": "Resi9 SB 4 rows 15 modules surface",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9HSB415S-S"
     },
     {
       "code": "6001ZZ00172",
       "name": "Resi9 SB spare door assy 1 row 10M",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9ADA110-S"
     },
     {
       "code": "6001ZZ00173",
       "name": "Resi9 SB spare door assy 1 row 15M",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9ADA115-S"
     },
     {
       "code": "6001ZZ00174",
       "name": "Resi9 SB spare door assy 2 row 15M",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9ADA215-S"
     },
     {
       "code": "6001ZZ00175",
       "name": "Resi9 SB spare door assy 3 row 15M",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9ADA315-S"
     },
     {
       "code": "6001ZZ00176",
       "name": "Resi9 SB spare door assy 4 row 15M",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "R9ADA415-S"
     },
     {
       "code": "5002CY00079",
       "name": "RETAINER BRACKET L",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1185582"
     },
     {
       "code": "5002CY00078",
       "name": "RETAINER BRACKET R",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1185581"
     },
     {
       "code": "6002BZ00056",
       "name": "RETAINER COMP KNEE AFTER FG",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1185577-AD"
     },
     {
       "code": "5002HJ00097",
       "name": "RETAINER COMP KNEE AFTER WELDING",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "1185577-AD"
     },
     {
       "code": "6002BZ00021",
       "name": "RETAINER COMP PA WELDING PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "1188928-AA"
     },
     {
       "code": "5002CY00080",
       "name": "RETAINER KNEE",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1185578-AC"
     },
     {
       "code": "6002BZ00006",
       "name": "RETAINER RING ASSEMBLY PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "5036755-AA"
     },
     {
       "code": "5002MJ00085",
       "name": "RETAINER RING ASSEMBLY Riveting",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "5036755-AA"
     },
     {
       "code": "5002CY00009",
       "name": "RETAINER RING ASSEMBLY stamping",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "5036755-AA"
     },
     {
       "code": "5002CY00077",
       "name": "RETAINER SIDE PLATE L",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1185580"
     },
     {
       "code": "5002CY00076",
       "name": "RETAINER SIDE PLATE R",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1185579"
     },
     {
       "code": "5003YZ00053",
       "name": "RHS  ACTIVE  BRACKET CASTING",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "SB-069A-1"
     },
     {
       "code": "5003PW00011",
       "name": "RHS  ACTIVE  BRACKET CASTING  DEBURR SHOT BLAST",
-      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line"
+      "department": "Aluminum Die Casting - Grinding and Shot Blasting Production Line",
+      "specification": "SB-069A-1"
     },
     {
       "code": "5003JJ00022",
       "name": "RHS  ACTIVE  BRACKET CASTING  DEBURR SHOT BLAST CNC",
-      "department": "Aluminum Die Casting - CNC Production line"
+      "department": "Aluminum Die Casting - CNC Production line",
+      "specification": "SB-069A-1"
     },
     {
       "code": "6003BZ00020",
       "name": "RHS  ACTIVE  BRACKET CASTING  DEBURR SHOT BLAST CNC PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SB-069A-1"
     },
     {
       "code": "6001BZ00073",
       "name": "Rigid Outgoing Terminal Plate Plating Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1B13952"
     },
     {
       "code": "5001BM00003",
       "name": "Rigid Outgoing Terminal Plate Plating(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "S1B13952"
     },
     {
       "code": "5001CY00180",
       "name": "Rigid Outgoing Terminal Plate(Thailand)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "S1B13952"
     },
     {
       "code": "6002BZ00055",
       "name": "RING FG PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TH-534-1"
     },
     {
       "code": "5002CY00083",
       "name": "RR UPPER BRACKET(Upper Bracket0026)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1170026-AA"
     },
     {
       "code": "6001ZZ00234",
       "name": "SE2 2WAY SURFACE ENCLOSURE",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLSE2-S"
     },
     {
       "code": "6001ZZ00330",
       "name": "SE4 4WAY SURFACE ENCLOSURE",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLSE4-S"
     },
     {
       "code": "6001ZZ00214",
       "name": "SE6 6WAY SURFACE ENCLOSURE",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLSE6-S"
     },
     {
       "code": "5002CY00074",
       "name": "Seat Cup538-2-2",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "TH-538-2-2"
     },
     {
       "code": "5004BM00114",
       "name": "Secondary Latch Lever Heat Treatment Secondary Latch Stamping heat treatment",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "1T48187062AA"
     },
     {
       "code": "6001BZ00049",
       "name": "Secondary Latch Lever Packing Secondary Latch Stamping heat treatment packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "1T48187062AA"
     },
     {
       "code": "5001CY00160",
       "name": "Secondary Latch Lever Secondary Latch Stamping",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "1T48187062AA"
     },
     {
       "code": "5001CY00200",
       "name": "SHIELD ASSY.RESOLVER 1-20(ATLAS)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "3507-2027"
     },
     {
       "code": "5005BM00003",
       "name": "SHIELD ASSY,RESOLVER 1-20 stamping Degreasing (ATLAS)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "3507-2027"
     },
     {
       "code": "6002BZ00059",
       "name": "SHIELD ASSY,RESOLVER 1-20 stamping Degreasing Packing (ATLAS)",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "3507-2027"
     },
     {
       "code": "5002CY00001",
       "name": "SHIELD RESOLVER STATOR stamping",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "3605-2367"
     },
     {
       "code": "6002BZ00001",
       "name": "SHIELD RESOLVER STATOR stamping Degreasing Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "3605-2367"
     },
     {
       "code": "6001ZZ00299",
       "name": "SINGLE PHASE ACCESSORIES S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3-CON1PH-S"
     },
     {
       "code": "5001CY00178",
       "name": "SORTIE BOBINE BORNE A1 ( Tap indie)",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "W113791660114"
     },
     {
       "code": "5004BM00127",
       "name": "SORTIE BOBINE BORNE A1 ( Tap indie) HEAT TREAT",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113791660114"
     },
     {
       "code": "5004BM00128",
       "name": "SORTIE BOBINE BORNE A1 ( Tap indie) HEAT TREAT TIN PLATING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113791660114"
     },
     {
       "code": "6001BZ00067",
       "name": "SORTIE BOBINE BORNE A1 ( Tap indie) HEAT TREAT TIN PLATING PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W113791660114"
     },
     {
       "code": "5002CY00039",
       "name": "Spacer496-2 Orifice Plate",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "TH-496A-2"
     },
     {
       "code": "6002BZ00028",
       "name": "Spacer496-2 Packing Orifice Plate packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TH-496A-2"
     },
     {
       "code": "5002CY00064",
       "name": "SPACER PLATE 1(Bracket092-1-4)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-092-1-4"
     },
     {
       "code": "5002CY00065",
       "name": "SPACER PLATE 2(Bracket092-1-5)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-092-1-5"
     },
     {
       "code": "6001ZZ00205",
       "name": "Spare 15 WAY DOOR ASS DBF/DBS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBF15ASSY-S"
     },
     {
       "code": "6001ZZ00207",
       "name": "Spare 30 WAY DOOR ASS DBF/DBS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBF30ASSY-S"
     },
     {
       "code": "6001ZZ00230",
       "name": "Spare 45 WAY DOOR ASS DBF/DBS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBF45ASSY-S"
     },
     {
       "code": "6001ZZ00210",
       "name": "Spare 60 WAY DOOR ASS DBF/DBS",
-      "department": "Assembly Production Line"
+      "department": "Assembly Production Line",
+      "specification": "PDLDBF60ASSY-S"
     },
     {
       "code": "6001BZ00033",
       "name": "SPHINX-GV2P-L_BUTTON_LOCKING_LEVER Packing(GV2Latch Lever Cleaning Packing)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "NNZ54017"
     },
     {
       "code": "6001ZZ00226",
       "name": "Square D Classic LC Extension Box",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "QO3EB-S"
     },
     {
       "code": "6001ZZ00329",
       "name": "Square D VisiSmart LC Extension Box S/A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDVS3EB-S"
     },
     {
       "code": "5002CY00013",
       "name": "STAY UPPER 0092 Stamping",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1189785-AA"
     },
     {
       "code": "5002CY00063",
       "name": "STOPPER RING(Bracket092-1-3)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-092-1-3"
     },
     {
       "code": "5001CY00129",
       "name": "SWITCH MECHANISM FLANGE STAMPING",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "AAV18695"
     },
     {
       "code": "5004QX00151",
       "name": "SWITCH MECHANISM FLANGE STAMPING DEGREASING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV18695"
     },
     {
       "code": "6001BZ00012",
       "name": "SWITCH MECHANISM FLANGE STAMPING DEGREASING PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV18695"
     },
     {
       "code": "5001CY00130",
       "name": "SWITCH MECHANISM FRAME STAMPING",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "AAV18687"
     },
     {
       "code": "5004QX00152",
       "name": "SWITCH MECHANISM FRAME STAMPING DEGREASING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV18687"
     },
     {
       "code": "6001BZ00013",
       "name": "SWITCH MECHANISM FRAME STAMPING DEGREASING PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV18687"
     },
     {
       "code": "5001CY00128",
       "name": "SWITCH MECHANISM PLATE PRESSED FIT STAMPING",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "AAV62978"
     },
     {
       "code": "5004QX00150",
       "name": "SWITCH MECHANISM PLATE PRESSED FIT STAMPING DEGREASING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV62978"
     },
     {
       "code": "6001BZ00011",
       "name": "SWITCH MECHANISM PLATE PRESSED FIT STAMPING DEGREASING PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV62978"
     },
     {
       "code": "5001CY00127",
       "name": "SWITCH MECHANISM PLATE STAMPING",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "AAV18694"
     },
     {
       "code": "5004QX00149",
       "name": "SWITCH MECHANISM PLATE STAMPING DEGREASING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV18694"
     },
     {
       "code": "6001BZ00010",
       "name": "SWITCH MECHANISM PLATE STAMPING DEGREASING PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV18694"
     },
     {
       "code": "5001CY00131",
       "name": "SWITCH MECHANISM ROD 1 PRESSED FIT STAMPING",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "AAV62979"
     },
     {
       "code": "5004QX00153",
       "name": "SWITCH MECHANISM ROD 1 PRESSED FIT STAMPING DEGREASING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV62979"
     },
     {
       "code": "6001BZ00014",
       "name": "SWITCH MECHANISM ROD 1 PRESSED FIT STAMPING DEGREASING PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV62979"
     },
     {
       "code": "5001CY00125",
       "name": "SWITCH MECHANISM ROD 1 STAMPING",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "AAV18685"
     },
     {
       "code": "5004QX00147",
       "name": "SWITCH MECHANISM ROD 1 STAMPING DEGREASING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV18685"
     },
     {
       "code": "6001BZ00008",
       "name": "SWITCH MECHANISM ROD 1 STAMPING DEGREASING PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV18685"
     },
     {
       "code": "5001CY00126",
       "name": "SWITCH MECHANISM ROD 2 STAMPING",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "AAV18686"
     },
     {
       "code": "5004QX00148",
       "name": "SWITCH MECHANISM ROD 2 STAMPING DEGREASING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV18686"
     },
     {
       "code": "6001BZ00009",
       "name": "SWITCH MECHANISM ROD 2 STAMPING DEGREASING PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "AAV18686"
     },
     {
       "code": "6001BZ00048",
       "name": "Terminal ClampB Tin Plating Packing(Thailand)jaw plating packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "51207154AB"
     },
     {
       "code": "5004BM00110",
       "name": "Terminal ClampB Tin Plating(Thailand)jaw plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "51207154AB"
     },
     {
       "code": "6001BZ00071",
       "name": "TERMINAL Connection(W/O SILVER TIP) Packing Outgoing Terminal-Steel Cleaning Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1B22372"
     },
     {
       "code": "6001BZ00070",
       "name": "TERMINAL Connection(W/ SILVER TIP) Packing Outgoing Terminal-Copper Cleaning Packing(Thailand)",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "S1B22575"
     },
     {
       "code": "6001BZ00037",
       "name": "TERMINAL CONNEXION BRASS PACKING(GV2Terminal Cleaning Packing(Copper))",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "W816365250111"
     },
     {
       "code": "6001ZZ00134",
       "name": "Terminal Lug&Screw 25A Assy",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "51207611A(BOI)-S"
     },
     {
       "code": "6001ZZ00135",
       "name": "Terminal Lug&Screw 25A Assy",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "51207611A(NON)-S"
     },
     {
       "code": "5002CY00012",
       "name": "TIE BAR 0088 Stamping (Bracket1189792)",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "1189792-AA"
     },
     {
       "code": "6002BZ00007",
       "name": "TRAVEL LIMITER PACKING Travel Limiter8575 Packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "10378575"
     },
     {
       "code": "5002CY00006",
       "name": "TRAVEL LIMITER Travel Limiter8575",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "10378575"
     },
     {
       "code": "5001ZW00286",
       "name": "U BOX 750mm Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53716"
     },
     {
       "code": "5001CY00084",
       "name": "U BOX 750mm Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53716"
     },
     {
       "code": "5001TK00238",
       "name": "U BOX 750mm Stamping Bending Welding Tapping",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "BRU53716"
     },
     {
       "code": "5001ZW00287",
       "name": "U BOX 900mm Bending",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53771"
     },
     {
       "code": "5001CY00087",
       "name": "U BOX 900mm Process 3",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "BRU53771"
     },
     {
       "code": "5001HJ00207",
       "name": "U BOX 900mm Stamping Bending Welding",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "BRU53771"
     },
     {
       "code": "5001TK00239",
       "name": "U BOX 900mm Stamping Bending Welding Tapping",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "BRU53771"
     },
     {
       "code": "5001PT00315",
       "name": "U BOX ASM Extension box Dual Diffuse",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "NAT18895"
     },
     {
       "code": "5001CY00096",
       "name": "U BOX SIDE COVER Process 4",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "NVE96549"
     },
     {
       "code": "6002BZ00037",
       "name": "UPPER ACTIVE ASSEMBLY Packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SB-068C-1"
     },
     {
       "code": "5002CY00048",
       "name": "UPPER ACTIVE ASSEMBLY Stamping 1",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-068B-1-1"
     },
     {
       "code": "5002CY00049",
       "name": "UPPER ACTIVE ASSEMBLY Stamping 2",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-068B-1-2"
     },
     {
       "code": "5002CY00050",
       "name": "UPPER ACTIVE ASSEMBLY Stamping 3",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-068B-1-3"
     },
     {
       "code": "5002HJ00093",
       "name": "UPPER ACTIVE ASSEMBLY Weld",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "SB-068C-1"
     },
     {
       "code": "5005BM00010",
       "name": "UPPER CUP ED Coating",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SB-059A-2"
     },
     {
       "code": "6002BZ00036",
       "name": "UPPER CUP Packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "SB-059A-2"
     },
     {
       "code": "5002CY00047",
       "name": "UPPER CUP Stamping",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "SB-059A-2"
     },
     {
       "code": "6002BZ00004",
       "name": "UPPER HOUSING PACKING Upper Sheet Metal3172 Packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "10383172"
     },
     {
       "code": "6002BZ00005",
       "name": "UPPER HOUSING PACKING Upper Sheet Metal3179 Packing",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "10383179"
     },
     {
       "code": "5002CY00004",
       "name": "UPPER HOUSING Upper Sheet Metal3172",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "10383172"
     },
     {
       "code": "5002CY00005",
       "name": "UPPER HOUSING Upper Sheet Metal3179",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "10383179"
     },
     {
       "code": "5001CY00151",
       "name": "Upper Link(Thailand)Upper Link",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187060"
     },
     {
       "code": "6001BZ00032",
       "name": "Upper Link Zinc Plating Packing(Thailand)Upper Link Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187060"
     },
     {
       "code": "5004BM00097",
       "name": "Upper Link Zinc Plating(Thailand)Upper Link Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187060"
     },
     {
       "code": "6002BZ00026",
       "name": "Upper Side Plate(UPPER PLATE)Packing PACKING",
-      "department": "Automotive Packaging Production Line"
+      "department": "Automotive Packaging Production Line",
+      "specification": "TM-755A-1"
     },
     {
       "code": "5002MJ00089",
       "name": "Upper Side Plate(UPPER PLATE)Riveting RIVETING",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "TM-755A-1"
     },
     {
       "code": "5002CY00035",
       "name": "Upper Side Plate(UPPER PLATE) Stamping + Rivet",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "TM-755A-1"
     },
     {
       "code": "5002HJ00090",
       "name": "Upper Side Plate(UPPER PLATE)Welding WELDING",
-      "department": "Welding、Riveting、Tapping Production Line"
+      "department": "Welding、Riveting、Tapping Production Line",
+      "specification": "TM-755A-1"
     },
     {
       "code": "5004QX00155",
       "name": "UVR LATCH DEGREASING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187076"
     },
     {
       "code": "6001BZ00007",
       "name": "UVR LATCH PACKING",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187076"
     },
     {
       "code": "5001CY00165",
       "name": "UVR LATCH STAMPING",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187076"
     },
     {
       "code": "6001ZZ00225",
       "name": "Visi Smart CU 12 + 12 Way 100A",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL124T-S"
     },
     {
       "code": "6001ZZ00224",
       "name": "Visismart CU 12 + 12Way Split bus 63A 30mA",
-      "department": "H9 Assembly Production Line"
+      "department": "H9 Assembly Production Line",
+      "specification": "SDEL112X12RCBO63T-S"
     },
     {
       "code": "5001CY00141",
       "name": "YOKE",
-      "department": "Electrical Stamping Production Line"
+      "department": "Electrical Stamping Production Line",
+      "specification": "48187064AA"
     },
     {
       "code": "5004BM00090",
       "name": "YOKE Plating",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187064AA"
     },
     {
       "code": "6001BZ00028",
       "name": "YOKE Plating Packing",
-      "department": "Electrical Packaging Production Line"
+      "department": "Electrical Packaging Production Line",
+      "specification": "48187064AA"
     },
     {
       "code": "5002CY00084",
       "name": "支架 79113-X1T05",
-      "department": "Automotive Stamping Production Line"
+      "department": "Automotive Stamping Production Line",
+      "specification": "79113-X1T05"
     }
   ],
   "rows": [
