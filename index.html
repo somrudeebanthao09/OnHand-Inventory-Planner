@@ -1327,16 +1327,18 @@
       }
       .part-req-status-tabs {
         display: grid !important;
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         gap: 6px !important;
         width: 100% !important;
       }
       .part-req-status-tabs .safety-pill {
         width: 100% !important;
         justify-content: center !important;
-        padding: 7px 4px !important;
+        padding: 7px 6px !important;
         font-size: 12px !important;
-        white-space: nowrap !important;
+        line-height: 1.25 !important;
+        text-align: center !important;
+        white-space: normal !important;
       }
       .part-req-filter-inputs {
         display: grid !important;
@@ -15595,6 +15597,7 @@
     // History Filters, Tabs & Metric Cards
     el('partReqTabAllBtn')?.addEventListener('click', () => setPartReqFilterTab('all'));
     el('partReqTabPendingBtn')?.addEventListener('click', () => setPartReqFilterTab('pending'));
+    el('partReqTabPartialBtn')?.addEventListener('click', () => setPartReqFilterTab('partial'));
     el('partReqTabIssuedBtn')?.addEventListener('click', () => setPartReqFilterTab('issued'));
     el('partReqCardAll')?.addEventListener('click', () => setPartReqFilterTab('all'));
     el('partReqCardPending')?.addEventListener('click', () => setPartReqFilterTab('pending'));
