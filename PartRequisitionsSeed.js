@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-14T10:02:11.042Z",
+  "updatedAt": "2026-11-16T01:24:08.218Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "33c98a14-f800-44d5-8257-e320e82dee0d0028b4585e344697bd6affd6db8455d0",
-    "wh": "abb0960a-7027-493a-8689-445eab6e1a84b2144f9c16884aaaa863d261af57ef13",
-    "expiresAt": 1794671893521
+    "req": "",
+    "wh": "f60dd6f6-d297-4ed0-b239-e304cb396beb4f7625a029a948e3a03b32f113af7f42",
+    "expiresAt": 1794811639252
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -119,22 +119,28 @@ window.PART_REQUISITIONS_SEED = {
       "shift": "A",
       "requesterNote": "Test",
       "requestedAt": "14/11/2026 16:18:34",
-      "status": "pending",
-      "locationsSummary": "",
+      "status": "issued",
+      "locationsSummary": "Loc#1: CC11 (100 PCS)",
       "locationsJson": "[]",
-      "issuerName": "",
-      "issuerUsername": "",
+      "issuerName": "บี",
+      "issuerUsername": "wh",
       "issuerNote": "",
-      "issuedAt": "",
-      "hasPhoto": false,
-      "photoTakenAt": "",
-      "updatedAt": "14/11/2026 16:18:34",
-      "photoUrl": "",
+      "issuedAt": "16/11/2026 08:24:04",
+      "hasPhoto": true,
+      "photoTakenAt": "16/11/2026 08:24:04",
+      "updatedAt": "16/11/2026 08:24:04",
+      "photoUrl": "part-photos/REQ-20261114-14486.jpg",
       "deleted": false,
       "deletedAt": "",
-      "locations": [],
+      "locations": [
+        {
+          "location": "CC11",
+          "qty": 100
+        }
+      ],
       "issuePhotoDataUrl": "",
-      "photoAttachmentUrl": ""
+      "photoAttachmentUrl": "",
+      "leadTimeSummary": ""
     },
     {
       "reqId": "REQ-20261114-79144",
