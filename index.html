@@ -6639,7 +6639,7 @@
         <td style="text-align:center;color:var(--muted);font-size:13.5px;padding:11px 6px">${rowNum}</td>
         <td style="padding:11px 8px">
           <div style="display:flex;align-items:center;gap:6px">
-            <strong class="code" style="color:var(--teal);font-size:14px">${esc(m.materialCode)}</strong>
+            <strong class="code" style="color:var(--teal);font-size:14px;cursor:pointer;text-decoration:underline" onclick="event.stopPropagation();window.appOpenLotDetail('${esc(m.materialCode)}')" title="คลิกเพื่อดู Lot และคลังว่ามาจากไหน">${esc(m.materialCode)}</strong>
             <button class="btn soft" type="button" style="padding:2px 7px;font-size:11.5px;flex-shrink:0" onclick="event.stopPropagation();window.appOpenLotDetail('${esc(m.materialCode)}')" title="ดู Lot ในคลัง">📦 Lot</button>
           </div>
         </td>
@@ -7239,7 +7239,7 @@
         <td style="text-align:center;color:#64748b;font-size:13px;font-weight:600;padding:10px 6px">${idx + 1}</td>
         <td style="padding:10px 8px;white-space:nowrap">
           <div style="display:flex;align-items:center;gap:6px">
-            <strong class="code" style="color:var(--teal);cursor:pointer;font-size:13.5px" onclick="el('moDetailModal').classList.remove('show');window.appOpenOrderDetail('${esc(it.materialCode)}')">${esc(it.materialCode)}</strong>
+            <strong class="code" style="color:var(--teal);cursor:pointer;font-size:13.5px;text-decoration:underline" onclick="el('moDetailModal').classList.remove('show');window.appOpenLotDetail('${esc(it.materialCode)}')" title="คลิกเพื่อดู Lot และคลังว่ามาจากไหน">${esc(it.materialCode)}</strong>
             <button class="btn soft" type="button" style="padding:2px 7px;font-size:11.5px;height:24px;border-radius:12px" onclick="el('moDetailModal').classList.remove('show');window.appOpenLotDetail('${esc(it.materialCode)}')" title="ดู Lot ในคลัง">📦 Lot</button>
           </div>
         </td>
