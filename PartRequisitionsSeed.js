@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-16T09:54:21.574Z",
+  "updatedAt": "2026-11-16T09:59:04.520Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -21,11 +21,39 @@ window.PART_REQUISITIONS_SEED = {
       "สมฤดี บรรเทา (Somrudee)",
       "บี",
       "นิตยา",
-      "นันทะกานต์"
+      "นันทะกานต์",
+      "อุทิศ"
     ],
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261116-16809",
+      "requestDate": "16/11/2026 16:58:36",
+      "requestedAt": "16/11/2026 16:58:36",
+      "moNumber": "MO-20261111-003332",
+      "ppbomNumber": "PPBOM-20261111-003619",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00131",
+      "materialName": "Hinge Cap",
+      "specification": "BRU53753",
+      "requestQty": 30,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "req",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "16/11/2026 16:58:36",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261116-60510",
       "requestDate": "16/11/2026 16:54:20",
@@ -43,15 +71,27 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
-      "issuerName": "",
-      "issuedAt": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CC-01-13B",
+          "qty": 100
+        }
+      ],
+      "locationsSummary": "Loc#1: CC-01-13B (100 PCS)",
+      "issuerName": "อุทิศ",
+      "issuedAt": "16/11/2026 16:57:50",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "16/11/2026 16:54:20",
-      "photoTakenAt": ""
+      "updatedAt": "16/11/2026 16:57:50",
+      "photoTakenAt": "16/11/2026 16:57:50",
+      "locationsJson": "[]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "part-photos/REQ-20261116-60510.jpg",
+      "leadTimeSummary": "",
+      "deleted": false,
+      "deletedAt": ""
     },
     {
       "reqId": "REQ-20261116-21562",
