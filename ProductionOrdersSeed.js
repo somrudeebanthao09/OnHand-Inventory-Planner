@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-16T11:18:09.431Z",
+  "snapshotAt": "2026-11-16T11:28:16.764Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
   "count": 14743,
   "orders": [
@@ -5098,8 +5098,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 167000,
+      "consumedQty": 4500,
+      "wipQty": 162500,
       "issuingWarehouse": "Semi-finished Product Warehouse After Plating",
       "requiredTime": "2026-11-16 15:01:34"
     },
@@ -9268,8 +9268,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 938,
+      "consumedQty": 480,
+      "wipQty": 458,
       "issuingWarehouse": "Aluminum Die Casting Semi-Finished Product Warehouse-Waiting Packaging",
       "requiredTime": "2026-11-16 10:25:54"
     },
@@ -9568,8 +9568,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 112,
-      "wipQty": 390,
+      "consumedQty": 252,
+      "wipQty": 250,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Assembly",
       "requiredTime": "2026-11-16 09:28:29"
     },
@@ -9598,8 +9598,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 224,
-      "wipQty": 780,
+      "consumedQty": 504,
+      "wipQty": 500,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Assembly",
       "requiredTime": "2026-11-16 09:28:29"
     },
@@ -9628,8 +9628,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 224,
-      "wipQty": 780,
+      "consumedQty": 504,
+      "wipQty": 500,
       "issuingWarehouse": "Customer Supplied Material Warehouse",
       "requiredTime": "2026-11-16 09:28:29"
     },
@@ -9658,8 +9658,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 224,
-      "wipQty": 780,
+      "consumedQty": 504,
+      "wipQty": 500,
       "issuingWarehouse": "Customer Supplied Material Warehouse",
       "requiredTime": "2026-11-16 09:28:29"
     },
@@ -9688,8 +9688,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 1344,
-      "wipQty": 4680,
+      "consumedQty": 3024,
+      "wipQty": 3000,
       "issuingWarehouse": "Customer Supplied Material Warehouse",
       "requiredTime": "2026-11-16 09:28:29"
     },
@@ -9718,8 +9718,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 112,
-      "wipQty": 390,
+      "consumedQty": 252,
+      "wipQty": 250,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Assembly",
       "requiredTime": "2026-11-16 09:28:29"
     },
