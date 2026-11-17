@@ -1,6 +1,6 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-17T08:34:55.503Z",
-  "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
+  "snapshotAt": "2026-11-17T08:40:19.390Z",
+  "filename": "Export list_Production Material List_1117164019.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15014,
   "orders": [
     {
@@ -7493,13 +7493,13 @@ window.PRODUCTION_ORDERS_SEED = {
       "directTransferQty": 0,
       "directTransferDocs": "",
       "ppbomDemandQty": 5904,
-      "ppbomIssuedQty": 5235,
-      "ppbomUnissuedQty": 669,
+      "ppbomIssuedQty": 5904,
+      "ppbomUnissuedQty": 0,
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
       "consumedQty": 716,
-      "wipQty": 4519,
+      "wipQty": 5188,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Welding",
       "requiredTime": "2026-11-17 11:34:35"
     },
