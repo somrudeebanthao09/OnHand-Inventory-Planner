@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T09:50:07.043Z",
+  "updatedAt": "2026-11-17T09:53:44.463Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -671,7 +671,7 @@ window.PART_REQUISITIONS_SEED = {
       "reqId": "REQ-20261117-86548",
       "requestDate": "17/11/2026 03:28:05",
       "requestedAt": "17/11/2026 03:28:05",
-      "moNumber": "583",
+      "moNumber": 583,
       "ppbomNumber": "",
       "directTransferDocs": "",
       "materialCode": "1005QT00299",
@@ -681,20 +681,34 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
       "requesterName": "จักรกฤษ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "ลาเบล",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CI-02-01C",
+          "qty": 2500,
+          "lot": "2026111301, 2026111401"
+        }
+      ],
+      "locationsSummary": "Loc#1: CI-02-01C (2,500 PCS) [Lot: 2026111301, 2026111401]",
       "onHandLocation": "CI-02-01C (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
       "lotSummary": "2026111301, 2026111401, 2026102701, 2026083001, 2026102401, 2026101601, 2026110901, 2026101701, 2026091401, 2026100501",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "อุทิศ",
+      "issuedAt": "17/11/2026 16:52:37",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "17/11/2026 03:28:06",
-      "photoTakenAt": ""
+      "updatedAt": "17/11/2026 16:52:37",
+      "photoTakenAt": "17/11/2026 16:52:37",
+      "locationsJson": "[{\"location\":\"CI-02-01C\",\"qty\":2500,\"lot\":\"2026111301, 2026111401\"}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "13 ชม. 24 นาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261117-21844",
