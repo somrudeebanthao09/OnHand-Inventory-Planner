@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T08:44:54.075Z",
+  "updatedAt": "2026-11-17T08:47:02.400Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,7 +34,7 @@ window.PART_REQUISITIONS_SEED = {
       "reqId": "REQ-20261117-94101",
       "requestDate": "17/11/2026 15:44:53",
       "requestedAt": "17/11/2026 15:44:53",
-      "moNumber": "3159",
+      "moNumber": 3159,
       "ppbomNumber": "",
       "directTransferDocs": "",
       "materialCode": "1005QT00677",
@@ -44,20 +44,33 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
       "requesterName": "อรรถพร",
-      "requesterUsername": "LeaderB",
+      "requesterUsername": "req",
       "shift": "B",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CC-03-03A",
+          "qty": 1,
+          "lot": "2026102201, 2026103001"
+        }
+      ],
+      "locationsSummary": "Loc#1: CC-03-03A (1 PCS) [Lot: 2026102201, 2026103001]",
       "onHandLocation": "CC-03-03A (Customer Supplied Material Warehouse) | CO-05-12B (Customer Supplied Material Warehouse) | CO-03-03B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
-      "lotSummary": "2026102201, 2026103001, 2026103101, 2026100299, 2026083001, 2026092302, 2026110901, 2026100701, 2026100501",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026102201, 2026103001",
+      "issuerName": "ภิญโญ",
+      "issuedAt": "17/11/2026 15:46:59",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "17/11/2026 15:44:54",
-      "photoTakenAt": ""
+      "updatedAt": "17/11/2026 15:46:59",
+      "photoTakenAt": "17/11/2026 15:46:59",
+      "locationsJson": "[]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "part-photos/REQ-20261117-94101.jpg",
+      "leadTimeSummary": "",
+      "deleted": false,
+      "deletedAt": ""
     },
     {
       "reqId": "REQ-20261117-71512",
