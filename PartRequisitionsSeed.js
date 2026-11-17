@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T06:47:09.115Z",
+  "updatedAt": "2026-11-17T06:47:36.560Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -30,6 +30,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261117-56476",
+      "requestDate": "17/11/2026 13:47:36",
+      "requestedAt": "17/11/2026 13:47:36",
+      "moNumber": "3159",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00624",
+      "materialName": "Load table size A4",
+      "specification": "75503810AA",
+      "requestQty": 65,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CF-01-02B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CH-02-07E (Customer Supplied Material Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly)",
+      "lotSummary": "2026083001, 2026100299, 2026090901",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "17/11/2026 13:47:36",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261117-29031",
       "requestDate": "17/11/2026 13:47:08",
