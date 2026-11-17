@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T10:04:57.323Z",
+  "updatedAt": "2026-11-17T10:05:38.270Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -666,20 +666,34 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "ของไม่ครบตามถุง/Shortage",
       "requesterName": "ภาคภูมิ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "ไม่ระบุ Location",
+          "qty": 68,
+          "lot": "2026111401, 2026111001, 2026111201, 2026111403, 2026111404"
+        }
+      ],
+      "locationsSummary": "Loc#1: ไม่ระบุ Location (68 PCS) [Lot: 2026111401, 2026111001, 2026111201, 2026111403, 2026111404]",
       "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CC-07-03A (Customer Supplied Material Warehouse) | CC-05-07A (Customer Supplied Material Warehouse) | CC-03-05B (Customer Supplied Material Warehouse) | Public area (Customer Supplied Material Warehouse) | CC-09-02A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CO-02-05B (Customer Supplied Material Warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Bending) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Defective Warehouse)",
       "lotSummary": "2026111001, 2026111404, 2026111201, 2026111401, 2026111403, 2026111402, 2026100299, 2026090802, 2026091001, 2026090701, 2026090801, 2026083001, 2026090902, 2026090901, 2026090904, 2026090903, 2026101701",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "นันทะกานต์",
+      "issuedAt": "17/11/2026 17:05:32",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "17/11/2026 03:38:47",
-      "photoTakenAt": ""
+      "updatedAt": "17/11/2026 17:05:32",
+      "photoTakenAt": "17/11/2026 17:05:32",
+      "locationsJson": "[{\"location\":\"ไม่ระบุ Location\",\"qty\":68,\"lot\":\"2026111401, 2026111001, 2026111201, 2026111403, 2026111404\"}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "13 ชม. 26 นาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261117-86548",
