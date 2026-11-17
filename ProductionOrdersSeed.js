@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-17T03:38:55.433Z",
+  "snapshotAt": "2026-11-17T03:49:16.743Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
   "count": 14766,
   "orders": [
@@ -3520,7 +3520,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "6002BZ00029",
       "productName": "Housing771-1 Packing OUTER PACKING",
       "department": "Automotive Post-Processing Production Line",
-      "taskStatus": "Partially Completed",
+      "taskStatus": "Complete",
       "pickStatus": "Fully Issued",
       "materialCode": "5002CY00040",
       "materialName": "Housing771-1 OUTER",
