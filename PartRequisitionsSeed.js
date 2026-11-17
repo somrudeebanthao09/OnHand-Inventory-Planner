@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T07:00:24.430Z",
+  "updatedAt": "2026-11-17T07:03:20.243Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,7 +34,7 @@ window.PART_REQUISITIONS_SEED = {
       "reqId": "REQ-20261117-98566",
       "requestDate": "17/11/2026 13:51:38",
       "requestedAt": "17/11/2026 13:51:38",
-      "moNumber": "3159",
+      "moNumber": 3159,
       "ppbomNumber": "",
       "directTransferDocs": "",
       "materialCode": "1005QT00749",
@@ -44,20 +44,33 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
       "requesterName": "อรรถพร",
-      "requesterUsername": "LeaderB",
+      "requesterUsername": "req",
       "shift": "B",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CF-01-03A",
+          "qty": 51,
+          "lot": "2026110601"
+        }
+      ],
+      "locationsSummary": "Loc#1: CF-01-03A (51 PCS) [Lot: 2026110601]",
       "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CF-01-03A (Customer Supplied Material Warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly)",
-      "lotSummary": "2026083001, 2026100299, 2026090901, 2026110601",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026110601",
+      "issuerName": "ภิญโญ",
+      "issuedAt": "17/11/2026 14:03:15",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "17/11/2026 13:51:38",
-      "photoTakenAt": ""
+      "updatedAt": "17/11/2026 14:03:15",
+      "photoTakenAt": "17/11/2026 14:03:15",
+      "locationsJson": "[]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "part-photos/REQ-20261117-98566.jpg",
+      "leadTimeSummary": "",
+      "deleted": false,
+      "deletedAt": ""
     },
     {
       "reqId": "REQ-20261117-71470",
