@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-17T02:19:00.400Z",
+  "snapshotAt": "2026-11-17T02:28:19.658Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
   "count": 14755,
   "orders": [
@@ -4228,8 +4228,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 51,
-      "wipQty": 99,
+      "consumedQty": 150,
+      "wipQty": 0,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Assembly",
       "requiredTime": "2026-11-16 16:21:43"
     },
@@ -9610,7 +9610,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "6003BZ00004",
       "productName": "PF Inner base-RH(RHD) Die Casting Deburring Packing",
       "department": "Aluminum Die Casting - Post-Processing Production Line",
-      "taskStatus": "Partially Completed",
+      "taskStatus": "Complete",
       "pickStatus": "Fully Issued",
       "materialCode": "5003DM00005",
       "materialName": "PF Inner base-RH(RHD) Die Casting Deburring",
