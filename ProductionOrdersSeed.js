@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-17T05:28:45.209Z",
+  "snapshotAt": "2026-11-17T05:38:44.123Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
   "count": 14851,
   "orders": [
@@ -2843,13 +2843,13 @@ window.PRODUCTION_ORDERS_SEED = {
       "directTransferQty": 0,
       "directTransferDocs": "",
       "ppbomDemandQty": 3852,
-      "ppbomIssuedQty": 0,
-      "ppbomUnissuedQty": 3852,
+      "ppbomIssuedQty": 3852,
+      "ppbomUnissuedQty": 0,
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
       "consumedQty": 0,
-      "wipQty": 0,
+      "wipQty": 3852,
       "issuingWarehouse": "Customer Supplied Material Warehouse",
       "requiredTime": "2026-11-17 10:34:51"
     },
