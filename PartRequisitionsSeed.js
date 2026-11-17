@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T06:51:38.631Z",
+  "updatedAt": "2026-11-17T06:57:25.783Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -121,7 +121,7 @@ window.PART_REQUISITIONS_SEED = {
       "reqId": "REQ-20261117-29031",
       "requestDate": "17/11/2026 13:47:08",
       "requestedAt": "17/11/2026 13:47:08",
-      "moNumber": "3159",
+      "moNumber": 3159,
       "ppbomNumber": "",
       "directTransferDocs": "",
       "materialCode": "1005QT00161",
@@ -131,20 +131,33 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
       "requesterName": "อรรถพร",
-      "requesterUsername": "LeaderB",
+      "requesterUsername": "req",
       "shift": "B",
       "requesterNote": "ไม่พอ",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CD-01-03B",
+          "qty": 65,
+          "lot": "2026111501"
+        }
+      ],
+      "locationsSummary": "Loc#1: CD-01-03B (65 PCS) [Lot: 2026111501]",
       "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
-      "lotSummary": "2026110701",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026111501",
+      "issuerName": "ภิญโญ",
+      "issuedAt": "17/11/2026 13:57:21",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "17/11/2026 13:47:08",
-      "photoTakenAt": ""
+      "updatedAt": "17/11/2026 13:57:21",
+      "photoTakenAt": "17/11/2026 13:57:21",
+      "locationsJson": "[]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "part-photos/REQ-20261117-29031.jpg",
+      "leadTimeSummary": "",
+      "deleted": false,
+      "deletedAt": ""
     },
     {
       "reqId": "REQ-20261117-90395",
