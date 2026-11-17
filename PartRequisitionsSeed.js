@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T10:06:24.490Z",
+  "updatedAt": "2026-11-17T10:07:09.122Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -861,7 +861,7 @@ window.PART_REQUISITIONS_SEED = {
       "reqId": "REQ-20261117-72035",
       "requestDate": "17/11/2026 02:39:31",
       "requestedAt": "17/11/2026 02:39:31",
-      "moNumber": "583",
+      "moNumber": 583,
       "ppbomNumber": "",
       "directTransferDocs": "",
       "materialCode": "1005QT00596",
@@ -871,20 +871,34 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
       "requesterName": "จักรกฤษ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CI-02-06D",
+          "qty": 10,
+          "lot": "2026091001"
+        }
+      ],
+      "locationsSummary": "Loc#1: CI-02-06D (10 PCS) [Lot: 2026091001]",
       "onHandLocation": "CI-02-06D (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CJ-01-09B (Customer Supplied Material Warehouse)",
       "lotSummary": "2026091001, 2026100999, 20261102",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "นันทะกานต์",
+      "issuedAt": "17/11/2026 17:06:58",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "17/11/2026 02:39:31",
-      "photoTakenAt": ""
+      "updatedAt": "17/11/2026 17:06:58",
+      "photoTakenAt": "17/11/2026 17:06:58",
+      "locationsJson": "[{\"location\":\"CI-02-06D\",\"qty\":10,\"lot\":\"2026091001\"}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "14 ชม. 27 นาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261117-80868",
