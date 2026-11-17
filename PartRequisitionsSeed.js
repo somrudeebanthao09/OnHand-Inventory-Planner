@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T04:51:27.762Z",
+  "updatedAt": "2026-11-17T04:51:55.125Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -29,6 +29,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261117-14932",
+      "requestDate": "17/11/2026 11:51:54",
+      "requestedAt": "17/11/2026 11:51:54",
+      "moNumber": "MO-20261109-003229",
+      "ppbomNumber": "PPBOM-20261109-003501",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00751",
+      "materialName": "RECEPTICAL (FLAT)",
+      "specification": "75170174AA",
+      "requestQty": 8,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CG-03-04A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CF-01-01A (Customer Supplied Material Warehouse) | CJ-01-06A (Customer Supplied Material Warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly)",
+      "lotSummary": "2026100601, 2026100901, 2026090901",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "17/11/2026 11:51:54",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261117-87582",
       "requestDate": "17/11/2026 11:51:27",
