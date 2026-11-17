@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T04:51:55.125Z",
+  "updatedAt": "2026-11-17T04:53:10.601Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -29,6 +29,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261117-90395",
+      "requestDate": "17/11/2026 11:53:09",
+      "requestedAt": "17/11/2026 11:53:09",
+      "moNumber": "MO-20261109-003229",
+      "ppbomNumber": "PPBOM-20261109-003501",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00773",
+      "materialName": "SCREW 8-32\\*1-1/4\" (TAPTITE-TORX)",
+      "specification": "75503644AA",
+      "requestQty": 2,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CF-01-05A (Customer Supplied Material Warehouse) | Public area (Purchased parts warehouse) | CI-01-02E (Customer Supplied Material Warehouse) | CI-01-01A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Bending)",
+      "lotSummary": "2026100801, 2026090801, 2026091201, 2026090704, 2026090802, 2026090702, 2026090701, 2026090703, 2026090705, 2026090706, 2026090904, 2026090903, 2026091001, 2026090905, 2026091002, 2026090901, 2026090902",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "17/11/2026 11:53:10",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261117-14932",
       "requestDate": "17/11/2026 11:51:54",
