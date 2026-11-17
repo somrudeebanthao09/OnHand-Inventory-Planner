@@ -1,11 +1,11 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T07:48:52.655Z",
+  "updatedAt": "2026-11-17T08:44:54.075Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "19f0faec-0a0b-4563-b854-cc9d2fef9ef4d5eb889a7eb545c6acb808f30dacb6da",
-    "wh": "0064c6b7-5147-4411-89b5-c4cb8bc5c033fb502b6fba3c493298da70a4a5191f16",
+    "wh": "c5ecd8f2-c2c8-4ccf-bab9-dfcc1886c8424205333c516d4b00a80c6269acb89ba4",
     "expiresAt": 1794923330737
   },
   "staffRoster": {
@@ -30,6 +30,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261117-94101",
+      "requestDate": "17/11/2026 15:44:53",
+      "requestedAt": "17/11/2026 15:44:53",
+      "moNumber": "3159",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00677",
+      "materialName": "NEUTRAL BRIDGE WITH CLINCHING NUT",
+      "specification": "75170132AA",
+      "requestQty": 1,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CC-03-03A (Customer Supplied Material Warehouse) | CO-05-12B (Customer Supplied Material Warehouse) | CO-03-03B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
+      "lotSummary": "2026102201, 2026103001, 2026103101, 2026100299, 2026083001, 2026092302, 2026110901, 2026100701, 2026100501",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "17/11/2026 15:44:54",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261117-71512",
       "requestDate": "17/11/2026 14:32:50",
