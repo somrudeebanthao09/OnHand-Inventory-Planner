@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T10:09:39.092Z",
+  "updatedAt": "2026-11-17T10:10:50.121Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -990,20 +990,34 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "ของไม่ครบตามถุง/Shortage",
       "requesterName": "ภาคภูมิ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CO-07-01B",
+          "qty": 140,
+          "lot": "2026111002, 2026111101"
+        }
+      ],
+      "locationsSummary": "Loc#1: CO-07-01B (140 PCS) [Lot: 2026111002, 2026111101]",
       "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CQ-02-02B (Customer Supplied Material Warehouse) | CO-07-01B (Customer Supplied Material Warehouse) | CD-01-05A (Customer Supplied Material Warehouse)",
       "lotSummary": "2026101701, 2026092501, 2026083001, 2026100299, 2026102201, 2026111002, 2026111101, 2026111001",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "นันทะกานต์",
+      "issuedAt": "17/11/2026 17:10:45",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "17/11/2026 02:05:18",
-      "photoTakenAt": ""
+      "updatedAt": "17/11/2026 17:10:45",
+      "photoTakenAt": "17/11/2026 17:10:45",
+      "locationsJson": "[{\"location\":\"CO-07-01B\",\"qty\":140,\"lot\":\"2026111002, 2026111101\"}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "15 ชม. 5 นาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261116-96021",
