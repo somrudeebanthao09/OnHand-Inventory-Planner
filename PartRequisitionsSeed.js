@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T06:06:38.383Z",
+  "updatedAt": "2026-11-17T06:08:16.310Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "0b6738ad-ca3a-4bca-8cc2-93a9a164c5213e3d4969099d4ac6ad7cf424200b30b0",
-    "wh": "88c61d1b-8459-4d61-badd-620f975a3c41dcd3046f2bcd489090a5a85542c29cb9",
-    "expiresAt": 1794911637300
+    "req": "",
+    "wh": "",
+    "expiresAt": 0
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -86,18 +86,18 @@ window.PART_REQUISITIONS_SEED = {
       ],
       "locationsSummary": "Loc#1: CF-01-01A (8 PCS) [Lot: 2026100901]",
       "onHandLocation": "CG-03-04A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CF-01-01A (Customer Supplied Material Warehouse) | CJ-01-06A (Customer Supplied Material Warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly)",
-      "lotSummary": "2026100601, 2026100901, 2026090901",
+      "lotSummary": "2026100901",
       "issuerName": "ภิญโญ",
       "issuedAt": "17/11/2026 11:54:31",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
       "updatedAt": "17/11/2026 11:54:31",
       "photoTakenAt": "17/11/2026 11:54:31",
-      "locationsJson": "[{\"location\":\"CF-01-01A\",\"qty\":8,\"lot\":\"2026100901\"}]",
+      "locationsJson": "[]",
       "issuerUsername": "wh",
       "hasPhoto": true,
-      "photoUrl": "",
-      "leadTimeSummary": "2 นาที 37 วินาที",
+      "photoUrl": "part-photos/REQ-20261117-14932.jpg",
+      "leadTimeSummary": "",
       "deleted": false,
       "deletedAt": "",
       "photoAttachmentUrl": ""
