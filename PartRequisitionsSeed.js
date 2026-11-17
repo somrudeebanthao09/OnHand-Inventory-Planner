@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T09:48:33.103Z",
+  "updatedAt": "2026-11-17T09:50:07.043Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -44,20 +44,34 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "งานเสีย/NG ในไลน์ผลิต",
       "requesterName": "อรรถพร",
-      "requesterUsername": "LeaderB",
+      "requesterUsername": "req",
       "shift": "B",
-      "requesterNote": "1",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "requesterNote": 1,
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CH-05-04A",
+          "qty": 1,
+          "lot": "2026083001"
+        }
+      ],
+      "locationsSummary": "Loc#1: CH-05-04A (1 PCS) [Lot: 2026083001]",
       "onHandLocation": "CH-08-08B (Customer Supplied Material Warehouse) | CH-06-12A (Customer Supplied Material Warehouse) | CH-07-10B (Customer Supplied Material Warehouse) | CD-04-01A (Customer Supplied Material Warehouse) | CH-05-04A (Customer Supplied Material Warehouse) | CG-06-03A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CH-07-05A (Customer Supplied Material Warehouse) | CG-06-02B (Customer Supplied Material Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse)",
       "lotSummary": "2026083001, 2026101301, 2026111401",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "ภิญโญ",
+      "issuedAt": "17/11/2026 16:49:51",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "17/11/2026 16:46:02",
-      "photoTakenAt": ""
+      "updatedAt": "17/11/2026 16:49:51",
+      "photoTakenAt": "17/11/2026 16:49:51",
+      "locationsJson": "[{\"location\":\"CH-05-04A\",\"qty\":1,\"lot\":\"2026083001\"}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "3 นาที 50 วินาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261117-33463",
