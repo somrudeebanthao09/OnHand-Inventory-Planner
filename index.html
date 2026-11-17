@@ -2858,7 +2858,7 @@
         <div class="panel">
           <div class="toolbar" style="margin-bottom:12px;gap:10px">
             <div class="filters" style="flex:1;gap:10px">
-              <input id="lotFilterSearch" class="field search" type="search" placeholder="ค้นหา Lot Number, คลัง, Bin, Owner..." style="min-width:240px;flex:1">
+              <input id="lotFilterSearch" class="field search" type="search" placeholder="ค้นหา Lot Number, Order (MO), ZJDB, คลัง, Bin, Owner..." style="min-width:240px;flex:1">
               <select id="lotWarehouseFilter" class="field" style="max-width:220px">
                 <option value="">ทุก Warehouse</option>
               </select>
@@ -5774,6 +5774,110 @@
       renderLotDetailTable();
     }
   };
+  function buildLotOrderLookup() {
+    const dtDocs = window.PRODUCTION_EXECUTION_SEED?.directTransferDocsByDoc || {};
+    const dtCount = Object.keys(dtDocs).length;
+    const poSeed = window.PRODUCTION_ORDERS_SEED || window.PRODUCTION_MATERIAL_ISSUE_SEED;
+    const poRows = Array.isArray(poSeed?.rows) ? poSeed.rows : [];
+    const dbPoCount = (db.productionOrders || []).length;
+    const sig = `${dtCount}|${poRows.length}|${dbPoCount}`;
+    if (window.__lotOrderLookupCache && window.__lotOrderLookupCache.sig === sig) {
+      return window.__lotOrderLookupCache.map;
+    }
+
+    const ppbomToMo = new Map();
+    const addMoMap = (ppbom, mo, productCode, productName) => {
+      const pKey = String(ppbom || '').trim().toUpperCase();
+      const mKey = String(mo || '').trim().toUpperCase();
+      if (!pKey || !mKey) return;
+      if (!ppbomToMo.has(pKey)) {
+        ppbomToMo.set(pKey, {
+          moNumber: mKey,
+          productCode: String(productCode || '').trim(),
+          productName: String(productName || '').trim()
+        });
+      }
+    };
+
+    for (const r of (db.productionOrders || [])) {
+      addMoMap(r.ppbomNumber, r.moNumber, r.productCode, r.productName);
+    }
+    if (poRows.length && Array.isArray(poSeed?.fields)) {
+      const f = poSeed.fields;
+      const iPpbom = f.indexOf('ppbomNumber');
+      const iMo = f.indexOf('moNumber');
+      const iProd = f.indexOf('productCode');
+      const iName = f.indexOf('productName');
+      if (iPpbom >= 0 && iMo >= 0) {
+        for (const r of poRows) {
+          addMoMap(r[iPpbom], r[iMo], iProd >= 0 ? r[iProd] : '', iName >= 0 ? r[iName] : '');
+        }
+      }
+    }
+
+    const byMatLot = new Map();
+    for (const [docNo, doc] of Object.entries(dtDocs)) {
+      const srcDocs = Array.isArray(doc.sourceDocs) ? doc.sourceDocs : [];
+      const orders = [];
+      const seenMo = new Set();
+      for (const src of srcDocs) {
+        const info = ppbomToMo.get(String(src || '').trim().toUpperCase());
+        if (info && !seenMo.has(info.moNumber)) {
+          seenMo.add(info.moNumber);
+          orders.push({ ...info, ppbom: String(src).trim().toUpperCase() });
+        }
+      }
+      for (const it of (doc.items || [])) {
+        const mat = String(it.materialCode || '').trim().toUpperCase();
+        const lot = String(it.lotNumber || '').trim();
+        if (!mat || !lot) continue;
+        const key = `${mat}::${lot}`;
+        if (!byMatLot.has(key)) byMatLot.set(key, []);
+        byMatLot.get(key).push({
+          docNo,
+          businessDate: doc.businessDate || '',
+          toWarehouse: String(it.toWarehouse || '').trim(),
+          fromWarehouse: String(it.fromWarehouse || '').trim(),
+          qty: Number(it.qty) || 0,
+          sourceDocs: srcDocs,
+          orders
+        });
+      }
+    }
+
+    window.__lotOrderLookupCache = { sig, map: byMatLot };
+    return byMatLot;
+  }
+
+  function getLotOrderEntries(materialCode, lotNumber, warehouse) {
+    const mat = String(materialCode || '').trim().toUpperCase();
+    const lot = String(lotNumber || '').trim();
+    if (!mat || !lot) return { inbound: [], outbound: [] };
+    const entries = buildLotOrderLookup().get(`${mat}::${lot}`) || [];
+    const wh = String(warehouse || '').trim().toLowerCase();
+    const inbound = [];
+    const outbound = [];
+    for (const e of entries) {
+      const toWh = e.toWarehouse.toLowerCase();
+      const fromWh = e.fromWarehouse.toLowerCase();
+      if (!wh || !toWh || toWh === wh) {
+        inbound.push(e);
+      } else if (fromWh && fromWh === wh) {
+        outbound.push(e);
+      }
+    }
+    return { inbound, outbound };
+  }
+
+  function formatLotOrderSummaryText(materialCode, lotNumber, warehouse) {
+    const { inbound } = getLotOrderEntries(materialCode, lotNumber, warehouse);
+    if (!inbound.length) return '';
+    return inbound.map(e => {
+      const moTxt = e.orders.length ? e.orders.map(o => o.moNumber).join('/') : (e.sourceDocs.join('/') || e.docNo);
+      return `${moTxt} (${e.docNo}: ${fmtQty(e.qty)})`;
+    }).join('; ');
+  }
+
   function renderLotDetailTable(items){
     if(!items)items=(db.inventory||[]).filter(x=>String(x.materialCode||'').trim()===String(currentLotMaterial).trim());
     const first=items[0]||{};
@@ -5786,7 +5890,11 @@
       if(wh&&x.warehouse!==wh)return false;
       if(owner&&x.owner!==owner)return false;
       if(status&&x.status!==status)return false;
-      if(search){const text=[x.lotNumber,x.warehouse,x.storage,x.owner,x.ownerType,x.status].join(' ').toLowerCase();if(!text.includes(search))return false;}
+      if(search){
+        const orderMeta = formatLotOrderSummaryText(currentLotMaterial, x.lotNumber, x.warehouse);
+        const text=[x.lotNumber,x.warehouse,x.storage,x.owner,x.ownerType,x.status,orderMeta].join(' ').toLowerCase();
+        if(!text.includes(search))return false;
+      }
       return true;
     });
 
@@ -5934,19 +6042,36 @@
       const availDisplay=isBad
         ? `<td class="num" style="color:#ef4444;font-size:13px" title="ไม่คิดในยอดพร้อมใช้ผลิต">0 <small style="color:#94a3b8">(${fmtQty(avail)} ${badReason==='Sealed'?'Sealed':'เสีย'})</small></td>`
         : `<td class="num" style="color:#287a55;font-weight:700;font-size:14.5px">${fmtQty(avail)}</td>`;
-      return `<tr><td style="text-align:center;color:var(--muted);font-size:13px">${idx+1}</td><td>${lotBadge}</td><td>${whLabel}</td><td><span style="display:inline-block;padding:3px 9px;background:#eef4f5;border-radius:6px;font-weight:600;font-size:13px;color:#244a52">${esc(x.storage||'—')}</span></td><td class="num" style="font-weight:700;font-size:14.5px">${fmtQty(x.onHand)}</td>${availDisplay}<td class="num" style="color:#a66b08;font-size:14.5px">${fmtQty(x.reserved)}</td><td style="font-size:13.5px">${esc(x.unit||'—')}</td><td><strong style="color:#1d4249;font-size:13.5px">${esc(x.owner||'—')}</strong></td><td><span class="sub" style="font-size:12px">${esc(x.ownerType||'—')}</span></td><td>${statusBadge}</td></tr>`;
+      const { inbound: lotInOrders, outbound: lotOutOrders } = getLotOrderEntries(currentLotMaterial, x.lotNumber, x.warehouse);
+      let orderLinkHtml = '<span style="color:#94a3b8;font-size:12px">—</span>';
+      if (lotInOrders.length) {
+        orderLinkHtml = `<div style="display:flex;flex-direction:column;gap:4px;white-space:normal;min-width:210px">${lotInOrders.map(e => {
+          const moTags = e.orders.length
+            ? e.orders.map(o => `<button type="button" onclick="window.openPoTrackingDetailModal?.('${esc(o.moNumber)}')" style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;border-radius:6px;padding:1px 7px;font-weight:800;font-size:11.5px;cursor:pointer;font-family:monospace" title="${esc(o.productCode || '')} ${esc(o.productName || '')} — คลิกเพื่อเปิดดู Order">${esc(o.moNumber)}</button>`).join(' ')
+            : `<span class="badge gray" style="font-size:11px">${esc(e.sourceDocs.join(', ') || 'ไม่ระบุ MO')}</span>`;
+          const prodHint = e.orders[0]?.productCode ? `<span style="font-size:11px;color:#475569;font-weight:600">${esc(e.orders[0].productCode)}</span>` : '';
+          return `<div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">${moTags}${prodHint}<span style="font-size:11.5px;color:#0f766e;font-weight:700">+${fmtQty(e.qty)}</span><span style="font-size:10.5px;color:#64748b">(${esc(e.docNo)})</span></div>`;
+        }).join('')}</div>`;
+      } else if (lotOutOrders.length) {
+        orderLinkHtml = `<div style="display:flex;flex-direction:column;gap:3px;white-space:normal;min-width:180px">${lotOutOrders.map(e => {
+          const moTxt = e.orders.length ? e.orders.map(o => o.moNumber).join(', ') : (e.sourceDocs.join(', ') || e.docNo);
+          return `<div style="font-size:11px;color:#64748b">โอนออก → <b>${esc(moTxt)}</b> (${fmtQty(e.qty)})</div>`;
+        }).join('')}</div>`;
+      }
+      return `<tr><td style="text-align:center;color:var(--muted);font-size:13px">${idx+1}</td><td>${lotBadge}</td><td>${orderLinkHtml}</td><td>${whLabel}</td><td><span style="display:inline-block;padding:3px 9px;background:#eef4f5;border-radius:6px;font-weight:600;font-size:13px;color:#244a52">${esc(x.storage||'—')}</span></td><td class="num" style="font-weight:700;font-size:14.5px">${fmtQty(x.onHand)}</td>${availDisplay}<td class="num" style="color:#a66b08;font-size:14.5px">${fmtQty(x.reserved)}</td><td style="font-size:13.5px">${esc(x.unit||'—')}</td><td><strong style="color:#1d4249;font-size:13.5px">${esc(x.owner||'—')}</strong></td><td><span class="sub" style="font-size:12px">${esc(x.ownerType||'—')}</span></td><td>${statusBadge}</td></tr>`;
     }).join('');
-    el('lotTableWrap').innerHTML=`<table style="width:100%;border-collapse:collapse;white-space:nowrap;font-size:13.5px"><thead><tr style="background:#f7f9f9"><th style="width:45px;text-align:center;font-size:13px">#</th><th style="font-size:13px">Lot Number</th><th style="font-size:13px">Warehouse (คลัง)</th><th style="font-size:13px">Storage Bin (ตำแหน่ง)</th><th class="num" style="font-size:13px">On-Hand (คงเหลือ)</th><th class="num" style="color:#287a55;font-size:13px">Available (พร้อมใช้)</th><th class="num" style="color:#a66b08;font-size:13px">Reserved (จอง)</th><th style="font-size:13px">หน่วย</th><th style="font-size:13px">Owner (เจ้าของสินค้า)</th><th style="font-size:13px">Owner Type</th><th style="font-size:13px">Status</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
+    el('lotTableWrap').innerHTML=`<table style="width:100%;border-collapse:collapse;white-space:nowrap;font-size:13.5px"><thead><tr style="background:#f7f9f9"><th style="width:45px;text-align:center;font-size:13px">#</th><th style="font-size:13px">Lot Number</th><th style="font-size:13px">Order ที่โอนเข้า (Direct Transfer → MO)</th><th style="font-size:13px">Warehouse (คลัง)</th><th style="font-size:13px">Storage Bin (ตำแหน่ง)</th><th class="num" style="font-size:13px">On-Hand (คงเหลือ)</th><th class="num" style="color:#287a55;font-size:13px">Available (พร้อมใช้)</th><th class="num" style="color:#a66b08;font-size:13px">Reserved (จอง)</th><th style="font-size:13px">หน่วย</th><th style="font-size:13px">Owner (เจ้าของสินค้า)</th><th style="font-size:13px">Owner Type</th><th style="font-size:13px">Status</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
   }
   function exportLotCsv(){
     const items=(db.inventory||[]).filter(x=>String(x.materialCode||'').trim()===String(currentLotMaterial).trim());
     if(!items.length){toast('ไม่มีข้อมูลสำหรับส่งออก CSV');return;}
     const cleanCsv=str=>`"${String(str??'').replace(/"/g,'""')}"`;
-    const headers=['Material Code','Material Name','Specification','Lot Number','Warehouse','Storage Bin','On-Hand Quantity','Available Quantity','Reserved Quantity','Unit','Owner','Owner Type','Status'];
+    const headers=['Material Code','Material Name','Specification','Lot Number','Direct Transfer Orders (MO)','Warehouse','Storage Bin','On-Hand Quantity','Available Quantity','Reserved Quantity','Unit','Owner','Owner Type','Status'];
     const lines=[headers.join(',')];
     for(const x of items){
       const avail=stockAvailableForRow(x);
-      lines.push([cleanCsv(x.materialCode),cleanCsv(x.materialName),cleanCsv(x.specification),cleanCsv(x.lotNumber),cleanCsv(x.warehouse),cleanCsv(x.storage),x.onHand,avail,x.reserved,cleanCsv(x.unit),cleanCsv(x.owner),cleanCsv(x.ownerType),cleanCsv(x.status)].join(','));
+      const orderSummary=formatLotOrderSummaryText(currentLotMaterial, x.lotNumber, x.warehouse);
+      lines.push([cleanCsv(x.materialCode),cleanCsv(x.materialName),cleanCsv(x.specification),cleanCsv(x.lotNumber),cleanCsv(orderSummary),cleanCsv(x.warehouse),cleanCsv(x.storage),x.onHand,avail,x.reserved,cleanCsv(x.unit),cleanCsv(x.owner),cleanCsv(x.ownerType),cleanCsv(x.status)].join(','));
     }
     const blob=new Blob(['\uFEFF'+lines.join('\r\n')],{type:'text/csv;charset=utf-8;'});
     const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`Lot_Details_${currentLotMaterial}_${new Date().toISOString().slice(0,10)}.csv`;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
@@ -9608,6 +9733,7 @@
     renderPoModalTable();
     el('poTrackingDetailModal').classList.add('show');
   }
+  window.openPoTrackingDetailModal = openPoTrackingDetailModal;
 
   function renderPoModalTable() {
     const data = computePoTracking();
