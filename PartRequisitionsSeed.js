@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T10:07:48.072Z",
+  "updatedAt": "2026-11-17T10:08:38.651Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -917,17 +917,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderA",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "Public area",
+          "qty": 146,
+          "lot": "2026111611 NEW, 2026111609 NEW, 2026111607 NEW, 2026111604 NEW, 2026111603 NEW, 2026111612 NEW"
+        }
+      ],
+      "locationsSummary": "Loc#1: Public area (146 PCS) [Lot: 2026111611 NEW, 2026111609 NEW, 2026111607 NEW, 2026111604 NEW, 2026111603 NEW, 2026111612 NEW]",
       "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Bending) | Public area (Semi-finished Product Warehouse-Waiting Assembly)",
-      "lotSummary": "2026102107, 2026110303 NEW, 2026110307 NEW, 2026110309 NEW, 2026111601 NEW, 2026110317  NEW, 2026110316  NEW, 2026110304 NEW, 2026102102, 2026110301 NEW, 2026110302 NEW, 2026110308 NEW, 2026110310 NEW, 2026110315  NEW, 2026110318  NEW, 2026110319  NEW, 2026110320  NEW, 2026111610 NEW, 2026111606 NEW, 2026111602 NEW, 2026111605 NEW, 2026111613 NEW, 2026111612 NEW, 2026111603 NEW, 2026111604 NEW, 2026111608 NEW, 2026111609 NEW, 2026111611 NEW, 2026111607 NEW, 2026090702, 2026090704, 2026090801, 2026102103, 2026102106, 2026102104, 2026090701, 2026090703, 2026090802, 2026100707, 2026090902, 2026090901, 2026091002, 2026091001, 2026090903",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026111611 NEW, 2026111609 NEW, 2026111607 NEW, 2026111604 NEW, 2026111603 NEW, 2026111612 NEW",
+      "issuerName": "นันทะกานต์",
+      "issuedAt": "17/11/2026 17:08:36",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "17/11/2026 02:13:00",
-      "photoTakenAt": ""
+      "updatedAt": "17/11/2026 17:08:36",
+      "photoTakenAt": "17/11/2026 17:08:36",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261117-80868.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261117-43239",
