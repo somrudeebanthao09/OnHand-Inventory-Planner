@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T07:07:30.594Z",
+  "updatedAt": "2026-11-17T07:32:51.567Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -30,6 +30,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261117-71512",
+      "requestDate": "17/11/2026 14:32:50",
+      "requestedAt": "17/11/2026 14:32:50",
+      "moNumber": "3159",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00581",
+      "materialName": "GROUNDING CABLE ASSEMBLY",
+      "specification": "EAV22183",
+      "requestQty": 65,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CH-02-03F (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
+      "lotSummary": "2026111301, 2026110901, 2026083001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "17/11/2026 14:32:51",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261117-98566",
       "requestDate": "17/11/2026 13:51:38",
