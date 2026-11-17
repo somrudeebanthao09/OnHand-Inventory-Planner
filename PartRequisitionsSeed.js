@@ -1,11 +1,11 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T06:39:17.138Z",
+  "updatedAt": "2026-11-17T06:47:09.115Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "20aee30c-3e71-4d19-a8d3-02cecbcee39f19f2c0b8b9414671be9820202e604019",
-    "wh": "911bc2dc-0034-4c4e-8920-3534de3e38726f9a9f1b6b004233a33b88f98858d09e",
+    "wh": "76fb3a3d-4dd7-477f-ad27-55869899c3c8e228451a6ce649758252c3d8151b7256",
     "expiresAt": 1794919154705
   },
   "staffRoster": {
@@ -30,6 +30,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261117-29031",
+      "requestDate": "17/11/2026 13:47:08",
+      "requestedAt": "17/11/2026 13:47:08",
+      "moNumber": "3159",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00161",
+      "materialName": "Shroud EZ100",
+      "specification": "75170102AA",
+      "requestQty": 65,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026110701",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "17/11/2026 13:47:08",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261117-90395",
       "requestDate": "17/11/2026 11:53:09",
