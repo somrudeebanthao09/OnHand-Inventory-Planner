@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-17T02:29:00.664Z",
+  "snapshotAt": "2026-11-17T02:38:19.700Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
   "count": 14755,
   "orders": [
@@ -4210,7 +4210,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "5004PT00016",
       "productName": "Door ASM 450mm Diffuse Coating",
       "department": "Painting Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Complete",
       "pickStatus": "Fully Issued",
       "materialCode": "5001HJ00208",
       "materialName": "Door 450 Process 2 Welding",
