@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-17T02:08:59.919Z",
+  "snapshotAt": "2026-11-17T02:18:19.678Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers_1107104532.xlsx",
   "count": 14755,
   "orders": [
@@ -3190,7 +3190,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "6002BZ00029",
       "productName": "Housing771-1 Packing OUTER PACKING",
       "department": "Automotive Post-Processing Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Partially Completed",
       "pickStatus": "Fully Issued",
       "materialCode": "5002CY00040",
       "materialName": "Housing771-1 OUTER",
@@ -9610,7 +9610,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "6003BZ00004",
       "productName": "PF Inner base-RH(RHD) Die Casting Deburring Packing",
       "department": "Aluminum Die Casting - Post-Processing Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Partially Completed",
       "pickStatus": "Fully Issued",
       "materialCode": "5003DM00005",
       "materialName": "PF Inner base-RH(RHD) Die Casting Deburring",
@@ -10318,8 +10318,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 916,
-      "wipQty": 113,
+      "consumedQty": 956,
+      "wipQty": 73,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Powder Coating",
       "requiredTime": "2026-11-16 09:15:26"
     },
