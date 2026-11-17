@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T08:47:02.400Z",
+  "updatedAt": "2026-11-17T08:49:11.063Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -30,6 +30,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261117-51074",
+      "requestDate": "17/11/2026 15:49:10",
+      "requestedAt": "17/11/2026 15:49:10",
+      "moNumber": "3159",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00798",
+      "materialName": "SQUARE D LOGO PLATE",
+      "specification": "75503796AA",
+      "requestQty": 7,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CQ-03-09A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CG-04-04B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026110701, 2026102202, 2026083001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "17/11/2026 15:49:11",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261117-94101",
       "requestDate": "17/11/2026 15:44:53",
