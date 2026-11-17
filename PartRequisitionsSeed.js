@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T09:30:19.342Z",
+  "updatedAt": "2026-11-17T09:45:55.706Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -30,6 +30,48 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261117-33463",
+      "requestDate": "17/11/2026 16:43:53",
+      "requestedAt": "17/11/2026 16:43:53",
+      "moNumber": "MO-20261114-003524",
+      "ppbomNumber": "PPBOM-20261114-003820",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00573",
+      "materialName": "GLAND PLATE SCREW (TAPTITE - POSIDIV)",
+      "specification": "75503638AA",
+      "requestQty": 30,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "req",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CC-01-05A",
+          "qty": 30,
+          "lot": "2026100701, 2026083001"
+        }
+      ],
+      "locationsSummary": "Loc#1: CC-01-05A (30 PCS) [Lot: 2026100701, 2026083001]",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CC-01-05A (Customer Supplied Material Warehouse) | CI-01-05F (Purchased parts warehouse) | CF-01-03A (Customer Supplied Material Warehouse) | CI-01-03D (Purchased parts warehouse) | Public area (Defective Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | FR054 (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026100701, 2026083001",
+      "issuerName": "ภิญโญ",
+      "issuedAt": "17/11/2026 16:45:52",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "17/11/2026 16:45:52",
+      "photoTakenAt": "17/11/2026 16:45:52",
+      "locationsJson": "[]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "part-photos/REQ-20261117-33463.jpg",
+      "leadTimeSummary": "",
+      "deleted": false,
+      "deletedAt": ""
+    },
     {
       "reqId": "REQ-20261117-53933",
       "requestDate": "17/11/2026 16:20:53",
