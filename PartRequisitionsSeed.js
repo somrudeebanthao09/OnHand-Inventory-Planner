@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-17T09:45:55.706Z",
+  "updatedAt": "2026-11-17T09:46:02.662Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -30,6 +30,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261117-62725",
+      "requestDate": "17/11/2026 16:46:01",
+      "requestedAt": "17/11/2026 16:46:01",
+      "moNumber": "MO-20261114-003524",
+      "ppbomNumber": "PPBOM-20261114-003820",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00361",
+      "materialName": "CARTON 450 PREMIUM",
+      "specification": "75503792AA",
+      "requestQty": 1,
+      "unit": "PCS",
+      "reason": "งานเสีย/NG ในไลน์ผลิต",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "1",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CH-08-08B (Customer Supplied Material Warehouse) | CH-06-12A (Customer Supplied Material Warehouse) | CH-07-10B (Customer Supplied Material Warehouse) | CD-04-01A (Customer Supplied Material Warehouse) | CH-05-04A (Customer Supplied Material Warehouse) | CG-06-03A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CH-07-05A (Customer Supplied Material Warehouse) | CG-06-02B (Customer Supplied Material Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse)",
+      "lotSummary": "2026083001, 2026101301, 2026111401",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "17/11/2026 16:46:02",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261117-33463",
       "requestDate": "17/11/2026 16:43:53",
