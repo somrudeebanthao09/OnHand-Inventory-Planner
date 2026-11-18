@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-18T08:30:08.955Z",
+  "updatedAt": "2026-11-18T08:32:04.358Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -93,17 +93,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderB",
       "shift": "B",
       "requesterNote": "ไม่พอ",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CD-01-04A",
+          "qty": 1,
+          "lot": "2026101601"
+        }
+      ],
+      "locationsSummary": "Loc#1: CD-01-04A (1 PCS) [Lot: 2026101601]",
       "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CD-07-06B (Customer Supplied Material Warehouse) | CD-07-02B (Customer Supplied Material Warehouse) | CD-06-04B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CQ-05-13A (Customer Supplied Material Warehouse) | CC-05-13A (Customer Supplied Material Warehouse) | CE-03-06B (Customer Supplied Material Warehouse) | CC-09-01B (Customer Supplied Material Warehouse) | CC-09-02B (Customer Supplied Material Warehouse) | CD-01-04A (Customer Supplied Material Warehouse)",
-      "lotSummary": "2026100206, 2026101401, 2026101601, 2026101501, 2026100205, 2026100203, 2026101902, 2026101701, 2026110901",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026101601",
+      "issuerName": "นิตยา",
+      "issuedAt": "18/11/2026 15:31:59",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "18/11/2026 14:32:58",
-      "photoTakenAt": ""
+      "updatedAt": "18/11/2026 15:31:59",
+      "photoTakenAt": "18/11/2026 15:31:59",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261118-78284.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261118-96031",
