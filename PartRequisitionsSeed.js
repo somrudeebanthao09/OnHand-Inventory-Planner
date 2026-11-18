@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-18T00:46:33.011Z",
+  "updatedAt": "2026-11-18T01:11:59.632Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "ddc61592-0e03-4b6d-83e7-6f916ceece15915fa60e47ca455ea22b95b30ccd2a9a",
-    "wh": "45cb71d8-769e-432e-9fc3-1374b8ccf989b3df94f42dd34018981c00a681cc9db4",
-    "expiresAt": 1794984380247
+    "wh": "e9548459-c471-413a-91be-8a1c1105ec89b90d882856d743879d4c7f78b0128acb",
+    "expiresAt": 1794984380341
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -32,6 +32,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261118-19095",
+      "requestDate": "18/11/2026 08:11:58",
+      "requestedAt": "18/11/2026 08:11:58",
+      "moNumber": "MO-20261117-003628",
+      "ppbomNumber": "PPBOM-20261117-003939",
+      "directTransferDocs": "ZJDB-261117-000032, ZJDB-261117-000034",
+      "materialCode": "1005QT00763",
+      "materialName": "Schneider carton label",
+      "specification": "75503737AA",
+      "requestQty": 2000,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ลาเบลม้วน",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-02-07D (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Defective Warehouse) | CH-02-09A (Customer Supplied Material Warehouse) | Public area (Scrap Warehouse)",
+      "lotSummary": "2026111001, 2026110601, 2026102401, 2026100701, 2026101601, 2026091401, 2026091701, 2026093001, 2026093002, 2026102402, 2026091702, 2026100702, 2026100502, 2026100504, 2026100503, 2026100501",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "18/11/2026 08:11:59",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261118-34441",
       "requestDate": "18/11/2026 06:18:53",
