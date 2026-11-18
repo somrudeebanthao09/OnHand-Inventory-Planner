@@ -13759,17 +13759,21 @@
   async function savePartReqToSharedApi(record) {
     if (!partReqApiConfigured()) return { ok: false, skipped: true };
     const isDeleted = Boolean(record?.deleted);
+    const isCancelled = !isDeleted && record?.status === 'cancelled';
     const isIssued = isDeleted || record?.status === 'issued';
     const preferredRole = isIssued ? 'warehouse' : 'requester';
     const rawIssAt = isDeleted ? (record.deletedAt || record.updatedAt || new Date().toISOString()) : String(record?.issuedAt || '');
     const existingPhotoUrl = String(record?.photoAttachmentUrl || record?.photoUrl || '');
     const hasDrivePhoto = /drive\.google\.com/i.test(existingPhotoUrl);
+    const cancelNote = isCancelled
+      ? (String(record?.issuerNote || '').trim() || `[CANCELLED] ${record?.cancelReason || 'เบิกผิด'} (${record?.cancelledBy || record?.requesterName || '-'})`)
+      : String(record?.issuerNote || '');
     const apiRecord = {
       ...record,
-      status: isIssued ? 'issued' : 'pending',
+      status: isIssued ? 'issued' : (isCancelled ? 'cancelled' : 'pending'),
       requestDate: formatPartReqDateTime(record?.requestDate, record?.requestedAt, true),
       requestedAt: formatPartReqDateTime(record?.requestedAt || record?.requestDate, record?.requestDate, true),
-      issuerNote: isDeleted ? '[DELETED_BY_ADMIN]' : String(record?.issuerNote || ''),
+      issuerNote: isDeleted ? '[DELETED_BY_ADMIN]' : cancelNote,
       issuedAt: rawIssAt ? formatPartReqDateTime(rawIssAt, '', true) : '',
       photoTakenAt: (record?.photoTakenAt || rawIssAt) ? formatPartReqDateTime(record?.photoTakenAt || rawIssAt, '', true) : '',
       updatedAt: formatPartReqDateTime(record?.updatedAt || record?.deletedAt || record?.issuedAt || record?.requestedAt || new Date().toISOString(), '', true),
@@ -16001,6 +16005,7 @@
     el('partReqTabPendingBtn')?.addEventListener('click', () => setPartReqFilterTab('pending'));
     el('partReqTabPartialBtn')?.addEventListener('click', () => setPartReqFilterTab('partial'));
     el('partReqTabIssuedBtn')?.addEventListener('click', () => setPartReqFilterTab('issued'));
+    el('partReqTabCancelledBtn')?.addEventListener('click', () => setPartReqFilterTab('cancelled'));
     el('partReqCardAll')?.addEventListener('click', () => setPartReqFilterTab('all'));
     el('partReqCardPending')?.addEventListener('click', () => setPartReqFilterTab('pending'));
     el('partReqCardIssued')?.addEventListener('click', () => setPartReqFilterTab('issued'));
