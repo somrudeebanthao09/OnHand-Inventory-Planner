@@ -3322,12 +3322,22 @@
 <script>
 (() => {
   const DEPTS = ['H9 Assembly Production Line', 'H1 Assembly Production Line', 'Assembly Production Line'];
-  const KNOWN_H1_PARTS = new Set([
-    '6001ZZ00093', '6001ZZ00092', '6001ZZ00091', '6001ZZ00090',
-    '1005QT00715', '1005QT00572', '1001QT00005', '1005QT00571',
-    '6001ZZ00134', '6001ZZ00135', '1005QT00810', '1005QT00825',
-    '1005QT00220'
+  const KNOWN_H1_PART_MAP = new Map([
+    ['6001ZZ00093', { department: 'H1_Coil Assembly', materialName: 'Greco coil 25/32A 4 turns wir dia 2.24', specification: '51207080HC-JR' }],
+    ['6001ZZ00092', { department: 'H1_Coil Assembly', materialName: 'Greco coil 20A 5 turns wir dia 1.7', specification: 'S1B29292-JR' }],
+    ['6001ZZ00091', { department: 'H1_Coil Assembly', materialName: 'Greco coil 16A 6 turns wir dia 1.4', specification: 'S1B71819-JR' }],
+    ['6001ZZ00090', { department: 'H1_Coil Assembly', materialName: 'Greco coil 10A 8 turns wir dia 1.12', specification: 'S1B29288-JR' }],
+    ['1005QT00215', { department: 'H1_Arc Chute Assembly', materialName: 'G2 AMW-XV 2.240 SND PT25 COIL25/32A', specification: '51150244' }],
+    ['1005QT00572', { department: 'H1_Arc Chute Assembly', materialName: 'G2 AMW-XV 1.700 SND PT25 COIL 20A', specification: '51150222' }],
+    ['1001QT00005', { department: 'H1_Arc Chute Assembly', materialName: 'G2 AMW-XV 1.400 SND PT25 COIL 16A', specification: '51150221' }],
+    ['1005QT00571', { department: 'H1_Arc Chute Assembly', materialName: 'G2 AMW-XV 1.120 SND PT25 COIL 10A', specification: '51150220' }],
+    ['6001ZZ00134', { department: 'H1_Lug&Screw Assembly', materialName: 'Terminal Lug&Screw 25A Assy', specification: '51207611A(BOI)-S' }],
+    ['6001ZZ00135', { department: 'H1_Lug&Screw Assembly', materialName: 'Terminal Lug&Screw 25A Assy', specification: '51207611A(NON)-S' }],
+    ['1005QT00810', { department: 'H1_Lug&Screw Assembly', materialName: 'TERMINAL LUG 25A', specification: 'GHC11115A-BOI' }],
+    ['1005QT00825', { department: 'H1_Lug&Screw Assembly', materialName: 'Therminal screw 25A', specification: 'GHC11118A' }],
+    ['1005QT00220', { department: 'H1_Lug&Screw Assembly', materialName: 'TERMINAL CLAMP 25A', specification: 'GHC11115A' }]
   ]);
+  const KNOWN_H1_PARTS = new Set(KNOWN_H1_PART_MAP.keys());
 
   function normalizeDepartmentName(dept){
     const s = String(dept || '').trim();
@@ -3383,15 +3393,15 @@
         const name = String(r.materialName || r.MaterialName || '').trim();
         const spec = String(r.specification || r.Specification || '').trim();
         if (code && dept) {
-          if (dept === 'H1 Assembly Production Line' || db.departmentMap.length < 500) {
+          if (dept === 'H1 Assembly Production Line' || /^H1[_ ]/i.test(dept) || db.departmentMap.length < 500) {
             map.set(code, { department: dept, materialName: name, specification: spec });
           }
         }
       });
     }
-    KNOWN_H1_PARTS.forEach(code => {
+    KNOWN_H1_PART_MAP.forEach((info, code) => {
       if (!map.has(code)) {
-        map.set(code, { department: 'H1 Assembly Production Line', materialName: '', specification: '' });
+        map.set(code, { ...info });
       }
     });
     return map;
