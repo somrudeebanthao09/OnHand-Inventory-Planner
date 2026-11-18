@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-18T11:21:17.970Z",
+  "snapshotAt": "2026-11-18T11:23:17.959Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15152,
   "orders": [
@@ -3448,8 +3448,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 2320,
+      "consumedQty": 477,
+      "wipQty": 1843,
       "issuingWarehouse": "Semi-finished Product Warehouse After Plating",
       "requiredTime": "2026-11-17 22:49:56"
     },
@@ -3478,8 +3478,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 2320,
+      "consumedQty": 477,
+      "wipQty": 1843,
       "issuingWarehouse": "Purchased parts warehouse",
       "requiredTime": "2026-11-17 22:49:56"
     },
@@ -3688,8 +3688,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 2895,
-      "wipQty": 2163,
+      "consumedQty": 4017,
+      "wipQty": 1041,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Welding",
       "requiredTime": "2026-11-17 20:03:13"
     },
