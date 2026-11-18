@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-18T12:53:49.557Z",
+  "snapshotAt": "2026-11-18T13:03:46.230Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15157,
   "orders": [
@@ -160,7 +160,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "6002BZ00037",
       "productName": "UPPER ACTIVE ASSEMBLY Packing",
       "department": "Automotive Post-Processing Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Partially Completed",
       "pickStatus": "Partially Issued",
       "materialCode": "5002HJ00093",
       "materialName": "UPPER ACTIVE ASSEMBLY Weld",
@@ -340,7 +340,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "6002BZ00037",
       "productName": "UPPER ACTIVE ASSEMBLY Packing",
       "department": "Automotive Post-Processing Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Partially Completed",
       "pickStatus": "Fully Issued",
       "materialCode": "5002HJ00093",
       "materialName": "UPPER ACTIVE ASSEMBLY Weld",
