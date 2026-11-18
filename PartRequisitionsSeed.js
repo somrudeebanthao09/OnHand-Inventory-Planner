@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-18T07:42:00.850Z",
+  "updatedAt": "2026-11-18T07:44:24.275Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -76,20 +76,34 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
       "requesterName": "เจนภพ",
-      "requesterUsername": "LeaderB",
+      "requesterUsername": "req",
       "shift": "B",
       "requesterNote": "ไม่พอ",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CF-01-03A",
+          "qty": 13,
+          "lot": "2026092301"
+        }
+      ],
+      "locationsSummary": "Loc#1: CF-01-03A (13 PCS) [Lot: 2026092301]",
       "onHandLocation": "CQ-06-01A (Customer Supplied Material Warehouse) | CQ-04-15A (Customer Supplied Material Warehouse) | CQ-04-14B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CO-04-11A (Customer Supplied Material Warehouse) | CF-01-03A (Customer Supplied Material Warehouse)",
       "lotSummary": "2026111403, 2026111401, 2026111402, 2026092301, 2026102101, 2026110701, 2026102203, 2026102601",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "นิตยา",
+      "issuedAt": "18/11/2026 14:44:10",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "18/11/2026 14:31:35",
-      "photoTakenAt": ""
+      "updatedAt": "18/11/2026 14:44:10",
+      "photoTakenAt": "18/11/2026 14:44:10",
+      "locationsJson": "[{\"location\":\"CF-01-03A\",\"qty\":13,\"lot\":\"2026092301\"}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "12 นาที 35 วินาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261118-02808",
