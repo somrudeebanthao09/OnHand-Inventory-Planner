@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-18T07:47:10.268Z",
+  "updatedAt": "2026-11-18T07:53:15.552Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -186,20 +186,34 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
       "requesterName": "เจนภพ",
-      "requesterUsername": "LeaderB",
+      "requesterUsername": "req",
       "shift": "B",
       "requesterNote": "ไม่พอ",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CC-02-17A",
+          "qty": 18,
+          "lot": "2026100299"
+        }
+      ],
+      "locationsSummary": "Loc#1: CC-02-17A (18 PCS) [Lot: 2026100299]",
       "onHandLocation": "CC-02-17A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Defective Warehouse)",
       "lotSummary": "2026100299, 2026083001",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "นิตยา",
+      "issuedAt": "18/11/2026 14:53:06",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "18/11/2026 14:27:42",
-      "photoTakenAt": ""
+      "updatedAt": "18/11/2026 14:53:06",
+      "photoTakenAt": "18/11/2026 14:53:06",
+      "locationsJson": "[{\"location\":\"CC-02-17A\",\"qty\":18,\"lot\":\"2026100299\"}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "25 นาที 25 วินาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261118-99072",
