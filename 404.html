@@ -5062,7 +5062,11 @@
       const deptsText = row.departments.length
         ? esc(row.departments.join(', ').replace(/、/g, ', '))
         : '<span class="stock-missing">รอระบุแผนก</span>';
-      return `<tr><td class="code"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><button type="button" class="part-lot-link" data-code="${esc(x.materialCode)}" data-warehouse="${esc(x.warehouse)}" style="background:none;border:none;padding:0;color:var(--teal);font-weight:700;cursor:pointer;text-decoration:underline;font-family:inherit;font-size:14px;text-align:left;display:inline-flex;align-items:center;gap:4px" title="คลิกเพื่อดู Lot ของ Part นี้ในคลัง ${esc(x.warehouse)}"><span>${esc(x.materialCode||'—')}</span><span style="font-size:12px;opacity:0.75">🔍</span></button>${lotBadge}</div></td><td>${esc(x.materialName||'—')}</td><td>${esc(x.specification||'—')}</td><td style="line-height:1.4">${deptsText}</td><td class="stock-qty">${fmtQty(x.onHand)}</td><td class="stock-qty">${fmtQty(x.reserved)}</td><td class="stock-qty">${availHtml}</td><td>${healthBadge}</td><td class="stock-unit-cell">${esc(unit||'—')}</td><td>${whHtml}</td><td>${esc(x.storage||'—')}</td></tr>`
+      const rawQrCode = (stockViewMode === 'raw' && x.lotNumber) ? formatKingdeeQrCode(x.materialCode, x.lotNumber, x.onHand) : '';
+      const rawLotQrHtml = (stockViewMode === 'raw' && x.lotNumber)
+        ? `<div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:3px"><span class="badge green" style="font-family:monospace;font-size:10.5px;padding:1px 6px">Lot: ${esc(x.lotNumber)}</span>${rawQrCode ? `<button type="button" onclick="window.copyQrCodeText?.('${esc(rawQrCode)}')" style="background:#f1f5f9;border:1px solid #cbd5e1;border-radius:5px;padding:1px 6px;font-family:monospace;font-size:10.5px;color:#0f172a;cursor:pointer" title="คลิกเพื่อคัดลอกเลข QR Code (Kingdee)">📱 ${esc(rawQrCode)}</button>` : ''}</div>`
+        : '';
+      return `<tr><td class="code"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap"><button type="button" class="part-lot-link" data-code="${esc(x.materialCode)}" data-warehouse="${esc(x.warehouse)}" style="background:none;border:none;padding:0;color:var(--teal);font-weight:700;cursor:pointer;text-decoration:underline;font-family:inherit;font-size:14px;text-align:left;display:inline-flex;align-items:center;gap:4px" title="คลิกเพื่อดู Lot ของ Part นี้ในคลัง ${esc(x.warehouse)}"><span>${esc(x.materialCode||'—')}</span><span style="font-size:12px;opacity:0.75">🔍</span></button>${lotBadge}</div>${rawLotQrHtml}</td><td>${esc(x.materialName||'—')}</td><td>${esc(x.specification||'—')}</td><td style="line-height:1.4">${deptsText}</td><td class="stock-qty">${fmtQty(x.onHand)}</td><td class="stock-qty">${fmtQty(x.reserved)}</td><td class="stock-qty">${availHtml}</td><td>${healthBadge}</td><td class="stock-unit-cell">${esc(unit||'—')}</td><td>${whHtml}</td><td>${esc(x.storage||'—')}</td></tr>`
     }).join(''):'<tr><td colspan="11" class="empty">ไม่มีข้อมูลที่ตรงกับตัวกรอง</td></tr>';
     el('stockPageInfo').textContent=`แสดง ${fmt(visibleFrom)}–${fmt(visibleTo)} จาก ${fmt(rows.length)} รายการ`;
     el('stockPageNumber').textContent=`หน้า ${fmt(stockPage)} / ${fmt(totalPages)}`;el('stockPrevPage').disabled=stockPage<=1;el('stockNextPage').disabled=stockPage>=totalPages;
@@ -5915,6 +5919,38 @@
     }).join('; ');
   }
 
+  function formatKingdeeQrCode(materialCode, lotNumber, qty, seq = '00001') {
+    const code = String(materialCode || '').trim();
+    const lot = String(lotNumber || '').trim();
+    const qNum = Number(qty);
+    if (!code || !lot || !Number.isFinite(qNum)) return '';
+    return `${code}*${lot}*${qNum.toFixed(6)}*${seq}`;
+  }
+  function copyQrCodeText(text) {
+    if (!text) return;
+    const done = () => toast(`📋 คัดลอกรหัส QR Code แล้ว: ${text}`);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (_) {}
+        document.body.removeChild(ta);
+        done();
+      });
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (_) {}
+      document.body.removeChild(ta);
+      done();
+    }
+  }
+  window.copyQrCodeText = copyQrCodeText;
+
   function renderLotDetailTable(items){
     if(!items)items=(db.inventory||[]).filter(x=>String(x.materialCode||'').trim()===String(currentLotMaterial).trim());
     const first=items[0]||{};
@@ -5929,7 +5965,8 @@
       if(status&&x.status!==status)return false;
       if(search){
         const orderMeta = formatLotOrderSummaryText(currentLotMaterial, x.lotNumber, x.warehouse);
-        const text=[x.lotNumber,x.warehouse,x.storage,x.owner,x.ownerType,x.status,orderMeta].join(' ').toLowerCase();
+        const qrMeta = formatKingdeeQrCode(currentLotMaterial, x.lotNumber, x.onHand);
+        const text=[x.lotNumber,qrMeta,x.warehouse,x.storage,x.owner,x.ownerType,x.status,orderMeta].join(' ').toLowerCase();
         if(!text.includes(search))return false;
       }
       return true;
@@ -6095,20 +6132,25 @@
           return `<div style="font-size:11px;color:#64748b">โอนออก → <b>${esc(moTxt)}</b> (${fmtQty(e.qty)})</div>`;
         }).join('')}</div>`;
       }
-      return `<tr><td style="text-align:center;color:var(--muted);font-size:13px">${idx+1}</td><td>${lotBadge}</td><td>${orderLinkHtml}</td><td>${whLabel}</td><td><span style="display:inline-block;padding:3px 9px;background:#eef4f5;border-radius:6px;font-weight:600;font-size:13px;color:#244a52">${esc(x.storage||'—')}</span></td><td class="num" style="font-weight:700;font-size:14.5px">${fmtQty(x.onHand)}</td>${availDisplay}<td class="num" style="color:#a66b08;font-size:14.5px">${fmtQty(x.reserved)}</td><td style="font-size:13.5px">${esc(x.unit||'—')}</td><td><strong style="color:#1d4249;font-size:13.5px">${esc(x.owner||'—')}</strong></td><td><span class="sub" style="font-size:12px">${esc(x.ownerType||'—')}</span></td><td>${statusBadge}</td></tr>`;
+      const qrCodeStr = formatKingdeeQrCode(currentLotMaterial, x.lotNumber, x.onHand);
+      const qrCellHtml = qrCodeStr
+        ? `<div style="display:inline-flex;align-items:center;gap:5px"><code style="background:#f1f5f9;border:1px solid #cbd5e1;border-radius:5px;padding:2px 7px;font-family:ui-monospace,Consolas,monospace;font-size:12px;color:#0f172a;font-weight:700">${esc(qrCodeStr)}</code><button type="button" onclick="window.copyQrCodeText?.('${esc(qrCodeStr)}')" class="btn soft" style="padding:2px 7px;font-size:11px;font-weight:700" title="คัดลอกเลข QR Code">📋</button></div>`
+        : '<span style="color:#94a3b8;font-size:12px">—</span>';
+      return `<tr><td style="text-align:center;color:var(--muted);font-size:13px">${idx+1}</td><td>${lotBadge}</td><td>${qrCellHtml}</td><td>${orderLinkHtml}</td><td>${whLabel}</td><td><span style="display:inline-block;padding:3px 9px;background:#eef4f5;border-radius:6px;font-weight:600;font-size:13px;color:#244a52">${esc(x.storage||'—')}</span></td><td class="num" style="font-weight:700;font-size:14.5px">${fmtQty(x.onHand)}</td>${availDisplay}<td class="num" style="color:#a66b08;font-size:14.5px">${fmtQty(x.reserved)}</td><td style="font-size:13.5px">${esc(x.unit||'—')}</td><td><strong style="color:#1d4249;font-size:13.5px">${esc(x.owner||'—')}</strong></td><td><span class="sub" style="font-size:12px">${esc(x.ownerType||'—')}</span></td><td>${statusBadge}</td></tr>`;
     }).join('');
-    el('lotTableWrap').innerHTML=`<table style="width:100%;border-collapse:collapse;white-space:nowrap;font-size:13.5px"><thead><tr style="background:#f7f9f9"><th style="width:45px;text-align:center;font-size:13px">#</th><th style="font-size:13px">Lot Number</th><th style="font-size:13px">Order ที่โอนเข้า (Direct Transfer → MO)</th><th style="font-size:13px">Warehouse (คลัง)</th><th style="font-size:13px">Storage Bin (ตำแหน่ง)</th><th class="num" style="font-size:13px">On-Hand (คงเหลือ)</th><th class="num" style="color:#287a55;font-size:13px">Available (พร้อมใช้)</th><th class="num" style="color:#a66b08;font-size:13px">Reserved (จอง)</th><th style="font-size:13px">หน่วย</th><th style="font-size:13px">Owner (เจ้าของสินค้า)</th><th style="font-size:13px">Owner Type</th><th style="font-size:13px">Status</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
+    el('lotTableWrap').innerHTML=`<table style="width:100%;border-collapse:collapse;white-space:nowrap;font-size:13.5px"><thead><tr style="background:#f7f9f9"><th style="width:45px;text-align:center;font-size:13px">#</th><th style="font-size:13px">Lot Number</th><th style="font-size:13px" title="รูปแบบ: รหัส Part*Lot*จำนวน.000000*00001">QR Code (Kingdee)</th><th style="font-size:13px">Order ที่โอนเข้า (Direct Transfer → MO)</th><th style="font-size:13px">Warehouse (คลัง)</th><th style="font-size:13px">Storage Bin (ตำแหน่ง)</th><th class="num" style="font-size:13px">On-Hand (คงเหลือ)</th><th class="num" style="color:#287a55;font-size:13px">Available (พร้อมใช้)</th><th class="num" style="color:#a66b08;font-size:13px">Reserved (จอง)</th><th style="font-size:13px">หน่วย</th><th style="font-size:13px">Owner (เจ้าของสินค้า)</th><th style="font-size:13px">Owner Type</th><th style="font-size:13px">Status</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
   }
   function exportLotCsv(){
     const items=(db.inventory||[]).filter(x=>String(x.materialCode||'').trim()===String(currentLotMaterial).trim());
     if(!items.length){toast('ไม่มีข้อมูลสำหรับส่งออก CSV');return;}
     const cleanCsv=str=>`"${String(str??'').replace(/"/g,'""')}"`;
-    const headers=['Material Code','Material Name','Specification','Lot Number','Direct Transfer Orders (MO)','Warehouse','Storage Bin','On-Hand Quantity','Available Quantity','Reserved Quantity','Unit','Owner','Owner Type','Status'];
+    const headers=['Material Code','Material Name','Specification','Lot Number','QR Code (Kingdee)','Direct Transfer Orders (MO)','Warehouse','Storage Bin','On-Hand Quantity','Available Quantity','Reserved Quantity','Unit','Owner','Owner Type','Status'];
     const lines=[headers.join(',')];
     for(const x of items){
       const avail=stockAvailableForRow(x);
+      const qrCode=formatKingdeeQrCode(currentLotMaterial, x.lotNumber, x.onHand);
       const orderSummary=formatLotOrderSummaryText(currentLotMaterial, x.lotNumber, x.warehouse);
-      lines.push([cleanCsv(x.materialCode),cleanCsv(x.materialName),cleanCsv(x.specification),cleanCsv(x.lotNumber),cleanCsv(orderSummary),cleanCsv(x.warehouse),cleanCsv(x.storage),x.onHand,avail,x.reserved,cleanCsv(x.unit),cleanCsv(x.owner),cleanCsv(x.ownerType),cleanCsv(x.status)].join(','));
+      lines.push([cleanCsv(x.materialCode),cleanCsv(x.materialName),cleanCsv(x.specification),cleanCsv(x.lotNumber),cleanCsv(qrCode),cleanCsv(orderSummary),cleanCsv(x.warehouse),cleanCsv(x.storage),x.onHand,avail,x.reserved,cleanCsv(x.unit),cleanCsv(x.owner),cleanCsv(x.ownerType),cleanCsv(x.status)].join(','));
     }
     const blob=new Blob(['\uFEFF'+lines.join('\r\n')],{type:'text/csv;charset=utf-8;'});
     const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`Lot_Details_${currentLotMaterial}_${new Date().toISOString().slice(0,10)}.csv`;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
