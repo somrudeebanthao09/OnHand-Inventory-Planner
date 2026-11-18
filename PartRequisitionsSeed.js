@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-18T01:16:53.668Z",
+  "updatedAt": "2026-11-18T01:17:35.831Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -49,17 +49,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderB",
       "shift": "B",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CI-02-01C",
+          "qty": 2500,
+          "lot": "2026111401, 2026111301"
+        }
+      ],
+      "locationsSummary": "Loc#1: CI-02-01C (2,500 PCS) [Lot: 2026111401, 2026111301]",
       "onHandLocation": "CI-02-01C (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
-      "lotSummary": "2026111401, 2026111301, 2026102701, 2026083001, 2026091401, 2026102401, 2026101601, 2026101701, 2026110901, 2026100501",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026111401, 2026111301",
+      "issuerName": "ภิญโญ",
+      "issuedAt": "18/11/2026 08:17:31",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "18/11/2026 08:12:17",
-      "photoTakenAt": ""
+      "updatedAt": "18/11/2026 08:17:31",
+      "photoTakenAt": "18/11/2026 08:17:31",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261118-37111.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261118-19095",
