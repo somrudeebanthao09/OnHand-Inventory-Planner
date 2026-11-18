@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-18T12:33:46.956Z",
+  "snapshotAt": "2026-11-18T12:45:17.552Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15157,
   "orders": [
@@ -3040,7 +3040,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "5001PT00022",
       "productName": "METAL BOX 4/6 WAY-Step5 + Spot Welding + Powder caoting",
       "department": "Painting Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Partially Completed",
       "pickStatus": "Fully Issued",
       "materialCode": "5001HJ00009",
       "materialName": "METAL BOX 4/6 WAY-Step5 + Spot Welding",
@@ -9100,7 +9100,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "5001PT00022",
       "productName": "METAL BOX 4/6 WAY-Step5 + Spot Welding + Powder caoting",
       "department": "Painting Production Line",
-      "taskStatus": "Partially Completed",
+      "taskStatus": "Complete",
       "pickStatus": "Fully Issued",
       "materialCode": "5001HJ00009",
       "materialName": "METAL BOX 4/6 WAY-Step5 + Spot Welding",
