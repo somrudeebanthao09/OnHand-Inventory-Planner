@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-18T07:27:43.082Z",
+  "updatedAt": "2026-11-18T07:29:10.536Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -33,6 +33,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261118-49519",
+      "requestDate": "18/11/2026 14:29:09",
+      "requestedAt": "18/11/2026 14:29:09",
+      "moNumber": "MO-20261116-003610",
+      "ppbomNumber": "PPBOM-20261116-003914",
+      "directTransferDocs": "ZJDB-261116-000075, ZJDB-261116-000076",
+      "materialCode": "1005CY00020",
+      "materialName": "BUSWAY COVER ADD-ON 4 WAY",
+      "specification": "BRU30904",
+      "requestQty": 4,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026102101, 2026103001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "18/11/2026 14:29:09",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261118-62128",
       "requestDate": "18/11/2026 14:27:41",
