@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-18T07:04:02.595Z",
+  "updatedAt": "2026-11-18T07:04:34.061Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -87,20 +87,34 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
       "requesterName": "เจนภพ",
-      "requesterUsername": "LeaderB",
+      "requesterUsername": "req",
       "shift": "B",
       "requesterNote": "ไม่พอ",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "ไม่ระบุ Location",
+          "qty": 4,
+          "lot": "2026102001, 2026110701, 2026110702, 2026102902, 2026102905, 2026110703, 2026110704, 2026110705, 2026110706, 2026102906, 2026102904, 2026102903, 2026100901"
+        }
+      ],
+      "locationsSummary": "Loc#1: ไม่ระบุ Location (4 PCS) [Lot: 2026102001, 2026110701, 2026110702, 2026102902, 2026102905, 2026110703, 2026110704, 2026110705, 2026110706, 2026102906, 2026102904, 2026102903, 2026100901]",
       "onHandLocation": "Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CH-04-01B (Customer Supplied Material Warehouse) | CG-04-07B (Customer Supplied Material Warehouse) | CH-04-03A (Customer Supplied Material Warehouse) | CI-05-10A (Customer Supplied Material Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
       "lotSummary": "2026102001, 2026110701, 2026110702, 2026102902, 2026102905, 2026110703, 2026110704, 2026110705, 2026110706, 2026102906, 2026102904, 2026102903, 2026100901, 2026083001, 2026091101, 2026092901, 2026100299, 2026090501, 2026091701, 2026093001, 2026100702, 2026100703, 2026100904, 2026091702, 2026110301, 2026101502, 2026102901, 2026102201, 2026100801, 2026100704, 2026100701, 2026100501, 2026100503, 2026100502",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "เจ้าหน้าที่คลังจ่าย Part (Warehouse)",
+      "issuedAt": "18/11/2026 14:04:07",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "18/11/2026 13:47:36",
-      "photoTakenAt": ""
+      "updatedAt": "18/11/2026 14:04:07",
+      "photoTakenAt": "18/11/2026 14:04:07",
+      "locationsJson": "[{\"location\":\"ไม่ระบุ Location\",\"qty\":4,\"lot\":\"2026102001, 2026110701, 2026110702, 2026102902, 2026102905, 2026110703, 2026110704, 2026110705, 2026110706, 2026102906, 2026102904, 2026102903, 2026100901\"}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "16 นาที 32 วินาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261118-37111",
