@@ -106,22 +106,41 @@ async function sendWebPush(targets, payloadObj, token) {
 
 async function dispatchForRecord(prevItem, nextItem, subs, token) {
   if (!nextItem || nextItem.deleted) return 0;
-  const isNewPending = !prevItem && nextItem.status !== "issued";
+  const isNewPending = !prevItem && nextItem.status !== "issued" && nextItem.status !== "cancelled";
   const isNewlyIssued =
     nextItem.status === "issued" && (!prevItem || prevItem.status !== "issued");
-  if (!isNewPending && !isNewlyIssued) return 0;
+  const isNewlyCancelled =
+    nextItem.status === "cancelled" && (!prevItem || prevItem.status !== "cancelled");
+  if (!isNewPending && !isNewlyIssued && !isNewlyCancelled) return 0;
 
-  const eventKey = `${nextItem.reqId}:${isNewlyIssued ? "issued" : "pending"}`;
+  const eventKind = isNewlyCancelled ? "cancelled" : (isNewlyIssued ? "issued" : "pending");
+  const eventKey = `${nextItem.reqId}:${eventKind}`;
   if (sentEventKeys.has(eventKey)) return 0;
   sentEventKeys.add(eventKey);
   if (sentEventKeys.size > 5000) sentEventKeys.clear();
 
   // Only push recent items (within 15 minutes) to prevent old backlog floods on restart
-  const rawTime = isNewlyIssued
-    ? nextItem.issuedAt || nextItem.updatedAt
-    : nextItem.requestedAt || nextItem.requestDate;
+  const rawTime = isNewlyCancelled
+    ? nextItem.cancelledAt || nextItem.updatedAt
+    : (isNewlyIssued ? nextItem.issuedAt || nextItem.updatedAt : nextItem.requestedAt || nextItem.requestDate);
   const ts = parseMs(rawTime);
   if (!ts || Date.now() - ts > 15 * 60 * 1000) return 0;
+
+  if (isNewlyCancelled) {
+    const targets = subs.filter(s => s.role === "warehouse" || s.role === "admin");
+    return sendWebPush(
+      targets,
+      {
+        title: `🚫 ยกเลิกใบเบิก Part (${nextItem.materialCode || "-"})`,
+        body: `จำนวน ${nextItem.requestQty || 0} ${nextItem.unit || "PCS"} · MO: ${nextItem.moNumber || "-"}\nเหตุผล: ${nextItem.cancelReason || "เบิกผิด"} (${nextItem.cancelledBy || nextItem.requesterName || "-"})`,
+        tag: `part-req-cancelled-${nextItem.reqId}`,
+        reqId: nextItem.reqId,
+        kind: "cancelled",
+        url: "./#part-issue"
+      },
+      token
+    );
+  }
 
   if (isNewPending) {
     const targets = subs.filter(s => s.role === "warehouse" || s.role === "admin");
