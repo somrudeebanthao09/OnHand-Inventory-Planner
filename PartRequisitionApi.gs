@@ -276,18 +276,33 @@ function partReqApiSave_(session, record) {
       if (existing && storedAt > suppliedAt) {
         return { ok: true, reqId, status: existing.status || 'pending', savedAt: existing.updatedAt || '', ignoredStaleUpdate: true };
       }
+      const nextStatus = (record.status === 'cancelled' || existing?.status === 'cancelled') ? 'cancelled' : 'pending';
+      const nextCancelNote = nextStatus === 'cancelled'
+        ? (String(record.issuerNote || '').trim() || `[CANCELLED] ${record.cancelReason || 'เบิกผิด'} (${record.cancelledBy || record.requesterName || session.username})`)
+        : (existing?.issuerNote || '');
       merged = {
         ...(existing || {}),
         ...record,
         reqId,
         requesterUsername: session.username,
-        status: 'pending',
+        status: nextStatus,
         issuerName: existing?.issuerName || '',
         issuerUsername: existing?.issuerUsername || '',
-        issuerNote: existing?.issuerNote || '',
+        issuerNote: nextCancelNote,
         issuedAt: existing?.issuedAt || '',
         locations: existing?.locations || [],
         updatedAt: String(record.updatedAt || record.requestedAt || new Date().toISOString())
+      };
+    } else if (record.status === 'cancelled') {
+      if (existing && existing.status === 'issued') throw new Error('REQUEST_ALREADY_ISSUED');
+      const nextCancelNote = String(record.issuerNote || '').trim() || `[CANCELLED] ${record.cancelReason || 'เบิกผิด'} (${record.cancelledBy || session.username})`;
+      merged = {
+        ...(existing || {}),
+        ...record,
+        reqId,
+        status: 'cancelled',
+        issuerNote: nextCancelNote,
+        updatedAt: String(record.updatedAt || new Date().toISOString())
       };
     } else {
       if (record.status !== 'issued') throw new Error('WAREHOUSE_MUST_ISSUE');
