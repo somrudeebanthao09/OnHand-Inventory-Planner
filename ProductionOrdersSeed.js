@@ -1,6 +1,6 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-18T11:25:00.242Z",
-  "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
+  "snapshotAt": "2026-11-18T11:31:18.891Z",
+  "filename": "Export list_Production Material List_1118193211.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15152,
   "orders": [
     {
@@ -1768,8 +1768,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 360,
-      "wipQty": 53,
+      "consumedQty": 413,
+      "wipQty": 0,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Assembly",
       "requiredTime": "2026-11-18 12:26:25"
     },
@@ -1798,8 +1798,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 715,
+      "consumedQty": 360,
+      "wipQty": 355,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Assembly",
       "requiredTime": "2026-11-18 12:17:35"
     },
