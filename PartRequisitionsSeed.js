@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-18T04:45:30.060Z",
+  "updatedAt": "2026-11-18T06:47:37.280Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "ddc61592-0e03-4b6d-83e7-6f916ceece15915fa60e47ca455ea22b95b30ccd2a9a",
-    "wh": "e9548459-c471-413a-91be-8a1c1105ec89b90d882856d743879d4c7f78b0128acb",
-    "expiresAt": 1794984380341
+    "req": "b4d20ce1-9b63-49c0-80d6-0db467a09519f677088749a8424087c3f6210687c1fb",
+    "wh": "6d46d82b-86e9-4bb1-bfc0-2ae0c204d4068e2e5740695249d7804cfcc30046835c",
+    "expiresAt": 1795005981451
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -16,7 +16,8 @@ window.PART_REQUISITIONS_SEED = {
       "A",
       "ภาคภูมิ",
       "อรรถพร",
-      "จักรกฤษ"
+      "จักรกฤษ",
+      "เจนภพ"
     ],
     "issuers": [
       "เจ้าหน้าที่คลังจ่าย Part (Warehouse)",
@@ -32,6 +33,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261118-56274",
+      "requestDate": "18/11/2026 13:47:35",
+      "requestedAt": "18/11/2026 13:47:35",
+      "moNumber": "MO-20261116-003610",
+      "ppbomNumber": "PPBOM-20261116-003914",
+      "directTransferDocs": "ZJDB-261116-000075",
+      "materialCode": "1005CY00031",
+      "materialName": "CARTON BOX 4/6 WAY",
+      "specification": "BRU30916",
+      "requestQty": 4,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CH-04-01B (Customer Supplied Material Warehouse) | CG-04-07B (Customer Supplied Material Warehouse) | CH-04-03A (Customer Supplied Material Warehouse) | CI-05-10A (Customer Supplied Material Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
+      "lotSummary": "2026102001, 2026110701, 2026110702, 2026102902, 2026102905, 2026110703, 2026110704, 2026110705, 2026110706, 2026102906, 2026102904, 2026102903, 2026100901, 2026083001, 2026091101, 2026092901, 2026100299, 2026090501, 2026091701, 2026093001, 2026100702, 2026100703, 2026100904, 2026091702, 2026110301, 2026101502, 2026102901, 2026102201, 2026100801, 2026100704, 2026100701, 2026100501, 2026100503, 2026100502",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "18/11/2026 13:47:36",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261118-37111",
       "requestDate": "18/11/2026 08:12:16",
