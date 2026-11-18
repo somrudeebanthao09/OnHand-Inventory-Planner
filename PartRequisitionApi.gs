@@ -489,7 +489,7 @@ function partReqApiToRow_(record) {
     shift: String(record.shift || 'A'),
     requesterNote: String(record.requesterNote || ''),
     requestedAt: formatPartReqDateTime_(record.requestedAt, record.requestDate),
-    status: record.status === 'issued' ? 'issued' : 'pending',
+    status: record.status === 'issued' ? 'issued' : (record.status === 'cancelled' ? 'cancelled' : 'pending'),
     locationsSummary: String(record.locationsSummary || ''),
     locationsJson: JSON.stringify(Array.isArray(record.locations) ? record.locations : []),
     issuerName: String(record.issuerName || ''),
