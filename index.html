@@ -14104,10 +14104,11 @@
 
   function updatePartReqBadges() {
     const visibleReqs = getVisiblePartReqs();
-    const pendingList = visibleReqs.filter(r => r.status !== 'issued' && r.status !== 'cancelled');
-    const issuedList = visibleReqs.filter(r => r.status === 'issued');
+    const activeReqs = visibleReqs.filter(r => r.status !== 'cancelled');
+    const pendingList = activeReqs.filter(r => r.status !== 'issued');
+    const issuedList = activeReqs.filter(r => r.status === 'issued');
     const cancelledList = visibleReqs.filter(r => r.status === 'cancelled');
-    const zjdbLinkedList = visibleReqs.filter(r => r.directTransferDocs && String(r.directTransferDocs).includes('ZJDB'));
+    const zjdbLinkedList = activeReqs.filter(r => r.directTransferDocs && String(r.directTransferDocs).includes('ZJDB'));
     const pendingCount = pendingList.length;
 
     const sbBadge = el('sidebarPartReqPendingBadge');
@@ -14120,14 +14121,14 @@
       sbIssueBadge.textContent = String(pendingCount);
       sbIssueBadge.classList.toggle('hidden', pendingCount === 0);
     }
-    if (el('partReqMetricTotal')) el('partReqMetricTotal').textContent = fmt(visibleReqs.length);
+    if (el('partReqMetricTotal')) el('partReqMetricTotal').textContent = fmt(activeReqs.length);
     if (el('partReqMetricPending')) el('partReqMetricPending').textContent = fmt(pendingCount);
     if (el('partReqMetricIssued')) el('partReqMetricIssued').textContent = fmt(issuedList.length);
     if (el('partReqMetricZjdb')) el('partReqMetricZjdb').textContent = fmt(zjdbLinkedList.length);
 
     const partialIssuedList = issuedList.filter(r => getPartReqIssueProgress(r).isPartial);
     const completeIssuedList = issuedList.filter(r => !getPartReqIssueProgress(r).isPartial);
-    if (el('partReqTabAllCount')) el('partReqTabAllCount').textContent = fmt(visibleReqs.length);
+    if (el('partReqTabAllCount')) el('partReqTabAllCount').textContent = fmt(activeReqs.length);
     if (el('partReqTabPendingCount')) el('partReqTabPendingCount').textContent = fmt(pendingCount);
     if (el('partReqTabPartialCount')) el('partReqTabPartialCount').textContent = fmt(partialIssuedList.length);
     if (el('partReqTabIssuedCount')) el('partReqTabIssuedCount').textContent = fmt(completeIssuedList.length);
@@ -14639,6 +14640,7 @@
     const dateFilter = el('partReqDateFilter')?.value || '';
 
     const filtered = getVisiblePartReqs().filter(r => {
+      if (activePartReqTab === 'all' && r.status === 'cancelled') return false;
       if (activePartReqTab === 'pending' && (r.status === 'issued' || r.status === 'cancelled')) return false;
       if (activePartReqTab === 'partial' && !getPartReqIssueProgress(r).isPartial) return false;
       if (activePartReqTab === 'issued' && (r.status !== 'issued' || getPartReqIssueProgress(r).isPartial)) return false;
