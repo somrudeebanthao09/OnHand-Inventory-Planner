@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-18T07:57:45.699Z",
+  "updatedAt": "2026-11-18T07:58:52.924Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -33,6 +33,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261118-31969",
+      "requestDate": "18/11/2026 14:58:51",
+      "requestedAt": "18/11/2026 14:58:51",
+      "moNumber": "MO-20261116-003610",
+      "ppbomNumber": "PPBOM-20261116-003914",
+      "directTransferDocs": "ZJDB-261116-000075",
+      "materialCode": "1005QT00675",
+      "materialName": "NEUTRAL bar 2 + 6 (75022-892-54)",
+      "specification": "75504067CA",
+      "requestQty": 18,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CQ-02-07A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Defective Warehouse)",
+      "lotSummary": "2026103101, 2026100299, 2026091501, 2026083001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "18/11/2026 14:58:51",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261118-78284",
       "requestDate": "18/11/2026 14:32:57",
