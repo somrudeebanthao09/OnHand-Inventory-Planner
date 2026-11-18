@@ -13686,8 +13686,12 @@
     const issuedAt = record?.issuedAt ? formatPartReqDateTime(record?.issuedAt, '', false) : '';
     const photoTakenAt = (record?.photoTakenAt || record?.issuedAt) ? formatPartReqDateTime(record?.photoTakenAt || record?.issuedAt, '', false) : '';
     const isAdminDeleted = Boolean(record?.deleted) || String(record?.issuerNote || '').includes('[DELETED_BY_ADMIN]');
+    const rawIssuerNote = String(record?.issuerNote || '');
+    const isCancelled = !isAdminDeleted && (record?.status === 'cancelled' || rawIssuerNote.startsWith('[CANCELLED]'));
     return {
       ...record,
+      status: isCancelled ? 'cancelled' : record?.status,
+      cancelReason: record?.cancelReason || (isCancelled && rawIssuerNote.startsWith('[CANCELLED]') ? rawIssuerNote.replace(/^\[CANCELLED\]\s*/, '') : ''),
       requestDate,
       requestedAt,
       issuedAt,
