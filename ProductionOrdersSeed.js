@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-18T11:44:00.694Z",
+  "snapshotAt": "2026-11-18T11:52:18.828Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15152,
   "orders": [
@@ -8980,7 +8980,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "5001PT00012",
       "productName": "METAL COVER 4 WAY-Step2 + Powder caoting",
       "department": "Painting Production Line",
-      "taskStatus": "Partially Completed",
+      "taskStatus": "Complete",
       "pickStatus": "Fully Issued",
       "materialCode": "5001CY00197",
       "materialName": "METAL COVER 4 WAY-Step2",
