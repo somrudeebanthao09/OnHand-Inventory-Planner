@@ -8708,8 +8708,8 @@
       let mo = moMap.get(moNum);
       if (!mo) {
         const prodCode = String(r.productCode || '').trim();
-        const pOv = overrides.get(prodCode);
         const execInfo = executionByMo[moNum] || null;
+        const pOv = overrides.get(prodCode || String(execInfo?.materialCode || '').trim());
         const bcInfo = barcodeByMo[moNum] || null;
         const transferOrder = transferOrderByMo.get(moNum);
         const orderQtyCandidates = [
@@ -8719,7 +8719,7 @@
           [n(bcInfo?.planQty), 'Barcode']
         ];
         const orderQtySource = orderQtyCandidates.find(([qty]) => qty > 0);
-        const rawDept = r.department || execInfo?.department || pOv?.department || 'H9 Assembly Production Line';
+        const rawDept = pOv?.department || r.department || execInfo?.department || 'H9 Assembly Production Line';
         mo = {
           moNumber: moNum,
           ppbomNumber: String(r.ppbomNumber || '').trim(),
@@ -8858,7 +8858,7 @@
           directTransferDocsSet: new Set(),
           productCode: prodCode,
           productName: pOv?.materialName || execInfo.materialName || bcInfo?.orderModel || prodCode,
-          department: normalizeDepartmentName(execInfo.department || 'H9 Assembly Production Line'),
+          department: normalizeDepartmentName(pOv?.department || execInfo.department || 'H9 Assembly Production Line'),
           orderQty: n(execInfo.orderQty) || bcInfo?.planQty || 0,
           orderQtySource: n(execInfo.orderQty) ? 'Execution Details' : 'Barcode',
           pmlStatus: execInfo.taskStatus || 'Complete',
