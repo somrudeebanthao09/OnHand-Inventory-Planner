@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-18T07:31:37.027Z",
+  "updatedAt": "2026-11-18T07:32:59.298Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -33,6 +33,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261118-78284",
+      "requestDate": "18/11/2026 14:32:57",
+      "requestedAt": "18/11/2026 14:32:57",
+      "moNumber": "MO-20261116-003610",
+      "ppbomNumber": "PPBOM-20261116-003914",
+      "directTransferDocs": "ZJDB-261116-000075",
+      "materialCode": "1005CY00011",
+      "materialName": "DOLLY COVER 4/6 WAY",
+      "specification": "BRU30895",
+      "requestQty": 1,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CD-07-06B (Customer Supplied Material Warehouse) | CD-07-02B (Customer Supplied Material Warehouse) | CD-06-04B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CQ-05-13A (Customer Supplied Material Warehouse) | CC-05-13A (Customer Supplied Material Warehouse) | CE-03-06B (Customer Supplied Material Warehouse) | CC-09-01B (Customer Supplied Material Warehouse) | CC-09-02B (Customer Supplied Material Warehouse) | CD-01-04A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026100206, 2026101401, 2026101601, 2026101501, 2026100205, 2026100203, 2026101902, 2026101701, 2026110901",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "18/11/2026 14:32:58",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261118-96031",
       "requestDate": "18/11/2026 14:31:35",
