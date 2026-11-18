@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-18T06:47:37.280Z",
+  "updatedAt": "2026-11-18T06:55:00.067Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -33,6 +33,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261118-99072",
+      "requestDate": "18/11/2026 13:54:58",
+      "requestedAt": "18/11/2026 13:54:58",
+      "moNumber": "MO-20261116-003610",
+      "ppbomNumber": "PPBOM-20261116-003914",
+      "directTransferDocs": "ZJDB-261116-000075, ZJDB-261116-000076",
+      "materialCode": "1005CY00919",
+      "materialName": "FRONT SIDE COVER stamping",
+      "specification": "NVE96548",
+      "requestQty": 30,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Semi-finished Product Warehouse-Waiting Welding)",
+      "lotSummary": "2026100405",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "18/11/2026 13:54:58",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261118-56274",
       "requestDate": "18/11/2026 13:47:35",
