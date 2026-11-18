@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-18T07:30:03.770Z",
+  "updatedAt": "2026-11-18T07:31:37.027Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -33,6 +33,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261118-96031",
+      "requestDate": "18/11/2026 14:31:35",
+      "requestedAt": "18/11/2026 14:31:35",
+      "moNumber": "MO-20261116-003610",
+      "ppbomNumber": "PPBOM-20261116-003914",
+      "directTransferDocs": "ZJDB-261116-000075",
+      "materialCode": "1005QT00552",
+      "materialName": "FILLER PLATE FOR LOAD CENTER BLACK COLOR",
+      "specification": "75022-900-01",
+      "requestQty": 13,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CQ-06-01A (Customer Supplied Material Warehouse) | CQ-04-15A (Customer Supplied Material Warehouse) | CQ-04-14B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CO-04-11A (Customer Supplied Material Warehouse) | CF-01-03A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026111403, 2026111401, 2026111402, 2026092301, 2026102101, 2026110701, 2026102203, 2026102601",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "18/11/2026 14:31:35",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261118-02808",
       "requestDate": "18/11/2026 14:30:02",
