@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-19T01:40:39.521Z",
+  "snapshotAt": "2026-11-19T01:50:39.254Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15195,
   "orders": [
@@ -96,7 +96,7 @@ window.PRODUCTION_ORDERS_SEED = {
     {
       "moNumber": "MO-20261119-003723",
       "ppbomNumber": "PPBOM-20261119-004038",
-      "docStatus": "Draft",
+      "docStatus": "Approved",
       "productCode": "5004PT00037",
       "productName": "BOX Painted 450 Project Welding Coating(Gray)",
       "department": "Painting Production Line",
@@ -2368,8 +2368,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 302.4,
-      "wipQty": 8809.6,
+      "consumedQty": 611.1,
+      "wipQty": 8500.9,
       "issuingWarehouse": "Raw Material Warehouse",
       "requiredTime": "2026-11-18 11:46:21"
     },
