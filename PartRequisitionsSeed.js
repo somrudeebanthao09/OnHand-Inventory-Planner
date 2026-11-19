@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T12:52:58.467Z",
+  "updatedAt": "2026-11-19T13:45:27.489Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "03f92f93-295e-45a8-9451-780508415139ebe9b4a4a9104f0cbfedc1fd041ffe81",
-    "wh": "fe5eba0e-f49d-4f3d-b08b-e966b384b0bd55268f4391b04f9ca71e7d834e565334",
-    "expiresAt": 1795114363976
+    "req": "d05ef6cf-14bc-443b-9576-561f3e19117f738e4331aa5842eeb940582223e3708a",
+    "wh": "bcaafd17-78d3-4745-a1f4-960a3f7c0ae2aaf35fe8062147488cb5f8355efd6c9c",
+    "expiresAt": 1795114386470
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261119-26993",
+      "requestDate": "19/11/2026 20:45:26",
+      "requestedAt": "19/11/2026 20:45:26",
+      "moNumber": "MO-20261118-003676",
+      "ppbomNumber": "PPBOM-20261118-003992",
+      "directTransferDocs": "ZJDB-261118-000013, ZJDB-261118-000014",
+      "materialCode": "1005QT00743",
+      "materialName": "QR CODE LABEL CLASSIC +",
+      "specification": "QGH51561",
+      "requestQty": 2500,
+      "unit": "PCS",
+      "reason": "ลาเบล",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-02-03D (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse)",
+      "lotSummary": "2026102401, 2026102701",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "19/11/2026 20:45:26",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261119-89332",
       "requestDate": "19/11/2026 16:51:28",
