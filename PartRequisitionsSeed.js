@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T04:29:56.057Z",
+  "updatedAt": "2026-11-19T04:31:42.840Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261119-03317",
+      "requestDate": "19/11/2026 11:31:43",
+      "requestedAt": "19/11/2026 11:31:43",
+      "moNumber": "MO-20261117-003628",
+      "ppbomNumber": "PPBOM-20261117-003939",
+      "directTransferDocs": "ZJDB-261117-000032, ZJDB-261117-000034",
+      "materialCode": "1005QT00680",
+      "materialName": "NEUTRAL LABEL",
+      "specification": "75504149AA",
+      "requestQty": 1500,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CI-02-05B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "19/11/2026 11:31:43",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261119-96529",
       "requestDate": "19/11/2026 11:29:56",
