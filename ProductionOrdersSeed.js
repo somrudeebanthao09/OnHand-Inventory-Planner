@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-19T06:47:25.651Z",
+  "snapshotAt": "2026-11-19T06:56:04.838Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15395,
   "orders": [
@@ -6100,7 +6100,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "5004PT00011",
       "productName": "Gland plate painted Welding Coating",
       "department": "Painting Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Partially Completed",
       "pickStatus": "Fully Issued",
       "materialCode": "5001HJ00206",
       "materialName": "Gland plate painted Welding",
