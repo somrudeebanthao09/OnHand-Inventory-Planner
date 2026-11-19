@@ -1,11 +1,11 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T00:16:57.257Z",
+  "updatedAt": "2026-11-19T00:17:04.774Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "5068b72f-6850-40c5-9843-b8e31af7750c9a68f8efdcde48c091c3432e426eff98",
-    "wh": "8d3df87a-a5c5-4eca-b21a-fbb4dc3c701dc5e8db82888a44a7b01766ede81de1d7",
+    "wh": "4c014221-e3cb-4611-9ccc-8ef2512b7d756434b37979364d2db72b7639a99d290b",
     "expiresAt": 1795019393185
   },
   "staffRoster": {
@@ -162,20 +162,34 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "เบิกเพิ่มตามใบสั่งผลิต (MO)",
       "requesterName": "จักรกฤษ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CH-02-04A",
+          "qty": 15,
+          "lot": "2026111601"
+        }
+      ],
+      "locationsSummary": "Loc#1: CH-02-04A (15 PCS) [Lot: 2026111601]",
       "onHandLocation": "Public area (Customer Supplied Material Warehouse) | CH-02-04A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse)",
       "lotSummary": "2026111601, 2026110301, 2026100999, 2026083001",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "ธนวัฒน์",
+      "issuedAt": "18/11/2026 22:23:29",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "18/11/2026 21:51:48",
-      "photoTakenAt": ""
+      "updatedAt": "18/11/2026 22:23:29",
+      "photoTakenAt": "18/11/2026 22:23:29",
+      "locationsJson": "[{\"location\":\"CH-02-04A\",\"qty\":15,\"lot\":\"2026111601\"}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "31 นาที 42 วินาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261118-00457",
@@ -186,25 +200,39 @@ window.PART_REQUISITIONS_SEED = {
       "directTransferDocs": "ZJDB-261117-000032, ZJDB-261117-000034",
       "materialCode": "1005QT00865",
       "materialName": "BLANK LABEL STICKER SIZE12X12 OFFER1",
-      "specification": "51150308",
+      "specification": 51150308,
       "requestQty": 4000,
       "unit": "PCS",
       "reason": "ลาเบล",
       "requesterName": "ภาคภูมิ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CI-01-01C",
+          "qty": 4000,
+          "lot": "2026083001, 2026111301"
+        }
+      ],
+      "locationsSummary": "Loc#1: CI-01-01C (4,000 PCS) [Lot: 2026083001, 2026111301]",
       "onHandLocation": "CI-01-01C (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
       "lotSummary": "2026083001, 2026111301",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "ธนวัฒน์",
+      "issuedAt": "18/11/2026 22:25:47",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "18/11/2026 21:46:40",
-      "photoTakenAt": ""
+      "updatedAt": "18/11/2026 22:25:47",
+      "photoTakenAt": "18/11/2026 22:25:47",
+      "locationsJson": "[{\"location\":\"CI-01-01C\",\"qty\":4000,\"lot\":\"2026083001, 2026111301\"}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "39 นาที 7 วินาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261118-96038",
@@ -220,20 +248,34 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "เบิกเพิ่มตามใบสั่งผลิต (MO)",
       "requesterName": "จักรกฤษ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CC-03-04B",
+          "qty": 100,
+          "lot": "2026110701"
+        }
+      ],
+      "locationsSummary": "Loc#1: CC-03-04B (100 PCS) [Lot: 2026110701]",
       "onHandLocation": "Public area (Customer Supplied Material Warehouse) | CC-03-04B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Defective Warehouse)",
       "lotSummary": "2026111801, 2026110701, 2026100601, 2026093001, 2026091901",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "ธนวัฒน์",
+      "issuedAt": "18/11/2026 20:49:04",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "18/11/2026 20:41:35",
-      "photoTakenAt": ""
+      "updatedAt": "18/11/2026 20:49:04",
+      "photoTakenAt": "18/11/2026 20:49:04",
+      "locationsJson": "[{\"location\":\"CC-03-04B\",\"qty\":100,\"lot\":\"2026110701\"}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "7 นาที 29 วินาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261118-24149",
