@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T09:02:23.522Z",
+  "updatedAt": "2026-11-19T09:05:03.856Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -109,17 +109,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderB",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
-      "onHandLocation": "CC-02-07B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CC-04-09A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CO-04-03A (Customer Supplied Material Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | CC-08-10B (Customer Supplied Material Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Bending)",
-      "lotSummary": "2026111601, 2026102201, 2026111101, 2026090802, 2026101701, 2026090902, 2026090707, 2026090706, 2026090705, 2026090901, 2026101901, 2026083001, 2026090801, 2026090704, 2026102101, 2026090908, 2026090906, 2026090907, 2026090909, 2026091001, 2026090703, 2026090501, 2026090702, 2026090701, 2026090903, 2026090904, 2026090905",
-      "issuerName": "",
-      "issuedAt": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CC-02-07B",
+          "qty": 3,
+          "lot": "2026111601"
+        }
+      ],
+      "locationsSummary": "Loc#1: CC-02-07B (3 PCS) [Lot: 2026111601]",
+      "onHandLocation": "CC-02-07B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CC-04-09A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CO-04-03A (Customer Supplied Material Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Bending) | CC-08-10B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026111601",
+      "issuerName": "สาวิตรี",
+      "issuedAt": "19/11/2026 16:05:02",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "19/11/2026 15:53:45",
-      "photoTakenAt": ""
+      "updatedAt": "19/11/2026 16:05:02",
+      "photoTakenAt": "19/11/2026 16:05:02",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261119-25109.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261119-54282",
