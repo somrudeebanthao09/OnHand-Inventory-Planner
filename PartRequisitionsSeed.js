@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T09:14:32.476Z",
+  "updatedAt": "2026-11-19T09:14:37.952Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261119-79302",
+      "requestDate": "19/11/2026 16:14:38",
+      "requestedAt": "19/11/2026 16:14:38",
+      "moNumber": "MO-20261117-003628",
+      "ppbomNumber": "PPBOM-20261117-003939",
+      "directTransferDocs": "ZJDB-261117-000032",
+      "materialCode": "1005QT00187",
+      "materialName": "Filler",
+      "specification": "BRU53756",
+      "requestQty": 8,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CO-07-01B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 2026101701, 2026092501, 2026111101, 2026111001, 2026100299, 2026111002",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "19/11/2026 16:14:39",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261119-43080",
       "requestDate": "19/11/2026 16:14:02",
