@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T04:31:42.840Z",
+  "updatedAt": "2026-11-19T04:37:21.814Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -80,17 +80,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderB",
       "shift": "B",
       "requesterNote": "ไม่พอ",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CC-02-02A",
+          "qty": 500,
+          "lot": ""
+        }
+      ],
+      "locationsSummary": "Loc#1: CC-02-02A (500 PCS)",
       "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Bending) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Bending)",
       "lotSummary": "2026083001, 2026111001, 2026111701, 2026090905, 2026090501, 2026090705, 2026090709, 2026090801, 2026090708, 2026090704, 2026090702, 2026090701, 2026090901, 2026090904, 2026091001, 2026090706, 2026090703, 2026090802, 2026090707, 2026090907, 2026090909, 2026090906, 2026090908, 2026090903, 2026090902",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "สาวิตรี",
+      "issuedAt": "19/11/2026 11:37:18",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "19/11/2026 11:29:56",
-      "photoTakenAt": ""
+      "updatedAt": "19/11/2026 11:37:18",
+      "photoTakenAt": "19/11/2026 11:37:18",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261119-96529.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261119-18189",
