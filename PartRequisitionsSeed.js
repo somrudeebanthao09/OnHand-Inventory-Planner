@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T04:08:25.551Z",
+  "updatedAt": "2026-11-19T04:12:11.011Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -51,17 +51,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderB",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CI-02-03E",
+          "qty": 2500,
+          "lot": ""
+        }
+      ],
+      "locationsSummary": "Loc#1: CI-02-03E (2,500 PCS)",
       "onHandLocation": "",
       "lotSummary": "",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "ภิญโญ",
+      "issuedAt": "19/11/2026 11:12:08",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "19/11/2026 11:03:38",
-      "photoTakenAt": ""
+      "updatedAt": "19/11/2026 11:12:08",
+      "photoTakenAt": "19/11/2026 11:12:08",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261119-18189.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261119-02937",
