@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T13:49:10.497Z",
+  "updatedAt": "2026-11-19T14:01:46.074Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261119-05484",
+      "requestDate": "19/11/2026 21:01:44",
+      "requestedAt": "19/11/2026 21:01:44",
+      "moNumber": "MO-20261117-003646",
+      "ppbomNumber": "PPBOM-20261117-003959",
+      "directTransferDocs": "ZJDB-261117-000068",
+      "materialCode": "1005QT00549",
+      "materialName": "EZ250 SHROUD",
+      "specification": "75170103AA",
+      "requestQty": 368,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CF-03-05B (Customer Supplied Material Warehouse) | CC-04-01A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CC-03-10B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CJ-01-11A (Customer Supplied Material Warehouse) | CJ-01-11A (Semi-finished Product Warehouse-Waiting Assembly)",
+      "lotSummary": "2026100601, 2026100101, 2026083001, 2026090704, 2026090801, 2026090701, 2026090703, 2026090702, 2026091002, 2026091001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "19/11/2026 21:01:45",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261119-57671",
       "requestDate": "19/11/2026 20:45:57",
