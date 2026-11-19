@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T08:40:46.124Z",
+  "updatedAt": "2026-11-19T08:41:17.347Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261119-77962",
+      "requestDate": "19/11/2026 15:41:16",
+      "requestedAt": "19/11/2026 15:41:16",
+      "moNumber": "MO-20261117-003628",
+      "ppbomNumber": "PPBOM-20261117-003939",
+      "directTransferDocs": "ZJDB-261117-000032",
+      "materialCode": "1005QT00191",
+      "materialName": "Wiring diagram label",
+      "specification": "BRU97303",
+      "requestQty": 30,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CI-02-15E (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026083001, 2026102401",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "19/11/2026 15:41:17",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261119-25094",
       "requestDate": "19/11/2026 15:40:24",
