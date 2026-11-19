@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T09:08:26.511Z",
+  "updatedAt": "2026-11-19T09:14:32.476Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261119-43080",
+      "requestDate": "19/11/2026 16:14:02",
+      "requestedAt": "19/11/2026 16:14:02",
+      "moNumber": "MO-20261117-003628",
+      "ppbomNumber": "PPBOM-20261117-003939",
+      "directTransferDocs": "ZJDB-261117-000032",
+      "materialCode": "1005QT00167",
+      "materialName": "SUMP",
+      "specification": "BRU53755",
+      "requestQty": 4,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CO-03-13B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CO-02-05A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026090708, 2026090903, 2026090904, 2026111002, 2026111001, 2026090901, 2026090902, 2026090709, 2026090707, 2026090706, 2026090701, 2026090705, 2026100901, 2026090704, 2026090703, 2026090702, 2026090801, 2026102201, 2026090802, 2026090501, 2026110401",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "19/11/2026 16:14:03",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261119-07861",
       "requestDate": "19/11/2026 16:08:26",
@@ -109,17 +138,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderB",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CC-05-03B",
+          "qty": 3,
+          "lot": "2026111601"
+        }
+      ],
+      "locationsSummary": "Loc#1: CC-05-03B (3 PCS) [Lot: 2026111601]",
       "onHandLocation": "CC-05-03A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CO-07-02B (Customer Supplied Material Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Bending)",
-      "lotSummary": "2026111601, 2026111102, 2026111101, 2026090707, 2026090802, 2026090902, 2026092203, 2026090501, 2026090703, 2026090706, 2026090701, 2026090702, 2026090801, 2026090901, 2026090704, 2026090705, 2026090906, 2026090907, 2026091001, 2026090905, 2026090908, 2026090904, 2026090903",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026111601",
+      "issuerName": "สาวิตรี",
+      "issuedAt": "19/11/2026 16:14:12",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "19/11/2026 15:54:18",
-      "photoTakenAt": ""
+      "updatedAt": "19/11/2026 16:14:12",
+      "photoTakenAt": "19/11/2026 16:14:12",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261119-58268.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261119-25109",
