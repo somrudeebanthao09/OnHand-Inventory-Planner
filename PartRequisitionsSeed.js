@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T14:01:46.074Z",
+  "updatedAt": "2026-11-19T14:03:11.696Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -120,20 +120,34 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "ลาเบล",
       "requesterName": "ภาคภูมิ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CI-02-03D",
+          "qty": 2500,
+          "lot": "2026102701, 2026102401"
+        }
+      ],
+      "locationsSummary": "Loc#1: CI-02-03D (2,500 PCS) [Lot: 2026102701, 2026102401]",
       "onHandLocation": "CI-02-03D (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse)",
       "lotSummary": "2026102401, 2026102701",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "อุทิศ",
+      "issuedAt": "19/11/2026 21:02:58",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "19/11/2026 20:45:26",
-      "photoTakenAt": ""
+      "updatedAt": "19/11/2026 21:02:58",
+      "photoTakenAt": "19/11/2026 21:02:58",
+      "locationsJson": "[{\"location\":\"CI-02-03D\",\"qty\":2500,\"lot\":\"2026102701, 2026102401\"}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "17 นาที 32 วินาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261119-89332",
