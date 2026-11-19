@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T03:01:28.410Z",
+  "updatedAt": "2026-11-19T04:03:21.790Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "cf43013c-498c-4696-8076-51c897913ad71ed7710cb0d8466b98b70acbb727b352",
-    "wh": "d55a09cb-8f61-46d9-b846-3d48f67c03aadb1e2bd9fcda43de817bfa6306016169",
-    "expiresAt": 1795078883118
+    "wh": "47893f49-5c47-4fc4-b544-a0cd6f610478e559854fff814ccd856c16e00d5f4e19",
+    "expiresAt": 1795078888398
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261119-02937",
+      "requestDate": "19/11/2026 11:03:22",
+      "requestedAt": "19/11/2026 11:03:22",
+      "moNumber": "MO-20261118-003676",
+      "ppbomNumber": "PPBOM-20261118-003992",
+      "directTransferDocs": "ZJDB-261118-000013, ZJDB-261118-000014",
+      "materialCode": "1005QT00299",
+      "materialName": "BLANK RATING LABEL",
+      "specification": "75503587AA",
+      "requestQty": 2500,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-02-01C (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
+      "lotSummary": "2026111301, 2026111401, 2026102701, 2026083001, 2026110901, 2026101601, 2026102401, 2026091401, 2026101701, 2026100501",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "19/11/2026 11:03:22",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261119-09946",
       "requestDate": "19/11/2026 07:10:08",
