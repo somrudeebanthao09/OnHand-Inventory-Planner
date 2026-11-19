@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-19T04:16:24.576Z",
+  "snapshotAt": "2026-11-19T04:26:38.978Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15346,
   "orders": [
@@ -21250,7 +21250,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "5001HJ00220",
       "productName": "CU FRONT COVER 2+18, 18 WAY Welding",
       "department": "Welding & Riveting Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Partially Completed",
       "pickStatus": "Partially Issued",
       "materialCode": "5001CY00314",
       "materialName": "FRONT COVER 2+18，18 WAY process 4",
@@ -21280,7 +21280,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "5001HJ00220",
       "productName": "CU FRONT COVER 2+18, 18 WAY Welding",
       "department": "Welding & Riveting Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Partially Completed",
       "pickStatus": "Partially Issued",
       "materialCode": "1005CY00919",
       "materialName": "FRONT SIDE COVER stamping",
