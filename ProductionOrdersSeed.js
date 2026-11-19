@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-19T07:06:18.922Z",
+  "snapshotAt": "2026-11-19T07:16:32.970Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15395,
   "orders": [
@@ -1390,7 +1390,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "5001CY00040",
       "productName": "Gland plate painted Process 3",
       "department": "Electrical Stamping Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Partially Completed",
       "pickStatus": "Fully Issued",
       "materialCode": "5001CY00038",
       "materialName": "Gland plate painted Process 1",
@@ -7810,7 +7810,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "6001BZ00023",
       "productName": "EPTFixed ContactC Plating Packing(Thailand)LOOP LINE TERM-LOW",
       "department": "Electrical Post-Processing Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Complete",
       "pickStatus": "Fully Issued",
       "materialCode": "5004BM00082",
       "materialName": "EPTFixed ContactC Plating(Thailand)LOOP LINE TERM-LOW",
@@ -10408,8 +10408,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 587,
+      "consumedQty": 159,
+      "wipQty": 428,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Assembly",
       "requiredTime": "2026-11-17 15:58:42"
     },
@@ -13468,8 +13468,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 4540,
-      "wipQty": 4100,
+      "consumedQty": 6340,
+      "wipQty": 2300,
       "issuingWarehouse": "Semi-finished Product Warehouse After Plating",
       "requiredTime": "2026-11-17 15:31:04"
     },
@@ -27718,8 +27718,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 2799,
-      "wipQty": 4154,
+      "consumedQty": 3245,
+      "wipQty": 3708,
       "issuingWarehouse": "Aluminum Die Casting Semi-Finished Product Warehouse-Waiting CNC",
       "requiredTime": "2026-11-16 10:42:17"
     },
