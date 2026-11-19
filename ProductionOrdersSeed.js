@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-19T19:45:47.882Z",
+  "snapshotAt": "2026-11-19T19:59:27.618Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15497,
   "orders": [
@@ -2908,8 +2908,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 159,
+      "consumedQty": 140,
+      "wipQty": 19,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Assembly",
       "requiredTime": "2026-11-19 15:23:11"
     },
@@ -2938,8 +2938,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 318,
+      "consumedQty": 280,
+      "wipQty": 38,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Assembly",
       "requiredTime": "2026-11-19 15:23:11"
     },
@@ -2968,8 +2968,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 318,
+      "consumedQty": 280,
+      "wipQty": 38,
       "issuingWarehouse": "Customer Supplied Material Warehouse",
       "requiredTime": "2026-11-19 15:23:11"
     },
@@ -2998,8 +2998,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 318,
+      "consumedQty": 280,
+      "wipQty": 38,
       "issuingWarehouse": "Customer Supplied Material Warehouse",
       "requiredTime": "2026-11-19 15:23:11"
     },
@@ -3028,8 +3028,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 1908,
+      "consumedQty": 1680,
+      "wipQty": 228,
       "issuingWarehouse": "Customer Supplied Material Warehouse",
       "requiredTime": "2026-11-19 15:23:11"
     },
@@ -3058,8 +3058,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 159,
+      "consumedQty": 140,
+      "wipQty": 19,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Assembly",
       "requiredTime": "2026-11-19 15:23:11"
     },
