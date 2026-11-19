@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-19T04:26:38.978Z",
+  "snapshotAt": "2026-11-19T04:36:07.137Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15346,
   "orders": [
@@ -13900,7 +13900,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "5001CY00099",
       "productName": "FRONT COVER 2 + 6,6 WAY Process 4",
       "department": "Electrical Stamping Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Partially Completed",
       "pickStatus": "Fully Issued",
       "materialCode": "1005QT00099",
       "materialName": "CU FRONT COVER 2 + 6, 6 WAY",
