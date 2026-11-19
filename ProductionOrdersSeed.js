@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-19T02:40:42.931Z",
+  "snapshotAt": "2026-11-19T02:50:42.816Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15201,
   "orders": [
@@ -2548,8 +2548,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 919.8,
-      "wipQty": 8192.2,
+      "consumedQty": 1171.8,
+      "wipQty": 7940.2,
       "issuingWarehouse": "Raw Material Warehouse",
       "requiredTime": "2026-11-18 11:46:21"
     },
@@ -16858,8 +16858,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 4210,
+      "consumedQty": 427.1832,
+      "wipQty": 3782.8168,
       "issuingWarehouse": "Raw Material Warehouse",
       "requiredTime": "2026-11-16 16:13:50"
     },
