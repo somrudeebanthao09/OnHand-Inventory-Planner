@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T09:18:53.846Z",
+  "updatedAt": "2026-11-19T09:19:37.590Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -109,17 +109,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderB",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CI-01-10F",
+          "qty": 8,
+          "lot": "2026111001"
+        }
+      ],
+      "locationsSummary": "Loc#1: CI-01-10F (8 PCS) [Lot: 2026111001]",
       "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Customer Supplied Material Warehouse) | CI-01-10F (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Bending)",
-      "lotSummary": "2026100901, 2026102101, 2026111001, 2026111701, 2026090705, 2026090702, 2026090707, 2026090708, 2026090801, 2026090704, 2026090706, 2026090709, 2026090901, 2026090701, 2026090703, 2026090501, 2026090802, 2026090907, 2026090905, 2026090906, 2026090908, 2026090904, 2026090903, 2026090902",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026111001",
+      "issuerName": "สาวิตรี",
+      "issuedAt": "19/11/2026 16:19:35",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "19/11/2026 16:08:27",
-      "photoTakenAt": ""
+      "updatedAt": "19/11/2026 16:19:35",
+      "photoTakenAt": "19/11/2026 16:19:35",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261119-07861.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261119-77535",
