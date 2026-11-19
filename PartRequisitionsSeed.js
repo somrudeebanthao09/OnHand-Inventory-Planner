@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T04:12:11.011Z",
+  "updatedAt": "2026-11-19T04:29:56.057Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261119-96529",
+      "requestDate": "19/11/2026 11:29:56",
+      "requestedAt": "19/11/2026 11:29:56",
+      "moNumber": "MO-20261117-003628",
+      "ppbomNumber": "PPBOM-20261117-003939",
+      "directTransferDocs": "ZJDB-261117-000032",
+      "materialCode": "1005QT00774",
+      "materialName": "SCREW CON. + SPRING WASHER(M-SCREW/HEX)",
+      "specification": "75503595AA",
+      "requestQty": 500,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Bending) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Bending)",
+      "lotSummary": "2026083001, 2026111001, 2026111701, 2026090905, 2026090501, 2026090705, 2026090709, 2026090801, 2026090708, 2026090704, 2026090702, 2026090701, 2026090901, 2026090904, 2026091001, 2026090706, 2026090703, 2026090802, 2026090707, 2026090907, 2026090909, 2026090906, 2026090908, 2026090903, 2026090902",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "19/11/2026 11:29:56",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261119-18189",
       "requestDate": "19/11/2026 11:03:38",
