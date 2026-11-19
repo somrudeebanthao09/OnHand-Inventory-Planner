@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T13:46:58.816Z",
+  "updatedAt": "2026-11-19T13:49:10.497Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -48,20 +48,34 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "ลาเบล",
       "requesterName": "ภาคภูมิ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CH-02-09A",
+          "qty": 2000,
+          "lot": "2026102401"
+        }
+      ],
+      "locationsSummary": "Loc#1: CH-02-09A (2,000 PCS) [Lot: 2026102401]",
       "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CI-02-07D (Customer Supplied Material Warehouse) | Public area (Defective Warehouse) | CH-02-09A (Customer Supplied Material Warehouse) | Public area (Scrap Warehouse)",
-      "lotSummary": "2026100701, 2026102401, 2026110601, 2026111001, 2026093001, 2026091702, 2026091701, 2026093002, 2026102402, 2026091401, 2026100702, 2026101601, 2026100501, 2026100503, 2026100504, 2026100502",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026102401",
+      "issuerName": "อุทิศ",
+      "issuedAt": "19/11/2026 20:49:04",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "19/11/2026 20:45:57",
-      "photoTakenAt": ""
+      "updatedAt": "19/11/2026 20:49:04",
+      "photoTakenAt": "19/11/2026 20:49:04",
+      "locationsJson": "[]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "part-photos/REQ-20261119-57671.jpg",
+      "leadTimeSummary": "",
+      "deleted": false,
+      "deletedAt": "",
+      "cancelReason": ""
     },
     {
       "reqId": "REQ-20261119-26993",
