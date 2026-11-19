@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T09:05:03.856Z",
+  "updatedAt": "2026-11-19T09:08:26.511Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261119-07861",
+      "requestDate": "19/11/2026 16:08:26",
+      "requestedAt": "19/11/2026 16:08:26",
+      "moNumber": "MO-20261117-003628",
+      "ppbomNumber": "PPBOM-20261117-003939",
+      "directTransferDocs": "ZJDB-261117-000032",
+      "materialCode": "1005QT00188",
+      "materialName": "Loading table paper",
+      "specification": "BRU53757",
+      "requestQty": 8,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Customer Supplied Material Warehouse) | CI-01-10F (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Bending)",
+      "lotSummary": "2026100901, 2026102101, 2026111001, 2026111701, 2026090705, 2026090702, 2026090707, 2026090708, 2026090801, 2026090704, 2026090706, 2026090709, 2026090901, 2026090701, 2026090703, 2026090501, 2026090802, 2026090907, 2026090905, 2026090906, 2026090908, 2026090904, 2026090903, 2026090902",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "19/11/2026 16:08:27",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261119-77535",
       "requestDate": "19/11/2026 15:54:37",
