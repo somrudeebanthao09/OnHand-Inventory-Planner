@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T09:51:29.910Z",
+  "updatedAt": "2026-11-19T09:54:07.353Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -48,20 +48,34 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "ของไม่ครบตามถุง/Shortage",
       "requesterName": "อรรถพร",
-      "requesterUsername": "LeaderB",
+      "requesterUsername": "req",
       "shift": "B",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CC-03-15A",
+          "qty": 1,
+          "lot": "2026111601 NEW"
+        }
+      ],
+      "locationsSummary": "Loc#1: CC-03-15A (1 PCS) [Lot: 2026111601 NEW]",
       "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CC-06-14A (Customer Supplied Material Warehouse) | CC-03-15A (Customer Supplied Material Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Bending) | Public area (Semi-finished Product Warehouse-Waiting Assembly)",
       "lotSummary": "2026111001 NEW, 2026111601 NEW, 2026111602 NEW, 2026090701, 2026090802, 2026100901, 2026090704, 2026090801, 2026090703, 2026090702, 2026102101, 2026090902, 2026090901, 2026091001, 2026090903, 2026091002",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "สาวิตรี",
+      "issuedAt": "19/11/2026 16:53:53",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "19/11/2026 16:51:29",
-      "photoTakenAt": ""
+      "updatedAt": "19/11/2026 16:53:53",
+      "photoTakenAt": "19/11/2026 16:53:53",
+      "locationsJson": "[{\"location\":\"CC-03-15A\",\"qty\":1,\"lot\":\"2026111601 NEW\"}]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "",
+      "leadTimeSummary": "2 นาที 25 วินาที",
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": ""
     },
     {
       "reqId": "REQ-20261119-24333",
