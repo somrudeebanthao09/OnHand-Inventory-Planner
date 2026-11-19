@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-19T08:23:33.682Z",
+  "updatedAt": "2026-11-19T08:27:11.079Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -51,17 +51,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderB",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CG-04-07A",
+          "qty": 15,
+          "lot": "2026093001"
+        }
+      ],
+      "locationsSummary": "Loc#1: CG-04-07A (15 PCS) [Lot: 2026093001]",
       "onHandLocation": "Public area (Purchased parts warehouse) | CG-04-07A (Customer Supplied Material Warehouse) | CE-03-01B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Customer Supplied Material Warehouse) | CO-06-01B (Customer Supplied Material Warehouse) | CF-01-01B (Customer Supplied Material Warehouse) | CF-01-01B (Purchased parts warehouse) | CJ-01-11A (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Defective Warehouse) | CJ-01-12B (Customer Supplied Material Warehouse) | CJ-01-11A (Customer Supplied Material Warehouse) | CJ-01-11B (Purchased parts warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Bending) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly)",
-      "lotSummary": "2026110502, 2026093001, 2026090201, 2026090902, 2026090903, 2026090907, 2026101701, 2026090908, 2026091001, 2026090905, 2026090906, 2026111401, 2026101901, 2026111901, 2026083001, 2026110701, 2026090904, 2026091002",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026093001",
+      "issuerName": "สาวิตรี",
+      "issuedAt": "19/11/2026 15:27:08",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "19/11/2026 15:23:34",
-      "photoTakenAt": ""
+      "updatedAt": "19/11/2026 15:27:08",
+      "photoTakenAt": "19/11/2026 15:27:08",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261119-14979.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261119-03317",
