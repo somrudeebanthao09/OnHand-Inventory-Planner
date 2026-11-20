@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T08:16:36.377Z",
+  "updatedAt": "2026-11-20T09:40:10.580Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261120-09176",
+      "requestDate": "20/11/2026 16:40:08",
+      "requestedAt": "20/11/2026 16:40:08",
+      "moNumber": "MO-20261119-003762",
+      "ppbomNumber": "PPBOM-20261119-004082",
+      "directTransferDocs": "ZJDB-261119-000059",
+      "materialCode": "1005QT00772",
+      "materialName": "Screw 8-32\\*0.750\" Torx head",
+      "specification": "75503762AA",
+      "requestQty": 1000,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly)",
+      "lotSummary": "2026112001, 2026111901, 2026110701, 2026111701, 2026090703, 2026090501, 2026090901, 2026090902, 2026090801, 2026090701, 2026090702, 2026100601, 2026101601, 2026090904, 2026090903",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "20/11/2026 16:40:09",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261120-68007",
       "requestDate": "20/11/2026 14:09:27",
