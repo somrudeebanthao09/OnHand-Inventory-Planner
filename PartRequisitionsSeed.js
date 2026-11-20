@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T22:10:50.943Z",
+  "updatedAt": "2026-11-20T22:34:50.936Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261121-90222",
+      "requestDate": "21/11/2026 05:34:50",
+      "requestedAt": "21/11/2026 05:34:50",
+      "moNumber": "MO-20261119-003733",
+      "ppbomNumber": "PPBOM-20261119-004052",
+      "directTransferDocs": "ZJDB-261119-000025",
+      "materialCode": "1005CY00011",
+      "materialName": "DOLLY COVER 4/6 WAY",
+      "specification": "BRU30895",
+      "requestQty": 6,
+      "unit": "PCS",
+      "reason": "เบิกเพิ่มตามใบสั่งผลิต (MO)",
+      "requesterName": "จักรกฤษ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CD-06-04B (Customer Supplied Material Warehouse) | CC-02-08A (Customer Supplied Material Warehouse) | CQ-05-13A (Customer Supplied Material Warehouse) | CC-09-05A (Customer Supplied Material Warehouse) | CD-07-06B (Customer Supplied Material Warehouse) | CC-09-01B (Customer Supplied Material Warehouse) | CC-09-02B (Customer Supplied Material Warehouse) | Public area (Customer Supplied Material Warehouse) | CD-01-04A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026101902, 2026101701, 2026101501, 2026101601, 2026101401, 2026100206, 2026100205, 2026100203, 2026111702, 2026110901, 2026111703, 2026111701",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "21/11/2026 05:34:50",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261121-71495",
       "requestDate": "21/11/2026 04:37:51",
