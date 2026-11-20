@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-20T12:05:29.072Z",
+  "snapshotAt": "2026-11-20T12:14:00.060Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15968,
   "orders": [
@@ -6341,7 +6341,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productName": "Door ASM 750mm Diffuse Coating",
       "department": "Painting Production Line",
       "taskStatus": "Start",
-      "pickStatus": "Partially Issued",
+      "pickStatus": "Fully Issued",
       "materialCode": "5001HJ00210",
       "materialName": "Door 750 Process 2 Welding",
       "specification": "BRU53747",
@@ -6353,13 +6353,13 @@ window.PRODUCTION_ORDERS_SEED = {
       "directTransferQty": 0,
       "directTransferDocs": "",
       "ppbomDemandQty": 217,
-      "ppbomIssuedQty": 97,
-      "ppbomUnissuedQty": 120,
+      "ppbomIssuedQty": 217,
+      "ppbomUnissuedQty": 0,
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
       "consumedQty": 0,
-      "wipQty": 97,
+      "wipQty": 217,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Assembly",
       "requiredTime": "2026-11-20 18:28:46"
     },
