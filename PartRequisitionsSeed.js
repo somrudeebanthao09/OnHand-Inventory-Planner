@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T20:10:10.760Z",
+  "updatedAt": "2026-11-20T21:29:25.020Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261121-64287",
+      "requestDate": "21/11/2026 04:29:23",
+      "requestedAt": "21/11/2026 04:29:23",
+      "moNumber": "MO-20261119-003733",
+      "ppbomNumber": "PPBOM-20261119-004052",
+      "directTransferDocs": "ZJDB-261119-000025",
+      "materialCode": "1005QT00667",
+      "materialName": "NEUTRAL 2 + 4 Way label",
+      "specification": "75504152AA",
+      "requestQty": 10,
+      "unit": "PCS",
+      "reason": "เบิกเพิ่มตามใบสั่งผลิต (MO)",
+      "requesterName": "จักรกฤษ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-02-05D (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CJ-01-03B (Customer Supplied Material Warehouse) | CI-02-04A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CJ-01-08A (Customer Supplied Material Warehouse) | CJ-01-04B (Customer Supplied Material Warehouse) | FR025 (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026102401, 2026092201, 2026100299, 2026103001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "21/11/2026 04:29:24",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261121-09050",
       "requestDate": "21/11/2026 01:20:08",
