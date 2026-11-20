@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T01:39:11.865Z",
+  "updatedAt": "2026-11-20T02:28:18.248Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,49 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261120-01798",
+      "requestDate": "20/11/2026 09:21:41",
+      "requestedAt": "20/11/2026 09:21:41",
+      "moNumber": "MO-20261117-003643",
+      "ppbomNumber": "PPBOM-20261117-003956",
+      "directTransferDocs": "ZJDB-261117-000065",
+      "materialCode": "1005QT00625",
+      "materialName": "LUG ASSY 200 AM",
+      "specification": "48010-083-50",
+      "requestQty": 96,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "req",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CJ-01-11B",
+          "qty": 96,
+          "lot": "2026090905"
+        }
+      ],
+      "locationsSummary": "Loc#1: CJ-01-11B (96 PCS) [Lot: 2026090905]",
+      "onHandLocation": "CQ-04-12A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Bending) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Defective Warehouse) | CJ-01-11B (Customer Supplied Material Warehouse) | Public area (Scrap Warehouse)",
+      "lotSummary": "2026090905",
+      "issuerName": "สาวิตรี",
+      "issuedAt": "20/11/2026 09:28:12",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "20/11/2026 09:28:12",
+      "photoTakenAt": "20/11/2026 09:28:12",
+      "locationsJson": "[]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "part-photos/REQ-20261120-01798.jpg",
+      "leadTimeSummary": "",
+      "deleted": false,
+      "deletedAt": "",
+      "cancelReason": ""
+    },
     {
       "reqId": "REQ-20261120-46289",
       "requestDate": "20/11/2026 08:35:45",
