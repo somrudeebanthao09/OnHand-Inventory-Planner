@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T12:50:02.101Z",
+  "updatedAt": "2026-11-20T13:14:54.514Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "8eeb5f4f-a58c-4af5-a466-5669d610d63caef5b858cede4b02b882c1a288339e97",
-    "wh": "daf65e59-407c-4062-af7a-d2bcc85be7332503a7c3176243a287413ec15d636cef",
-    "expiresAt": 1795200594776
+    "req": "dbb45b19-d9d4-4d98-8be6-1edc4797caeb9b6d79d7dae742b396b07923fa6a01d5",
+    "wh": "fe5d49ad-ae0f-4bf0-b539-c89325b764dabbaf78af880f4468b113c2c3b2f55d7a",
+    "expiresAt": 1795202091327
   },
   "staffRoster": {
     "sheetName": "PartStaff",
