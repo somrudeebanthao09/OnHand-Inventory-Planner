@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T16:52:48.516Z",
+  "updatedAt": "2026-11-20T16:55:16.978Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261120-16439",
+      "requestDate": "20/11/2026 23:55:15",
+      "requestedAt": "20/11/2026 23:55:15",
+      "moNumber": "MO-20261119-003762",
+      "ppbomNumber": "PPBOM-20261119-004082",
+      "directTransferDocs": "ZJDB-261119-000059",
+      "materialCode": "1005QT00351",
+      "materialName": "Busbar 30 with clinching nut 100A CCA",
+      "specification": "NVE14525",
+      "requestQty": 40,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CO-04-13A (Customer Supplied Material Warehouse) | CF-02-01B (Customer Supplied Material Warehouse) | CF-02-04A (Customer Supplied Material Warehouse) | CC-06-03B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | FR056 (Customer Supplied Material Warehouse) | CJ-01-11A (Customer Supplied Material Warehouse) | CJ-01-10B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026103001, 2026090901, 2026103002, 2026083001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "20/11/2026 23:55:16",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261120-17510",
       "requestDate": "20/11/2026 21:01:56",
