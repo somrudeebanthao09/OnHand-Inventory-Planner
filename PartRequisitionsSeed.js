@@ -1,11 +1,11 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T05:12:08.743Z",
+  "updatedAt": "2026-11-20T05:29:49.036Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "9740c4b0-f65d-43c8-bad1-1604bdd88a90a4e2d8f4a5e740f692f98f1258478109",
-    "wh": "1463ed88-bb75-4fdd-ae5b-ecd14a9efe34d7df542713574b94b572d108f01066d6",
+    "wh": "86536a94-488a-4b4a-a7d1-6e64132a9b99d09cad1a39384b95a81a4f4f9c2493df",
     "expiresAt": 1795173125599
   },
   "staffRoster": {
@@ -513,7 +513,7 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "20/11/2026 09:28:12",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "20/11/2026 11:37:30",
+      "updatedAt": "20/11/2026 12:29:49",
       "photoTakenAt": "20/11/2026 09:28:12",
       "locationsJson": "[{\"location\":\"CJ-01-11B\",\"qty\":96,\"lot\":\"2026090905\"}]",
       "issuerUsername": "wh",
@@ -529,7 +529,7 @@ window.PART_REQUISITIONS_SEED = {
       "kingdeeTransferToWh": "",
       "kingdeeTransferQty": "",
       "kingdeeTransferredAt": "",
-      "kingdeeTransferStatus": "",
+      "kingdeeTransferStatus": "ข้าม (ตัดจ่ายไม่ได้): ไม่พบปุ่ม Query Inventory",
       "sheetRow": 108,
       "photoAttachmentUrl": "part-photos/REQ-20261120-01798.jpg"
     },
