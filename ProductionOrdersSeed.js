@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-20T11:14:47.207Z",
+  "snapshotAt": "2026-11-20T11:24:09.697Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15967,
   "orders": [
@@ -9778,8 +9778,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 200,
-      "wipQty": 206,
+      "consumedQty": 406,
+      "wipQty": 0,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Powder Coating",
       "requiredTime": "2026-11-20 14:42:04"
     },
@@ -13463,13 +13463,13 @@ window.PRODUCTION_ORDERS_SEED = {
       "directTransferQty": 0,
       "directTransferDocs": "",
       "ppbomDemandQty": 2605,
-      "ppbomIssuedQty": 2105,
-      "ppbomUnissuedQty": 500,
+      "ppbomIssuedQty": 2305,
+      "ppbomUnissuedQty": 300,
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
       "consumedQty": 0,
-      "wipQty": 2105,
+      "wipQty": 2305,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Welding",
       "requiredTime": "2026-11-20 12:47:40"
     },
@@ -38698,8 +38698,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 630,
+      "consumedQty": 9,
+      "wipQty": 621,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Powder Coating",
       "requiredTime": "2026-11-16 15:40:00"
     },
