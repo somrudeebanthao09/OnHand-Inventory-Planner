@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T04:57:57.737Z",
+  "updatedAt": "2026-11-20T05:11:57.066Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "91090051-38d4-4daf-b277-84172a3208d9f677ccc722ac4356a616b488444efb7e",
-    "wh": "b9b8b53c-1bce-4c10-aaf4-9cd742ebafb36e6bd1d7d7ee4e72a27929bd6eb619ad",
-    "expiresAt": 1795172274604
+    "req": "",
+    "wh": "",
+    "expiresAt": 0
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -105,8 +105,8 @@ window.PART_REQUISITIONS_SEED = {
         }
       ],
       "locationsSummary": "Loc#1: CF-02-03B (3 PCS) [Lot: 2026083001]",
-      "onHandLocation": "",
-      "lotSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse) | CH-09-11A (Customer Supplied Material Warehouse) | CE-03-05A (Customer Supplied Material Warehouse) | CE-07-04B (Customer Supplied Material Warehouse) | CF-02-03B (Customer Supplied Material Warehouse) | CF-03-03A (Customer Supplied Material Warehouse) | CD-04-01B (Customer Supplied Material Warehouse) | CD-04-06A (Customer Supplied Material Warehouse) | CE-06-01A (Customer Supplied Material Warehouse) | CD-06-05B (Customer Supplied Material Warehouse) | CD-06-06B (Customer Supplied Material Warehouse) | CG-06-09B (Customer Supplied Material Warehouse) | CH-04-01A (Customer Supplied Material Warehouse) | CD-01-04A (Customer Supplied Material Warehouse) | FR054 (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001",
       "issuerName": "สาวิตรี",
       "issuedAt": "20/11/2026 11:43:11",
       "issuerNote": "",
@@ -116,7 +116,7 @@ window.PART_REQUISITIONS_SEED = {
       "locationsJson": "[{\"location\":\"CF-02-03B\",\"qty\":3,\"lot\":\"2026083001\"}]",
       "issuerUsername": "wh",
       "hasPhoto": true,
-      "photoUrl": "",
+      "photoUrl": "part-photos/REQ-20261120-81333.jpg",
       "leadTimeSummary": "6 นาที 51 วินาที",
       "kingdeeTransferDoc": "",
       "kingdeeTransferItem": "",
@@ -156,19 +156,19 @@ window.PART_REQUISITIONS_SEED = {
         }
       ],
       "locationsSummary": "Loc#1: CF-01-04B (6 PCS) [Lot: 2026083001]",
-      "onHandLocation": "",
-      "lotSummary": "",
+      "onHandLocation": "CF-01-04B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Bending)",
+      "lotSummary": "2026083001",
       "issuerName": "สาวิตรี",
       "issuedAt": "20/11/2026 11:39:23",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
       "updatedAt": "20/11/2026 11:39:23",
       "photoTakenAt": "20/11/2026 11:39:23",
-      "locationsJson": "[{\"location\":\"CF-01-04B\",\"qty\":6,\"lot\":\"2026083001\"}]",
+      "locationsJson": "[]",
       "issuerUsername": "wh",
       "hasPhoto": true,
-      "photoUrl": "",
-      "leadTimeSummary": "7 นาที 38 วินาที",
+      "photoUrl": "part-photos/REQ-20261120-05573.jpg",
+      "leadTimeSummary": "",
       "kingdeeTransferDoc": "",
       "kingdeeTransferItem": "",
       "kingdeeTransferFromBin": "",
@@ -179,7 +179,8 @@ window.PART_REQUISITIONS_SEED = {
       "sheetRow": 115,
       "deleted": false,
       "deletedAt": "",
-      "photoAttachmentUrl": ""
+      "photoAttachmentUrl": "",
+      "cancelReason": ""
     },
     {
       "reqId": "REQ-20261120-65327",
