@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T04:13:38.663Z",
+  "updatedAt": "2026-11-20T04:16:06.534Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261120-65327",
+      "requestDate": "20/11/2026 11:16:05",
+      "requestedAt": "20/11/2026 11:16:05",
+      "moNumber": "MO-20261117-003646",
+      "ppbomNumber": "PPBOM-20261117-003959",
+      "directTransferDocs": "ZJDB-261117-000068",
+      "materialCode": "1005QT00704",
+      "materialName": "OUTGOING BASE 18",
+      "specification": "75170107AA",
+      "requestQty": 1,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CH-08-02A (Customer Supplied Material Warehouse) | CE-07-09A (Customer Supplied Material Warehouse) | CG-09-03A (Customer Supplied Material Warehouse) | CG-05-07B (Customer Supplied Material Warehouse) | CE-05-04B (Customer Supplied Material Warehouse) | CC-01-14B (Customer Supplied Material Warehouse) | CH-02-16A (Customer Supplied Material Warehouse) | CC-04-15B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CE-09-06A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026102201, 2026102203, 2026100801, 2026102202, 2026102204, 2026102601, 2026102605, 2026102604, 2026102603, 2026102602, 2026103001, 2026100802, 2026100299, 2026100201",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "20/11/2026 11:16:05",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261120-02458",
       "requestDate": "20/11/2026 11:11:42",
