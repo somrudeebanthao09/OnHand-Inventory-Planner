@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-20T09:45:00.835Z",
+  "snapshotAt": "2026-11-20T09:55:50.781Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15748,
   "orders": [
@@ -7000,7 +7000,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "6002BZ00053",
       "productName": "BRKT SUB ASSY WELDING EDP PACKING",
       "department": "Automotive Post-Processing Production Line",
-      "taskStatus": "Start",
+      "taskStatus": "Partially Completed",
       "pickStatus": "Fully Issued",
       "materialCode": "5005BM00017",
       "materialName": "BRKT SUB ASSY WELDING EDP",
@@ -38860,7 +38860,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productCode": "6002BZ00053",
       "productName": "BRKT SUB ASSY WELDING EDP PACKING",
       "department": "Automotive Post-Processing Production Line",
-      "taskStatus": "Partially Completed",
+      "taskStatus": "Complete",
       "pickStatus": "Fully Issued",
       "materialCode": "5005BM00017",
       "materialName": "BRKT SUB ASSY WELDING EDP",
