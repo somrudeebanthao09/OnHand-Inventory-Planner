@@ -13720,11 +13720,11 @@
     });
     const sheetIds = new Set(normalized.map(r => r.reqId));
     const nowMs = Date.now();
-    // Preserve only brand-new local records (< 15s old) still in-flight to Google Sheet
+    // Preserve local/relay records not yet reflected in Google Sheet (up to 30 min) so UI never flickers between 108 and 110
     const inFlight = (partRequisitionsList || []).filter(r => {
       if (!r?.reqId || r.deleted || sheetIds.has(r.reqId)) return false;
       const t = partReqStamp(r);
-      return t > 0 && (nowMs - t) < 15000;
+      return t > 0 && (nowMs - t) < 30 * 60 * 1000;
     });
     const nextList = [...inFlight, ...normalized].sort((a, b) => partReqStamp(b) - partReqStamp(a));
     const prevSig = JSON.stringify((partRequisitionsList || []).map(r => [r.reqId, r.status, r.updatedAt, r.issuedAt, r.deleted]));
