@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T13:24:31.050Z",
+  "updatedAt": "2026-11-20T13:43:21.740Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "afb6413d-bf1c-4159-99f1-2168627ffbd95b831ac0b20641eba77d9776fd22e265",
-    "wh": "43da3393-91e4-4cd1-9b2a-b394ad4f6dfe116cad9040e24b4ba439b5ad0640cd57",
-    "expiresAt": 1795202661863
+    "req": "",
+    "wh": "a9e21afe-fe1e-4d98-aa80-a1d7b5d64a6188780ab6aaaa40b1bed0a9bf06ff9ead",
+    "expiresAt": 1795203797805
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261120-01026",
+      "requestDate": "20/11/2026 20:43:20",
+      "requestedAt": "20/11/2026 20:43:20",
+      "moNumber": "MO-20261119-003733",
+      "ppbomNumber": "PPBOM-20261119-004052",
+      "directTransferDocs": "ZJDB-261119-000025, ZJDB-261119-000026",
+      "materialCode": "1005QT00763",
+      "materialName": "Schneider carton label",
+      "specification": "75503737AA",
+      "requestQty": 2000,
+      "unit": "PCS",
+      "reason": "ลาเบล",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CI-02-07D (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
+      "lotSummary": "2026100701, 2026102401, 2026111001, 2026093002, 2026102402, 2026091401, 2026101601, 2026100702, 2026091701, 2026091702, 2026093001, 2026100503, 2026100504, 2026100501, 2026100502",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "20/11/2026 20:43:20",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261120-09176",
       "requestDate": "20/11/2026 16:40:08",
