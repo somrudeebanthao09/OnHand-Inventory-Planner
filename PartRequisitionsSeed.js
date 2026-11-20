@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T21:30:20.931Z",
+  "updatedAt": "2026-11-20T21:31:02.069Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261121-61365",
+      "requestDate": "21/11/2026 04:31:00",
+      "requestedAt": "21/11/2026 04:31:00",
+      "moNumber": "MO-20261119-003733",
+      "ppbomNumber": "PPBOM-20261119-004052",
+      "directTransferDocs": "ZJDB-261119-000025",
+      "materialCode": "1005CY00015",
+      "materialName": "BUSWAY BASE 2 + 4 WAY",
+      "specification": "BRU30899",
+      "requestQty": 17,
+      "unit": "PCS",
+      "reason": "เบิกเพิ่มตามใบสั่งผลิต (MO)",
+      "requesterName": "จักรกฤษ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CQ-05-10A (Customer Supplied Material Warehouse) | Public area (Defective Warehouse)",
+      "lotSummary": "2026101705, 2026101704, 2026101703, 2026101701, 2026101702, 2026083001, 2026100299, 2026110901, 2026101706, 2026100903",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "21/11/2026 04:31:01",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261121-20215",
       "requestDate": "21/11/2026 04:30:19",
