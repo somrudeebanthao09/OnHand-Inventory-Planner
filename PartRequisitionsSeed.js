@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T22:34:50.936Z",
+  "updatedAt": "2026-11-20T22:38:15.690Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -51,17 +51,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderA",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CC-02-08A",
+          "qty": 6,
+          "lot": "2026111702"
+        }
+      ],
+      "locationsSummary": "Loc#1: CC-02-08A (6 PCS) [Lot: 2026111702]",
       "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CD-06-04B (Customer Supplied Material Warehouse) | CC-02-08A (Customer Supplied Material Warehouse) | CQ-05-13A (Customer Supplied Material Warehouse) | CC-09-05A (Customer Supplied Material Warehouse) | CD-07-06B (Customer Supplied Material Warehouse) | CC-09-01B (Customer Supplied Material Warehouse) | CC-09-02B (Customer Supplied Material Warehouse) | Public area (Customer Supplied Material Warehouse) | CD-01-04A (Customer Supplied Material Warehouse)",
-      "lotSummary": "2026101902, 2026101701, 2026101501, 2026101601, 2026101401, 2026100206, 2026100205, 2026100203, 2026111702, 2026110901, 2026111703, 2026111701",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026111702",
+      "issuerName": "อุทิศ",
+      "issuedAt": "21/11/2026 05:38:10",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "21/11/2026 05:34:50",
-      "photoTakenAt": ""
+      "updatedAt": "21/11/2026 05:38:10",
+      "photoTakenAt": "21/11/2026 05:38:10",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261121-90222.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261121-71495",
