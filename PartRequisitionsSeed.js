@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T13:49:07.571Z",
+  "updatedAt": "2026-11-20T14:00:06.608Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "8865ef43-e3b8-43ad-9c11-aed02d922069100b345a0c934df9bffdc7599f367397",
-    "wh": "4b431159-71b5-47f4-8ae1-bf0704c3485df297592d67f048efa43eb07610f4bcd0",
-    "expiresAt": 1795203822573
+    "req": "",
+    "wh": "",
+    "expiresAt": 0
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -99,20 +99,42 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "ลาเบล",
       "requesterName": "ภาคภูมิ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CI-02-07D",
+          "qty": 2000,
+          "lot": "2026111001"
+        }
+      ],
+      "locationsSummary": "Loc#1: CI-02-07D (2,000 PCS) [Lot: 2026111001]",
       "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CI-02-07D (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
-      "lotSummary": "2026100701, 2026102401, 2026111001, 2026093002, 2026102402, 2026091401, 2026101601, 2026100702, 2026091701, 2026091702, 2026093001, 2026100503, 2026100504, 2026100501, 2026100502",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026111001",
+      "issuerName": "ธนวัฒน์",
+      "issuedAt": "20/11/2026 20:52:21",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "20/11/2026 20:43:20",
-      "photoTakenAt": ""
+      "updatedAt": "20/11/2026 20:52:21",
+      "photoTakenAt": "20/11/2026 20:52:21",
+      "locationsJson": "[]",
+      "issuerUsername": "wh",
+      "hasPhoto": true,
+      "photoUrl": "part-photos/REQ-20261120-01026.jpg",
+      "leadTimeSummary": "",
+      "kingdeeTransferDoc": "",
+      "kingdeeTransferItem": "",
+      "kingdeeTransferFromBin": "",
+      "kingdeeTransferToWh": "",
+      "kingdeeTransferQty": "",
+      "kingdeeTransferredAt": "",
+      "kingdeeTransferStatus": "",
+      "sheetRow": 121,
+      "deleted": false,
+      "deletedAt": "",
+      "cancelReason": ""
     },
     {
       "reqId": "REQ-20261120-09176",
