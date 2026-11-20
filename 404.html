@@ -13709,7 +13709,15 @@
   function replacePartReqRecordsFromApi(records) {
     if (!Array.isArray(records)) return false;
     partReqSheetAuthoritative = true;
-    const normalized = records.filter(item => item?.reqId && !item?.deleted).map(normalizePartReqApiRecord);
+    const existingById = new Map((partRequisitionsList || []).filter(r => r?.reqId).map(r => [r.reqId, r]));
+    const normalized = records.filter(item => item?.reqId && !item?.deleted).map(item => {
+      const r = normalizePartReqApiRecord(item);
+      const ex = existingById.get(r.reqId);
+      if (ex && !ex.deleted && partReqRank(ex) > partReqRank(r)) {
+        return { ...r, ...ex };
+      }
+      return r;
+    });
     const sheetIds = new Set(normalized.map(r => r.reqId));
     const nowMs = Date.now();
     // Preserve only brand-new local records (< 15s old) still in-flight to Google Sheet
