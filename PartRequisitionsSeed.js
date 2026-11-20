@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T04:00:29.133Z",
+  "updatedAt": "2026-11-20T04:09:29.262Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261120-68061",
+      "requestDate": "20/11/2026 11:09:27",
+      "requestedAt": "20/11/2026 11:09:27",
+      "moNumber": "MO-20261117-003646",
+      "ppbomNumber": "PPBOM-20261117-003959",
+      "directTransferDocs": "ZJDB-261117-000068",
+      "materialCode": "1005QT00542",
+      "materialName": "EARTH TERMINAL 250A 42W",
+      "specification": "75503579MA",
+      "requestQty": 1,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CE-03-02B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Bending) | Public area (Defective Warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly)",
+      "lotSummary": "2026083001, 2026091001, 2026090701, 2026090901",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "20/11/2026 11:09:28",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261120-01750",
       "requestDate": "20/11/2026 10:50:01",
