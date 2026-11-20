@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T04:33:13.955Z",
+  "updatedAt": "2026-11-20T04:36:22.555Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261120-81333",
+      "requestDate": "20/11/2026 11:36:20",
+      "requestedAt": "20/11/2026 11:36:20",
+      "moNumber": "MO-20261117-003646",
+      "ppbomNumber": "PPBOM-20261117-003959",
+      "directTransferDocs": "ZJDB-261117-000068",
+      "materialCode": "1005QT00368",
+      "materialName": "CARTON 900 Classic",
+      "specification": "75503791AA",
+      "requestQty": 3,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse) | CH-09-11A (Customer Supplied Material Warehouse) | CE-03-05A (Customer Supplied Material Warehouse) | CE-07-04B (Customer Supplied Material Warehouse) | CF-02-03B (Customer Supplied Material Warehouse) | CF-03-03A (Customer Supplied Material Warehouse) | CD-04-01B (Customer Supplied Material Warehouse) | CD-04-06A (Customer Supplied Material Warehouse) | CE-06-01A (Customer Supplied Material Warehouse) | CD-06-05B (Customer Supplied Material Warehouse) | CD-06-06B (Customer Supplied Material Warehouse) | CG-06-09B (Customer Supplied Material Warehouse) | CH-04-01A (Customer Supplied Material Warehouse) | CD-01-04A (Customer Supplied Material Warehouse) | FR054 (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026100299, 2026083001, 2026103001, 2026100501",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "20/11/2026 11:36:21",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261120-05573",
       "requestDate": "20/11/2026 11:31:45",
