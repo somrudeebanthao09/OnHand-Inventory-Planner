@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T04:09:29.262Z",
+  "updatedAt": "2026-11-20T04:11:39.066Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -140,7 +140,7 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "20/11/2026 11:00:27",
+      "updatedAt": "20/11/2026 11:11:18",
       "photoTakenAt": "",
       "locationsJson": "[]",
       "issuerUsername": "",
@@ -159,7 +159,7 @@ window.PART_REQUISITIONS_SEED = {
       "deletedAt": "",
       "photoAttachmentUrl": "",
       "cancelReason": "ไม่ต้องใช้แล้ว",
-      "cancelledAt": "2026-11-20T04:00:27.448Z",
+      "cancelledAt": "2026-11-20T04:11:18.359Z",
       "cancelledBy": "เจนภพ"
     },
     {
