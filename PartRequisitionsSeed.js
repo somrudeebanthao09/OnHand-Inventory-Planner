@@ -1,11 +1,11 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T11:19:49.460Z",
+  "updatedAt": "2026-11-20T11:35:58.150Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "91b9f4cb-dbfc-42a6-ac30-26dc9e1855ef1a3de541f2324a9faac86b539b5ff072",
-    "wh": "3413aca9-cb89-498b-88cd-fe10ef92bd9c7a3ec270e7a249a08076ed56ab7781bf",
+    "wh": "8688a81c-f332-4313-936b-f3b5510cc510ab21bad87af54be085f0573c079ed435",
     "expiresAt": 1795195189211
   },
   "staffRoster": {
@@ -66,7 +66,7 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "20/11/2026 16:44:32",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "20/11/2026 18:19:57",
+      "updatedAt": "20/11/2026 18:35:58",
       "photoTakenAt": "20/11/2026 16:44:32",
       "locationsJson": "[{\"location\":\"Public area\",\"qty\":1000,\"lot\":\"2026112001, 2026111901\"}]",
       "issuerUsername": "wh",
@@ -79,7 +79,7 @@ window.PART_REQUISITIONS_SEED = {
       "kingdeeTransferToWh": "",
       "kingdeeTransferQty": "",
       "kingdeeTransferredAt": "",
-      "kingdeeTransferStatus": "รอตัดจ่าย",
+      "kingdeeTransferStatus": "ข้าม (ตัดจ่ายไม่ได้): ไม่พบช่อง Transfer-to Warehouse แถวที่ 1",
       "sheetRow": 120,
       "deleted": false,
       "deletedAt": "",
