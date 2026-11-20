@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T06:51:07.321Z",
+  "updatedAt": "2026-11-20T07:09:29.060Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261120-68007",
+      "requestDate": "20/11/2026 14:09:27",
+      "requestedAt": "20/11/2026 14:09:27",
+      "moNumber": "MO-20261117-003643",
+      "ppbomNumber": "PPBOM-20261117-003956",
+      "directTransferDocs": "ZJDB-261117-000065",
+      "materialCode": "1005QT00389",
+      "materialName": "CENTER COVER 18",
+      "specification": "75170109AA",
+      "requestQty": 2,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CO-04-05A (Customer Supplied Material Warehouse) | CC-08-09B (Customer Supplied Material Warehouse) | CF-04-04A (Customer Supplied Material Warehouse) | CC-05-10B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Bending)",
+      "lotSummary": "2026102401, 2026111401, 2026102601, 2026091501, 2026083001, 2026090703, 2026090501, 2026090705, 2026090706, 2026090707, 2026090801, 2026090901, 2026090704, 2026090702, 2026090701, 2026091002, 2026090904, 2026090907, 2026091001, 2026090906, 2026090905, 2026090903, 2026090902",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "20/11/2026 14:09:27",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261120-81171",
       "requestDate": "20/11/2026 13:19:40",
