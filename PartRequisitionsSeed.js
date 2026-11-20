@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T05:32:15.436Z",
+  "updatedAt": "2026-11-20T05:32:34.561Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -105,13 +105,13 @@ window.PART_REQUISITIONS_SEED = {
         }
       ],
       "locationsSummary": "Loc#1: CF-02-03B (3 PCS) [Lot: 2026083001]",
-      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse) | CH-09-11A (Customer Supplied Material Warehouse) | CE-03-05A (Customer Supplied Material Warehouse) | CE-07-04B (Customer Supplied Material Warehouse) | CF-02-03B (Customer Supplied Material Warehouse) | CF-03-03A (Customer Supplied Material Warehouse) | CD-04-01B (Customer Supplied Material Warehouse) | CD-04-06A (Customer Supplied Material Warehouse) | CE-06-01A (Customer Supplied Material Warehouse) | CD-06-05B (Customer Supplied Material Warehouse) | CD-06-06B (Customer Supplied Material Warehouse) | CG-06-09B (Customer Supplied Material Warehouse) | CH-04-01A (Customer Supplied Material Warehouse) | CD-01-04A (Customer Supplied Material Warehouse) | FR054 (Customer Supplied Material Warehouse)",
-      "lotSummary": "2026083001",
+      "onHandLocation": "",
+      "lotSummary": "",
       "issuerName": "สาวิตรี",
       "issuedAt": "20/11/2026 11:43:11",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "20/11/2026 11:43:11",
+      "updatedAt": "20/11/2026 12:32:34",
       "photoTakenAt": "20/11/2026 11:43:11",
       "locationsJson": "[{\"location\":\"CF-02-03B\",\"qty\":3,\"lot\":\"2026083001\"}]",
       "issuerUsername": "wh",
@@ -124,11 +124,11 @@ window.PART_REQUISITIONS_SEED = {
       "kingdeeTransferToWh": "",
       "kingdeeTransferQty": "",
       "kingdeeTransferredAt": "",
-      "kingdeeTransferStatus": "",
+      "kingdeeTransferStatus": "ข้าม (ตัดจ่ายไม่ได้): ไม่พบปุ่ม New ในหน้า Direct Transfers",
       "sheetRow": 116,
       "deleted": false,
       "deletedAt": "",
-      "photoAttachmentUrl": ""
+      "photoAttachmentUrl": "part-photos/REQ-20261120-81333.jpg"
     },
     {
       "reqId": "REQ-20261120-05573",
