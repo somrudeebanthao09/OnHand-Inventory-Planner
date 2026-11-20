@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T13:43:32.012Z",
+  "updatedAt": "2026-11-20T13:43:46.114Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "91e0f5a0-3246-4d75-a2fb-53f43b2ea78249f1e64cf38642cc9b3bb45e53ef4f06",
+    "req": "8865ef43-e3b8-43ad-9c11-aed02d922069100b345a0c934df9bffdc7599f367397",
     "wh": "917b007d-b95c-46c4-aaff-a556e113473f3592738b942a40b6b1583ef17ac7858a",
-    "expiresAt": 1795203801925
+    "expiresAt": 1795203811998
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261120-25385",
+      "requestDate": "20/11/2026 20:43:44",
+      "requestedAt": "20/11/2026 20:43:44",
+      "moNumber": "MO-20261119-003733",
+      "ppbomNumber": "PPBOM-20261119-004052",
+      "directTransferDocs": "ZJDB-261119-000025, ZJDB-261119-000026",
+      "materialCode": "1005QT00299",
+      "materialName": "BLANK RATING LABEL",
+      "specification": "75503587AA",
+      "requestQty": 2500,
+      "unit": "PCS",
+      "reason": "ลาเบล",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-02-01C (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
+      "lotSummary": "2026111301, 2026111401, 2026083001, 2026102701, 2026102401, 2026110901, 2026101701, 2026091401, 2026101601, 2026100501",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "20/11/2026 20:43:45",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261120-01026",
       "requestDate": "20/11/2026 20:43:20",
