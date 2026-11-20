@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T06:03:40.161Z",
+  "updatedAt": "2026-11-20T06:11:12.997Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "ca80ec47-8350-4c98-a6fe-05d0a69e341f1d89702e5a0f4a6a8810553df233b920",
-    "wh": "bea46036-3492-47b2-bb7e-47b0cd980d7290a62832471b4ee9b8be8de74ae97712",
-    "expiresAt": 1795176213729
+    "wh": "8d39c2c7-4493-4404-93de-10a77d22b0f3b9a8b28d6f444e4a8941e43cc13272e0",
+    "expiresAt": 1795176214537
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -51,18 +51,18 @@ window.PART_REQUISITIONS_SEED = {
       "shift": "B",
       "requesterNote": "",
       "requestedAt": "20/11/2026 11:52:29",
-      "status": "pending",
-      "locationsSummary": "",
-      "locationsJson": "[]",
-      "issuerName": "",
-      "issuerUsername": "",
+      "status": "issued",
+      "locationsSummary": "Loc#1: Public area (30 PCS) [Lot: 2026111901]",
+      "locationsJson": "[{\"location\":\"Public area\",\"qty\":30,\"lot\":\"2026111901\"}]",
+      "issuerName": "สาวิตรี",
+      "issuerUsername": "wh",
       "issuerNote": "",
-      "issuedAt": "",
-      "hasPhoto": false,
-      "photoTakenAt": "",
-      "updatedAt": "20/11/2026 11:52:29",
+      "issuedAt": "20/11/2026 13:11:02",
+      "hasPhoto": true,
+      "photoTakenAt": "20/11/2026 13:11:02",
+      "updatedAt": "20/11/2026 13:11:02",
       "photoUrl": "",
-      "leadTimeSummary": "",
+      "leadTimeSummary": "1 ชม. 18 นาที",
       "onHandLocation": "",
       "lotSummary": "",
       "kingdeeTransferDoc": "",
@@ -75,7 +75,13 @@ window.PART_REQUISITIONS_SEED = {
       "sheetRow": 117,
       "deleted": false,
       "deletedAt": "",
-      "locations": [],
+      "locations": [
+        {
+          "location": "Public area",
+          "qty": 30,
+          "lot": "2026111901"
+        }
+      ],
       "issuePhotoDataUrl": "",
       "photoAttachmentUrl": ""
     },
