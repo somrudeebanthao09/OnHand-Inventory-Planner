@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-20T00:53:25.253Z",
+  "snapshotAt": "2026-11-20T01:01:59.867Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 15497,
   "orders": [
@@ -8638,8 +8638,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 248,
-      "wipQty": 103,
+      "consumedQty": 282,
+      "wipQty": 69,
       "issuingWarehouse": "Semi-finished Product Warehouse After Plating",
       "requiredTime": "2026-11-19 09:53:19"
     },
@@ -8668,8 +8668,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 248,
-      "wipQty": 103,
+      "consumedQty": 282,
+      "wipQty": 69,
       "issuingWarehouse": "Purchased parts warehouse",
       "requiredTime": "2026-11-19 09:53:19"
     },
@@ -9688,8 +9688,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 560,
-      "wipQty": 640,
+      "consumedQty": 1200,
+      "wipQty": 0,
       "issuingWarehouse": "Purchased parts warehouse",
       "requiredTime": "2026-11-18 14:54:24"
     },
@@ -11068,8 +11068,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 100,
+      "consumedQty": 100,
+      "wipQty": 0,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Powder Coating",
       "requiredTime": "2026-11-18 11:32:20"
     },
@@ -18058,8 +18058,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 4403,
-      "wipQty": 597,
+      "consumedQty": 4404,
+      "wipQty": 596,
       "issuingWarehouse": "Purchased parts warehouse",
       "requiredTime": "2026-11-17 14:44:46"
     },
