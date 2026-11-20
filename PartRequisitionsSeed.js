@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T02:28:18.248Z",
+  "updatedAt": "2026-11-20T02:32:56.596Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "a55dcc95-f787-4e73-a128-6e3eca63352db5a0c1703a3b427cabd2d9d69b163925",
-    "wh": "cd6190c3-c3c7-440e-b6d5-e8f4453903000b167bf3faca4a92ab8670d0019a453c",
-    "expiresAt": 1795160157101
+    "req": "",
+    "wh": "",
+    "expiresAt": 0
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261120-65295",
+      "requestDate": "20/11/2026 09:32:44",
+      "requestedAt": "20/11/2026 09:32:44",
+      "moNumber": "MO-20261117-003646",
+      "ppbomNumber": "PPBOM-20261117-003959",
+      "directTransferDocs": "ZJDB-261117-000068",
+      "materialCode": "1005QT00550",
+      "materialName": "EZ250A LINK (connector)",
+      "specification": "75170114AA",
+      "requestQty": 141,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CH-04-03B (Customer Supplied Material Warehouse) | CG-03-03A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CC-01-04A (Customer Supplied Material Warehouse) | CC-01-01A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly)",
+      "lotSummary": "2026090901, 2026100601, 2026083001, 2026100201, 2026090702, 2026090801, 2026090701, 2026090703, 2026090704, 2026091002, 2026091001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "20/11/2026 09:32:45",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261120-01798",
       "requestDate": "20/11/2026 09:21:41",
