@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T07:11:39.342Z",
+  "updatedAt": "2026-11-20T07:11:52.526Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -60,7 +60,7 @@ window.PART_REQUISITIONS_SEED = {
         }
       ],
       "locationsSummary": "Loc#1: CC-01-02A (2 PCS)",
-      "onHandLocation": "",
+      "onHandLocation": "CO-04-05A (Customer Supplied Material Warehouse) | CC-08-09B (Customer Supplied Material Warehouse) | CF-04-04A (Customer Supplied Material Warehouse) | CC-05-10B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Bending)",
       "lotSummary": "",
       "issuerName": "สาวิตรี",
       "issuedAt": "20/11/2026 14:11:26",
@@ -68,11 +68,11 @@ window.PART_REQUISITIONS_SEED = {
       "issuePhotoDataUrl": "",
       "updatedAt": "20/11/2026 14:11:26",
       "photoTakenAt": "20/11/2026 14:11:26",
-      "locationsJson": "[{\"location\":\"CC-01-02A\",\"qty\":2,\"lot\":\"\"}]",
+      "locationsJson": "[]",
       "issuerUsername": "wh",
       "hasPhoto": true,
-      "photoUrl": "",
-      "leadTimeSummary": "1 นาที 59 วินาที",
+      "photoUrl": "part-photos/REQ-20261120-68007.jpg",
+      "leadTimeSummary": "",
       "kingdeeTransferDoc": "",
       "kingdeeTransferItem": "",
       "kingdeeTransferFromBin": "",
@@ -83,7 +83,8 @@ window.PART_REQUISITIONS_SEED = {
       "sheetRow": 119,
       "deleted": false,
       "deletedAt": "",
-      "photoAttachmentUrl": ""
+      "photoAttachmentUrl": "",
+      "cancelReason": ""
     },
     {
       "reqId": "REQ-20261120-81171",
