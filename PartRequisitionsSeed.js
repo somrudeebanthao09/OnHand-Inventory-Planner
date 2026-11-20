@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-20T21:29:25.020Z",
+  "updatedAt": "2026-11-20T21:30:20.931Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261121-20215",
+      "requestDate": "21/11/2026 04:30:19",
+      "requestedAt": "21/11/2026 04:30:19",
+      "moNumber": "MO-20261119-003733",
+      "ppbomNumber": "PPBOM-20261119-004052",
+      "directTransferDocs": "ZJDB-261119-000025",
+      "materialCode": "1005CY00022",
+      "materialName": "WAY LABEL_COVER 2 + 4 WAY",
+      "specification": "BRU30906",
+      "requestQty": 24,
+      "unit": "PCS",
+      "reason": "เบิกเพิ่มตามใบสั่งผลิต (MO)",
+      "requesterName": "จักรกฤษ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CI-02-01F (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | FR061 (Customer Supplied Material Warehouse) | Public area (Defective Warehouse)",
+      "lotSummary": "2026100801, 2026100701",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "21/11/2026 04:30:20",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261121-64287",
       "requestDate": "21/11/2026 04:29:23",
