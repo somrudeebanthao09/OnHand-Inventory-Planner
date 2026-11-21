@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T08:43:22.473Z",
+  "updatedAt": "2026-11-21T08:43:52.638Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261121-32283",
+      "requestDate": "21/11/2026 15:43:51",
+      "requestedAt": "21/11/2026 15:43:51",
+      "moNumber": "MO-20261119-003735",
+      "ppbomNumber": "PPBOM-20261119-004054",
+      "directTransferDocs": "ZJDB-261119-000036",
+      "materialCode": "1005QT00688",
+      "materialName": "NEUTRAL TERMINAL 8H; 6SCR",
+      "specification": "75503580AA",
+      "requestQty": 1,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CC-03-08A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Bending) | Public area (Defective Warehouse)",
+      "lotSummary": "2026100299, 2026100701, 2026090704, 2026090703, 2026090701, 2026090702, 2026090901, 2026083001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "21/11/2026 15:43:52",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261121-02125",
       "requestDate": "21/11/2026 15:43:21",
