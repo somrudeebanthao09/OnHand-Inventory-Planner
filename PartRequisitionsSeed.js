@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T00:23:02.428Z",
+  "updatedAt": "2026-11-21T00:23:17.754Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "",
-    "wh": "",
-    "expiresAt": 0
+    "req": "1fae780a-7b82-4291-ad9d-461a5b56cf9ea3b92e6f07004d2897933ea0c2571415",
+    "wh": "106b0ddf-36e2-40b8-97bb-3070c19e4f93dfa9358052ef4619b9172259a986cba8",
+    "expiresAt": 1795242191511
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -188,7 +188,7 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "งานเสีย/NG ในไลน์ผลิต",
       "requesterName": "จักรกฤษ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "",
       "status": "issued",
@@ -200,18 +200,18 @@ window.PART_REQUISITIONS_SEED = {
         }
       ],
       "locationsSummary": "Loc#1: ไม่ระบุ Location (1 PCS) [Lot: 2026102001, 2026100299, 2026092901, 2026091101, 2026083001, 2026090501, 2026100901]",
-      "onHandLocation": "Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CI-05-10A (Customer Supplied Material Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
-      "lotSummary": "2026102001, 2026100299, 2026092901, 2026091101, 2026083001, 2026090501, 2026100901",
+      "onHandLocation": "",
+      "lotSummary": "",
       "issuerName": "อุทิศ",
       "issuedAt": "21/11/2026 05:56:35",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "21/11/2026 05:56:35",
+      "updatedAt": "21/11/2026 06:20:26",
       "photoTakenAt": "21/11/2026 05:56:35",
       "locationsJson": "[{\"location\":\"ไม่ระบุ Location\",\"qty\":1,\"lot\":\"2026102001, 2026100299, 2026092901, 2026091101, 2026083001, 2026090501, 2026100901\"}]",
       "issuerUsername": "wh",
       "hasPhoto": true,
-      "photoUrl": "part-photos/REQ-20261121-43557.jpg",
+      "photoUrl": "",
       "leadTimeSummary": "12 นาที 32 วินาที",
       "kingdeeTransferDoc": "",
       "kingdeeTransferItem": "",
