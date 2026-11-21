@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T05:44:50.193Z",
+  "updatedAt": "2026-11-21T06:43:13.175Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261121-90931",
+      "requestDate": "21/11/2026 13:43:10",
+      "requestedAt": "21/11/2026 13:43:10",
+      "moNumber": "MO-20261119-003735",
+      "ppbomNumber": "PPBOM-20261119-004054",
+      "directTransferDocs": "ZJDB-261119-000036",
+      "materialCode": "1005QT00167",
+      "materialName": "SUMP",
+      "specification": "BRU53755",
+      "requestQty": 107,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CO-02-05A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026111002, 2026090904, 2026090903, 2026090708, 2026090902, 2026111001, 2026090901, 2026090802, 2026100901, 2026090705, 2026090701, 2026090501, 2026090702, 2026090703, 2026090704, 2026090706, 2026090707, 2026090709, 2026090801, 2026102201, 2026110401",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "21/11/2026 13:43:10",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261121-27750",
       "requestDate": "21/11/2026 10:52:07",
