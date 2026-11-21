@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T09:02:40.554Z",
+  "updatedAt": "2026-11-21T09:03:28.251Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261121-07920",
+      "requestDate": "21/11/2026 16:03:27",
+      "requestedAt": "21/11/2026 16:03:27",
+      "moNumber": "MO-20261119-003750",
+      "ppbomNumber": "PPBOM-20261119-004069",
+      "directTransferDocs": "ZJDB-261119-000055",
+      "materialCode": "1005QT00695",
+      "materialName": "NUT #M5",
+      "specification": "23001-00170",
+      "requestQty": 2000,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Purchased parts warehouse) | Public area (Customer Supplied Material Warehouse) | CJ-01-08B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 20261102",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "21/11/2026 16:03:27",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261121-36955",
       "requestDate": "21/11/2026 15:45:36",
