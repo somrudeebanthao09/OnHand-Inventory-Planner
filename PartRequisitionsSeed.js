@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T08:45:15.295Z",
+  "updatedAt": "2026-11-21T08:45:37.409Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261121-36955",
+      "requestDate": "21/11/2026 15:45:36",
+      "requestedAt": "21/11/2026 15:45:36",
+      "moNumber": "MO-20261119-003735",
+      "ppbomNumber": "PPBOM-20261119-004054",
+      "directTransferDocs": "ZJDB-261119-000036",
+      "materialCode": "1005QT00194",
+      "materialName": "Carton 450",
+      "specification": "BRU53767",
+      "requestQty": 12,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
+      "lotSummary": "2026100299, 2026101401, 2026110701, 2026110703, 2026110704, 2026110702, 2026093001, 2026083001, 2026101501, 2026111901, 2026112101, 2026091902, 2026101901, 2026111902, 2026091901, 2026110501, 2026110301, 2026100501, 2026100502",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "21/11/2026 15:45:36",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261121-14879",
       "requestDate": "21/11/2026 15:45:14",
