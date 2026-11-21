@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T19:15:17.924Z",
+  "updatedAt": "2026-11-21T19:15:48.432Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261122-48958",
+      "requestDate": "22/11/2026 02:15:47",
+      "requestedAt": "22/11/2026 02:15:47",
+      "moNumber": "MO-20261120-003809",
+      "ppbomNumber": "PPBOM-20261120-004129",
+      "directTransferDocs": "ZJDB-261120-000040",
+      "materialCode": "1005QT00146",
+      "materialName": "Neutral busbar_L 42way",
+      "specification": "BRU53703",
+      "requestQty": 16,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CD-01-05B (Purchased parts warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CH-01-14E (Purchased parts warehouse) | CH-02-13E (Purchased parts warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | CH-02-12B (Customer Supplied Material Warehouse) | CJ-01-11A (Purchased parts warehouse) | CH-02-12B (Purchased parts warehouse)",
+      "lotSummary": "2026101703, 2026101702, 2026083001, 2026091201, 2026091202, 2026090201, 2026091801",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "22/11/2026 02:15:48",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261122-18400",
       "requestDate": "22/11/2026 02:15:17",
