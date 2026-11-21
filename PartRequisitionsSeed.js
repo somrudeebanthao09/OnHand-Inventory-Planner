@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T19:14:52.794Z",
+  "updatedAt": "2026-11-21T19:15:17.924Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "1a5524d2-4603-418d-ab79-0fd3b8f52d15e0c394e541cb4c7fbbaf5ab4acbf6773",
+    "req": "a4d772cb-1015-46b4-8d98-a76880a3635848e404b8a4334a30adb5c83bff1e5e8c",
     "wh": "a7f0e240-63da-40f5-9b16-0fd208a8eaa530bb24790d8b428c8d93a187d5495243",
-    "expiresAt": 1795287357021
+    "expiresAt": 1795308936261
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261122-18400",
+      "requestDate": "22/11/2026 02:15:17",
+      "requestedAt": "22/11/2026 02:15:17",
+      "moNumber": "MO-20261120-003809",
+      "ppbomNumber": "PPBOM-20261120-004129",
+      "directTransferDocs": "ZJDB-261120-000039",
+      "materialCode": "1005QT00389",
+      "materialName": "CENTER COVER 18",
+      "specification": "75170109AA",
+      "requestQty": 5,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CO-04-05A (Customer Supplied Material Warehouse) | CC-08-09B (Customer Supplied Material Warehouse) | CF-04-04A (Customer Supplied Material Warehouse) | CC-05-10B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Bending)",
+      "lotSummary": "2026102401, 2026111401, 2026102601, 2026091501, 2026090901, 2026090701, 2026090702, 2026090706, 2026090703, 2026090704, 2026083001, 2026090501, 2026090705, 2026090707, 2026090801, 2026090905, 2026090906, 2026090904, 2026091002, 2026090907, 2026091001, 2026090902, 2026090903",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "22/11/2026 02:15:18",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261122-93285",
       "requestDate": "22/11/2026 02:14:52",
