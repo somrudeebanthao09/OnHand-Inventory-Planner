@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T17:44:50.237Z",
+  "updatedAt": "2026-11-21T18:17:42.588Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261122-63024",
+      "requestDate": "22/11/2026 01:17:42",
+      "requestedAt": "22/11/2026 01:17:42",
+      "moNumber": "MO-20261120-003809",
+      "ppbomNumber": "PPBOM-20261120-004129",
+      "directTransferDocs": "ZJDB-261120-000040",
+      "materialCode": "1005QT00135",
+      "materialName": "EARTH PAD 250A",
+      "specification": "BRU53713",
+      "requestQty": 11,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CC-02-06A (Purchased parts warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CJ-01-11A (Purchased parts warehouse) | Public area (Purchased parts warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Bending)",
+      "lotSummary": "2026083001, 2026091801, 2026090701, 2026090901, 2026090703, 2026090801, 2026090702, 2026090704, 2026090903, 2026091001, 2026091002, 2026090902",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "22/11/2026 01:17:42",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261121-92784",
       "requestDate": "21/11/2026 20:19:52",
