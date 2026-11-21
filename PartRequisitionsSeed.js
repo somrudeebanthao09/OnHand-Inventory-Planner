@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T12:55:17.892Z",
+  "updatedAt": "2026-11-21T13:19:52.697Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "0841aeba-cde6-4e64-906e-e455c4d2c36d3a4191fcfcc249c5a769a79007dc8f08",
-    "wh": "d155aec0-9d04-4b0d-87e2-79c3c87f6500e4bf7f355cdd426b8e477a44a815972e",
-    "expiresAt": 1795254305088
+    "req": "1a5524d2-4603-418d-ab79-0fd3b8f52d15e0c394e541cb4c7fbbaf5ab4acbf6773",
+    "wh": "9c9e2617-d9aa-4005-adb5-c406aa03b9326dbb3c1292cd4608b0e390b5c532111f",
+    "expiresAt": 1795287356001
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261121-92784",
+      "requestDate": "21/11/2026 20:19:52",
+      "requestedAt": "21/11/2026 20:19:52",
+      "moNumber": "MO-20261119-003750",
+      "ppbomNumber": "PPBOM-20261119-004069",
+      "directTransferDocs": "ZJDB-261119-000055",
+      "materialCode": "1005QT00596",
+      "materialName": "Interior2 + 10way label",
+      "specification": "75504153CA",
+      "requestQty": 10,
+      "unit": "PCS",
+      "reason": "งานเสีย/NG ในไลน์ผลิต",
+      "requesterName": "จักรกฤษ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-02-06D (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CJ-01-09B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026091001, 2026100999, 20261102",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "21/11/2026 20:19:52",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261121-86886",
       "requestDate": "21/11/2026 17:36:26",
