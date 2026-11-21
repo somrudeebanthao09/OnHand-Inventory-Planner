@@ -1,11 +1,11 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T00:32:50.650Z",
+  "updatedAt": "2026-11-21T00:46:41.907Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "e098e985-cd6f-4198-b80d-ad81ce9c9091dc11ffa76251460999dbff31719a2aff",
-    "wh": "b651a9cf-abda-45f8-bfb4-f51a1ca88c7301b6ae1eee324d248123e981d23f2c7f",
+    "wh": "6da1ff1b-8fc4-446f-900f-a846b33948a1361e5c359f184b77b7bfa8415ce8623b",
     "expiresAt": 1795242770091
   },
   "staffRoster": {
@@ -48,7 +48,7 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "งานเสีย/NG ในไลน์ผลิต",
       "requesterName": "จักรกฤษ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "",
       "status": "issued",
@@ -60,17 +60,30 @@ window.PART_REQUISITIONS_SEED = {
         }
       ],
       "locationsSummary": "Loc#1: CH-02-05F (3 PCS) [Lot: 2026100299]",
-      "onHandLocation": "CH-02-05F (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Defective Warehouse)",
-      "lotSummary": "2026100299",
+      "onHandLocation": "",
+      "lotSummary": "",
       "issuerName": "ธนวัฒน์",
       "issuedAt": "21/11/2026 05:59:00",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "21/11/2026 05:59:00",
+      "updatedAt": "21/11/2026 07:46:41",
       "photoTakenAt": "21/11/2026 05:59:00",
       "issuerUsername": "wh",
       "photoUrl": "part-photos/REQ-20261121-31056.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "locationsJson": "[{\"location\":\"CH-02-05F\",\"qty\":3,\"lot\":\"2026100299\"}]",
+      "leadTimeSummary": "1 นาที 50 วินาที",
+      "kingdeeTransferDoc": "ZJDB-261121-000030",
+      "kingdeeTransferItem": "1005CY00021 | Spec: BRU30905",
+      "kingdeeTransferFromBin": "CH-02-05F (3)",
+      "kingdeeTransferToWh": "CK028",
+      "kingdeeTransferQty": "3 PCS",
+      "kingdeeTransferredAt": "21/11/2026 07:46:41",
+      "kingdeeTransferStatus": "ตัดจ่ายในระบบแล้ว (ZJDB-261121-000030)",
+      "sheetRow": 134,
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": "part-photos/REQ-20261121-31056.jpg"
     },
     {
       "reqId": "REQ-20261121-04294",
