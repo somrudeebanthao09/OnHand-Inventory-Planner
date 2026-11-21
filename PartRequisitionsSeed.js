@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T08:44:19.699Z",
+  "updatedAt": "2026-11-21T08:45:15.295Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261121-14879",
+      "requestDate": "21/11/2026 15:45:14",
+      "requestedAt": "21/11/2026 15:45:14",
+      "moNumber": "MO-20261119-003735",
+      "ppbomNumber": "PPBOM-20261119-004054",
+      "directTransferDocs": "ZJDB-261119-000039",
+      "materialCode": "1005QT00165",
+      "materialName": "Neutral bridge with clinching nut",
+      "specification": "BRU87274",
+      "requestQty": 2,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Purchased parts warehouse) | CG-04-07A (Customer Supplied Material Warehouse) | CE-03-01B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CO-06-01B (Customer Supplied Material Warehouse) | CF-01-01B (Customer Supplied Material Warehouse) | CF-01-01B (Purchased parts warehouse) | CJ-01-11A (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Defective Warehouse) | CJ-01-12B (Customer Supplied Material Warehouse) | CJ-01-11A (Customer Supplied Material Warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Bending) | CJ-01-11B (Purchased parts warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly)",
+      "lotSummary": "2026110502, 2026093001, 2026090201, 2026090902, 2026090903, 2026090907, 2026101701, 2026090905, 2026090906, 2026090908, 2026091001, 2026101901, 2026111901, 2026083001, 2026111401, 2026110701, 2026090904, 2026091002",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "21/11/2026 15:45:14",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261121-59368",
       "requestDate": "21/11/2026 15:44:18",
