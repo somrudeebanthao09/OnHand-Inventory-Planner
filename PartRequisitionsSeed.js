@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T00:23:17.754Z",
+  "updatedAt": "2026-11-21T00:23:36.365Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "1fae780a-7b82-4291-ad9d-461a5b56cf9ea3b92e6f07004d2897933ea0c2571415",
-    "wh": "106b0ddf-36e2-40b8-97bb-3070c19e4f93dfa9358052ef4619b9172259a986cba8",
-    "expiresAt": 1795242191511
+    "wh": "9a2c063a-8555-425e-8add-6f3ba0edbda3bd914fe719e94a4fb96d8765423591a2",
+    "expiresAt": 1795242197750
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -206,12 +206,12 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "21/11/2026 05:56:35",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "21/11/2026 06:20:26",
+      "updatedAt": "21/11/2026 05:56:35",
       "photoTakenAt": "21/11/2026 05:56:35",
       "locationsJson": "[{\"location\":\"ไม่ระบุ Location\",\"qty\":1,\"lot\":\"2026102001, 2026100299, 2026092901, 2026091101, 2026083001, 2026090501, 2026100901\"}]",
       "issuerUsername": "wh",
       "hasPhoto": true,
-      "photoUrl": "",
+      "photoUrl": "part-photos/REQ-20261121-43557.jpg",
       "leadTimeSummary": "12 นาที 32 วินาที",
       "kingdeeTransferDoc": "",
       "kingdeeTransferItem": "",
@@ -223,7 +223,7 @@ window.PART_REQUISITIONS_SEED = {
       "sheetRow": 131,
       "deleted": false,
       "deletedAt": "",
-      "photoAttachmentUrl": ""
+      "photoAttachmentUrl": "part-photos/REQ-20261121-43557.jpg"
     },
     {
       "reqId": "REQ-20261121-90222",
