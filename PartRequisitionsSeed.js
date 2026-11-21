@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T00:10:10.777Z",
+  "updatedAt": "2026-11-21T00:23:02.428Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "75fe23ce-a1a7-459a-b79d-5ad7af4fe5872620c78968334b67b4b9a1a3611c4529",
-    "wh": "3b7fdb8a-7df9-46ab-a8d3-573cc1a0af447078bd625afe4fac9e045b481704ffe1",
-    "expiresAt": 1795234234345
+    "req": "",
+    "wh": "",
+    "expiresAt": 0
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -51,17 +51,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderA",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CH-02-05F",
+          "qty": 3,
+          "lot": "2026100299"
+        }
+      ],
+      "locationsSummary": "Loc#1: CH-02-05F (3 PCS) [Lot: 2026100299]",
       "onHandLocation": "CH-02-05F (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Defective Warehouse)",
-      "lotSummary": "2026100299, 2026100201, 2026100701",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026100299",
+      "issuerName": "ธนวัฒน์",
+      "issuedAt": "21/11/2026 05:59:00",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "21/11/2026 05:57:10",
-      "photoTakenAt": ""
+      "updatedAt": "21/11/2026 05:59:00",
+      "photoTakenAt": "21/11/2026 05:59:00",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261121-31056.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261121-04294",
@@ -179,7 +188,7 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "งานเสีย/NG ในไลน์ผลิต",
       "requesterName": "จักรกฤษ",
-      "requesterUsername": "req",
+      "requesterUsername": "LeaderA",
       "shift": "A",
       "requesterNote": "",
       "status": "issued",
@@ -191,18 +200,18 @@ window.PART_REQUISITIONS_SEED = {
         }
       ],
       "locationsSummary": "Loc#1: ไม่ระบุ Location (1 PCS) [Lot: 2026102001, 2026100299, 2026092901, 2026091101, 2026083001, 2026090501, 2026100901]",
-      "onHandLocation": "",
-      "lotSummary": "",
+      "onHandLocation": "Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CI-05-10A (Customer Supplied Material Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
+      "lotSummary": "2026102001, 2026100299, 2026092901, 2026091101, 2026083001, 2026090501, 2026100901",
       "issuerName": "อุทิศ",
       "issuedAt": "21/11/2026 05:56:35",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "21/11/2026 06:20:26",
+      "updatedAt": "21/11/2026 05:56:35",
       "photoTakenAt": "21/11/2026 05:56:35",
       "locationsJson": "[{\"location\":\"ไม่ระบุ Location\",\"qty\":1,\"lot\":\"2026102001, 2026100299, 2026092901, 2026091101, 2026083001, 2026090501, 2026100901\"}]",
       "issuerUsername": "wh",
       "hasPhoto": true,
-      "photoUrl": "",
+      "photoUrl": "part-photos/REQ-20261121-43557.jpg",
       "leadTimeSummary": "12 นาที 32 วินาที",
       "kingdeeTransferDoc": "",
       "kingdeeTransferItem": "",
