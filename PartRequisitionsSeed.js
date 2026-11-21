@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-21T07:05:23.780Z",
+  "updatedAt": "2026-11-21T07:32:14.916Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261121-34959",
+      "requestDate": "21/11/2026 14:32:14",
+      "requestedAt": "21/11/2026 14:32:14",
+      "moNumber": "MO-20261119-003750",
+      "ppbomNumber": "PPBOM-20261119-004069",
+      "directTransferDocs": "ZJDB-261119-000055",
+      "materialCode": "1005QT00837",
+      "materialName": "Warning label",
+      "specification": "75504150AA",
+      "requestQty": 10000,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Customer Supplied Material Warehouse) | CI-02-09E (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026111401, 2026103199, 2026102101",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "21/11/2026 14:32:14",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261121-90931",
       "requestDate": "21/11/2026 13:43:10",
