@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-22T12:36:31.874Z",
+  "updatedAt": "2026-11-22T12:37:48.723Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -99,7 +99,7 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
       "requesterName": "อรรถพร",
-      "requesterUsername": "LeaderB",
+      "requesterUsername": "req",
       "shift": "B",
       "requesterNote": "",
       "status": "issued",
@@ -111,13 +111,13 @@ window.PART_REQUISITIONS_SEED = {
         }
       ],
       "locationsSummary": "Loc#1: CC-02-02A (2 PCS) [Lot: 20261005QT00254*2026112103*5000.000000*0001]",
-      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
-      "lotSummary": "20261005QT00254*2026112103*5000.000000*0001",
+      "onHandLocation": "",
+      "lotSummary": "",
       "issuerName": "ภิญโญ",
       "issuedAt": "22/11/2026 19:15:21",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "22/11/2026 19:15:21",
+      "updatedAt": "22/11/2026 19:37:48",
       "photoTakenAt": "22/11/2026 19:15:21",
       "locationsJson": "[{\"location\":\"CC-02-02A\",\"qty\":2,\"lot\":\"20261005QT00254*2026112103*5000.000000*0001\"}]",
       "issuerUsername": "wh",
@@ -130,11 +130,11 @@ window.PART_REQUISITIONS_SEED = {
       "kingdeeTransferToWh": "",
       "kingdeeTransferQty": "",
       "kingdeeTransferredAt": "",
-      "kingdeeTransferStatus": "",
+      "kingdeeTransferStatus": "ข้าม (ตัดจ่ายไม่ได้): ไม่พบ Storage Bin CC-02-02A สำหรับ Spec 75170127AA (พบ Bin: CC-05-10A) (ตรวจทั้ง Standard และ Entrusted Processing แล้ว)",
       "sheetRow": 161,
       "deleted": false,
       "deletedAt": "",
-      "photoAttachmentUrl": ""
+      "photoAttachmentUrl": "part-photos/REQ-20261122-24459.jpg"
     },
     {
       "reqId": "REQ-20261122-88621",
