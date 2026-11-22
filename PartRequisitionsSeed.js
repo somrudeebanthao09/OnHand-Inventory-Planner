@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-22T05:44:51.646Z",
+  "updatedAt": "2026-11-22T07:18:06.333Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "073c84c9-e831-46f1-abf5-0c32acc53be62f3c8d5689bd4b00ba246e21858b03e8",
-    "wh": "88636f4c-8808-40f8-bd73-86b42552e94b03af8ce63d1a4c7ba1e5a992980efe30",
-    "expiresAt": 1795330499882
+    "wh": "258e75db-1424-45ec-8520-e27fcfc9cbaceb430d8752c6405fb2db121877cbf368",
+    "expiresAt": 1795333499310
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261122-85566",
+      "requestDate": "22/11/2026 14:18:05",
+      "requestedAt": "22/11/2026 14:18:05",
+      "moNumber": "MO-20261120-003827",
+      "ppbomNumber": "PPBOM-20261120-004154",
+      "directTransferDocs": "ZJDB-261120-000057",
+      "materialCode": "1005QT00134",
+      "materialName": "New Lug support screw 100A",
+      "specification": "NAT20547",
+      "requestQty": 1000,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CF-02-02B (Customer Supplied Material Warehouse) | CQ-02-06A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Bending) | Public area (Semi-finished Product Warehouse-Waiting Assembly)",
+      "lotSummary": "2026090703, 2026090801, 2026090902, 2026103001, 2026090702, 2026090704, 2026090705, 2026090802, 2026090501, 2026090502, 2026090701, 2026090706, 2026090707, 2026090708, 2026090709, 2026090710, 2026090901, 2026103102, 2026103101, 2026090904, 2026090905",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "22/11/2026 14:18:05",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261122-17140",
       "requestDate": "22/11/2026 07:55:16",
