@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-22T12:04:11.500Z",
+  "updatedAt": "2026-11-22T12:04:30.461Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261122-70440",
+      "requestDate": "22/11/2026 19:04:29",
+      "requestedAt": "22/11/2026 19:04:29",
+      "moNumber": "MO-20261120-003827",
+      "ppbomNumber": "PPBOM-20261120-004154",
+      "directTransferDocs": "ZJDB-261120-000057",
+      "materialCode": "1005QT00716",
+      "materialName": "Plastic with glue size A4",
+      "specification": "75503809AA",
+      "requestQty": 17,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CC-02-11B (Customer Supplied Material Warehouse) | CC-02-03A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CJ-01-11B (Customer Supplied Material Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Bending) | Public area (Semi-finished Product Warehouse-Waiting Bending) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly)",
+      "lotSummary": "2026111401, 2026083001, 2026090907, 2026090707, 2026090904, 2026090802, 2026090701, 2026090703, 2026090702, 2026090501, 2026090901, 2026090704, 2026090903, 2026090801, 2026090708, 2026090706, 2026090705, 2026091001, 2026090908, 2026090906, 2026090905, 2026090909, 2026090902",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "22/11/2026 19:04:30",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261122-51415",
       "requestDate": "22/11/2026 19:04:11",
