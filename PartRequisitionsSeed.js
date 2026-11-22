@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-22T07:18:06.333Z",
+  "updatedAt": "2026-11-22T07:22:50.742Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -51,17 +51,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderB",
       "shift": "B",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CF-02-02B",
+          "qty": 1000,
+          "lot": "2026103102, 2026103001"
+        }
+      ],
+      "locationsSummary": "Loc#1: CF-02-02B (1,000 PCS) [Lot: 2026103102, 2026103001]",
       "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CF-02-02B (Customer Supplied Material Warehouse) | CQ-02-06A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Bending) | Public area (Semi-finished Product Warehouse-Waiting Assembly)",
-      "lotSummary": "2026090703, 2026090801, 2026090902, 2026103001, 2026090702, 2026090704, 2026090705, 2026090802, 2026090501, 2026090502, 2026090701, 2026090706, 2026090707, 2026090708, 2026090709, 2026090710, 2026090901, 2026103102, 2026103101, 2026090904, 2026090905",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026103102, 2026103001",
+      "issuerName": "ภิญโญ",
+      "issuedAt": "22/11/2026 14:22:44",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "22/11/2026 14:18:05",
-      "photoTakenAt": ""
+      "updatedAt": "22/11/2026 14:22:44",
+      "photoTakenAt": "22/11/2026 14:22:44",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261122-85566.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261122-17140",
