@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-23T09:14:26.912Z",
+  "updatedAt": "2026-11-23T09:16:02.529Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261123-62510",
+      "requestDate": "23/11/2026 16:16:01",
+      "requestedAt": "23/11/2026 16:16:01",
+      "moNumber": "3885",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00853",
+      "materialName": "WAY LABEL CLASSIC CU 2 + 18",
+      "specification": "GEX40044",
+      "requestQty": 110,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-01-07B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026083001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "23/11/2026 16:16:02",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261123-66915",
       "requestDate": "23/11/2026 16:14:26",
