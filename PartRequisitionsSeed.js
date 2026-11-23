@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-23T02:01:31.407Z",
+  "updatedAt": "2026-11-23T02:02:27.426Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
-    "req": "15f06e3b-442e-4589-ba34-45a8de848bc47e70370a4f844f7e855e3ddb38726aae",
+    "req": "f6b0a374-9dde-4877-81a4-4f6632f98ec25f66fc860cd648eb92a221fa13d1e600",
     "wh": "22c09ab8-7fdc-4a61-b21b-469b48b27f362674186949cb474bb26cdb022705b1fa",
-    "expiresAt": 1795398321241
+    "expiresAt": 1795416793576
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -162,7 +162,7 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "ของไม่ครบตามถุง/Shortage",
       "requesterName": "ภาคภูมิ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "",
       "status": "issued",
@@ -174,17 +174,30 @@ window.PART_REQUISITIONS_SEED = {
         }
       ],
       "locationsSummary": "Loc#1: CO-05-08A (14 PCS) [Lot: 2026102701]",
-      "onHandLocation": "CQ-02-02A (Customer Supplied Material Warehouse) | CO-05-08A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
-      "lotSummary": "2026102701",
+      "onHandLocation": "",
+      "lotSummary": "",
       "issuerName": "อธิเบศ",
       "issuedAt": "23/11/2026 08:28:20",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "23/11/2026 08:28:20",
+      "updatedAt": "23/11/2026 09:02:27",
       "photoTakenAt": "23/11/2026 08:28:20",
       "issuerUsername": "wh",
       "photoUrl": "part-photos/REQ-20261123-40984.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "locationsJson": "[{\"location\":\"CO-05-08A\",\"qty\":14,\"lot\":\"2026102701\"}]",
+      "leadTimeSummary": "9 นาที 20 วินาที",
+      "kingdeeTransferDoc": "ZJDB-261123-000006",
+      "kingdeeTransferItem": "1005QT00339 | Spec: NVE14523",
+      "kingdeeTransferFromBin": "CO-05-08A (14)",
+      "kingdeeTransferToWh": "CK028",
+      "kingdeeTransferQty": "14 PCS",
+      "kingdeeTransferredAt": "23/11/2026 09:02:27",
+      "kingdeeTransferStatus": "ตัดจ่ายในระบบแล้ว (ZJDB-261123-000006)",
+      "sheetRow": 163,
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": "part-photos/REQ-20261123-40984.jpg"
     },
     {
       "reqId": "REQ-20261122-86247",
