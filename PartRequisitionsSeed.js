@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-23T08:23:56.637Z",
+  "updatedAt": "2026-11-23T08:26:35.567Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261123-95214",
+      "requestDate": "23/11/2026 15:26:34",
+      "requestedAt": "23/11/2026 15:26:34",
+      "moNumber": "MO-20261120-003823",
+      "ppbomNumber": "PPBOM-20261120-004144",
+      "directTransferDocs": "ZJDB-261120-000046",
+      "materialCode": "7502289292",
+      "materialName": "TERMBAR",
+      "specification": "",
+      "requestQty": 1,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "จักรกฤษ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "ไม่พอ",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "",
+      "lotSummary": "",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "23/11/2026 15:26:35",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261123-36326",
       "requestDate": "23/11/2026 15:23:55",
