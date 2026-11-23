@@ -2756,23 +2756,30 @@
         </div>
       </div>
 
-      <!-- MODAL 3B: ยกเลิกใบเบิก Part (กรณีเบิกผิด) -->
+      <!-- MODAL 3B: ยกเลิกใบเบิก Part (คนเบิก: เบิกผิด / WH: กรณีไม่มีงาน) -->
       <div class="modal-backdrop" id="partReqCancelModal" style="z-index:41">
         <div class="modal" style="width:min(520px,94vw);max-height:90vh;overflow:auto;padding:20px 22px">
-          <h2 style="margin:0 0 12px;font-size:18px;color:#b45309">🚫 ยกเลิกใบเบิก Part (กรณีเบิกผิด)</h2>
+          <h2 id="partReqCancelModalTitle" style="margin:0 0 12px;font-size:18px;color:#b45309">🚫 ยกเลิกใบเบิก Part (กรณีเบิกผิด)</h2>
           <div id="partReqCancelModalBody"></div>
           <div style="margin-top:12px">
-            <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:6px">สาเหตุที่ยกเลิก (เลือกหรือพิมพ์เพิ่มเติม)</label>
-            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+            <label id="partReqCancelReasonLabel" style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:6px">สาเหตุที่ยกเลิก (เลือกหรือพิมพ์เพิ่มเติม)</label>
+            <div id="partReqCancelChipsReq" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px">
               <button type="button" class="btn soft part-req-cancel-chip" data-reason="เบิกผิด Part" style="padding:4px 10px;font-size:12px">เบิกผิด Part</button>
               <button type="button" class="btn soft part-req-cancel-chip" data-reason="เบิกซ้ำ" style="padding:4px 10px;font-size:12px">เบิกซ้ำ</button>
               <button type="button" class="btn soft part-req-cancel-chip" data-reason="ใส่จำนวนผิด" style="padding:4px 10px;font-size:12px">ใส่จำนวนผิด</button>
               <button type="button" class="btn soft part-req-cancel-chip" data-reason="ไม่ต้องใช้แล้ว" style="padding:4px 10px;font-size:12px">ไม่ต้องใช้แล้ว</button>
             </div>
+            <div id="partReqCancelChipsWh" style="display:none;gap:6px;flex-wrap:wrap;margin-bottom:8px">
+              <button type="button" class="btn soft part-req-cancel-chip" data-reason="ไม่มีงาน / ไม่มีของในคลัง" style="padding:4px 10px;font-size:12px;border-color:#fca5a5;color:#991b1b;background:#fff5f5">ไม่มีงาน / ไม่มีของในคลัง</button>
+              <button type="button" class="btn soft part-req-cancel-chip" data-reason="ไม่มีงานเกิด (WH ยกเลิก)" style="padding:4px 10px;font-size:12px;border-color:#fca5a5;color:#991b1b;background:#fff5f5">ไม่มีงานเกิด (WH ยกเลิก)</button>
+              <button type="button" class="btn soft part-req-cancel-chip" data-reason="สต็อกหมด / รอรับเข้า" style="padding:4px 10px;font-size:12px;border-color:#fca5a5;color:#991b1b;background:#fff5f5">สต็อกหมด / รอรับเข้า</button>
+              <button type="button" class="btn soft part-req-cancel-chip" data-reason="ไม่พบ Part ในพื้นที่จัดเก็บ" style="padding:4px 10px;font-size:12px;border-color:#fca5a5;color:#991b1b;background:#fff5f5">ไม่พบ Part ในพื้นที่จัดเก็บ</button>
+            </div>
             <input type="text" id="partReqCancelReasonInput" class="field" placeholder="เช่น เบิกผิด Part / เบิกซ้ำ / ใส่จำนวนผิด..." style="width:100%;font-size:13px">
           </div>
           <div style="margin-top:10px">
-            <label style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">ผู้ขอยกเลิก</label>
+            <label id="partReqCancelByLabel" style="display:block;font-size:12.5px;font-weight:700;color:#334155;margin-bottom:4px">ผู้ขอยกเลิก</label>
+            <div id="partReqCancelWhStaffChips" style="display:none;gap:5px;flex-wrap:wrap;margin-bottom:6px"></div>
             <input type="text" id="partReqCancelByInput" class="field" placeholder="ชื่อผู้ขอยกเลิก" style="width:100%;font-size:13px">
           </div>
           <div class="modal-actions" style="margin-top:16px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">
@@ -12958,16 +12965,87 @@
     const isPartial = isIssued && shortageQty > 1e-6;
     return { reqQty, issuedQty, shortageQty, isIssued, isPartial };
   }
+  const PART_REQ_GH_PAGES_BASE = 'https://somrudeebanthao09.github.io/OnHand-Inventory-Planner/';
+  const PART_REQ_GH_RAW_BASE = 'https://raw.githubusercontent.com/somrudeebanthao09/OnHand-Inventory-Planner/main/';
+
+  function partReqExtractDriveId(url) {
+    const s = String(url || '').trim();
+    if (!s || !/drive\.google\.com/i.test(s)) return '';
+    const m = s.match(/[?&]id=([a-zA-Z0-9_-]+)/) || s.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    return m ? m[1] : '';
+  }
+  function partReqPhotoCandidates(r) {
+    const out = [];
+    const add = (u) => {
+      const s = String(u || '').trim();
+      if (s && !out.includes(s)) out.push(s);
+    };
+    if (r?.issuePhotoDataUrl && String(r.issuePhotoDataUrl).startsWith('data:image')) {
+      add(r.issuePhotoDataUrl);
+    }
+    const rawUrl = String(r?.photoAttachmentUrl || r?.photoUrl || '').trim();
+    const driveId = partReqExtractDriveId(rawUrl);
+    if (driveId) {
+      add(`https://lh3.googleusercontent.com/d/${driveId}=w1200`);
+      add(`https://drive.google.com/thumbnail?id=${driveId}&sz=w1200`);
+      add(rawUrl);
+    } else if (rawUrl) {
+      if (/^https?:\/\//i.test(rawUrl)) {
+        add(rawUrl);
+      } else {
+        const rel = rawUrl.replace(/^\/+/, '');
+        const host = String(window.location.hostname || '').toLowerCase();
+        if (host.includes('github.io') || host === 'localhost' || host === '127.0.0.1' || /^192\.168\.|^10\./.test(host)) {
+          try { add(new URL(rel, window.location.href).href); } catch (_) {}
+        }
+        add(PART_REQ_GH_RAW_BASE + rel);
+        add(PART_REQ_GH_PAGES_BASE + rel);
+      }
+    }
+    if (r?.reqId && (r?.hasPhoto || rawUrl)) {
+      const fallbackRel = `part-photos/${String(r.reqId).trim()}.jpg`;
+      add(PART_REQ_GH_RAW_BASE + fallbackRel);
+      add(PART_REQ_GH_PAGES_BASE + fallbackRel);
+    }
+    return out;
+  }
   function partReqHasPhoto(r) {
-    return Boolean((r?.issuePhotoDataUrl && String(r.issuePhotoDataUrl).startsWith('data:image')) || r?.photoUrl);
+    return Boolean((r?.issuePhotoDataUrl && String(r.issuePhotoDataUrl).startsWith('data:image')) || r?.photoUrl || r?.photoAttachmentUrl);
   }
   function partReqPhotoSrc(r) {
-    if (r?.issuePhotoDataUrl && String(r.issuePhotoDataUrl).startsWith('data:image')) return r.issuePhotoDataUrl;
-    if (r?.photoUrl) {
-      try { return new URL(r.photoUrl, window.location.href).href; } catch (_) { return r.photoUrl; }
-    }
-    return '';
+    return partReqPhotoCandidates(r)[0] || '';
   }
+  function partReqPhotoImgAttrs(r) {
+    const cands = partReqPhotoCandidates(r);
+    if (!cands.length) return 'src=""';
+    const [first, ...rest] = cands;
+    return `src="${esc(first)}" data-fallbacks="${esc(JSON.stringify(rest))}" onerror="window._partReqImgFallback && window._partReqImgFallback(this)"`;
+  }
+  window._partReqImgFallback = function(imgEl) {
+    if (!imgEl) return;
+    try {
+      const list = JSON.parse(imgEl.getAttribute('data-fallbacks') || '[]');
+      if (Array.isArray(list) && list.length > 0) {
+        const nextUrl = list.shift();
+        imgEl.setAttribute('data-fallbacks', JSON.stringify(list));
+        imgEl.src = nextUrl;
+        return;
+      }
+    } catch (_) {}
+    imgEl.onerror = null;
+    if (imgEl.dataset.modalImg === '1') {
+      const origUrl = imgEl.getAttribute('data-orig-url') || imgEl.src || '';
+      const box = imgEl.parentElement;
+      if (box) {
+        box.innerHTML = `<div style="padding:18px;border-radius:10px;background:#fff7ed;border:1.5px solid #fdba74;color:#9a3412;font-size:13px;line-height:1.5">
+          <div style="font-weight:800;margin-bottom:6px">⚠️ ยังไม่สามารถโหลดภาพได้ชั่วคราว (อาจกำลังอัปโหลดขึ้นเซิร์ฟเวอร์)</div>
+          ${origUrl && /^https?:\/\//i.test(origUrl) ? `<a href="${esc(origUrl)}" target="_blank" rel="noopener noreferrer" class="btn soft" style="display:inline-flex;font-size:12.5px;font-weight:700">🔗 เปิดลิงก์รูปภาพโดยตรง</a>` : ''}
+        </div>`;
+      }
+    } else {
+      imgEl.style.display = 'none';
+    }
+  };
   function partReqIsMine(r, u) {
     if (!r || !u) return false;
     const ru = String(r.requesterUsername || '').trim().toLowerCase();
@@ -12986,7 +13064,11 @@
   function savePartReqSeen(identity, state) {
     try {
       const all = JSON.parse(localStorage.getItem(PART_REQ_SEEN_KEY) || '{}') || {};
-      all[identity] = { pending: (state.pending || []).slice(-600), issued: (state.issued || []).slice(-600) };
+      all[identity] = {
+        pending: (state.pending || []).slice(-600),
+        issued: (state.issued || []).slice(-600),
+        cancelled: (state.cancelled || []).slice(-600)
+      };
       localStorage.setItem(PART_REQ_SEEN_KEY, JSON.stringify(all));
     } catch (_) {}
   }
@@ -13000,23 +13082,32 @@
       document.body.appendChild(banner);
     }
     const isWarehouseAlert = roleType === 'warehouse';
-    banner.style.background = isWarehouseAlert ? 'linear-gradient(135deg,#fffbeb,#fef3c7)' : 'linear-gradient(135deg,#ecfdf5,#d1fae5)';
-    banner.style.border = isWarehouseAlert ? '2px solid #f59e0b' : '2px solid #10b981';
-    banner.style.color = isWarehouseAlert ? '#78350f' : '#065f46';
+    const isCancelledAlert = roleType === 'cancelled';
+    banner.style.background = isCancelledAlert
+      ? 'linear-gradient(135deg,#fef2f2,#fee2e2)'
+      : (isWarehouseAlert ? 'linear-gradient(135deg,#fffbeb,#fef3c7)' : 'linear-gradient(135deg,#ecfdf5,#d1fae5)');
+    banner.style.border = isCancelledAlert ? '2px solid #ef4444' : (isWarehouseAlert ? '2px solid #f59e0b' : '2px solid #10b981');
+    banner.style.color = isCancelledAlert ? '#7f1d1d' : (isWarehouseAlert ? '#78350f' : '#065f46');
 
     const desc = [record.materialName, record.specification].filter(Boolean).join(' · ') || '—';
     const extraTxt = extraCount > 0 ? ` <span style="font-size:12px;opacity:0.85">(และอีก ${extraCount} รายการ)</span>` : '';
-    const titleHtml = isWarehouseAlert
-      ? `🔔 มีใบเบิก Part ใหม่เข้ามาที่คลัง!${extraTxt}`
-      : `✅ คลังจ่าย Part รายการของคุณเรียบร้อยแล้ว!${extraTxt}`;
-    const subHtml = isWarehouseAlert
-      ? `<div><b>MO:</b> <strong style="color:#0f6a66">${esc(record.moNumber)}</strong> · <b>ผู้เบิก:</b> ${esc(record.requesterName || '—')} (กะ ${esc(record.shift || 'A')})</div>
-         <div><b>รหัส Part:</b> <strong style="color:#b45309;font-size:14.5px">${esc(record.materialCode)}</strong> · จำนวน <strong style="color:#dc2626;font-size:15px">${fmtQty(record.requestQty)} ${esc(record.unit || 'PCS')}</strong></div>
-         <div style="margin-top:4px;padding:4px 8px;border-radius:7px;background:#fef9c3;border:1px solid #fde047;font-size:14.5px;font-weight:900;color:#713f12;line-height:1.35">📋 ${esc(desc)}</div>
-         <div style="font-size:12px;color:#475569;margin-top:3px">สาเหตุ: <b>${esc(record.reason || '—')}</b></div>`
-      : `<div><b>MO:</b> <strong style="color:#0f6a66">${esc(record.moNumber)}</strong> · <b>ผู้จ่าย:</b> ${esc(record.issuerName || 'Warehouse')}</div>
-         <div><b>รหัส Part:</b> <strong style="color:#047857;font-size:14.5px">${esc(record.materialCode)}</strong> · จ่ายแล้ว <strong style="color:#15803d;font-size:15px">${fmtQty(record.requestQty)} ${esc(record.unit || 'PCS')}</strong></div>
-         <div style="font-size:12px;color:#065f46">📍 Location ที่หยิบ: <b>${esc(record.locationsSummary || '—')}</b></div>`;
+    const titleHtml = isCancelledAlert
+      ? `🚫 คลัง (WH) ยกเลิกใบเบิก Part ของคุณ!${extraTxt}`
+      : (isWarehouseAlert
+        ? `🔔 มีใบเบิก Part ใหม่เข้ามาที่คลัง!${extraTxt}`
+        : `✅ คลังจ่าย Part รายการของคุณเรียบร้อยแล้ว!${extraTxt}`);
+    const subHtml = isCancelledAlert
+      ? `<div><b>MO:</b> <strong style="color:#0f6a66">${esc(record.moNumber)}</strong> · <b>ผู้ลงยกเลิก (WH):</b> ${esc(record.cancelledBy || 'Warehouse')}</div>
+         <div><b>รหัส Part:</b> <strong style="color:#b91c1c;font-size:14.5px">${esc(record.materialCode)}</strong> · จำนวน <strong style="color:#dc2626;font-size:15px">${fmtQty(record.requestQty)} ${esc(record.unit || 'PCS')}</strong></div>
+         <div style="margin-top:4px;padding:4px 8px;border-radius:7px;background:#fff5f5;border:1px solid #fca5a5;font-size:13.5px;font-weight:800;color:#991b1b;line-height:1.35">💬 หมายเหตุ: ${esc(record.cancelReason || 'ไม่มีงาน / ยกเลิกโดย WH')}</div>`
+      : (isWarehouseAlert
+        ? `<div><b>MO:</b> <strong style="color:#0f6a66">${esc(record.moNumber)}</strong> · <b>ผู้เบิก:</b> ${esc(record.requesterName || '—')} (กะ ${esc(record.shift || 'A')})</div>
+           <div><b>รหัส Part:</b> <strong style="color:#b45309;font-size:14.5px">${esc(record.materialCode)}</strong> · จำนวน <strong style="color:#dc2626;font-size:15px">${fmtQty(record.requestQty)} ${esc(record.unit || 'PCS')}</strong></div>
+           <div style="margin-top:4px;padding:4px 8px;border-radius:7px;background:#fef9c3;border:1px solid #fde047;font-size:14.5px;font-weight:900;color:#713f12;line-height:1.35">📋 ${esc(desc)}</div>
+           <div style="font-size:12px;color:#475569;margin-top:3px">สาเหตุ: <b>${esc(record.reason || '—')}</b></div>`
+        : `<div><b>MO:</b> <strong style="color:#0f6a66">${esc(record.moNumber)}</strong> · <b>ผู้จ่าย:</b> ${esc(record.issuerName || 'Warehouse')}</div>
+           <div><b>รหัส Part:</b> <strong style="color:#047857;font-size:14.5px">${esc(record.materialCode)}</strong> · จ่ายแล้ว <strong style="color:#15803d;font-size:15px">${fmtQty(record.requestQty)} ${esc(record.unit || 'PCS')}</strong></div>
+           <div style="font-size:12px;color:#065f46">📍 Location ที่หยิบ: <b>${esc(record.locationsSummary || '—')}</b></div>`);
 
     banner.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
@@ -13025,15 +13116,21 @@
       </div>
       <div style="margin-top:6px;font-size:13px;line-height:1.5">${subHtml}</div>
       <div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end">
-        ${isWarehouseAlert
-          ? `<button type="button" id="partReqPopupActionBtn" class="btn primary" style="background:#d97706;border-color:#b45309;height:36px;padding:0 14px;font-size:13px;font-weight:800">📦 กดเพื่อจ่าย Part ทันที</button>`
-          : `<button type="button" id="partReqPopupActionBtn" class="btn primary" style="background:#059669;border-color:#047857;height:36px;padding:0 14px;font-size:13px;font-weight:800">🔍 ดูรายการเบิก / รูปถ่าย</button>`}
+        ${isCancelledAlert
+          ? `<button type="button" id="partReqPopupActionBtn" class="btn danger" style="background:#dc2626;border-color:#b91c1c;height:36px;padding:0 14px;font-size:13px;font-weight:800">🚫 ดูใบเบิกที่ถูกยกเลิก</button>`
+          : (isWarehouseAlert
+            ? `<button type="button" id="partReqPopupActionBtn" class="btn primary" style="background:#d97706;border-color:#b45309;height:36px;padding:0 14px;font-size:13px;font-weight:800">📦 กดเพื่อจ่าย Part ทันที</button>`
+            : `<button type="button" id="partReqPopupActionBtn" class="btn primary" style="background:#059669;border-color:#047857;height:36px;padding:0 14px;font-size:13px;font-weight:800">🔍 ดูรายการเบิก / รูปถ่าย</button>`)}
       </div>
     `;
     banner.querySelector('#partReqPopupCloseBtn')?.addEventListener('click', () => banner.remove());
     banner.querySelector('#partReqPopupActionBtn')?.addEventListener('click', () => {
       banner.remove();
-      if (isWarehouseAlert) {
+      if (isCancelledAlert) {
+        goto('part-requisition');
+        setPartReqFilterTab('cancelled');
+        el('partReqHistoryPanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (isWarehouseAlert) {
         goto('part-issue');
         setTimeout(() => openWhConfirmModal(record.reqId), 120);
       } else {
@@ -13226,11 +13323,16 @@
     if (u.role !== 'warehouse' && u.role !== 'requester' && u.role !== 'admin') return;
     const identity = `${u.role}:${String(u.username || u.name || '').trim().toLowerCase()}`;
     const list = getVisiblePartReqs();
-    const pending = list.filter(r => r.status !== 'issued');
+    const pending = list.filter(r => r.status !== 'issued' && r.status !== 'cancelled');
     const issued = list.filter(r => r.status === 'issued');
+    const cancelled = list.filter(r => r.status === 'cancelled');
     let st = loadPartReqSeen(identity);
     if (!st) {
-      savePartReqSeen(identity, { pending: pending.map(r => r.reqId), issued: issued.map(r => r.reqId) });
+      savePartReqSeen(identity, {
+        pending: pending.map(r => r.reqId),
+        issued: issued.map(r => r.reqId),
+        cancelled: cancelled.map(r => r.reqId)
+      });
       if (u.role === 'warehouse' && pending.length) {
         playWarehouseAlertBeep();
         toast(`🔔 Warehouse: มีใบเบิก Part รอจ่าย ${fmt(pending.length)} รายการ`);
@@ -13244,6 +13346,9 @@
       }
       return;
     }
+    st.pending = Array.isArray(st.pending) ? st.pending : [];
+    st.issued = Array.isArray(st.issued) ? st.issued : [];
+    st.cancelled = Array.isArray(st.cancelled) ? st.cancelled : [];
     if (u.role === 'warehouse' || u.role === 'admin') {
       const fresh = pending.filter(r => !st.pending.includes(r.reqId));
       if (fresh.length) {
@@ -13263,19 +13368,35 @@
     }
     if (u.role === 'requester' || u.role === 'admin') {
       const mine = issued.filter(r => !st.issued.includes(r.reqId));
-      if (!mine.length) return;
-      st.issued = [...st.issued, ...mine.map(r => r.reqId)];
-      savePartReqSeen(identity, st);
-      playWarehouseAlertBeep();
-      const r0 = mine[0];
-      toast(`✅ คลังจ่าย Part ให้คุณแล้ว: ${r0.materialCode} · ${fmtQty(r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber}${mine.length > 1 ? ` (และอีก ${mine.length - 1} รายการ)` : ''}`);
-      showPartReqRealtimePopup({ roleType: 'requester', record: r0, extraCount: mine.length - 1 });
-      showLocalSystemNotification(
-        `✅ คลังจ่าย Part ให้แล้ว (${r0.materialCode})`,
-        `จ่าย ${fmtQty(r0.issuedQty || r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber} · ผู้จ่าย: ${r0.issuerName || 'Warehouse'}${mine.length > 1 ? ` (+อีก ${mine.length - 1} รายการ)` : ''}`,
-        './#part-requisition',
-        `part-req-issued-${r0.reqId}`
-      );
+      if (mine.length) {
+        st.issued = [...st.issued, ...mine.map(r => r.reqId)];
+        savePartReqSeen(identity, st);
+        playWarehouseAlertBeep();
+        const r0 = mine[0];
+        toast(`✅ คลังจ่าย Part ให้คุณแล้ว: ${r0.materialCode} · ${fmtQty(r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber}${mine.length > 1 ? ` (และอีก ${mine.length - 1} รายการ)` : ''}`);
+        showPartReqRealtimePopup({ roleType: 'requester', record: r0, extraCount: mine.length - 1 });
+        showLocalSystemNotification(
+          `✅ คลังจ่าย Part ให้แล้ว (${r0.materialCode})`,
+          `จ่าย ${fmtQty(r0.issuedQty || r0.requestQty)} ${r0.unit || 'PCS'} · MO: ${r0.moNumber} · ผู้จ่าย: ${r0.issuerName || 'Warehouse'}${mine.length > 1 ? ` (+อีก ${mine.length - 1} รายการ)` : ''}`,
+          './#part-requisition',
+          `part-req-issued-${r0.reqId}`
+        );
+      }
+      const cancelledByWh = cancelled.filter(r => !st.cancelled.includes(r.reqId) && (r.cancelledByRole === 'warehouse' || /WH|ไม่มีงาน/i.test(String(r.cancelReason || '')) || (r.cancelledBy && r.requesterName && r.cancelledBy !== r.requesterName)));
+      if (cancelledByWh.length) {
+        st.cancelled = [...st.cancelled, ...cancelledByWh.map(r => r.reqId)];
+        savePartReqSeen(identity, st);
+        playWarehouseAlertBeep();
+        const c0 = cancelledByWh[0];
+        toast(`🚫 คลัง (WH) ยกเลิกใบเบิก: ${c0.materialCode} · ${c0.cancelReason || 'ไม่มีงาน'} (โดย ${c0.cancelledBy || 'WH'})${cancelledByWh.length > 1 ? ` (+อีก ${cancelledByWh.length - 1})` : ''}`);
+        showPartReqRealtimePopup({ roleType: 'cancelled', record: c0, extraCount: cancelledByWh.length - 1 });
+        showLocalSystemNotification(
+          `🚫 คลัง (WH) ยกเลิกใบเบิก (${c0.materialCode})`,
+          `เหตุผล: ${c0.cancelReason || 'ไม่มีงาน'} · ผู้ลงยกเลิก: ${c0.cancelledBy || 'Warehouse'} · MO: ${c0.moNumber}`,
+          './#part-requisition',
+          `part-req-cancelled-${c0.reqId}`
+        );
+      }
     }
   }
 
@@ -13360,8 +13481,9 @@
       if (!loadPartReqSeen(identity)) {
         const visible = getVisiblePartReqs();
         savePartReqSeen(identity, {
-          pending: visible.filter(r => r.status !== 'issued').map(r => r.reqId),
-          issued: visible.filter(r => r.status === 'issued').map(r => r.reqId)
+          pending: visible.filter(r => r.status !== 'issued' && r.status !== 'cancelled').map(r => r.reqId),
+          issued: visible.filter(r => r.status === 'issued').map(r => r.reqId),
+          cancelled: visible.filter(r => r.status === 'cancelled').map(r => r.reqId)
         });
       }
     }
@@ -13716,6 +13838,13 @@
       if (ex && !ex.deleted && partReqRank(ex) > partReqRank(r)) {
         return { ...r, ...ex };
       }
+      if (ex && !ex.deleted) {
+        const keepBase64 = (ex.issuePhotoDataUrl && String(ex.issuePhotoDataUrl).startsWith('data:image')) ? ex.issuePhotoDataUrl : '';
+        const keepPhotoUrl = r.photoUrl || ex.photoUrl || '';
+        if (keepBase64 || (!r.photoUrl && ex.photoUrl)) {
+          return { ...r, issuePhotoDataUrl: keepBase64, photoUrl: keepPhotoUrl, hasPhoto: Boolean(r.hasPhoto || keepBase64 || keepPhotoUrl) };
+        }
+      }
       return r;
     });
     const sheetIds = new Set(normalized.map(r => r.reqId));
@@ -13769,7 +13898,7 @@
     const isDeleted = Boolean(record?.deleted);
     const isCancelled = !isDeleted && record?.status === 'cancelled';
     const isIssued = isDeleted || record?.status === 'issued';
-    const preferredRole = isIssued ? 'warehouse' : 'requester';
+    const preferredRole = (isIssued || (isCancelled && record?.cancelledByRole === 'warehouse')) ? 'warehouse' : 'requester';
     const rawIssAt = isDeleted ? (record.deletedAt || record.updatedAt || new Date().toISOString()) : String(record?.issuedAt || '');
     const existingPhotoUrl = String(record?.photoAttachmentUrl || record?.photoUrl || '');
     const hasDrivePhoto = /drive\.google\.com/i.test(existingPhotoUrl);
@@ -14049,8 +14178,9 @@
     }
   }
 
-  // ---- ยกเลิกใบเบิก Part (กรณีเบิกผิด - ใช้ได้ทั้งคนเบิกและ Admin ขณะรอคลังจ่าย) ----
+  // ---- ยกเลิกใบเบิก Part (คนเบิก: เบิกผิด / WH: กรณีไม่มีงาน) ----
   let partReqCancelTargetId = null;
+  let partReqCancelMode = 'requester';
   function openPartReqCancelModal(reqId) {
     const rec = partRequisitionsList.find(x => x.reqId === reqId && !x.deleted);
     if (!rec) return;
@@ -14063,22 +14193,77 @@
       return;
     }
     partReqCancelTargetId = reqId;
+    const u = getCurrentUser();
+    const role = u?.role || 'user';
+    const isWhView = (activePage === 'part-issue' || role === 'warehouse') && role !== 'requester';
+    const isWhCancel = isWhView && (role === 'warehouse' || role === 'admin');
+    partReqCancelMode = isWhCancel ? 'warehouse' : 'requester';
+
+    if (el('partReqCancelModalTitle')) {
+      el('partReqCancelModalTitle').textContent = isWhCancel
+        ? '🚫 ยกเลิกใบเบิก Part (WH — กรณีไม่มีงาน)'
+        : '🚫 ยกเลิกใบเบิก Part (กรณีเบิกผิด)';
+    }
+    if (el('partReqCancelReasonLabel')) {
+      el('partReqCancelReasonLabel').textContent = isWhCancel
+        ? 'เลือกหมายเหตุ / สาเหตุที่ WH ยกเลิก (กรณีไม่มีงาน)'
+        : 'สาเหตุที่ยกเลิก (เลือกหรือพิมพ์เพิ่มเติม)';
+    }
+    if (el('partReqCancelByLabel')) {
+      el('partReqCancelByLabel').textContent = isWhCancel
+        ? 'ชื่อผู้ลงยกเลิก (พนักงาน WH)'
+        : 'ผู้ขอยกเลิก';
+    }
+    if (el('partReqCancelChipsReq')) el('partReqCancelChipsReq').style.display = isWhCancel ? 'none' : 'flex';
+    if (el('partReqCancelChipsWh')) el('partReqCancelChipsWh').style.display = isWhCancel ? 'flex' : 'none';
+
+    const whStaffChipsEl = el('partReqCancelWhStaffChips');
+    if (whStaffChipsEl) {
+      const issuers = Array.isArray(partStaffRoster?.issuers) ? partStaffRoster.issuers : [];
+      if (isWhCancel && issuers.length) {
+        whStaffChipsEl.style.display = 'flex';
+        whStaffChipsEl.innerHTML = issuers.map(name => `<button type="button" class="btn soft part-req-cancel-staff-chip" data-staff="${esc(name)}" style="padding:3px 9px;font-size:11.5px;border-color:#cbd5e1">${esc(name)}</button>`).join('');
+        whStaffChipsEl.querySelectorAll('.part-req-cancel-staff-chip').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (el('partReqCancelByInput')) el('partReqCancelByInput').value = btn.dataset.staff || '';
+          });
+        });
+      } else {
+        whStaffChipsEl.style.display = 'none';
+        whStaffChipsEl.innerHTML = '';
+      }
+    }
+
     const desc = [rec.materialName, rec.specification].filter(Boolean).join(' · ') || '—';
     const body = el('partReqCancelModalBody');
     if (body) {
       body.innerHTML = `
-        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.6;color:#78350f">
+        <div style="background:${isWhCancel ? '#fef2f2' : '#fffbeb'};border:1px solid ${isWhCancel ? '#fecaca' : '#fde68a'};border-radius:10px;padding:12px 14px;font-size:13.5px;line-height:1.6;color:${isWhCancel ? '#7f1d1d' : '#78350f'}">
           <div><b>เลขใบเบิก:</b> ${esc(rec.reqId)}</div>
           <div><b>MO:</b> ${esc(rec.moNumber)} ${rec.directTransferDocs ? `· <span style="color:#047857">${esc(rec.directTransferDocs)}</span>` : ''}</div>
           <div><b>Part:</b> <strong>${esc(rec.materialCode)}</strong> ${esc(desc)}</div>
           <div><b>จำนวน:</b> ${fmtQty(rec.requestQty)} ${esc(rec.unit || 'PCS')} · <b>ผู้เบิก:</b> ${esc(rec.requesterName || '—')}</div>
         </div>
-        <p style="margin:10px 0 0;font-size:13px;color:#475569">เมื่อยกเลิกแล้ว รายการนี้จะถูกนำออกจากคิว <b>"รอคลังจ่าย"</b> และแจ้งเตือนไปยังคลังทันที</p>`;
+        <p style="margin:10px 0 0;font-size:13px;color:#475569">${isWhCancel
+          ? 'เมื่อคลัง (WH) ยืนยันยกเลิกแล้ว รายการนี้จะถูกนำออกจากคิว <b>"รอคลังจ่าย"</b> และ<b>เด้งแจ้งเตือนไปยังผู้เบิก</b>ทันที'
+          : 'เมื่อยกเลิกแล้ว รายการนี้จะถูกนำออกจากคิว <b>"รอคลังจ่าย"</b> และแจ้งเตือนไปยังคลังทันที'}</p>`;
     }
-    if (el('partReqCancelReasonInput')) el('partReqCancelReasonInput').value = '';
-    const u = getCurrentUser();
+    if (el('partReqCancelReasonInput')) {
+      el('partReqCancelReasonInput').value = isWhCancel ? 'ไม่มีงาน / ไม่มีของในคลัง' : '';
+      el('partReqCancelReasonInput').placeholder = isWhCancel
+        ? 'เลือกหมายเหตุข้างบน หรือพิมพ์เพิ่มเติม เช่น ไม่มีงาน / สต็อกหมด...'
+        : 'เช่น เบิกผิด Part / เบิกซ้ำ / ใส่จำนวนผิด...';
+    }
     if (el('partReqCancelByInput')) {
-      el('partReqCancelByInput').value = String(rec.requesterName || u?.name || u?.username || '').trim();
+      if (isWhCancel) {
+        const lastIssuer = String(localStorage.getItem('onhandPartReqLastIssuerName') || '').trim();
+        const userName = (u?.name && !/^ผู้จ่าย|^warehouse/i.test(u.name)) ? u.name : '';
+        el('partReqCancelByInput').value = lastIssuer || userName || '';
+        el('partReqCancelByInput').placeholder = 'ระบุชื่อพนักงาน WH ผู้ลงยกเลิก';
+      } else {
+        el('partReqCancelByInput').value = String(rec.requesterName || u?.name || u?.username || '').trim();
+        el('partReqCancelByInput').placeholder = 'ชื่อผู้ขอยกเลิก';
+      }
     }
     el('partReqCancelModal')?.classList.add('show');
   }
@@ -14093,8 +14278,24 @@
       return;
     }
     const u = getCurrentUser();
-    const cancelReason = String(el('partReqCancelReasonInput')?.value || '').trim() || 'เบิกผิด / ยกเลิกใบเบิก';
-    const cancelledBy = String(el('partReqCancelByInput')?.value || '').trim() || String(u?.name || u?.username || rec.requesterName || 'Requester');
+    const isWhCancel = partReqCancelMode === 'warehouse';
+    const rawReason = String(el('partReqCancelReasonInput')?.value || '').trim();
+    const rawBy = String(el('partReqCancelByInput')?.value || '').trim();
+    if (isWhCancel && !rawReason) {
+      toast('กรุณาเลือกหรือกรอกหมายเหตุที่ยกเลิก (กรณีไม่มีงาน)');
+      el('partReqCancelReasonInput')?.focus();
+      return;
+    }
+    if (isWhCancel && !rawBy) {
+      toast('กรุณากรอกชื่อผู้ลงยกเลิก (พนักงาน WH)');
+      el('partReqCancelByInput')?.focus();
+      return;
+    }
+    if (isWhCancel && rawBy) {
+      try { localStorage.setItem('onhandPartReqLastIssuerName', rawBy); } catch (_) {}
+    }
+    const cancelReason = rawReason || 'เบิกผิด / ยกเลิกใบเบิก';
+    const cancelledBy = rawBy || String(u?.name || u?.username || rec.requesterName || 'Requester');
     const btn = el('partReqCancelConfirmBtn');
     if (btn) { btn.disabled = true; btn.textContent = '⏳ กำลังยกเลิก...'; }
     const nowIso = new Date().toISOString();
@@ -14103,6 +14304,7 @@
       status: 'cancelled',
       cancelledAt: nowIso,
       cancelledBy,
+      cancelledByRole: isWhCancel ? 'warehouse' : 'requester',
       cancelReason,
       updatedAt: nowIso
     };
@@ -14648,7 +14850,9 @@
     // On `part-requisition` (หน้าคนเบิก Part), `canIssuePart` is ALWAYS false!
     const isWarehouseIssueView = (activePage === 'part-issue' || role === 'warehouse') && role !== 'requester';
     const canIssuePart = isWarehouseIssueView && (role === 'warehouse' || role === 'admin');
-    const canCancelPart = !isWarehouseIssueView || role === 'admin' || role === 'requester';
+    const canCancelPart = !isWarehouseIssueView || role === 'warehouse' || role === 'admin' || role === 'requester';
+    const cancelBtnTextMobile = isWarehouseIssueView ? '🚫 ยกเลิกใบเบิก (กรณีไม่มีงาน)' : '🚫 ยกเลิกใบเบิก (กรณีเบิกผิด)';
+    const cancelBtnTextDesktop = isWarehouseIssueView ? '🚫 ยกเลิก (ไม่มีงาน)' : '🚫 ยกเลิกใบเบิก';
     const canDeletePart = role === 'admin'; // เฉพาะ Admin ลบได้ (มีป๊อปอัพยืนยันก่อนลบทุกครั้ง)
 
     const q = String(el('partReqSearchInput')?.value || '').trim().toLowerCase();
@@ -14720,7 +14924,7 @@
             <div style="display:flex;gap:8px;flex-wrap:wrap">
               ${hasPhoto ? `
                 <button type="button" class="btn soft btn-view-req-photo" data-id="${esc(r.reqId)}" style="flex:1;height:40px;font-size:13px;font-weight:800;border-color:#86efac;background:#f0fdf4;color:#166534;display:inline-flex;align-items:center;justify-content:center;gap:6px">
-                  <img src="${esc(partReqPhotoSrc(r))}" alt="Photo" style="width:24px;height:20px;object-fit:cover;border-radius:3px;border:1px solid #16a34a">
+                  <img ${partReqPhotoImgAttrs(r)} alt="Photo" style="width:24px;height:20px;object-fit:cover;border-radius:3px;border:1px solid #16a34a">
                   🔍 ดูรูปถ่ายยืนยันการจ่าย
                 </button>
               ` : `
@@ -14746,7 +14950,7 @@
               <button type="button" class="btn primary btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="width:100%;height:42px;background:#d97706;border-color:#b45309;font-size:14px;font-weight:800;justify-content:center;box-shadow:0 3px 8px rgba(180,83,9,0.22)">
                 📦 กดเพื่อทำการจ่าย Part (ระบุ Location + ถ่ายรูป)
               </button>
-              ${canCancelPart ? `<button type="button" class="btn soft btn-req-cancel" data-id="${esc(r.reqId)}" style="width:100%;height:38px;border-color:#fca5a5;color:#b91c1c;background:#fff5f5;font-size:13px;font-weight:700;justify-content:center">🚫 ยกเลิกใบเบิก (กรณีเบิกผิด)</button>` : ''}
+              ${canCancelPart ? `<button type="button" class="btn soft btn-req-cancel" data-id="${esc(r.reqId)}" style="width:100%;height:38px;border-color:#fca5a5;color:#b91c1c;background:#fff5f5;font-size:13px;font-weight:700;justify-content:center">${cancelBtnTextMobile}</button>` : ''}
             </div>
           `;
         } else {
@@ -14755,7 +14959,7 @@
               <div style="width:100%;padding:9px 12px;border-radius:8px;background:#fef3c7;border:1px solid #f59e0b;color:#92400e;font-size:13px;font-weight:800;text-align:center">
                 ⏳ สถานะ: ยังไม่ถูกจ่าย (รอคลังดำเนินการจ่าย Part)
               </div>
-              ${canCancelPart ? `<button type="button" class="btn soft btn-req-cancel" data-id="${esc(r.reqId)}" style="width:100%;height:38px;border-color:#fca5a5;color:#b91c1c;background:#fff5f5;font-size:13px;font-weight:700;justify-content:center">🚫 ยกเลิกใบเบิก (กรณีเบิกผิด)</button>` : ''}
+              ${canCancelPart ? `<button type="button" class="btn soft btn-req-cancel" data-id="${esc(r.reqId)}" style="width:100%;height:38px;border-color:#fca5a5;color:#b91c1c;background:#fff5f5;font-size:13px;font-weight:700;justify-content:center">${cancelBtnTextMobile}</button>` : ''}
             </div>
           `;
         }
@@ -14835,7 +15039,7 @@
                : `<span class="badge green" style="font-weight:800;font-size:11.5px;padding:3px 9px">✅ จ่าย Part แล้ว</span>`}
              ${hasPhoto ? `
                <button type="button" class="btn soft btn-view-req-photo" data-id="${esc(r.reqId)}" style="padding:3px 8px;font-size:11.5px;display:inline-flex;align-items:center;gap:5px;border-color:#86efac;background:#f0fdf4;color:#166534;font-weight:700">
-                 <img src="${esc(partReqPhotoSrc(r))}" alt="Photo" style="width:28px;height:22px;object-fit:cover;border-radius:3px;border:1px solid #16a34a">
+                 <img ${partReqPhotoImgAttrs(r)} alt="Photo" style="width:28px;height:22px;object-fit:cover;border-radius:3px;border:1px solid #16a34a">
                  🔍 ดูรูปถ่ายจริง
                </button>
              ` : ''}
@@ -14848,13 +15052,13 @@
              <button type="button" class="btn primary btn-open-wh-confirm" data-id="${esc(r.reqId)}" style="background:#d97706;border-color:#b45309;font-size:12px;padding:6px 11px;font-weight:800;box-shadow:0 2px 6px rgba(180,83,9,0.2)">
                📦 กดเพื่อทำการจ่าย Part
              </button>
-             ${canCancelPart ? `<button type="button" class="btn soft btn-req-cancel" data-id="${esc(r.reqId)}" style="font-size:11px;padding:3px 9px;border-color:#fca5a5;color:#b91c1c;background:#fff5f5;font-weight:700">🚫 ยกเลิกใบเบิก</button>` : ''}
+             ${canCancelPart ? `<button type="button" class="btn soft btn-req-cancel" data-id="${esc(r.reqId)}" style="font-size:11px;padding:3px 9px;border-color:#fca5a5;color:#b91c1c;background:#fff5f5;font-weight:700">${cancelBtnTextDesktop}</button>` : ''}
            </div>`;
       } else {
         photoAndActionHtml = `<div style="display:flex;flex-direction:column;align-items:center;gap:5px">
              <span class="badge amber" style="font-weight:800;font-size:11.5px;padding:4px 10px">⏳ ยังไม่ถูกจ่าย</span>
              <span style="font-size:11px;color:#b45309;font-weight:600">รอคลังจ่าย Part</span>
-             ${canCancelPart ? `<button type="button" class="btn soft btn-req-cancel" data-id="${esc(r.reqId)}" style="font-size:11px;padding:3px 9px;border-color:#fca5a5;color:#b91c1c;background:#fff5f5;font-weight:700">🚫 ยกเลิกใบเบิก</button>` : ''}
+             ${canCancelPart ? `<button type="button" class="btn soft btn-req-cancel" data-id="${esc(r.reqId)}" style="font-size:11px;padding:3px 9px;border-color:#fca5a5;color:#b91c1c;background:#fff5f5;font-weight:700">${cancelBtnTextDesktop}</button>` : ''}
            </div>`;
       }
 
@@ -16059,7 +16263,7 @@
           if (el('partReqPreviewModalBody')) {
             el('partReqPreviewModalBody').innerHTML = `
               <div style="text-align:center;margin-bottom:12px">
-                <img src="${esc(partReqPhotoSrc(rec))}" alt="Verified Issue Photo" style="max-width:100%;max-height:420px;border-radius:10px;border:2px solid #16a34a;box-shadow:0 4px 16px rgba(0,0,0,0.16)">
+                <img ${partReqPhotoImgAttrs(rec)} data-modal-img="1" data-orig-url="${esc(rec.photoUrl || rec.photoAttachmentUrl || '')}" alt="Verified Issue Photo" style="max-width:100%;max-height:420px;border-radius:10px;border:2px solid #16a34a;box-shadow:0 4px 16px rgba(0,0,0,0.16)">
               </div>
               <div style="background:#f8fafc;padding:12px 14px;border-radius:8px;border:1px solid #cbd5e1;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
                 <div><b>เลขใบเบิก:</b> ${esc(rec.reqId)}</div>
