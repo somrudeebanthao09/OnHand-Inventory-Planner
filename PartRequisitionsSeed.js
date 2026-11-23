@@ -1,12 +1,12 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-23T06:33:29.728Z",
+  "updatedAt": "2026-11-23T07:13:33.452Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
   "apiTokens": {
     "req": "f6b0a374-9dde-4877-81a4-4f6632f98ec25f66fc860cd648eb92a221fa13d1e600",
-    "wh": "22c09ab8-7fdc-4a61-b21b-469b48b27f362674186949cb474bb26cdb022705b1fa",
-    "expiresAt": 1795416793576
+    "wh": "90835b99-fade-4519-af4a-fb1e231fbaac69cf02e0e2f24c55a05cff6085536fba",
+    "expiresAt": 1795420905552
   },
   "staffRoster": {
     "sheetName": "PartStaff",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261123-13242",
+      "requestDate": "23/11/2026 14:13:32",
+      "requestedAt": "23/11/2026 14:13:32",
+      "moNumber": "MO-20261120-003847",
+      "ppbomNumber": "PPBOM-20261120-004174",
+      "directTransferDocs": "ZJDB-261120-000070",
+      "materialCode": "1005QT00847",
+      "materialName": "WAY LABEL 42 (COVER)",
+      "specification": "75503785FA",
+      "requestQty": 1,
+      "unit": "PCS",
+      "reason": "งานเสีย/NG ในไลน์ผลิต",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-01-13C (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | FR055 (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 2026103001, 2026100299",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "23/11/2026 14:13:33",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261123-70096",
       "requestDate": "23/11/2026 13:26:09",
