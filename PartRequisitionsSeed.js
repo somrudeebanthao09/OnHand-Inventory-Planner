@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-23T11:59:37.039Z",
+  "updatedAt": "2026-11-23T12:00:00.119Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261123-00284",
+      "requestDate": "23/11/2026 18:59:59",
+      "requestedAt": "23/11/2026 18:59:59",
+      "moNumber": "3885",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00567",
+      "materialName": "FRONT COVER SUB ASSEMBLY 2 + 18, 18 WAY",
+      "specification": "NVE96544",
+      "requestQty": 3,
+      "unit": "PCS",
+      "reason": "งานเสีย/NG ในไลน์ผลิต",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Defective Warehouse)",
+      "lotSummary": "2026100299, 2026083001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "23/11/2026 19:00:00",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261123-77213",
       "requestDate": "23/11/2026 18:59:36",
