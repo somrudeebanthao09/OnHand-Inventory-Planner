@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-23T09:03:33.309Z",
+  "updatedAt": "2026-11-23T09:13:47.040Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261123-27048",
+      "requestDate": "23/11/2026 16:13:46",
+      "requestedAt": "23/11/2026 16:13:46",
+      "moNumber": "3885",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00598",
+      "materialName": "Interior2 + 18way label",
+      "specification": "75504153EA",
+      "requestQty": 110,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-01-07F (Customer Supplied Material Warehouse) | CJ-01-03B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "23/11/2026 16:13:46",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261123-13254",
       "requestDate": "23/11/2026 16:03:33",
