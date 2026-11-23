@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-23T09:24:25.427Z",
+  "updatedAt": "2026-11-23T09:35:28.984Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261123-28968",
+      "requestDate": "23/11/2026 16:35:28",
+      "requestedAt": "23/11/2026 16:35:28",
+      "moNumber": "MO-20261120-003843",
+      "ppbomNumber": "PPBOM-20261120-004168",
+      "directTransferDocs": "ZJDB-261120-000065",
+      "materialCode": "1005QT00844",
+      "materialName": "WAY LABEL 24 (INTERIOR)",
+      "specification": "75503647CA",
+      "requestQty": 16,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-02-01E (Customer Supplied Material Warehouse) | FR061 (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026103001, 2026083001, 2026100299, 20261102",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "23/11/2026 16:35:28",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261123-05908",
       "requestDate": "23/11/2026 16:16:45",
