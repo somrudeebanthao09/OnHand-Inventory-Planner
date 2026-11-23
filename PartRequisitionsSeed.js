@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-23T12:00:45.578Z",
+  "updatedAt": "2026-11-23T12:05:32.779Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261123-32954",
+      "requestDate": "23/11/2026 19:05:32",
+      "requestedAt": "23/11/2026 19:05:32",
+      "moNumber": "3885",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00681",
+      "materialName": "NEUTRAL LINK",
+      "specification": "75022-271-01",
+      "requestQty": 10,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-02-02F (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CI-02-13E (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 2026100299",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "23/11/2026 19:05:32",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261123-00284",
       "requestDate": "23/11/2026 18:59:59",
