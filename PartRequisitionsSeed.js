@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-23T09:01:47.205Z",
+  "updatedAt": "2026-11-23T09:03:33.309Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261123-13254",
+      "requestDate": "23/11/2026 16:03:33",
+      "requestedAt": "23/11/2026 16:03:33",
+      "moNumber": "MO-20261120-003823",
+      "ppbomNumber": "PPBOM-20261120-004144",
+      "directTransferDocs": "ZJDB-261120-000046",
+      "materialCode": "1005QT00806",
+      "materialName": "TERM BAR 9H;7SCR (for SDCS14)",
+      "specification": "75022-892-92",
+      "requestQty": 1,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CO-06-07A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Defective Warehouse)",
+      "lotSummary": "2026111801, 2026101901, 2026083001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "23/11/2026 16:03:33",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261123-95214",
       "requestDate": "23/11/2026 15:26:34",
