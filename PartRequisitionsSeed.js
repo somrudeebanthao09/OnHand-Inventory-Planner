@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-23T11:13:39.025Z",
+  "updatedAt": "2026-11-23T11:59:37.039Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261123-77213",
+      "requestDate": "23/11/2026 18:59:36",
+      "requestedAt": "23/11/2026 18:59:36",
+      "moNumber": "3885",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00652",
+      "materialName": "METAL BOX SUB ASSEMBLY 2 + 18, 18 WAY",
+      "specification": "NVE96545 18W",
+      "requestQty": 3,
+      "unit": "PCS",
+      "reason": "งานเสีย/NG ในไลน์ผลิต",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CE-04-09B (Customer Supplied Material Warehouse) | Public area (Defective Warehouse) | FR055 (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026100299, 2026083001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "23/11/2026 18:59:37",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261123-40070",
       "requestDate": "23/11/2026 18:00:39",
