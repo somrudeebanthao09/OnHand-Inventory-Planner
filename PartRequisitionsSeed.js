@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-23T08:32:07.473Z",
+  "updatedAt": "2026-11-23T08:33:27.933Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -77,7 +77,7 @@ window.PART_REQUISITIONS_SEED = {
       "unit": "PCS",
       "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
       "requesterName": "จักรกฤษ",
-      "requesterUsername": "LeaderA",
+      "requesterUsername": "req",
       "shift": "A",
       "requesterNote": "ไม่พอ",
       "status": "issued",
@@ -89,8 +89,8 @@ window.PART_REQUISITIONS_SEED = {
         }
       ],
       "locationsSummary": "Loc#1: CJ-01-03B (11 PCS) [Lot: 2026100299]",
-      "onHandLocation": "CI-02-05D (Customer Supplied Material Warehouse) | CJ-01-03B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CI-02-04A (Customer Supplied Material Warehouse) | CJ-01-04B (Customer Supplied Material Warehouse) | FR025 (Customer Supplied Material Warehouse)",
-      "lotSummary": "2026100299",
+      "onHandLocation": "",
+      "lotSummary": "",
       "issuerName": "ธนวัฒน์",
       "issuedAt": "23/11/2026 15:32:03",
       "issuerNote": "",
@@ -99,7 +99,20 @@ window.PART_REQUISITIONS_SEED = {
       "photoTakenAt": "23/11/2026 15:32:03",
       "issuerUsername": "wh",
       "photoUrl": "part-photos/REQ-20261123-36326.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "locationsJson": "[{\"location\":\"CJ-01-03B\",\"qty\":11,\"lot\":\"2026100299\"}]",
+      "leadTimeSummary": "8 นาที 8 วินาที",
+      "kingdeeTransferDoc": "",
+      "kingdeeTransferItem": "",
+      "kingdeeTransferFromBin": "",
+      "kingdeeTransferToWh": "",
+      "kingdeeTransferQty": "",
+      "kingdeeTransferredAt": "",
+      "kingdeeTransferStatus": "",
+      "sheetRow": 173,
+      "deleted": false,
+      "deletedAt": "",
+      "photoAttachmentUrl": "part-photos/REQ-20261123-36326.jpg"
     },
     {
       "reqId": "REQ-20261123-37378",
