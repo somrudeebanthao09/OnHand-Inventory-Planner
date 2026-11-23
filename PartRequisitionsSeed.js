@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-23T07:20:16.543Z",
+  "updatedAt": "2026-11-23T07:20:37.541Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261123-37378",
+      "requestDate": "23/11/2026 14:20:37",
+      "requestedAt": "23/11/2026 14:20:37",
+      "moNumber": "MO-20261120-003823",
+      "ppbomNumber": "PPBOM-20261120-004144",
+      "directTransferDocs": "ZJDB-261120-000046",
+      "materialCode": "1005QT00603",
+      "materialName": "IP2 COVER 2 + 4",
+      "specification": "75170033AA",
+      "requestQty": 90,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CE-08-02A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse)",
+      "lotSummary": "2026102202, 2026083001, 2026100299",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "23/11/2026 14:20:37",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261123-13242",
       "requestDate": "23/11/2026 14:13:32",
