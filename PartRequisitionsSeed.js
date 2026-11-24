@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-24T11:34:49.941Z",
+  "updatedAt": "2026-11-24T11:40:43.899Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -89,17 +89,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderA",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CO-01-12A",
+          "qty": 41,
+          "lot": ""
+        }
+      ],
+      "locationsSummary": "Loc#1: CO-01-12A (41 PCS)",
       "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
       "lotSummary": "2026110701",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "ธนวัฒน์",
+      "issuedAt": "24/11/2026 18:40:40",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "24/11/2026 18:17:07",
-      "photoTakenAt": ""
+      "updatedAt": "24/11/2026 18:40:40",
+      "photoTakenAt": "24/11/2026 18:40:40",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261124-27769.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261124-90689",
