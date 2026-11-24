@@ -9590,15 +9590,16 @@
     });
   }
   function pickProgress(items){
-    const parts = new Map(), pickers = new Set(); let doneCount = 0, lastAt = '', lastUpd = '';
+    const parts = new Map(), pickers = new Set(); let doneCount = 0, lastAt = '', lastUpd = '', qtyTotal = 0, qtyDone = 0;
     items.forEach(it => {
       const st = pickState.get(it.key), done = st?.status === 'picked';
+      qtyTotal += n(it.qty); if (done) qtyDone += n(it.qty);
       if (done) { doneCount++; if (st.pickedBy) pickers.add(st.pickedBy); if (String(st.updatedAt || '') > lastUpd) { lastUpd = String(st.updatedAt || ''); lastAt = st.pickedAt || ''; } }
       const p = parts.get(it.materialCode) || { total: 0, done: 0 }; p.total++; if (done) p.done++; parts.set(it.materialCode, p);
     });
     const partTotal = parts.size, partDone = [...parts.values()].filter(p => p.done >= p.total).length;
     const state = !items.length ? 'empty' : doneCount >= items.length ? 'done' : doneCount ? 'progress' : 'todo';
-    return { doneCount, lineTotal: items.length, partTotal, partDone, pickers: [...pickers], lastAt, state };
+    return { doneCount, lineTotal: items.length, partTotal, partDone, pickers: [...pickers], lastAt, state, qtyTotal, qtyDone };
   }
   function pickBuildMos(docs){
     const mos = new Map();
@@ -9665,6 +9666,7 @@
     return `<div style="background:#e2e8f0;border-radius:6px;height:8px;overflow:hidden;min-width:110px"><div style="width:${pct}%;height:100%;background:${pct >= 100 ? '#10b981' : '#f59e0b'}"></div></div>
       <div class="helper" style="white-space:nowrap">Part <b>${fmt(p.partDone)}/${fmt(p.partTotal)}</b> · จุดเบิก ${fmt(p.doneCount)}/${fmt(p.lineTotal)}</div>`;
   }
+  const pickQtyCell = p => `<div style="text-align:right;white-space:nowrap"><b style="font-size:14px">${fmt(p.qtyDone)}</b> <span class="helper">/ ${fmt(p.qtyTotal)}</span></div>`;
   const pickWhoCell = p => p.pickers.length ? `<div style="font-weight:650">${p.pickers.map(esc).join(', ')}</div><div class="helper">${esc(p.lastAt || '')}</div>` : '<span class="helper">—</span>';
   function renderPickingPage(){
     if (!el('pickDocTable')) return;
@@ -9688,13 +9690,13 @@
       const list = pickFilterMos(docs), shown = list.slice(0, 300);
       el('pickDocCount').textContent = `${fmt(list.length)} Job${list.length > shown.length ? ` · แสดง ${shown.length} Job ล่าสุด` : ''} · เลือกใบเบิกแล้ว ${fmt(pickSelectedDocs.size)}`;
       el('pickDocTable').innerHTML = shown.length ? `<table class="table" style="width:100%;font-size:13px"><thead style="position:sticky;top:0;background:#f8fafc;z-index:1"><tr>
-        <th style="width:34px"></th><th>Job (MO)</th><th>สินค้า</th><th>ใบเบิก ZJDB</th><th>สถานะ</th><th>ความคืบหน้า</th><th>เบิกโดย / ล่าสุด</th></tr></thead><tbody>
+        <th style="width:34px"></th><th>Job (MO)</th><th>สินค้า</th><th>ใบเบิก ZJDB</th><th>สถานะ</th><th style="text-align:right">จำนวน<br><span class="helper">เบิกแล้ว / ทั้งหมด</span></th><th>ความคืบหน้า</th><th>เบิกโดย / ล่าสุด</th></tr></thead><tbody>
         ${shown.map(m => { const sel = m.docs.every(d => pickSelectedDocs.has(d)); return `<tr data-mo-docs="${esc(m.docs.join(','))}" style="cursor:pointer;${sel ? 'background:#ecfdf5' : ''}">
           <td><input type="checkbox" ${sel ? 'checked' : ''}></td>
           <td style="font-weight:700;white-space:nowrap">${esc(m.moNumber)}<div class="helper">${esc(m.lastDate)}</div></td>
           <td><div style="font-weight:650">${esc(m.productName || '')}</div><div class="helper">${esc(m.productCode || '')} · สั่งผลิต ${fmt(m.orderQty)}</div></td>
           <td style="font-size:12px">${m.docs.map(esc).join('<br>')}</td>
-          <td>${pickStateBadge(m)}</td><td>${pickProgressCell(m)}</td><td>${pickWhoCell(m)}</td></tr>`; }).join('')}
+          <td>${pickStateBadge(m)}</td><td>${pickQtyCell(m)}</td><td>${pickProgressCell(m)}</td><td>${pickWhoCell(m)}</td></tr>`; }).join('')}
         </tbody></table>` : `<div class="helper" style="padding:18px;text-align:center">ไม่พบ Job ตามตัวกรองนี้</div>`;
     } else {
       const list = pickFilterDocs(docs), shown = list.slice(0, 300);
@@ -9702,13 +9704,13 @@
       const allChecked = shown.length && shown.every(d => pickSelectedDocs.has(d.docNo));
       el('pickDocTable').innerHTML = shown.length ? `<table class="table" style="width:100%;font-size:13px"><thead style="position:sticky;top:0;background:#f8fafc;z-index:1"><tr>
         <th style="width:34px"><input type="checkbox" id="pickSelectAll" ${allChecked ? 'checked' : ''} title="เลือกทั้งหมดที่แสดง"></th>
-        <th>เลขใบเบิก (ZJDB)</th><th>วันที่</th><th>Job (MO) / สินค้า</th><th>สถานะ</th><th>ความคืบหน้า</th><th>เบิกโดย / ล่าสุด</th></tr></thead><tbody>
+        <th>เลขใบเบิก (ZJDB)</th><th>วันที่</th><th>Job (MO) / สินค้า</th><th>สถานะ</th><th style="text-align:right">จำนวน<br><span class="helper">เบิกแล้ว / ทั้งหมด</span></th><th>ความคืบหน้า</th><th>เบิกโดย / ล่าสุด</th></tr></thead><tbody>
         ${shown.map(d => { const sel = pickSelectedDocs.has(d.docNo); return `<tr data-doc="${esc(d.docNo)}" style="cursor:pointer;${sel ? 'background:#ecfdf5' : ''}">
           <td><input type="checkbox" ${sel ? 'checked' : ''}></td>
           <td style="font-weight:700;white-space:nowrap">${esc(d.docNo)}<div class="helper">${esc(d.transactionType)}</div></td>
           <td style="white-space:nowrap">${esc(d.businessDate)}</td>
           <td>${d.mos.length ? d.mos.map(m => `<div><b>${esc(m.moNumber)}</b> <span class="helper">${esc(m.productName || m.productCode || '')}</span></div>`).join('') : `<span class="helper">${esc(d.sourceDocs.join(', ') || '—')}</span>`}</td>
-          <td>${pickStateBadge(d)}</td><td>${pickProgressCell(d)}</td><td>${pickWhoCell(d)}</td></tr>`; }).join('')}
+          <td>${pickStateBadge(d)}</td><td>${pickQtyCell(d)}</td><td>${pickProgressCell(d)}</td><td>${pickWhoCell(d)}</td></tr>`; }).join('')}
         </tbody></table>` : `<div class="helper" style="padding:18px;text-align:center">ไม่พบใบเบิกตามตัวกรองนี้</div>`;
     }
     renderPickingList();
@@ -9718,7 +9720,7 @@
     const sel = pickSelectedDocList();
     if (!sel.length) { wrap.innerHTML = `<div class="helper" style="padding:22px;text-align:center">เลือกใบเบิกหรือ Job ด้านบน (ติ๊ก ☑ ได้หลายรายการ) เพื่อดูรายการที่ต้องเบิกพร้อมโลเคชั่น</div>`; el('pickListInfo').textContent = ''; return; }
     const rows = pickRows(sel), hideDone = el('pickHideDone')?.checked, prog = pickProgress(rows);
-    el('pickListInfo').innerHTML = `· ${fmt(sel.length)} ใบ · Part เบิกครบ <b>${fmt(prog.partDone)}/${fmt(prog.partTotal)}</b> · จุดเบิก ${fmt(prog.doneCount)}/${fmt(prog.lineTotal)}`;
+    el('pickListInfo').innerHTML = `· ${fmt(sel.length)} ใบ · Part เบิกครบ <b>${fmt(prog.partDone)}/${fmt(prog.partTotal)}</b> · จุดเบิก ${fmt(prog.doneCount)}/${fmt(prog.lineTotal)} · จำนวน <b>${fmt(prog.qtyDone)}/${fmt(prog.qtyTotal)}</b>`;
     const vis = hideDone ? rows.filter(r => !pickIsPicked(r.key)) : rows;
     wrap.innerHTML = `<table class="table" style="width:100%;font-size:13px"><thead><tr>
       <th style="width:52px">เบิกแล้ว</th><th>#</th><th>โลเคชั่น<br><span class="helper">调出仓位</span></th><th>คลังต้นทาง</th><th>รหัส Part / ชื่อ</th><th>Lot</th><th style="text-align:right">จำนวน</th><th>เบิกโดย / เวลา</th><th>ใบเบิก / Job</th></tr></thead><tbody>
@@ -14053,7 +14055,7 @@
     if (!partReqApiCanPostMessage()) return Promise.reject(new Error('PART_API_ORIGIN_OR_CONFIG_UNAVAILABLE'));
     const timeoutMs = Number(timeoutOverrideMs) > 0
       ? Number(timeoutOverrideMs)
-      : (['list', 'save'].includes(String(fields?.action || '')) ? 14000 : 10000);
+      : (['list', 'save', 'pick_list', 'pick_save'].includes(String(fields?.action || '')) ? 20000 : 10000);
     return new Promise((resolve, reject) => {
       const requestId = `part-${Date.now()}-${Math.random().toString(36).slice(2)}`;
       const frameName = `part_req_api_${requestId.replace(/[^a-z0-9_]/gi, '')}`;

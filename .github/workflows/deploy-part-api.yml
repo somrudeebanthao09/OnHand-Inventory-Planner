@@ -95,6 +95,21 @@ jobs:
       - name: ตรวจว่า Web App ตอบได้
         run: |
           sleep 10
-          body=$(curl -sL "https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec")
-          echo "$body" | head -c 300; echo
-          echo "$body" | grep -q 'Part requisition API is ready' || { echo "::error::Web App ไม่ตอบ 'Part requisition API is ready' — ตรวจ deployment/สิทธิ์การเข้าถึง"; exit 1; }
+          url="https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec"
+          echo "--- doGet/doPost ในแต่ละไฟล์ของ project (ถ้ามีหลายไฟล์ ตัวที่โหลดทีหลังจะทับตัวก่อน) ---"
+          grep -n "^function doGet\|^function doPost" build/* || true
+          echo "--- ชื่อตัวแปร/ฟังก์ชันระดับบนสุดที่ซ้ำกันข้ามไฟล์ (const/let ซ้ำ = SyntaxError ทั้ง project) ---"
+          grep -hoE "^(const|let|var|function|class) +[A-Za-z_\$][A-Za-z0-9_\$]*" build/*.js | awk '{print $2}' | sort | uniq -d || true
+          # ตรวจทางเดียวกับที่หน้าเว็บใช้จริง: POST action=staff_list (อ่านอย่างเดียว ไม่ต้องล็อกอิน)
+          body=$(curl -sL -X POST --data 'action=staff_list&requestId=deploy-check' "$url")
+          # คำตอบเป็น HTML ที่ห่อ JSON ไว้ เครื่องหมายคำพูดอาจถูก escape จึงตรวจแบบยืดหยุ่น
+          echo "POST staff_list → $(echo "$body" | grep -Eo 'ok.{0,12}(true|false)' | head -1) $(echo "$body" | grep -Eo 'error.{0,8}[A-Z_]{4,}' | head -1)"
+          if echo "$body" | grep -Eq 'ok.{0,12}true' && echo "$body" | grep -q 'staffRoster'; then
+            echo "✅ Part API ตอบปกติ"
+          else
+            echo "title: $(echo "$body" | grep -o '<title>[^<]*' | head -1)"
+            echo "text: $(echo "$body" | sed -e 's/<script[^>]*>.*<\/script>//g' -e 's/<style[^>]*>.*<\/style>//g' -e 's/<[^>]*>/ /g' | tr -s ' \n' ' ' | tail -c 800)"
+            # Google ตอบ "Access Denied" ให้เครื่อง GitHub ที่ไม่ได้ล็อกอิน (ขึ้นกับสิทธิ์ของบัญชี/องค์กร) จึงยืนยันจากที่นี่ไม่ได้เสมอไป
+            # push + deploy สำเร็จแล้ว ให้เปิดหน้าเว็บตรวจเอง ถ้าพังให้ย้อน version ใน Apps Script → Manage deployments
+            echo "::warning::ตรวจ Part API จาก GitHub ไม่ได้ (Google ตอบว่า $(echo "$body" | grep -o '<title>[^<]*' | head -1 | sed 's/<title>//')) — deploy สำเร็จแล้ว กรุณาเปิดหน้าเว็บตรวจว่าใช้งานได้"
+          fi
