@@ -98,6 +98,8 @@ jobs:
           url="https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec"
           echo "--- doGet/doPost ในแต่ละไฟล์ของ project (ถ้ามีหลายไฟล์ ตัวที่โหลดทีหลังจะทับตัวก่อน) ---"
           grep -n "^function doGet\|^function doPost" build/* || true
+          echo "--- ชื่อตัวแปร/ฟังก์ชันระดับบนสุดที่ซ้ำกันข้ามไฟล์ (const/let ซ้ำ = SyntaxError ทั้ง project) ---"
+          grep -hoE "^(const|let|var|function|class) +[A-Za-z_\$][A-Za-z0-9_\$]*" build/*.js | awk '{print $2}' | sort | uniq -d || true
           # ตรวจทางเดียวกับที่หน้าเว็บใช้จริง: POST action=staff_list (อ่านอย่างเดียว ไม่ต้องล็อกอิน)
           body=$(curl -sL -X POST --data 'action=staff_list&requestId=deploy-check' "$url")
           # คำตอบเป็น HTML ที่ห่อ JSON ไว้ เครื่องหมายคำพูดอาจถูก escape จึงตรวจแบบยืดหยุ่น
@@ -105,7 +107,8 @@ jobs:
           if echo "$body" | grep -Eq 'ok.{0,12}true' && echo "$body" | grep -q 'staffRoster'; then
             echo "✅ Part API ตอบปกติ"
           else
-            echo "$body" | head -c 500; echo
+            echo "title: $(echo "$body" | grep -o '<title>[^<]*' | head -1)"
+            echo "text: $(echo "$body" | sed -e 's/<script[^>]*>.*<\/script>//g' -e 's/<style[^>]*>.*<\/style>//g' -e 's/<[^>]*>/ /g' | tr -s ' \n' ' ' | tail -c 800)"
             echo "::error::Part API ไม่ตอบ staff_list ตามปกติ — ตรวจ deployment/สิทธิ์การเข้าถึง (ดู backup ใน artifact)"
             exit 1
           fi
