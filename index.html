@@ -15990,6 +15990,21 @@
     el('whConfirmIssueModal')?.classList.add('show');
   }
 
+  function parseLotOrderValue(lotStr) {
+    const raw = String(lotStr || '').trim();
+    if (!raw) return Number.POSITIVE_INFINITY;
+    const m = raw.match(/(\d{6,14})/);
+    if (m) return Number(m[1]);
+    const digits = raw.replace(/\D+/g, '');
+    return digits ? Number(digits) : Number.POSITIVE_INFINITY;
+  }
+  function compareLotAsc(a, b) {
+    const va = parseLotOrderValue(a);
+    const vb = parseLotOrderValue(b);
+    if (va !== vb) return va - vb;
+    return String(a || '').localeCompare(String(b || ''));
+  }
+
   function getPartOnHandLocationsSummary(materialCode) {
     const code = String(materialCode || '').trim().toUpperCase();
     if (!code) return [];
@@ -16016,10 +16031,21 @@
       if (lotNum) prev.lotSet.add(lotNum);
       byLoc.set(key, prev);
     }
-    const all = [...byLoc.values()].map(x => ({ ...x, lotText: [...x.lotSet].join(', ') }));
+    const all = [...byLoc.values()].map(x => {
+      const sortedLots = [...x.lotSet].sort(compareLotAsc);
+      return {
+        ...x,
+        minLot: sortedLots[0] || '',
+        lotText: sortedLots.join(', ')
+      };
+    });
     const positive = all.filter(x => x.onHand > 0 || x.available > 0);
     const list = positive.length ? positive : all;
-    return list.sort((a, b) => (b.available - a.available) || (b.onHand - a.onHand));
+    return list.sort((a, b) => {
+      const lotCmp = compareLotAsc(a.minLot, b.minLot);
+      if (lotCmp !== 0) return lotCmp;
+      return (b.available - a.available) || (b.onHand - a.onHand);
+    });
   }
 
   function toggleWhOnHandLocationsHint(materialCode) {
@@ -16036,7 +16062,7 @@
       return;
     }
     hintEl.innerHTML = `
-      <div style="font-weight:800;color:#0c4a6e;margin-bottom:6px">📦 สต็อก On-Hand ของ ${esc(materialCode)} (${rows.length} Location)</div>
+      <div style="font-weight:800;color:#0c4a6e;margin-bottom:6px">📦 สต็อก On-Hand ของ ${esc(materialCode)} (${rows.length} Location · เรียงตาม Lot น้อย → มาก)</div>
       <div style="display:grid;gap:6px;max-height:190px;overflow-y:auto">
         ${rows.map(r => `
           <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff;border:1px solid #bae6fd;border-radius:7px;padding:6px 9px;flex-wrap:wrap">
