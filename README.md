@@ -43,3 +43,19 @@ On-Hand ที่นำเข้าใหม่จะแทน snapshot เก�
 ไฟล์ On-Hand ต้องมีอย่างน้อย Material (รหัส Part), Inventory Quantity และ Warehouse; Specification, Storage Bin, BUoM หรือ SKU เป็นข้อมูลเสริมที่ระบบจับคู่ให้อัตโนมัติได้หากมีในรายงาน โดยหน้าเว็บแสดงจำนวนพร้อม SKU/หน่วยในคอลัมน์ Inventory SKU Quantity หากรายงานเดิมใน Google Sheet ไม่มี Specification หรือ Storage คอลัมน์จะแสดงเป็น — จนกว่าจะนำเข้าไฟล์ Kingdee ที่มีข้อมูลดังกล่าว ส่วนหัวคอลัมน์อื่นยังเลือกจับคู่เองได้
 
 ไฟล์ BOM ต้องมี `Department`, `Model Code`, `Material Code`, `Qty Per` (จำนวน Part ที่ใช้ต่อการผลิต Model 1 หน่วย); `Model Name`, `Material Name`, `Unit` เป็นคอลัมน์เสริม
+
+## Auto deploy Part API (Apps Script)
+
+เมื่อ merge เข้า `main` แล้วไฟล์ `PartRequisitionApi.gs` เปลี่ยน GitHub Actions (`.github/workflows/deploy-part-api.yml`) จะ push โค้ดขึ้น Apps Script ของ Part API แล้วสร้าง version ใหม่บน deployment เดิมให้อัตโนมัติ URL `/exec` ที่หน้าเว็บใช้อยู่จึงไม่เปลี่ยน กด **Actions → Deploy Part API → Run workflow** เพื่อ deploy เองก็ได้
+
+ทุกครั้งที่รัน workflow จะทำดังนี้
+- ดึงโค้ดปัจจุบันจาก project ก่อน และเก็บเป็น artifact `part-api-backup-*` ไว้ 30 วัน
+- แทนเฉพาะไฟล์ Part API ส่วนไฟล์อื่นใน project และ manifest เดิมจะคงไว้
+- ค่าที่ตั้งไว้ใน project จริงแต่ในรีโปเว้นว่าง (Telegram / Discord / Push worker) จะคงไว้ ไม่ถูกล้าง
+- ถ้าดึงโค้ดจาก project ไม่ได้ จะหยุดโดยไม่ push
+
+### ตั้งค่าครั้งแรก (Settings → Secrets and variables → Actions)
+1. **`CLASPRC_JSON`** (Secret) — ใช้ไฟล์ `~/.clasprc.json` ตัวเดียวกับรีโปอื่นได้เลย ถ้ายังไม่มี ให้รัน `npm i -g @google/clasp@2.4.2 && clasp login` ด้วยบัญชี Google ที่เป็นเจ้าของ Apps Script แล้วคัดลอกเนื้อหาไฟล์ `~/.clasprc.json` ทั้งไฟล์
+2. **`PART_API_SCRIPT_ID`** (Secret หรือ Variable) — ดูได้จาก Apps Script → ⚙️ Project Settings → **Script ID**
+3. เปิด **Google Apps Script API** ที่ https://script.google.com/home/usersettings ให้บัญชีนั้น
+4. (ไม่บังคับ) `PART_API_DEPLOYMENT_ID` — ค่าเริ่มต้นคือ deployment ที่ `index.html` เรียกอยู่แล้ว
