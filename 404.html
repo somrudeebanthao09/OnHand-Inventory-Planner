@@ -1795,6 +1795,7 @@
       <button data-page="compare"><span class="ico">⇄</span><span class="nav-label">จำลองแผนผลิต</span></button>
       <button data-page="orders" style="display:flex;align-items:center"><span class="ico">🚀</span><span class="nav-label">วิเคราะห์รุ่นที่ขึ้นได้</span><span id="orderShortageBadge" class="badge green hidden" style="margin-left:auto;padding:2px 7px;font-size:11px">0</span></button>
       <button data-page="po-tracking" style="display:flex;align-items:center"><span class="ico">📋</span><span class="nav-label">ติดตาม Order ผลิต</span><span id="poTrackingBadge" class="badge amber hidden" style="margin-left:auto;padding:2px 7px;font-size:11px">0</span></button>
+      <button data-page="picking" id="sidebarPickingBtn" style="display:flex;align-items:center"><span class="ico">🧺</span><span class="nav-label">จัดออร์เดอร์</span></button>
       <button data-page="part-requisition" id="sidebarPartReqBtn" style="display:flex;align-items:center"><span class="ico">📝</span><span class="nav-label">เบิก Part เพิ่มเติม</span></button>
       <button data-page="part-issue" id="sidebarPartIssueBtn" style="display:flex;align-items:center"><span class="ico">📦</span><span class="nav-label">จ่าย Part (Warehouse)</span><span id="sidebarPartReqPendingBadge" class="badge amber hidden" style="margin-left:auto;padding:2px 7px;font-size:11px">0</span></button>
       <button data-page="stock"><span class="ico">▤</span><span class="nav-label">คลังทั้งหมด</span></button>
@@ -2166,6 +2167,45 @@
               <button id="poTrackingNextPage" class="btn" type="button">ถัดไป</button>
             </div>
           </div>
+        </div>
+      </section>
+      <section class="page" id="page-picking">
+        <div class="title-row" style="margin-bottom:14px">
+          <div>
+            <h1 style="font-size:23px;margin:0 0 4px;color:#0f172a">🧺 จัดออร์เดอร์ (Picking)</h1>
+            <p style="font-size:13px;color:#475569;line-height:1.35;margin:0">ดึง <b>ใบเบิก / Direct Transfer (ZJDB)</b> ที่ Planner เปิดไว้ให้ Order ใน <b>ติดตาม Order ผลิต</b> แล้วจัดตาม <b>คลังต้นทาง · โลเคชั่น (调出仓位) · Lot</b> ที่อยู่ในใบ</p>
+          </div>
+          <div class="row-actions" style="align-items:center;gap:8px">
+            <button class="btn primary" id="pickPrintBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700">🖨️ พิมพ์ใบจัด</button>
+            <button class="btn" id="pickExportCsvBtn" type="button" style="font-size:13.5px;padding:9px 14px">📤 ส่งออก CSV</button>
+          </div>
+        </div>
+        <div id="pickSyncInfo" class="helper" style="margin:-4px 0 12px;font-size:12.5px"></div>
+        <div class="panel" style="margin-bottom:14px">
+          <div class="toolbar" style="gap:10px;flex-wrap:wrap">
+            <div class="filters" style="flex-wrap:wrap">
+              <select id="pickDeptFilter" class="field" style="min-width:220px"></select>
+              <select id="pickStateFilter" class="field" title="สถานะการจัด">
+                <option value="open">⏳ ยังจัดไม่ครบ</option>
+                <option value="done">✅ จัดครบแล้ว</option>
+                <option value="">ทั้งหมด</option>
+              </select>
+              <input id="pickDateFilter" class="field" type="date" title="วันที่ใบเบิก (Business Date)">
+              <input id="pickSearch" class="field search" placeholder="ค้นหาเลขใบ ZJDB, MO, รหัส/ชื่อ Part, โลเคชั่น">
+            </div>
+            <span id="pickDocCount" class="helper"></span>
+          </div>
+          <div id="pickDocTable" style="max-height:380px;overflow:auto;border:1px solid var(--line);border-radius:8px"></div>
+        </div>
+        <div class="panel">
+          <div class="toolbar" style="gap:10px;flex-wrap:wrap">
+            <div><strong style="font-size:15px">📦 รายการที่ต้องหยิบ (เรียงตามโลเคชั่น)</strong> <span id="pickListInfo" class="helper"></span></div>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+              <label class="helper" style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="pickHideDone"> ซ่อนรายการที่หยิบแล้ว</label>
+              <button class="btn" id="pickClearDoneBtn" type="button">ล้างเครื่องหมายของใบที่เลือก</button>
+            </div>
+          </div>
+          <div id="pickListTable" style="overflow:auto"></div>
         </div>
       </section>
       <section class="page" id="page-stock">
@@ -5766,7 +5806,7 @@
     if(cu && cu.role === 'requester'){
       page = 'part-requisition';
     } else if(cu && cu.role === 'warehouse'){
-      if (page !== 'part-issue' && page !== 'stock' && page !== 'lot') page = 'part-issue';
+      if (page !== 'part-issue' && page !== 'stock' && page !== 'lot' && page !== 'picking') page = 'part-issue';
     } else if((page === 'users') && (!cu || cu.role !== 'admin')) {
       page = 'overview';
     }
@@ -5781,13 +5821,14 @@
     if(page==='lot')renderLotDetailPage();
     if(page==='orders')renderOrdersPage();
     if(page==='po-tracking'&&typeof renderPoTrackingPage==='function')renderPoTrackingPage();
+    if(page==='picking'&&typeof renderPickingPage==='function')renderPickingPage();
     if((page==='part-requisition'||page==='part-issue')&&typeof renderPartRequisitionPage==='function')renderPartRequisitionPage();
     if(page==='users')renderUsersPage();
     if(page==='imports')renderImports();
     updateStockHScroll();
     updateSafetyHScroll();
   }
-  function updatePageTitle(){const labels={overview:'ภาพรวม',compare:'จำลองแผนผลิต',orders:'วิเคราะห์รุ่นที่ขึ้นได้ (ไม่รวมคลัง H9)','po-tracking':'ติดตาม Order ผลิต (Direct Transfer / Report / QC / Barcode)','part-requisition':'การเบิก Part & รายการเบิก','part-issue':'รายการเบิก Part รอจ่าย (Warehouse)',stock:'คลังทั้งหมด',safety:'Safety stock',imports:'นำเข้าข้อมูล',settings:'ตั้งค่า',lot:'รายละเอียด Lot',users:'จัดการสมาชิกและอนุมัติ'};el('pageTitle').textContent=labels[activePage]||''}
+  function updatePageTitle(){const labels={overview:'ภาพรวม',compare:'จำลองแผนผลิต',orders:'วิเคราะห์รุ่นที่ขึ้นได้ (ไม่รวมคลัง H9)','po-tracking':'ติดตาม Order ผลิต (Direct Transfer / Report / QC / Barcode)',picking:'จัดออร์เดอร์ (ใบเบิก ZJDB + โลเคชั่น)','part-requisition':'การเบิก Part & รายการเบิก','part-issue':'รายการเบิก Part รอจ่าย (Warehouse)',stock:'คลังทั้งหมด',safety:'Safety stock',imports:'นำเข้าข้อมูล',settings:'ตั้งค่า',lot:'รายละเอียด Lot',users:'จัดการสมาชิกและอนุมัติ'};el('pageTitle').textContent=labels[activePage]||''}
   let currentLotMaterial='',lotReturnPage='stock',currentLotWarehouse='';
   function openLotDetailPage(materialCode,warehouse='',fromPage=activePage){if(!materialCode)return;if(fromPage!=='lot')lotReturnPage=fromPage;currentLotMaterial=String(materialCode).trim();currentLotWarehouse=String(warehouse||'').trim();renderLotDetailPage(currentLotMaterial,currentLotWarehouse);goto('lot');window.scrollTo({top:0,behavior:'smooth'})}
   window.openLotDetailPage = openLotDetailPage;
@@ -9441,6 +9482,192 @@
     return poTrackingCache;
   }
 
+  // ===== จัดออร์เดอร์ (Picking): ใบเบิก / Direct Transfer (ZJDB) ของ Order ใน ติดตาม Order ผลิต =====
+  // โลเคชั่น/Lot/คลังต้นทาง มาจากใบ ZJDB ที่ Planner เปิด (PRODUCTION_EXECUTION_SEED.directTransferDocsByDoc)
+  let pickSelectedDocs = new Set(), pickDeptInit = false;
+  const pickIsPublicBin = s => !String(s || '').trim() || /^(public area|公共区域)$/i.test(String(s).trim());
+  function pickLoadDone(){ try { return new Set(JSON.parse(localStorage.getItem('pickingDoneKeys') || '[]')); } catch (_) { return new Set(); } }
+  function pickSaveDone(set){ try { localStorage.setItem('pickingDoneKeys', JSON.stringify([...set].slice(-20000))); } catch (_) {} }
+  function pickGetOrders(){ return (db.productionOrders && db.productionOrders.length) ? db.productionOrders : (window.PRODUCTION_ORDERS_SEED?.orders || []); }
+  const pickLineKey = (docNo, idx, it) => [docNo, idx, it.materialCode, it.lotNumber, it.fromBin].join('|');
+  function pickBuildDocs(){
+    const docMap = window.PRODUCTION_EXECUTION_SEED?.directTransferDocsByDoc || {};
+    // ผูกใบ ZJDB → MO จาก Order (directTransferDocs) และจาก PPBOM ที่เป็นต้นทางของใบ
+    const moByDoc = new Map(), moByPpbom = new Map();
+    pickGetOrders().forEach(o => {
+      const info = { moNumber: o.moNumber, productCode: o.productCode, productName: o.productName, department: o.department, orderQty: n(o.orderQty) };
+      if (o.ppbomNumber && !moByPpbom.has(o.ppbomNumber)) moByPpbom.set(o.ppbomNumber, info);
+      String(o.directTransferDocs || '').split(/[,;\s]+/).map(s => s.trim()).filter(Boolean).forEach(d => {
+        if (!moByDoc.has(d)) moByDoc.set(d, new Map());
+        moByDoc.get(d).set(o.moNumber, info);
+      });
+    });
+    const done = pickLoadDone();
+    return Object.keys(docMap).map(docNo => {
+      const d = docMap[docNo] || {};
+      const mos = new Map(moByDoc.get(docNo) || []);
+      (d.sourceDocs || []).forEach(p => { const m = moByPpbom.get(p); if (m && !mos.has(m.moNumber)) mos.set(m.moNumber, m); });
+      const items = (d.items || []).map((it, idx) => ({ ...it, docNo, key: pickLineKey(docNo, idx, it) }));
+      const doneCount = items.filter(it => done.has(it.key)).length;
+      return { docNo, businessDate: d.businessDate || '', approveTime: d.approveTime || '', transactionType: d.transactionType || '', sourceDocs: d.sourceDocs || [], mos: [...mos.values()], items, doneCount };
+    });
+  }
+  function pickFilterDocs(docs){
+    const dept = el('pickDeptFilter')?.value ?? '';
+    const state = el('pickStateFilter')?.value ?? 'open';
+    const date = el('pickDateFilter')?.value || '';
+    const q = String(el('pickSearch')?.value || '').trim().toLowerCase();
+    return docs.filter(d => {
+      if (dept && !d.mos.some(m => m.department === dept)) return false;
+      if (state === 'open' && d.items.length && d.doneCount >= d.items.length) return false;
+      if (state === 'done' && !(d.items.length && d.doneCount >= d.items.length)) return false;
+      if (date && !String(d.businessDate).startsWith(date)) return false;
+      if (q) {
+        const hay = [d.docNo, ...d.sourceDocs, ...d.mos.flatMap(m => [m.moNumber, m.productCode, m.productName]), ...d.items.flatMap(it => [it.materialCode, it.materialName, it.fromBin, it.lotNumber])].join(' ').toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    }).sort((a, b) => String(b.approveTime || b.businessDate).localeCompare(String(a.approveTime || a.businessDate)) || b.docNo.localeCompare(a.docNo));
+  }
+  function pickSelectedDocList(){ return pickBuildDocs().filter(d => pickSelectedDocs.has(d.docNo)); }
+  function pickRows(docs){
+    const rows = docs.flatMap(d => d.items.map(it => ({ ...it, mos: d.mos.map(m => m.moNumber) })));
+    // เรียงตามคลังต้นทาง → โลเคชั่น เพื่อเดินหยิบเป็นเส้นทางเดียว (Public area ไว้ท้ายคลัง)
+    return rows.sort((a, b) => String(a.fromWarehouse || '').localeCompare(String(b.fromWarehouse || ''))
+      || (pickIsPublicBin(a.fromBin) ? 1 : 0) - (pickIsPublicBin(b.fromBin) ? 1 : 0)
+      || String(a.fromBin || '').localeCompare(String(b.fromBin || ''))
+      || String(a.materialCode || '').localeCompare(String(b.materialCode || ''))
+      || String(a.lotNumber || '').localeCompare(String(b.lotNumber || '')));
+  }
+  function renderPickingPage(){
+    if (!el('pickDocTable')) return;
+    const docs = pickBuildDocs();
+    const deptSel = el('pickDeptFilter');
+    if (deptSel) {
+      const curr = pickDeptInit ? deptSel.value : 'H9 Assembly Production Line';
+      const depts = [...new Set(docs.flatMap(d => d.mos.map(m => m.department)).filter(Boolean))].sort();
+      deptSel.innerHTML = `<option value="">🏢 ทุกแผนก (${depts.length})</option>` + depts.map(d => `<option value="${esc(d)}" ${d === curr ? 'selected' : ''}>${esc(d)}</option>`).join('');
+      pickDeptInit = true;
+    }
+    const seed = window.PRODUCTION_EXECUTION_SEED || {};
+    const dates = docs.map(d => d.businessDate).filter(Boolean).sort();
+    if (el('pickSyncInfo')) el('pickSyncInfo').innerHTML = docs.length
+      ? `🟢 ใบเบิก ZJDB ในระบบ <b>${fmt(docs.length)}</b> ใบ (${esc(dates[0] || '')} → ${esc(dates[dates.length - 1] || '')}) · ซิงก์จาก Kingdee ล่าสุด ${esc(time(seed.snapshotAt))} · เครื่องหมาย “หยิบแล้ว” เก็บในเบราว์เซอร์เครื่องนี้`
+      : `⚠️ ยังไม่มีรายละเอียดใบ ZJDB ในระบบ (ต้องซิงก์ Direct Transfer จาก Kingdee ก่อน)`;
+    const list = pickFilterDocs(docs);
+    const shown = list.slice(0, 300);
+    el('pickDocCount').textContent = `${fmt(list.length)} ใบ${list.length > shown.length ? ` · แสดง ${shown.length} ใบล่าสุด` : ''} · เลือกแล้ว ${fmt(pickSelectedDocs.size)}`;
+    const allChecked = shown.length && shown.every(d => pickSelectedDocs.has(d.docNo));
+    el('pickDocTable').innerHTML = shown.length ? `<table class="table" style="width:100%;font-size:13px"><thead style="position:sticky;top:0;background:#f8fafc;z-index:1"><tr>
+      <th style="width:34px"><input type="checkbox" id="pickSelectAll" ${allChecked ? 'checked' : ''} title="เลือกทั้งหมดที่แสดง"></th>
+      <th>เลขใบเบิก (ZJDB)</th><th>วันที่</th><th>MO / สินค้า</th><th style="text-align:right">รายการ</th><th>ความคืบหน้าการหยิบ</th></tr></thead><tbody>
+      ${shown.map(d => {
+        const sel = pickSelectedDocs.has(d.docNo), pct = d.items.length ? Math.round(d.doneCount / d.items.length * 100) : 0;
+        return `<tr data-doc="${esc(d.docNo)}" style="cursor:pointer;${sel ? 'background:#ecfdf5' : ''}">
+        <td><input type="checkbox" ${sel ? 'checked' : ''}></td>
+        <td style="font-weight:700;white-space:nowrap">${esc(d.docNo)}<div class="helper">${esc(d.transactionType)}</div></td>
+        <td style="white-space:nowrap">${esc(d.businessDate)}</td>
+        <td>${d.mos.length ? d.mos.map(m => `<div><b>${esc(m.moNumber)}</b> <span class="helper">${esc(m.productName || m.productCode || '')}</span></div>`).join('') : `<span class="helper">${esc(d.sourceDocs.join(', ') || '—')}</span>`}</td>
+        <td style="text-align:right">${fmt(d.items.length)}</td>
+        <td style="min-width:130px"><div style="background:#e2e8f0;border-radius:6px;height:8px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${pct >= 100 ? '#10b981' : '#f59e0b'}"></div></div><div class="helper">${fmt(d.doneCount)}/${fmt(d.items.length)}</div></td></tr>`;
+      }).join('')}
+      </tbody></table>` : `<div class="helper" style="padding:18px;text-align:center">ไม่พบใบเบิกตามตัวกรองนี้</div>`;
+    renderPickingList();
+  }
+  function renderPickingList(){
+    const wrap = el('pickListTable'); if (!wrap) return;
+    const sel = pickSelectedDocList();
+    if (!sel.length) { wrap.innerHTML = `<div class="helper" style="padding:22px;text-align:center">เลือกใบเบิกด้านบน (ติ๊ก ☑ ได้หลายใบ) เพื่อดูรายการที่ต้องหยิบพร้อมโลเคชั่น</div>`; el('pickListInfo').textContent = ''; return; }
+    const rows = pickRows(sel), done = pickLoadDone(), hideDone = el('pickHideDone')?.checked;
+    const doneCount = rows.filter(r => done.has(r.key)).length;
+    el('pickListInfo').textContent = `· ${fmt(sel.length)} ใบ · ${fmt(new Set(rows.map(r => r.materialCode)).size)} Part · ${fmt(rows.length)} จุดหยิบ · หยิบแล้ว ${fmt(doneCount)}/${fmt(rows.length)}`;
+    const vis = hideDone ? rows.filter(r => !done.has(r.key)) : rows;
+    wrap.innerHTML = `<table class="table" style="width:100%;font-size:13px"><thead><tr>
+      <th style="width:52px">หยิบแล้ว</th><th>#</th><th>โลเคชั่น<br><span class="helper">调出仓位</span></th><th>คลังต้นทาง</th><th>รหัส Part / ชื่อ</th><th>Lot</th><th style="text-align:right">จำนวน</th><th>คลังปลายทาง</th><th>ใบเบิก / MO</th></tr></thead><tbody>
+      ${vis.map((r, i) => {
+        const isDone = done.has(r.key);
+        return `<tr style="${isDone ? 'background:#f0fdf4;opacity:.6' : ''}">
+          <td style="text-align:center"><input type="checkbox" class="pick-done-cb" data-key="${esc(r.key)}" ${isDone ? 'checked' : ''}></td>
+          <td>${i + 1}</td>
+          <td style="white-space:nowrap">${pickIsPublicBin(r.fromBin) ? `<span style="font-weight:700;color:#92400e">${esc(r.fromBin || 'ไม่ระบุ')}</span>` : `<span style="font-weight:800;font-size:14px;color:#0f766e">${esc(r.fromBin)}</span>`}</td>
+          <td style="font-size:12px">${esc(r.fromWarehouse || '—')}</td>
+          <td><div style="font-weight:700">${esc(r.materialCode)}</div><div style="font-size:12px">${esc(r.materialName || '')}</div></td>
+          <td style="white-space:nowrap">${esc(r.lotNumber || '—')}</td>
+          <td style="text-align:right;font-weight:800;font-size:14px">${fmt(r.qty)}</td>
+          <td style="font-size:12px">${esc(r.toWarehouse || '')}${r.toBin ? ` · ${esc(r.toBin)}` : ''}</td>
+          <td style="font-size:11.5px;white-space:nowrap">${esc(r.docNo)}${r.mos.length ? `<br><span class="helper">${r.mos.map(esc).join(', ')}</span>` : ''}</td></tr>`;
+      }).join('')}</tbody></table>`;
+  }
+  function pickPrint(){
+    const sel = pickSelectedDocList();
+    if (!sel.length) { toast('กรุณาเลือกใบเบิกก่อนพิมพ์ใบจัด'); return; }
+    const rows = pickRows(sel);
+    const now = new Date().toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' });
+    const mos = [...new Set(sel.flatMap(d => d.mos.map(m => m.moNumber)))];
+    const body = `<div class="sheet">
+      <div class="doc-header"><div style="width:80px"></div><div class="doc-title">ใบจัด Part (Picking List)</div><div style="width:80px"></div></div>
+      <div class="meta-grid">
+        <div class="meta-row"><span class="meta-label">วันที่พิมพ์:</span><span>${esc(now)}</span></div>
+        <div class="meta-row"><span class="meta-label">ใบเบิก ZJDB (${sel.length}):</span><span>${sel.map(d => esc(d.docNo)).join(', ')}</span></div>
+        <div class="meta-row"><span class="meta-label">MO (${mos.length}):</span><span>${mos.map(esc).join(', ') || '—'}</span></div>
+      </div>
+      <table><thead><tr><th>#</th><th>✓</th><th>โลเคชั่น<br>调出仓位</th><th>คลังต้นทาง<br>调出仓库</th><th>รหัส Part<br>物料编码</th><th>ชื่อ Part<br>物料名称</th><th>Lot<br>批号</th><th>จำนวน<br>数量</th><th>คลังปลายทาง<br>调入仓库</th><th>ใบเบิก</th><th>จ่ายจริง</th></tr></thead><tbody>
+      ${rows.map((r, i) => `<tr><td class="num">${i + 1}</td><td style="width:26px"></td>
+        <td class="nowrap"><b>${esc(r.fromBin || 'ไม่ระบุ')}</b></td><td>${esc(r.fromWarehouse || '')}</td><td class="nowrap">${esc(r.materialCode)}</td><td>${esc(r.materialName || '')}</td>
+        <td class="nowrap">${esc(r.lotNumber || '—')}</td><td class="num"><b>${fmt(r.qty)}</b></td><td>${esc(r.toWarehouse || '')}</td><td class="nowrap">${esc(r.docNo)}</td><td style="width:70px"></td></tr>`).join('')}
+      </tbody></table>
+      <div class="doc-footer"><div>ผู้จัด: ____________________</div><div>ผู้ตรวจ: ____________________</div><div>ผู้รับ (ไลน์ผลิต): ____________________</div></div>
+    </div>`;
+    openPrintHtmlPreviewWindow(`ใบจัด Part - ${sel.length} ใบเบิก`, body, true);
+  }
+  function pickExportCsv(){
+    const sel = pickSelectedDocList();
+    if (!sel.length) { toast('กรุณาเลือกใบเบิกก่อนส่งออก'); return; }
+    const rows = pickRows(sel), done = pickLoadDone();
+    const head = ['From Bin', 'From Warehouse', 'Material', 'Material Name', 'Lot', 'Qty', 'To Warehouse', 'ZJDB', 'MO', 'Picked'];
+    const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const csv = [head, ...rows.map(r => [r.fromBin, r.fromWarehouse, r.materialCode, r.materialName, r.lotNumber, r.qty, r.toWarehouse, r.docNo, r.mos.join(' '), done.has(r.key) ? 'Y' : ''])].map(r => r.map(q).join(',')).join('\r\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = `picking-list-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    toast(`ส่งออกใบจัด ${fmt(rows.length)} จุดหยิบแล้ว`);
+  }
+  (function bindPickingPage(){
+    const ready = () => {
+      if (!el('page-picking')) return;
+      ['pickDeptFilter', 'pickStateFilter', 'pickDateFilter'].forEach(id => el(id)?.addEventListener('change', renderPickingPage));
+      let t; el('pickSearch')?.addEventListener('input', () => { clearTimeout(t); t = setTimeout(renderPickingPage, 200); });
+      el('pickHideDone')?.addEventListener('change', renderPickingList);
+      el('pickPrintBtn')?.addEventListener('click', pickPrint);
+      el('pickExportCsvBtn')?.addEventListener('click', pickExportCsv);
+      el('pickClearDoneBtn')?.addEventListener('click', () => {
+        const done = pickLoadDone();
+        pickSelectedDocList().forEach(d => d.items.forEach(it => done.delete(it.key)));
+        pickSaveDone(done); renderPickingPage();
+      });
+      el('pickDocTable')?.addEventListener('click', e => {
+        if (e.target.id === 'pickSelectAll') {
+          const on = e.target.checked;
+          pickFilterDocs(pickBuildDocs()).slice(0, 300).forEach(d => on ? pickSelectedDocs.add(d.docNo) : pickSelectedDocs.delete(d.docNo));
+          renderPickingPage(); return;
+        }
+        const tr = e.target.closest('tr[data-doc]'); if (!tr) return;
+        const doc = tr.dataset.doc;
+        pickSelectedDocs.has(doc) ? pickSelectedDocs.delete(doc) : pickSelectedDocs.add(doc);
+        renderPickingPage();
+      });
+      el('pickListTable')?.addEventListener('change', e => {
+        if (!e.target.classList.contains('pick-done-cb')) return;
+        const done = pickLoadDone();
+        e.target.checked ? done.add(e.target.dataset.key) : done.delete(e.target.dataset.key);
+        pickSaveDone(done); renderPickingPage();
+      });
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready); else ready();
+  })();
+  window.renderPickingPage = renderPickingPage;
+
   function renderPoTrackingPage() {
     if (!el('poTrackingTableWrap')) return;
     const data = computePoTracking();
@@ -11009,7 +11236,7 @@
       if (u?.role === 'requester') {
         btn.classList.toggle('hidden', p !== 'part-requisition');
       } else if (u?.role === 'warehouse') {
-        btn.classList.toggle('hidden', p !== 'part-issue' && p !== 'stock');
+        btn.classList.toggle('hidden', p !== 'part-issue' && p !== 'stock' && p !== 'picking');
       } else if (p === 'users') {
         btn.classList.toggle('hidden', !isAdmin);
       } else {
@@ -11063,7 +11290,7 @@
     // Guard active page by role
     if(u?.role === 'requester' && activePage !== 'part-requisition'){
       goto('part-requisition');
-    } else if(u?.role === 'warehouse' && activePage !== 'part-issue' && activePage !== 'stock' && activePage !== 'lot'){
+    } else if(u?.role === 'warehouse' && activePage !== 'part-issue' && activePage !== 'stock' && activePage !== 'lot' && activePage !== 'picking'){
       goto('part-issue');
     } else if(activePage === 'users' && !isAdmin){
       goto('overview');
