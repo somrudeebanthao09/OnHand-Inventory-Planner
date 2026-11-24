@@ -2189,6 +2189,7 @@
               <select id="pickStateFilter" class="field" title="สถานะการเบิก">
                 <option value="open">⏳ ยังเบิกไม่ครบ</option>
                 <option value="progress">🟡 กำลังเบิก</option>
+                <option value="short">⚠️ เบิกไม่ครบ</option>
                 <option value="done">✅ เบิกครบแล้ว</option>
                 <option value="">ทั้งหมด</option>
               </select>
@@ -9495,7 +9496,7 @@
   // จำนวนชุด (set): ใช้ต่อชุด = demandQty ÷ orderQty ของ Part ใน MO · ชุดที่ได้ = ค่าน้อยที่สุดในทุก Part ของใบ (floor)
   function pickSets(items, mos){
     const byMat = new Map();
-    items.forEach(it => { const x = byMat.get(it.materialCode) || { qty: 0, done: 0 }; x.qty += n(it.qty); if (pickIsPicked(it.key)) x.done += n(it.qty); byMat.set(it.materialCode, x); });
+    items.forEach(it => { const x = byMat.get(it.materialCode) || { qty: 0, done: 0 }; x.qty += n(it.qty); x.done += pickQtyOf(it); byMat.set(it.materialCode, x); });
     let total = Infinity, done = Infinity, known = 0;
     byMat.forEach((x, mat) => {
       let demand = 0, oq = 0;
@@ -9513,6 +9514,9 @@
   (function pickLoadCache(){ try { (JSON.parse(localStorage.getItem(PICK_CACHE_KEY) || '[]') || []).forEach(r => r && r.key && pickState.set(r.key, r)); } catch (_) {} })();
   function pickSaveCache(){ try { localStorage.setItem(PICK_CACHE_KEY, JSON.stringify([...pickState.values()].slice(-20000))); } catch (_) {} }
   const pickIsPicked = key => pickState.get(key)?.status === 'picked';
+  const pickIsPartial = key => pickState.get(key)?.status === 'partial';
+  // จำนวนที่เบิกจริงของบรรทัด: เบิกครบ = จำนวนในใบ, เบิกไม่ครบ = pickedQty ที่กรอก
+  function pickQtyOf(it){ const st = pickState.get(it.key); if (!st) return 0; if (st.status === 'picked') return n(it.qty); if (st.status === 'partial') return Math.max(0, n(st.pickedQty)); return 0; }
   function pickGetOrders(){ return (db.productionOrders && db.productionOrders.length) ? db.productionOrders : (window.PRODUCTION_ORDERS_SEED?.orders || []); }
   const pickLineKey = (docNo, idx, it) => [docNo, idx, it.materialCode, it.lotNumber, it.fromBin].join('|');
   function pickDefaultPicker(){ const cu = typeof getCurrentUser === 'function' ? getCurrentUser() : null; return String(cu?.name || cu?.username || '').trim(); }
@@ -9552,12 +9556,12 @@
     else if (pickRemoteMode === 'offline') box.innerHTML = `<span style="color:#92400e;font-weight:700">📴 ยังไม่ได้เชื่อม Google Sheet</span> <span class="helper">(ต้องเข้าสู่ระบบผ่านเว็บออนไลน์) · สถานะที่ติ๊กจะเก็บเฉพาะเครื่องนี้</span>`;
     else box.innerHTML = `<span class="helper">⏳ กำลังเชื่อม Google Sheet...</span>`;
   }
-  async function pickSetLines(lines, picked){
+  async function pickSetLines(lines, picked, partialQty = null){
     if (!lines.length) return;
     const pickedBy = pickPickerName();
     try { localStorage.setItem('pickingPickerName', pickedBy); } catch (_) {}
     const nowTh = new Date().toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'medium' });
-    const payload = lines.map(r => ({ key: r.key, docNo: r.docNo, lineNo: r.lineNo, moNumbers: (r.mos || []).join(', '), materialCode: r.materialCode, materialName: r.materialName, lotNumber: r.lotNumber, fromWarehouse: r.fromWarehouse, fromBin: r.fromBin, qty: n(r.qty), status: picked ? 'picked' : 'unpicked', pickedBy }));
+    const payload = lines.map(r => ({ key: r.key, docNo: r.docNo, lineNo: r.lineNo, moNumbers: (r.mos || []).join(', '), materialCode: r.materialCode, materialName: r.materialName, lotNumber: r.lotNumber, fromWarehouse: r.fromWarehouse, fromBin: r.fromBin, qty: n(r.qty), status: !picked ? 'unpicked' : (partialQty !== null && partialQty < n(r.qty) ? 'partial' : 'picked'), pickedQty: !picked ? '' : (partialQty !== null && partialQty < n(r.qty) ? partialQty : n(r.qty)), pickedBy }));
     const prev = new Map(payload.map(p => [p.key, pickState.get(p.key)]));
     payload.forEach(p => pickState.set(p.key, { ...p, pickedBy: picked ? pickedBy : '', pickedAt: picked ? nowTh : '', updatedAt: new Date().toISOString(), pending: pickRemoteMode === 'sheet' || pickApiAvailable() }));
     pickSaveCache(); renderPickingPage();
@@ -9571,7 +9575,7 @@
       }
       pickRemoteMode = 'sheet'; pickRemoteError = '';
       pickSaveCache(); renderPickingPage();
-      toast(picked ? `✅ บันทึกเบิกแล้ว ${fmt(payload.length)} รายการ (โดย ${pickedBy})` : `↩️ ยกเลิกสถานะ ${fmt(payload.length)} รายการแล้ว`);
+      toast(picked ? (payload[0].status === 'partial' ? `⚠️ บันทึกเบิกไม่ครบ: ${fmt(payload[0].pickedQty)}/${fmt(payload[0].qty)} (โดย ${pickedBy})` : `✅ บันทึกเบิกแล้ว ${fmt(payload.length)} รายการ (โดย ${pickedBy})`) : `↩️ ยกเลิกสถานะ ${fmt(payload.length)} รายการแล้ว`);
     } catch (err) {
       prev.forEach((v, k) => v ? pickState.set(k, v) : pickState.delete(k));
       pickRemoteMode = 'error'; pickRemoteError = String(err?.message || err);
@@ -9606,16 +9610,18 @@
     });
   }
   function pickProgress(items){
-    const parts = new Map(), pickers = new Set(); let doneCount = 0, lastAt = '', lastUpd = '', qtyTotal = 0, qtyDone = 0;
+    const parts = new Map(), pickers = new Set(); let doneCount = 0, partialCount = 0, lastAt = '', lastUpd = '', qtyTotal = 0, qtyDone = 0;
     items.forEach(it => {
-      const st = pickState.get(it.key), done = st?.status === 'picked';
-      qtyTotal += n(it.qty); if (done) qtyDone += n(it.qty);
-      if (done) { doneCount++; if (st.pickedBy) pickers.add(st.pickedBy); if (String(st.updatedAt || '') > lastUpd) { lastUpd = String(st.updatedAt || ''); lastAt = st.pickedAt || ''; } }
+      const st = pickState.get(it.key), done = st?.status === 'picked', partial = st?.status === 'partial';
+      qtyTotal += n(it.qty); qtyDone += pickQtyOf(it);
+      if (done) doneCount++;
+      if (partial) partialCount++;
+      if (done || partial) { if (st.pickedBy) pickers.add(st.pickedBy); if (String(st.updatedAt || '') > lastUpd) { lastUpd = String(st.updatedAt || ''); lastAt = st.pickedAt || ''; } }
       const p = parts.get(it.materialCode) || { total: 0, done: 0 }; p.total++; if (done) p.done++; parts.set(it.materialCode, p);
     });
     const partTotal = parts.size, partDone = [...parts.values()].filter(p => p.done >= p.total).length;
-    const state = !items.length ? 'empty' : doneCount >= items.length ? 'done' : doneCount ? 'progress' : 'todo';
-    return { doneCount, lineTotal: items.length, partTotal, partDone, pickers: [...pickers], lastAt, state, qtyTotal, qtyDone };
+    const state = !items.length ? 'empty' : doneCount >= items.length ? 'done' : (doneCount + partialCount >= items.length ? 'short' : (doneCount + partialCount ? 'progress' : 'todo'));
+    return { partialCount, doneCount, lineTotal: items.length, partTotal, partDone, pickers: [...pickers], lastAt, state, qtyTotal, qtyDone };
   }
   function pickBuildMos(docs){
     const mos = new Map();
@@ -9630,6 +9636,7 @@
   function pickMatchState(stateFilter, s){
     if (stateFilter === 'open') return s !== 'done';
     if (stateFilter === 'progress') return s === 'progress';
+    if (stateFilter === 'short') return s === 'short';
     if (stateFilter === 'done') return s === 'done';
     return true;
   }
@@ -9672,14 +9679,14 @@
       || String(a.lotNumber || '').localeCompare(String(b.lotNumber || '')));
   }
   function pickStateBadge(p){
-    const map = { done: ['✅ เบิกครบแล้ว', '#047857', '#d1fae5'], progress: ['🟡 กำลังเบิก', '#92400e', '#fef3c7'], todo: ['⏳ ยังไม่เริ่ม', '#475569', '#f1f5f9'], empty: ['—', '#475569', '#f1f5f9'] };
+    const map = { short: ['⚠️ เบิกไม่ครบ', '#b91c1c', '#fee2e2'], done: ['✅ เบิกครบแล้ว', '#047857', '#d1fae5'], progress: ['🟡 กำลังเบิก', '#92400e', '#fef3c7'], todo: ['⏳ ยังไม่เริ่ม', '#475569', '#f1f5f9'], empty: ['—', '#475569', '#f1f5f9'] };
     const [label, color, bg] = map[p.state] || map.todo;
     return `<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:700;color:${color};background:${bg};white-space:nowrap">${label}</span>`;
   }
   function pickProgressCell(p){
     const pct = p.lineTotal ? Math.round(p.doneCount / p.lineTotal * 100) : 0;
     return `<div style="background:#e2e8f0;border-radius:6px;height:8px;overflow:hidden;min-width:110px"><div style="width:${pct}%;height:100%;background:${pct >= 100 ? '#10b981' : '#f59e0b'}"></div></div>
-      <div class="helper" style="white-space:nowrap">Part <b>${fmt(p.partDone)}/${fmt(p.partTotal)}</b> · จุดเบิก ${fmt(p.doneCount)}/${fmt(p.lineTotal)}</div>`;
+      <div class="helper" style="white-space:nowrap">Part <b>${fmt(p.partDone)}/${fmt(p.partTotal)}</b> · จุดเบิก ${fmt(p.doneCount)}/${fmt(p.lineTotal)}${p.partialCount ? ` · <b style="color:#b91c1c">ไม่ครบ ${fmt(p.partialCount)}</b>` : ''}</div>`;
   }
   const pickQtyCell = p => p.setTotal === null
     ? `<div style="text-align:right;white-space:nowrap"><span class="helper">— set</span><div class="helper">${fmt(p.qtyDone)} / ${fmt(p.qtyTotal)} ชิ้น</div></div>`
@@ -9736,20 +9743,21 @@
     const sel = pickSelectedDocList();
     if (!sel.length) { wrap.innerHTML = `<div class="helper" style="padding:22px;text-align:center">เลือกใบเบิกหรือ Job ด้านบน (ติ๊ก ☑ ได้หลายรายการ) เพื่อดูรายการที่ต้องเบิกพร้อมโลเคชั่น</div>`; el('pickListInfo').textContent = ''; return; }
     const rows = pickRows(sel), hideDone = el('pickHideDone')?.checked, prog = pickProgress(rows);
-    el('pickListInfo').innerHTML = `· ${fmt(new Set(sel.flatMap(d => d.mos.map(m => m.moNumber))).size)} Job (${fmt(sel.length)} ใบ) · Part เบิกครบ <b>${fmt(prog.partDone)}/${fmt(prog.partTotal)}</b> · จุดเบิก ${fmt(prog.doneCount)}/${fmt(prog.lineTotal)} ${(() => { const s = pickBuildMos(sel).filter(m => m.setTotal !== null); return s.length ? ` · ชุด <b>${s.map(m => `${fmt(m.setDone)}/${fmt(m.setTotal)}`).join(', ')}</b> set` : ''; })()}`;
+    el('pickListInfo').innerHTML = `· ${fmt(new Set(sel.flatMap(d => d.mos.map(m => m.moNumber))).size)} Job (${fmt(sel.length)} ใบ) · Part เบิกครบ <b>${fmt(prog.partDone)}/${fmt(prog.partTotal)}</b> · จุดเบิก ${fmt(prog.doneCount)}/${fmt(prog.lineTotal)}${prog.partialCount ? ` · <b style="color:#b91c1c">⚠️ เบิกไม่ครบ ${fmt(prog.partialCount)} รายการ</b>` : ''} ${(() => { const s = pickBuildMos(sel).filter(m => m.setTotal !== null); return s.length ? ` · ชุด <b>${s.map(m => `${fmt(m.setDone)}/${fmt(m.setTotal)}`).join(', ')}</b> set` : ''; })()}`;
     const vis = hideDone ? rows.filter(r => !pickIsPicked(r.key)) : rows;
     wrap.innerHTML = `<table class="table" style="width:100%;font-size:13px"><thead><tr>
-      <th style="width:52px">เบิกแล้ว</th><th>#</th><th>โลเคชั่น<br><span class="helper">调出仓位</span></th><th>รหัส Part / ชื่อ</th><th>Lot</th><th style="text-align:right">จำนวน</th><th>เบิกโดย / เวลา</th><th>ใบเบิก / Job</th></tr></thead><tbody>
+      <th style="width:52px">เบิกแล้ว</th><th>#</th><th>โลเคชั่น<br><span class="helper">调出仓位</span></th><th>รหัส Part / ชื่อ</th><th>Lot</th><th style="text-align:right">จำนวน</th><th style="text-align:right">เบิกจริง</th><th>เบิกโดย / เวลา</th><th>ใบเบิก / Job</th></tr></thead><tbody>
       ${vis.map((r, i) => {
-        const st = pickState.get(r.key), isDone = st?.status === 'picked';
-        return `<tr style="${isDone ? 'background:#f0fdf4' : ''}">
+        const st = pickState.get(r.key), isDone = st?.status === 'picked', isPartial = st?.status === 'partial', touched = isDone || isPartial;
+        return `<tr style="${isDone ? 'background:#f0fdf4' : isPartial ? 'background:#fef2f2' : ''}">
           <td style="text-align:center"><input type="checkbox" class="pick-done-cb" data-key="${esc(r.key)}" ${isDone ? 'checked' : ''}></td>
           <td>${i + 1}</td>
           <td style="white-space:nowrap">${pickIsPublicBin(r.fromBin) ? `<span style="font-weight:700;color:#92400e">${esc(r.fromBin || 'ไม่ระบุ')}</span>` : `<span style="font-weight:800;font-size:14px;color:#0f766e">${esc(r.fromBin)}</span>`}</td>
           <td><div style="font-weight:700">${esc(r.materialCode)}</div><div style="font-size:12px">${esc(r.materialName || '')}</div></td>
           <td style="white-space:nowrap">${esc(r.lotNumber || '—')}</td>
           <td style="text-align:right;font-weight:800;font-size:14px">${fmt(r.qty)}</td>
-          <td style="font-size:12px">${isDone ? `<b>${esc(st.pickedBy || '')}</b><div class="helper">${esc(st.pickedAt || '')}${st.pending ? ' · ⏳ กำลังบันทึก' : ''}</div>` : '<span class="helper">—</span>'}</td>
+          <td style="text-align:right;white-space:nowrap"><input type="number" class="pick-qty-in field" data-key="${esc(r.key)}" min="0" step="any" value="${touched ? esc(pickQtyOf(r)) : ''}" placeholder="${esc(r.qty)}" title="กรอกจำนวนที่เบิกได้จริง (ถ้าน้อยกว่าจำนวนในใบ = เบิกไม่ครบ)" style="width:90px;text-align:right;padding:4px 6px;${isPartial ? 'border-color:#ef4444;color:#b91c1c;font-weight:700' : ''}">${isPartial ? `<div style="color:#b91c1c;font-size:11.5px;font-weight:700">⚠️ ขาด ${fmt(n(r.qty) - pickQtyOf(r))}</div>` : ''}</td>
+          <td style="font-size:12px">${touched ? `<b>${esc(st.pickedBy || '')}</b><div class="helper">${esc(st.pickedAt || '')}${st.pending ? ' · ⏳ กำลังบันทึก' : ''}</div>` : '<span class="helper">—</span>'}</td>
           <td style="font-size:11.5px;white-space:nowrap">${esc(r.docNo)}${r.mos.length ? `<br><span class="helper">${r.mos.map(esc).join(', ')}</span>` : ''}</td></tr>`;
       }).join('')}</tbody></table>`;
   }
@@ -9767,9 +9775,9 @@
         <div class="meta-row"><span class="meta-label">Job / MO (${mos.length}):</span><span>${mos.map(esc).join(', ') || '—'}</span></div>
       </div>
       <table><thead><tr><th>#</th><th>✓</th><th>โลเคชั่น<br>调出仓位</th><th>รหัส Part<br>物料编码</th><th>ชื่อ Part<br>物料名称</th><th>Lot<br>批号</th><th>จำนวน<br>数量</th><th>คลังปลายทาง<br>调入仓库</th><th>ใบเบิก</th><th>จ่ายจริง</th></tr></thead><tbody>
-      ${rows.map((r, i) => `<tr><td class="num">${i + 1}</td><td style="width:26px;text-align:center">${pickIsPicked(r.key) ? '✓' : ''}</td>
+      ${rows.map((r, i) => `<tr><td class="num">${i + 1}</td><td style="width:26px;text-align:center">${pickIsPicked(r.key) ? '✓' : pickIsPartial(r.key) ? '⚠' : ''}</td>
         <td class="nowrap"><b>${esc(r.fromBin || 'ไม่ระบุ')}</b></td><td class="nowrap">${esc(r.materialCode)}</td><td>${esc(r.materialName || '')}</td>
-        <td class="nowrap">${esc(r.lotNumber || '—')}</td><td class="num"><b>${fmt(r.qty)}</b></td><td>${esc(r.toWarehouse || '')}</td><td class="nowrap">${esc(r.docNo)}</td><td style="width:70px"></td></tr>`).join('')}
+        <td class="nowrap">${esc(r.lotNumber || '—')}</td><td class="num"><b>${fmt(r.qty)}</b></td><td>${esc(r.toWarehouse || '')}</td><td class="nowrap">${esc(r.docNo)}</td><td class="num" style="width:70px">${pickState.get(r.key) && pickState.get(r.key).status !== 'unpicked' ? fmt(pickQtyOf(r)) : ''}</td></tr>`).join('')}
       </tbody></table>
       <div class="doc-footer"><div>ผู้จัด: ____________________</div><div>ผู้ตรวจ: ____________________</div><div>ผู้รับ (ไลน์ผลิต): ____________________</div></div>
     </div>`;
@@ -9779,9 +9787,9 @@
     const sel = pickSelectedDocList();
     if (!sel.length) { toast('กรุณาเลือกใบเบิกก่อนส่งออก'); return; }
     const rows = pickRows(sel);
-    const head = ['From Bin', 'From Warehouse', 'Material', 'Material Name', 'Lot', 'Qty', 'To Warehouse', 'ZJDB', 'MO', 'Picked', 'Picked By', 'Picked At'];
+    const head = ['From Bin', 'From Warehouse', 'Material', 'Material Name', 'Lot', 'Qty', 'To Warehouse', 'ZJDB', 'MO', 'Picked', 'Picked Qty', 'Short Qty', 'Picked By', 'Picked At'];
     const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-    const csv = [head, ...rows.map(r => { const st = pickState.get(r.key) || {}; const done = st.status === 'picked'; return [r.fromBin, r.fromWarehouse, r.materialCode, r.materialName, r.lotNumber, r.qty, r.toWarehouse, r.docNo, r.mos.join(' '), done ? 'Y' : '', done ? st.pickedBy : '', done ? st.pickedAt : '']; })].map(r => r.map(q).join(',')).join('\r\n');
+    const csv = [head, ...rows.map(r => { const st = pickState.get(r.key) || {}; const done = st.status === 'picked' || st.status === 'partial'; const pq = pickQtyOf(r); return [r.fromBin, r.fromWarehouse, r.materialCode, r.materialName, r.lotNumber, r.qty, r.toWarehouse, r.docNo, r.mos.join(' '), st.status === 'picked' ? 'Y' : st.status === 'partial' ? 'PARTIAL' : '', done ? pq : '', done ? Math.max(0, n(r.qty) - pq) : '', done ? st.pickedBy : '', done ? st.pickedAt : '']; })].map(r => r.map(q).join(',')).join('\r\n');
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
     a.download = `picking-list-${new Date().toISOString().slice(0, 10)}.csv`;
@@ -9830,9 +9838,18 @@
         renderPickingPage();
       });
       el('pickListTable')?.addEventListener('change', e => {
-        if (!e.target.classList.contains('pick-done-cb')) return;
+        const isCb = e.target.classList.contains('pick-done-cb'), isQty = e.target.classList.contains('pick-qty-in');
+        if (!isCb && !isQty) return;
         const row = pickRows(pickSelectedDocList()).find(r => r.key === e.target.dataset.key);
-        if (row) pickSetLines([row], e.target.checked);
+        if (!row) return;
+        if (isCb) { pickSetLines([row], e.target.checked); return; }
+        const raw = String(e.target.value || '').trim();
+        if (raw === '') { pickSetLines([row], false); return; }
+        const v = n(raw);
+        if (v < 0) { toast('จำนวนต้องไม่ติดลบ'); renderPickingList(); return; }
+        if (v === 0) { pickSetLines([row], false); return; }
+        if (v > n(row.qty) && !confirm(`จำนวนที่กรอก (${fmt(v)}) มากกว่าในใบเบิก (${fmt(row.qty)}) — บันทึกเป็นเบิกครบ?`)) { renderPickingList(); return; }
+        pickSetLines([row], true, Math.min(v, n(row.qty)));
       });
       // อัปเดตสถานะจาก Google Sheet ทุก 20 วินาที ขณะเปิดหน้านี้ เพื่อให้ทุกคนเห็นตรงกัน
       setInterval(() => { if (activePage === 'picking' && document.visibilityState !== 'hidden') pickRefresh(false); }, 20000);

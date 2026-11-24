@@ -856,7 +856,8 @@ function partReqApiListKingdeeLogs_() {
 const PICKING_LOG_SHEET_NAME = 'PickingLog';
 const PICKING_LOG_HEADERS = [
   'key', 'docNo', 'lineNo', 'moNumbers', 'materialCode', 'materialName', 'lotNumber',
-  'fromWarehouse', 'fromBin', 'qty', 'status', 'pickedBy', 'pickedByUser', 'pickedAt', 'updatedAt'
+  'fromWarehouse', 'fromBin', 'qty', 'status', 'pickedBy', 'pickedByUser', 'pickedAt', 'updatedAt',
+  'pickedQty'
 ];
 
 function partReqApiGetPickSheet_() {
@@ -869,6 +870,9 @@ function partReqApiGetPickSheet_() {
     // คอลัมน์ key / lotNumber เป็นข้อความเสมอ ไม่ให้ Sheet แปลงเป็นตัวเลข
     sheet.getRange('A:A').setNumberFormat('@');
     sheet.getRange('G:G').setNumberFormat('@');
+  } else if (sheet.getLastColumn() < PICKING_LOG_HEADERS.length) {
+    // เพิ่มหัวคอลัมน์ใหม่ (เช่น pickedQty) ให้ชีตเดิม
+    sheet.getRange(1, 1, 1, PICKING_LOG_HEADERS.length).setValues([PICKING_LOG_HEADERS]);
   }
   return sheet;
 }
@@ -880,6 +884,7 @@ function partReqApiPickRowToObj_(r) {
   o.qty = Number(o.qty) || 0;
   o.lineNo = Number(o.lineNo) || 0;
   o.status = String(o.status || '');
+  o.pickedQty = o.pickedQty === '' ? '' : Number(o.pickedQty) || 0;
   return o;
 }
 
@@ -912,7 +917,8 @@ function partReqApiSavePicks_(session, lines) {
     lines.forEach(line => {
       const key = String(line && line.key || '').slice(0, 300);
       if (!key) return;
-      const picked = String(line.status || '') === 'picked';
+      const status = ['picked', 'partial'].includes(String(line.status || '')) ? String(line.status) : 'unpicked';
+      const picked = status !== 'unpicked';
       const row = [
         key,
         String(line.docNo || '').slice(0, 60),
@@ -924,11 +930,12 @@ function partReqApiSavePicks_(session, lines) {
         String(line.fromWarehouse || '').slice(0, 120),
         String(line.fromBin || '').slice(0, 60),
         Number(line.qty) || 0,
-        picked ? 'picked' : 'unpicked',
+        status,
         picked ? String(line.pickedBy || '').slice(0, 80) : '',
         picked ? String(session.username || '') : '',
         picked ? nowTh : '',
-        nowIso
+        nowIso,
+        picked ? (status === 'partial' ? Math.max(0, Number(line.pickedQty) || 0) : (Number(line.qty) || 0)) : ''
       ];
       const existingRow = rowByKey.get(key);
       if (existingRow > 0) sheet.getRange(existingRow, 1, 1, row.length).setValues([row]);
