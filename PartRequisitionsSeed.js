@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-24T11:16:30.980Z",
+  "updatedAt": "2026-11-24T11:17:08.054Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261124-27769",
+      "requestDate": "24/11/2026 18:17:07",
+      "requestedAt": "24/11/2026 18:17:07",
+      "moNumber": "3896",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00161",
+      "materialName": "Shroud EZ100",
+      "specification": "75170102AA",
+      "requestQty": 41,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026110701",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "24/11/2026 18:17:07",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261124-90689",
       "requestDate": "24/11/2026 18:16:30",
