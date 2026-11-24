@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-24T04:11:07.129Z",
+  "updatedAt": "2026-11-24T04:11:24.973Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261124-84617",
+      "requestDate": "24/11/2026 11:11:24",
+      "requestedAt": "24/11/2026 11:11:24",
+      "moNumber": "3896",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00145",
+      "materialName": "Neutral busbar_R 36way",
+      "specification": "BRU53709",
+      "requestQty": 216,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CH-02-13B (Purchased parts warehouse) | Public area (Purchased parts warehouse) | CH-02-14A (Semi-finished Product Warehouse-Waiting Assembly) | CH-02-13F (Purchased parts warehouse) | CH-02-14A (Customer Supplied Material Warehouse) | CH-02-14E (Purchased parts warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CJ-01-11A (Purchased parts warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Assembly)",
+      "lotSummary": "2026101701, 2026110503, 2026110502, 2026092501, 2026090201, 2026090901, 2026091202, 2026083001, 2026091201, 2026091801",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "24/11/2026 11:11:24",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261124-59977",
       "requestDate": "24/11/2026 11:10:59",
