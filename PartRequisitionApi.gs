@@ -77,6 +77,12 @@ function doPost(e) {
       } else if (params.action === 'kingdee_log_append') {
         const entry = JSON.parse(String(params.entry || '{}'));
         result = partReqApiAppendKingdeeLog_(entry);
+      } else if (params.action === 'pick_list') {
+        result = { ok: true, items: partReqApiListPicks_(params.since) };
+      } else if (params.action === 'pick_save') {
+        if (session.role !== 'warehouse') throw new Error('PICK_ROLE_NOT_ALLOWED');
+        const lines = JSON.parse(String(params.lines || '[]'));
+        result = partReqApiSavePicks_(session, lines);
       } else if (params.action === 'kingdee_log_list') {
         result = { ok: true, items: partReqApiListKingdeeLogs_() };
       } else {
@@ -758,12 +764,13 @@ function setupAllPlannerSheets() {
   const pushSheet = partReqApiGetPushSheet_();
   const pdfSheet = partReqApiGetOrderPdfSheet_();
   const kingdeeLogSheet = partReqApiGetKingdeeLogSheet_();
+  const pickSheet = partReqApiGetPickSheet_();
   const authUsers = partReqApiGetAuthUsers_();
   // Ensure Google Drive permission is authorized for Part photos & Order PDFs
   const driveRootName = DriveApp.getRootFolder().getName();
   return {
     ok: true,
-    sheets: [reqSheet.getName(), staff.sheetName || 'PartStaff', MEMBERS_SHEET_NAME, pushSheet.getName(), pdfSheet.getName(), kingdeeLogSheet.getName()],
+    sheets: [reqSheet.getName(), staff.sheetName || 'PartStaff', MEMBERS_SHEET_NAME, pushSheet.getName(), pdfSheet.getName(), kingdeeLogSheet.getName(), pickSheet.getName()],
     membersCount: members.length,
     apiAuthReady: Boolean(authUsers.req && authUsers.wh),
     driveReady: Boolean(driveRootName)
@@ -843,6 +850,100 @@ function partReqApiListKingdeeLogs_() {
     KINGDEE_SYNC_LOG_HEADERS.forEach((h, i) => { obj[h] = r[i]; });
     return obj;
   });
+}
+
+// ===== PickingLog: สถานะการเบิก Part ตามใบเบิก ZJDB (หน้า จัดออร์เดอร์) — 1 แถวต่อ 1 บรรทัดในใบเบิก =====
+const PICKING_LOG_SHEET_NAME = 'PickingLog';
+const PICKING_LOG_HEADERS = [
+  'key', 'docNo', 'lineNo', 'moNumbers', 'materialCode', 'materialName', 'lotNumber',
+  'fromWarehouse', 'fromBin', 'qty', 'status', 'pickedBy', 'pickedByUser', 'pickedAt', 'updatedAt'
+];
+
+function partReqApiGetPickSheet_() {
+  const ss = SpreadsheetApp.openById(PART_REQ_API_SPREADSHEET_ID);
+  let sheet = ss.getSheetByName(PICKING_LOG_SHEET_NAME);
+  if (!sheet) sheet = ss.insertSheet(PICKING_LOG_SHEET_NAME);
+  if (sheet.getLastRow() === 0) {
+    sheet.getRange(1, 1, 1, PICKING_LOG_HEADERS.length).setValues([PICKING_LOG_HEADERS]);
+    sheet.setFrozenRows(1);
+    // คอลัมน์ key / lotNumber เป็นข้อความเสมอ ไม่ให้ Sheet แปลงเป็นตัวเลข
+    sheet.getRange('A:A').setNumberFormat('@');
+    sheet.getRange('G:G').setNumberFormat('@');
+  }
+  return sheet;
+}
+
+function partReqApiPickRowToObj_(r) {
+  const o = {};
+  PICKING_LOG_HEADERS.forEach((h, i) => { o[h] = r[i] === null || r[i] === undefined ? '' : r[i]; });
+  o.key = String(o.key || '');
+  o.qty = Number(o.qty) || 0;
+  o.lineNo = Number(o.lineNo) || 0;
+  o.status = String(o.status || '');
+  return o;
+}
+
+function partReqApiListPicks_(sinceValue) {
+  const sheet = partReqApiGetPickSheet_();
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return [];
+  const since = String(sinceValue || '');
+  return sheet.getRange(2, 1, lastRow - 1, PICKING_LOG_HEADERS.length).getValues()
+    .map(partReqApiPickRowToObj_)
+    .filter(o => o.key && (!since || String(o.updatedAt) > since));
+}
+
+function partReqApiSavePicks_(session, lines) {
+  if (!Array.isArray(lines) || !lines.length) throw new Error('PICK_NO_LINES');
+  if (lines.length > 500) throw new Error('PICK_TOO_MANY_LINES');
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const sheet = partReqApiGetPickSheet_();
+    const lastRow = sheet.getLastRow();
+    const keys = lastRow >= 2 ? sheet.getRange(2, 1, lastRow - 1, 1).getValues().map(r => String(r[0] || '')) : [];
+    const rowByKey = new Map();
+    keys.forEach((k, i) => { if (k) rowByKey.set(k, i + 2); });
+    const nowIso = new Date().toISOString();
+    const nowTh = formatPartReqDateTime_(nowIso);
+    const saved = [];
+    const appends = [];
+    const appendIndexByKey = new Map();
+    lines.forEach(line => {
+      const key = String(line && line.key || '').slice(0, 300);
+      if (!key) return;
+      const picked = String(line.status || '') === 'picked';
+      const row = [
+        key,
+        String(line.docNo || '').slice(0, 60),
+        Number(line.lineNo) || 0,
+        String(line.moNumbers || '').slice(0, 500),
+        String(line.materialCode || '').slice(0, 60),
+        String(line.materialName || '').slice(0, 200),
+        String(line.lotNumber || '').slice(0, 60),
+        String(line.fromWarehouse || '').slice(0, 120),
+        String(line.fromBin || '').slice(0, 60),
+        Number(line.qty) || 0,
+        picked ? 'picked' : 'unpicked',
+        picked ? String(line.pickedBy || '').slice(0, 80) : '',
+        picked ? String(session.username || '') : '',
+        picked ? nowTh : '',
+        nowIso
+      ];
+      const existingRow = rowByKey.get(key);
+      if (existingRow > 0) sheet.getRange(existingRow, 1, 1, row.length).setValues([row]);
+      else if (appendIndexByKey.has(key)) appends[appendIndexByKey.get(key)] = row;
+      else { appendIndexByKey.set(key, appends.length); appends.push(row); }
+      saved.push(partReqApiPickRowToObj_(row));
+    });
+    if (appends.length) {
+      sheet.getRange(sheet.getLastRow() + 1, 1, appends.length, PICKING_LOG_HEADERS.length).setValues(appends);
+    }
+    SpreadsheetApp.flush();
+    return { ok: true, items: saved, savedAt: nowIso };
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 const ORDER_PDF_LINKS_SHEET_NAME = 'OrderPdfLinks';
