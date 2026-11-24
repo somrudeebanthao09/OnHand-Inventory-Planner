@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-24T04:11:24.973Z",
+  "updatedAt": "2026-11-24T04:16:08.840Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -51,17 +51,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderA",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CH-02-13B",
+          "qty": 216,
+          "lot": "2026101701"
+        }
+      ],
+      "locationsSummary": "Loc#1: CH-02-13B (216 PCS) [Lot: 2026101701]",
       "onHandLocation": "CH-02-13B (Purchased parts warehouse) | Public area (Purchased parts warehouse) | CH-02-14A (Semi-finished Product Warehouse-Waiting Assembly) | CH-02-13F (Purchased parts warehouse) | CH-02-14A (Customer Supplied Material Warehouse) | CH-02-14E (Purchased parts warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CJ-01-11A (Purchased parts warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Assembly)",
-      "lotSummary": "2026101701, 2026110503, 2026110502, 2026092501, 2026090201, 2026090901, 2026091202, 2026083001, 2026091201, 2026091801",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026101701",
+      "issuerName": "อธิเบศ",
+      "issuedAt": "24/11/2026 11:16:04",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "24/11/2026 11:11:24",
-      "photoTakenAt": ""
+      "updatedAt": "24/11/2026 11:16:04",
+      "photoTakenAt": "24/11/2026 11:16:04",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261124-84617.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261124-59977",
