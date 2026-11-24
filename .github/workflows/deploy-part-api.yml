@@ -109,6 +109,7 @@ jobs:
           else
             echo "title: $(echo "$body" | grep -o '<title>[^<]*' | head -1)"
             echo "text: $(echo "$body" | sed -e 's/<script[^>]*>.*<\/script>//g' -e 's/<style[^>]*>.*<\/style>//g' -e 's/<[^>]*>/ /g' | tr -s ' \n' ' ' | tail -c 800)"
-            echo "::error::Part API ไม่ตอบ staff_list ตามปกติ — ตรวจ deployment/สิทธิ์การเข้าถึง (ดู backup ใน artifact)"
-            exit 1
+            # Google ตอบ "Access Denied" ให้เครื่อง GitHub ที่ไม่ได้ล็อกอิน (ขึ้นกับสิทธิ์ของบัญชี/องค์กร) จึงยืนยันจากที่นี่ไม่ได้เสมอไป
+            # push + deploy สำเร็จแล้ว ให้เปิดหน้าเว็บตรวจเอง ถ้าพังให้ย้อน version ใน Apps Script → Manage deployments
+            echo "::warning::ตรวจ Part API จาก GitHub ไม่ได้ (Google ตอบว่า $(echo "$body" | grep -o '<title>[^<]*' | head -1 | sed 's/<title>//')) — deploy สำเร็จแล้ว กรุณาเปิดหน้าเว็บตรวจว่าใช้งานได้"
           fi
