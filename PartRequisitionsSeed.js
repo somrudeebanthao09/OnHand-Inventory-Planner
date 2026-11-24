@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-24T11:53:11.898Z",
+  "updatedAt": "2026-11-24T11:53:37.093Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -5825,17 +5825,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderA",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
-      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CO-04-07A (Customer Supplied Material Warehouse) | CO-04-04A (Customer Supplied Material Warehouse) | CC-09-15B (Customer Supplied Material Warehouse) | CC-05-09A (Customer Supplied Material Warehouse) | CG-09-06A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CJ-01-08A (Customer Supplied Material Warehouse) | CJ-01-08B (Customer Supplied Material Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
-      "lotSummary": "2026100299, 2026102605, 2026102203, 2026102202, 2026102603, 2026102204, 2026102604, 2026102602, 2026102201, 2026100703, 2026092401",
-      "issuerName": "",
-      "issuedAt": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "ไม่ระบุ Location",
+          "qty": 71,
+          "lot": "2026102605, 2026100299"
+        }
+      ],
+      "locationsSummary": "Loc#1: ไม่ระบุ Location (71 PCS) [Lot: 2026102605, 2026100299]",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CO-04-07A (Customer Supplied Material Warehouse) | Public area (Customer Supplied Material Warehouse) | CO-04-04A (Customer Supplied Material Warehouse) | Public area (Defective Warehouse) | Public area (Scrap Warehouse)",
+      "lotSummary": "2026102605, 2026100299",
+      "issuerName": "นิตยา",
+      "issuedAt": "24/11/2026 18:53:33",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "20/11/2026 03:28:00",
-      "photoTakenAt": ""
+      "updatedAt": "24/11/2026 18:53:33",
+      "photoTakenAt": "24/11/2026 18:53:33",
+      "issuerUsername": "admin",
+      "photoUrl": "part-photos/REQ-20261120-80926.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261119-05484",
