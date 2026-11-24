@@ -2173,7 +2173,7 @@
         <div class="title-row" style="margin-bottom:14px">
           <div>
             <h1 style="font-size:23px;margin:0 0 4px;color:#0f172a">🧺 จัดออร์เดอร์ (Picking)</h1>
-            <p style="font-size:13px;color:#475569;line-height:1.35;margin:0">ดึง <b>ใบเบิก / Direct Transfer (ZJDB)</b> ที่ Planner เปิดไว้ให้ Order ใน <b>ติดตาม Order ผลิต</b> แล้วจัดตาม <b>คลังต้นทาง · โลเคชั่น (调出仓位) · Lot</b> ที่อยู่ในใบ · สถานะการหยิบบันทึกลง Google Sheet (แท็บ PickingLog) ให้ทุกคนเห็นพร้อมกัน</p>
+            <p style="font-size:13px;color:#475569;line-height:1.35;margin:0">ดึง <b>ใบเบิก / Direct Transfer (ZJDB)</b> ที่ Planner เปิดไว้ให้ Order ใน <b>ติดตาม Order ผลิต</b> แล้วจัดตาม <b>คลังต้นทาง · โลเคชั่น (调出仓位) · Lot</b> ที่อยู่ในใบ · สถานะการเบิกบันทึกลง Google Sheet (แท็บ PickingLog) ให้ทุกคนเห็นพร้อมกัน</p>
           </div>
           <div class="row-actions" style="align-items:center;gap:8px">
             <button class="btn primary" id="pickPrintBtn" type="button" style="font-size:13.5px;padding:9px 14px;font-weight:700">🖨️ พิมพ์ใบจัด</button>
@@ -2190,14 +2190,14 @@
                 <button id="pickViewMoBtn" class="btn" type="button" style="border:none;border-radius:6px;padding:5px 12px;font-size:12.5px">🏭 ตาม Job (MO)</button>
               </div>
               <select id="pickDeptFilter" class="field" style="min-width:220px"></select>
-              <select id="pickStateFilter" class="field" title="สถานะการหยิบ">
-                <option value="open">⏳ ยังหยิบไม่ครบ</option>
-                <option value="progress">🟡 กำลังหยิบ</option>
-                <option value="done">✅ หยิบครบแล้ว</option>
+              <select id="pickStateFilter" class="field" title="สถานะการเบิก">
+                <option value="open">⏳ ยังเบิกไม่ครบ</option>
+                <option value="progress">🟡 กำลังเบิก</option>
+                <option value="done">✅ เบิกครบแล้ว</option>
                 <option value="">ทั้งหมด</option>
               </select>
               <input id="pickDateFilter" class="field" type="date" title="วันที่ใบเบิก (Business Date)">
-              <input id="pickSearch" class="field search" placeholder="ค้นหาเลขใบ ZJDB, MO, รหัส/ชื่อ Part, โลเคชั่น, ผู้หยิบ">
+              <input id="pickSearch" class="field search" placeholder="ค้นหาเลขใบ ZJDB, MO, รหัส/ชื่อ Part, โลเคชั่น, ผู้เบิก">
             </div>
             <span id="pickDocCount" class="helper"></span>
           </div>
@@ -2205,13 +2205,13 @@
         </div>
         <div class="panel">
           <div class="toolbar" style="gap:10px;flex-wrap:wrap">
-            <div><strong style="font-size:15px">📦 รายการที่ต้องหยิบ (เรียงตามโลเคชั่น)</strong> <span id="pickListInfo" class="helper"></span></div>
+            <div><strong style="font-size:15px">📦 รายการที่ต้องเบิก (เรียงตามโลเคชั่น)</strong> <span id="pickListInfo" class="helper"></span></div>
             <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-              <label class="helper" style="display:flex;gap:6px;align-items:center">👷 ผู้หยิบ
+              <label class="helper" style="display:flex;gap:6px;align-items:center">👷 ผู้เบิก
                 <select id="pickPickerName" class="field" style="min-width:190px"></select>
               </label>
-              <label class="helper" style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="pickHideDone"> ซ่อนที่หยิบแล้ว</label>
-              <button class="btn primary" id="pickMarkAllBtn" type="button">✅ หยิบครบทั้งใบที่เลือก</button>
+              <label class="helper" style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="pickHideDone"> ซ่อนที่เบิกแล้ว</label>
+              <button class="btn primary" id="pickMarkAllBtn" type="button">✅ เบิกครบทั้งใบที่เลือก</button>
               <button class="btn" id="pickClearDoneBtn" type="button">↩️ ยกเลิกสถานะของใบที่เลือก</button>
             </div>
           </div>
@@ -9494,7 +9494,7 @@
 
   // ===== จัดออร์เดอร์ (Picking): ใบเบิก / Direct Transfer (ZJDB) ของ Order ใน ติดตาม Order ผลิต =====
   // โลเคชั่น/Lot/คลังต้นทาง มาจากใบ ZJDB ที่ Planner เปิด (PRODUCTION_EXECUTION_SEED.directTransferDocsByDoc)
-  // สถานะการหยิบ (ใคร/เมื่อไหร่) เก็บใน Google Sheet แท็บ PickingLog ผ่าน Part API (action: pick_list / pick_save)
+  // สถานะการเบิก (ใคร/เมื่อไหร่) เก็บใน Google Sheet แท็บ PickingLog ผ่าน Part API (action: pick_list / pick_save)
   let pickSelectedDocs = new Set(), pickDeptInit = false, pickView = 'doc';
   let pickState = new Map(), pickRemoteMode = 'unknown', pickRemoteError = '', pickLastSyncAt = 0, pickSyncing = false, pickStateSig = '';
   const PICK_CACHE_KEY = 'pickingStateCache';
@@ -9560,7 +9560,7 @@
       }
       pickRemoteMode = 'sheet'; pickRemoteError = '';
       pickSaveCache(); renderPickingPage();
-      toast(picked ? `✅ บันทึกหยิบแล้ว ${fmt(payload.length)} รายการ (โดย ${pickedBy})` : `↩️ ยกเลิกสถานะ ${fmt(payload.length)} รายการแล้ว`);
+      toast(picked ? `✅ บันทึกเบิกแล้ว ${fmt(payload.length)} รายการ (โดย ${pickedBy})` : `↩️ ยกเลิกสถานะ ${fmt(payload.length)} รายการแล้ว`);
     } catch (err) {
       prev.forEach((v, k) => v ? pickState.set(k, v) : pickState.delete(k));
       pickRemoteMode = 'error'; pickRemoteError = String(err?.message || err);
@@ -9648,7 +9648,7 @@
   function pickSelectedDocList(){ return pickBuildDocs().filter(d => pickSelectedDocs.has(d.docNo)); }
   function pickRows(docs){
     const rows = docs.flatMap(d => d.items);
-    // เรียงตามคลังต้นทาง → โลเคชั่น เพื่อเดินหยิบเป็นเส้นทางเดียว (Public area ไว้ท้ายคลัง)
+    // เรียงตามคลังต้นทาง → โลเคชั่น เพื่อเดินเบิกเป็นเส้นทางเดียว (Public area ไว้ท้ายคลัง)
     return rows.sort((a, b) => String(a.fromWarehouse || '').localeCompare(String(b.fromWarehouse || ''))
       || (pickIsPublicBin(a.fromBin) ? 1 : 0) - (pickIsPublicBin(b.fromBin) ? 1 : 0)
       || String(a.fromBin || '').localeCompare(String(b.fromBin || ''))
@@ -9656,14 +9656,14 @@
       || String(a.lotNumber || '').localeCompare(String(b.lotNumber || '')));
   }
   function pickStateBadge(p){
-    const map = { done: ['✅ หยิบครบแล้ว', '#047857', '#d1fae5'], progress: ['🟡 กำลังหยิบ', '#92400e', '#fef3c7'], todo: ['⏳ ยังไม่เริ่ม', '#475569', '#f1f5f9'], empty: ['—', '#475569', '#f1f5f9'] };
+    const map = { done: ['✅ เบิกครบแล้ว', '#047857', '#d1fae5'], progress: ['🟡 กำลังเบิก', '#92400e', '#fef3c7'], todo: ['⏳ ยังไม่เริ่ม', '#475569', '#f1f5f9'], empty: ['—', '#475569', '#f1f5f9'] };
     const [label, color, bg] = map[p.state] || map.todo;
     return `<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:700;color:${color};background:${bg};white-space:nowrap">${label}</span>`;
   }
   function pickProgressCell(p){
     const pct = p.lineTotal ? Math.round(p.doneCount / p.lineTotal * 100) : 0;
     return `<div style="background:#e2e8f0;border-radius:6px;height:8px;overflow:hidden;min-width:110px"><div style="width:${pct}%;height:100%;background:${pct >= 100 ? '#10b981' : '#f59e0b'}"></div></div>
-      <div class="helper" style="white-space:nowrap">Part <b>${fmt(p.partDone)}/${fmt(p.partTotal)}</b> · จุดหยิบ ${fmt(p.doneCount)}/${fmt(p.lineTotal)}</div>`;
+      <div class="helper" style="white-space:nowrap">Part <b>${fmt(p.partDone)}/${fmt(p.partTotal)}</b> · จุดเบิก ${fmt(p.doneCount)}/${fmt(p.lineTotal)}</div>`;
   }
   const pickWhoCell = p => p.pickers.length ? `<div style="font-weight:650">${p.pickers.map(esc).join(', ')}</div><div class="helper">${esc(p.lastAt || '')}</div>` : '<span class="helper">—</span>';
   function renderPickingPage(){
@@ -9688,7 +9688,7 @@
       const list = pickFilterMos(docs), shown = list.slice(0, 300);
       el('pickDocCount').textContent = `${fmt(list.length)} Job${list.length > shown.length ? ` · แสดง ${shown.length} Job ล่าสุด` : ''} · เลือกใบเบิกแล้ว ${fmt(pickSelectedDocs.size)}`;
       el('pickDocTable').innerHTML = shown.length ? `<table class="table" style="width:100%;font-size:13px"><thead style="position:sticky;top:0;background:#f8fafc;z-index:1"><tr>
-        <th style="width:34px"></th><th>Job (MO)</th><th>สินค้า</th><th>ใบเบิก ZJDB</th><th>สถานะ</th><th>ความคืบหน้า</th><th>หยิบโดย / ล่าสุด</th></tr></thead><tbody>
+        <th style="width:34px"></th><th>Job (MO)</th><th>สินค้า</th><th>ใบเบิก ZJDB</th><th>สถานะ</th><th>ความคืบหน้า</th><th>เบิกโดย / ล่าสุด</th></tr></thead><tbody>
         ${shown.map(m => { const sel = m.docs.every(d => pickSelectedDocs.has(d)); return `<tr data-mo-docs="${esc(m.docs.join(','))}" style="cursor:pointer;${sel ? 'background:#ecfdf5' : ''}">
           <td><input type="checkbox" ${sel ? 'checked' : ''}></td>
           <td style="font-weight:700;white-space:nowrap">${esc(m.moNumber)}<div class="helper">${esc(m.lastDate)}</div></td>
@@ -9702,7 +9702,7 @@
       const allChecked = shown.length && shown.every(d => pickSelectedDocs.has(d.docNo));
       el('pickDocTable').innerHTML = shown.length ? `<table class="table" style="width:100%;font-size:13px"><thead style="position:sticky;top:0;background:#f8fafc;z-index:1"><tr>
         <th style="width:34px"><input type="checkbox" id="pickSelectAll" ${allChecked ? 'checked' : ''} title="เลือกทั้งหมดที่แสดง"></th>
-        <th>เลขใบเบิก (ZJDB)</th><th>วันที่</th><th>Job (MO) / สินค้า</th><th>สถานะ</th><th>ความคืบหน้า</th><th>หยิบโดย / ล่าสุด</th></tr></thead><tbody>
+        <th>เลขใบเบิก (ZJDB)</th><th>วันที่</th><th>Job (MO) / สินค้า</th><th>สถานะ</th><th>ความคืบหน้า</th><th>เบิกโดย / ล่าสุด</th></tr></thead><tbody>
         ${shown.map(d => { const sel = pickSelectedDocs.has(d.docNo); return `<tr data-doc="${esc(d.docNo)}" style="cursor:pointer;${sel ? 'background:#ecfdf5' : ''}">
           <td><input type="checkbox" ${sel ? 'checked' : ''}></td>
           <td style="font-weight:700;white-space:nowrap">${esc(d.docNo)}<div class="helper">${esc(d.transactionType)}</div></td>
@@ -9716,12 +9716,12 @@
   function renderPickingList(){
     const wrap = el('pickListTable'); if (!wrap) return;
     const sel = pickSelectedDocList();
-    if (!sel.length) { wrap.innerHTML = `<div class="helper" style="padding:22px;text-align:center">เลือกใบเบิกหรือ Job ด้านบน (ติ๊ก ☑ ได้หลายรายการ) เพื่อดูรายการที่ต้องหยิบพร้อมโลเคชั่น</div>`; el('pickListInfo').textContent = ''; return; }
+    if (!sel.length) { wrap.innerHTML = `<div class="helper" style="padding:22px;text-align:center">เลือกใบเบิกหรือ Job ด้านบน (ติ๊ก ☑ ได้หลายรายการ) เพื่อดูรายการที่ต้องเบิกพร้อมโลเคชั่น</div>`; el('pickListInfo').textContent = ''; return; }
     const rows = pickRows(sel), hideDone = el('pickHideDone')?.checked, prog = pickProgress(rows);
-    el('pickListInfo').innerHTML = `· ${fmt(sel.length)} ใบ · Part หยิบครบ <b>${fmt(prog.partDone)}/${fmt(prog.partTotal)}</b> · จุดหยิบ ${fmt(prog.doneCount)}/${fmt(prog.lineTotal)}`;
+    el('pickListInfo').innerHTML = `· ${fmt(sel.length)} ใบ · Part เบิกครบ <b>${fmt(prog.partDone)}/${fmt(prog.partTotal)}</b> · จุดเบิก ${fmt(prog.doneCount)}/${fmt(prog.lineTotal)}`;
     const vis = hideDone ? rows.filter(r => !pickIsPicked(r.key)) : rows;
     wrap.innerHTML = `<table class="table" style="width:100%;font-size:13px"><thead><tr>
-      <th style="width:52px">หยิบแล้ว</th><th>#</th><th>โลเคชั่น<br><span class="helper">调出仓位</span></th><th>คลังต้นทาง</th><th>รหัส Part / ชื่อ</th><th>Lot</th><th style="text-align:right">จำนวน</th><th>หยิบโดย / เวลา</th><th>ใบเบิก / Job</th></tr></thead><tbody>
+      <th style="width:52px">เบิกแล้ว</th><th>#</th><th>โลเคชั่น<br><span class="helper">调出仓位</span></th><th>คลังต้นทาง</th><th>รหัส Part / ชื่อ</th><th>Lot</th><th style="text-align:right">จำนวน</th><th>เบิกโดย / เวลา</th><th>ใบเบิก / Job</th></tr></thead><tbody>
       ${vis.map((r, i) => {
         const st = pickState.get(r.key), isDone = st?.status === 'picked';
         return `<tr style="${isDone ? 'background:#f0fdf4' : ''}">
@@ -9769,7 +9769,7 @@
     a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
     a.download = `picking-list-${new Date().toISOString().slice(0, 10)}.csv`;
     a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-    toast(`ส่งออกใบจัด ${fmt(rows.length)} จุดหยิบแล้ว`);
+    toast(`ส่งออกใบจัด ${fmt(rows.length)} จุดเบิกแล้ว`);
   }
   async function pickRefresh(force){ const changed = await pickSyncFromSheet(force); if (activePage === 'picking') { if (changed || force) renderPickingPage(); else pickRenderSheetStatus(); } }
   (function bindPickingPage(){
@@ -9786,14 +9786,14 @@
       el('pickSheetStatus')?.addEventListener('click', e => { if (e.target.id === 'pickRefreshBtn') pickRefresh(true); });
       el('pickMarkAllBtn')?.addEventListener('click', () => {
         const rows = pickRows(pickSelectedDocList()).filter(r => !pickIsPicked(r.key));
-        if (!rows.length) { toast(pickSelectedDocs.size ? 'ทุกรายการในใบที่เลือกหยิบครบแล้ว' : 'กรุณาเลือกใบเบิกก่อน'); return; }
-        if (!confirm(`บันทึกว่า "${pickPickerName()}" หยิบครบ ${fmt(rows.length)} รายการ?`)) return;
+        if (!rows.length) { toast(pickSelectedDocs.size ? 'ทุกรายการในใบที่เลือกเบิกครบแล้ว' : 'กรุณาเลือกใบเบิกก่อน'); return; }
+        if (!confirm(`บันทึกว่า "${pickPickerName()}" เบิกครบ ${fmt(rows.length)} รายการ?`)) return;
         pickSetLines(rows, true);
       });
       el('pickClearDoneBtn')?.addEventListener('click', () => {
         const rows = pickRows(pickSelectedDocList()).filter(r => pickState.has(r.key) && pickIsPicked(r.key));
-        if (!rows.length) { toast('ไม่มีรายการที่หยิบแล้วในใบที่เลือก'); return; }
-        if (!confirm(`ยกเลิกสถานะหยิบแล้ว ${fmt(rows.length)} รายการ?`)) return;
+        if (!rows.length) { toast('ไม่มีรายการที่เบิกแล้วในใบที่เลือก'); return; }
+        if (!confirm(`ยกเลิกสถานะเบิกแล้ว ${fmt(rows.length)} รายการ?`)) return;
         pickSetLines(rows, false);
       });
       el('pickDocTable')?.addEventListener('click', e => {

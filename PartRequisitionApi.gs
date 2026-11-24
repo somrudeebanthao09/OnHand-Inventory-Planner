@@ -852,7 +852,7 @@ function partReqApiListKingdeeLogs_() {
   });
 }
 
-// ===== PickingLog: สถานะการหยิบ Part ตามใบเบิก ZJDB (หน้า จัดออร์เดอร์) — 1 แถวต่อ 1 บรรทัดในใบเบิก =====
+// ===== PickingLog: สถานะการเบิก Part ตามใบเบิก ZJDB (หน้า จัดออร์เดอร์) — 1 แถวต่อ 1 บรรทัดในใบเบิก =====
 const PICKING_LOG_SHEET_NAME = 'PickingLog';
 const PICKING_LOG_HEADERS = [
   'key', 'docNo', 'lineNo', 'moNumbers', 'materialCode', 'materialName', 'lotNumber',
