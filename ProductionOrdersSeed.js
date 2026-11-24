@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-24T06:48:27.741Z",
+  "snapshotAt": "2026-11-24T07:00:26.910Z",
   "filename": "Export list_Production Material List_1123172251.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 16062,
   "orders": [
