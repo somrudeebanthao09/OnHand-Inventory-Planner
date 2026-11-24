@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-24T04:46:27.368Z",
+  "updatedAt": "2026-11-24T04:46:58.001Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -1069,7 +1069,7 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "23/11/2026 23:39:22",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "23/11/2026 23:39:22",
+      "updatedAt": "24/11/2026 11:46:57",
       "photoTakenAt": "23/11/2026 23:39:22",
       "locationsJson": "[{\"location\":\"CC-01-17A\",\"qty\":1000,\"lot\":\"\"}]",
       "issuerUsername": "wh",
@@ -1082,8 +1082,8 @@ window.PART_REQUISITIONS_SEED = {
       "kingdeeTransferToWh": "",
       "kingdeeTransferQty": "",
       "kingdeeTransferredAt": "",
-      "kingdeeTransferStatus": "",
-      "sheetRow": 190,
+      "kingdeeTransferStatus": "ข้าม (ตัดจ่ายไม่ได้): ไม่พบ Storage Bin CC-01-17A สำหรับ Spec 75503595AA (พบ Bin: ไม่มี) (ตรวจทั้ง Standard และ Entrusted Processing แล้ว)",
+      "sheetRow": 189,
       "deleted": false,
       "deletedAt": "",
       "photoAttachmentUrl": ""
