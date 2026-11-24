@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-24T11:48:52.689Z",
+  "updatedAt": "2026-11-24T11:50:14.807Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -827,17 +827,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderA",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
-      "onHandLocation": "CH-08-02A (Customer Supplied Material Warehouse) | CE-05-04B (Customer Supplied Material Warehouse) | CE-07-09A (Customer Supplied Material Warehouse) | CG-05-07B (Customer Supplied Material Warehouse) | CG-09-03A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CC-01-14B (Customer Supplied Material Warehouse) | CC-04-15B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CE-09-06A (Customer Supplied Material Warehouse)",
-      "lotSummary": "2026102204, 2026102603, 2026102601, 2026102604, 2026102605, 2026102203, 2026102201, 2026102602, 2026100201, 2026103001, 2026100802, 2026100299",
-      "issuerName": "",
-      "issuedAt": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "ไม่ระบุ Location",
+          "qty": 3,
+          "lot": "2026102201"
+        }
+      ],
+      "locationsSummary": "Loc#1: ไม่ระบุ Location (3 PCS) [Lot: 2026102201]",
+      "onHandLocation": "CG-05-07B (Customer Supplied Material Warehouse) | CG-09-03A (Customer Supplied Material Warehouse) | CH-08-02A (Customer Supplied Material Warehouse) | CE-05-04B (Customer Supplied Material Warehouse) | CE-07-09A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CC-01-14B (Customer Supplied Material Warehouse) | CC-04-15B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CE-09-06A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026102201",
+      "issuerName": "นิตยา",
+      "issuedAt": "24/11/2026 18:50:11",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "24/11/2026 09:20:44",
-      "photoTakenAt": ""
+      "updatedAt": "24/11/2026 18:50:11",
+      "photoTakenAt": "24/11/2026 18:50:11",
+      "issuerUsername": "admin",
+      "photoUrl": "part-photos/REQ-20261124-44680.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261124-18671",
