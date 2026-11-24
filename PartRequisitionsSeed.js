@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-24T08:19:04.278Z",
+  "updatedAt": "2026-11-24T09:15:15.851Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261124-15411",
+      "requestDate": "24/11/2026 16:15:15",
+      "requestedAt": "24/11/2026 16:15:15",
+      "moNumber": "MO-20261121-003888",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "75170119AA",
+      "materialName": "LATERAL",
+      "specification": "",
+      "requestQty": 800,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "จักรกฤษ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "",
+      "lotSummary": "",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "24/11/2026 16:15:15",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261124-45063",
       "requestDate": "24/11/2026 14:54:04",
