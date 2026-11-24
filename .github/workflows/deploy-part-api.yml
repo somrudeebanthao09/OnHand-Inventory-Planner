@@ -1,0 +1,100 @@
+# Deploy อัตโนมัติ: PartRequisitionApi.gs → Apps Script "Part API" (URL /exec เดิมที่หน้าเว็บใช้อยู่)
+# ทำงานเมื่อ push เข้า main แล้วไฟล์ PartRequisitionApi.gs เปลี่ยน หรือกด Run workflow เอง
+name: Deploy Part API (Apps Script)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - PartRequisitionApi.gs
+      - scripts/stage_part_api.mjs
+      - .github/workflows/deploy-part-api.yml
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'เหตุผลที่ deploy ด้วยมือ (แสดงใน description ของ deployment)'
+        required: false
+        default: 'manual deploy'
+
+# กัน deploy ซ้อนกัน: แต่ละ run เขียนทับ project จริง จึงต่อคิว ไม่ยกเลิก
+concurrency:
+  group: part-api-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLASPRC_JSON: ${{ secrets.CLASPRC_JSON }}
+      SCRIPT_ID: ${{ secrets.PART_API_SCRIPT_ID || vars.PART_API_SCRIPT_ID }}
+      # ค่าเริ่มต้นคือ deployment ที่ index.html เรียกอยู่ (PART_REQ_SHARED_API_URL) — ไม่ใช่ความลับ ตั้ง Secret/Variable ชื่อเดียวกันเพื่อทับได้
+      DEPLOYMENT_ID: ${{ secrets.PART_API_DEPLOYMENT_ID || vars.PART_API_DEPLOYMENT_ID || 'AKfycbwMkhvWJ3koge4dzElzg25YlMjSIePFeUmXeOp5H6Y-YqAqlTAenfBtgXqvq0yTsdrM' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ตรวจว่าตั้งค่าครบ
+        run: |
+          missing=""
+          [ -z "$CLASPRC_JSON" ] && missing="$missing CLASPRC_JSON(Secret)"
+          [ -z "$SCRIPT_ID" ] && missing="$missing PART_API_SCRIPT_ID(Secret/Variable)"
+          if [ -n "$missing" ]; then
+            echo "::error::ยังไม่ได้ตั้ง:$missing — ดูวิธีตั้งใน README หัวข้อ Auto deploy Part API"
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: ตรวจ syntax
+        run: node -e 'new Function(require("fs").readFileSync("PartRequisitionApi.gs","utf8"))'
+
+      - name: ติดตั้ง clasp และเขียน credential
+        run: |
+          npm install -g @google/clasp@2.4.2
+          printf '%s' "$CLASPRC_JSON" > "$HOME/.clasprc.json"
+          chmod 600 "$HOME/.clasprc.json"
+          node -e "const c=require(process.env.HOME+'/.clasprc.json'); if(!c.token||!c.token.refresh_token){console.error('CLASPRC_JSON ไม่มี token.refresh_token — คัดลอกไฟล์ ~/.clasprc.json มาไม่ครบ');process.exit(1)}"
+
+      - name: ดึงโค้ดปัจจุบันจาก Apps Script (backup)
+        run: |
+          mkdir -p remote
+          printf '{"scriptId":"%s","rootDir":"remote"}\n' "$SCRIPT_ID" > .clasp.json
+          clasp pull
+          ls -la remote
+
+      - name: เก็บ backup เป็น artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: part-api-backup-${{ github.sha }}
+          path: remote/
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: เตรียมไฟล์ที่จะ push
+        run: |
+          node scripts/stage_part_api.mjs remote build PartRequisitionApi.gs
+          ls -la build
+
+      - name: Push และสร้าง version ใหม่บน deployment เดิม
+        env:
+          REASON: ${{ github.event.inputs.reason }}
+        run: |
+          set -e
+          printf '{"scriptId":"%s","rootDir":"build"}\n' "$SCRIPT_ID" > .clasp.json
+          clasp push --force
+          desc="${REASON:-auto deploy} @ ${GITHUB_SHA:0:7} ($(date -u '+%Y-%m-%d %H:%M UTC'))"
+          clasp deploy -i "$DEPLOYMENT_ID" -d "$desc"
+          clasp deployments
+
+      - name: ตรวจว่า Web App ตอบได้
+        run: |
+          sleep 10
+          body=$(curl -sL "https://script.google.com/macros/s/${DEPLOYMENT_ID}/exec")
+          echo "$body" | head -c 300; echo
+          echo "$body" | grep -q 'Part requisition API is ready' || { echo "::error::Web App ไม่ตอบ 'Part requisition API is ready' — ตรวจ deployment/สิทธิ์การเข้าถึง"; exit 1; }
