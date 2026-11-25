@@ -9625,6 +9625,18 @@
       toast(`❌ บันทึกลง Google Sheet ไม่สำเร็จ: ${pickRemoteError}`);
     }
   }
+  // Spec ของ Part: ใบ ZJDB ไม่มี จึงดึงจาก Order (PPBOM) ก่อน แล้วค่อย On-Hand
+  let pickSpecMap = null, pickSpecSrc = null;
+  function pickSpecOf(code){
+    const orders = pickGetOrders(), inv = (Array.isArray(db.inventory) && db.inventory.length) ? db.inventory : (window.ONHAND_SEED?.inventory || []);
+    if (!pickSpecMap || pickSpecSrc?.[0] !== orders || pickSpecSrc?.[1] !== inv) {
+      pickSpecMap = new Map();
+      inv.forEach(x => { const c = String(x.partCode || x.materialCode || '').trim(), s = String(x.specification || '').trim(); if (c && s && !pickSpecMap.has(c)) pickSpecMap.set(c, s); });
+      orders.forEach(o => { const c = String(o.materialCode || '').trim(), s = String(o.specification || '').trim(); if (c && s) pickSpecMap.set(c, s); });
+      pickSpecSrc = [orders, inv];
+    }
+    return pickSpecMap.get(String(code || '').trim()) || '';
+  }
   function pickBuildDocs(){
     const docMap = window.PRODUCTION_EXECUTION_SEED?.directTransferDocsByDoc || {};
     // ผูกใบ ZJDB → MO จาก Order (directTransferDocs) และจาก PPBOM ที่เป็นต้นทางของใบ
@@ -9647,7 +9659,7 @@
       const mos = new Map(moByDoc.get(docNo) || []);
       (d.sourceDocs || []).forEach(p => { const m = moByPpbom.get(p); if (m && !mos.has(m.moNumber)) mos.set(m.moNumber, m); });
       const moList = [...mos.values()];
-      const items = (d.items || []).map((it, idx) => ({ ...it, docNo, lineNo: idx + 1, key: pickLineKey(docNo, idx, it), mos: moList.map(m => m.moNumber) }));
+      const items = (d.items || []).map((it, idx) => ({ ...it, specification: it.specification || pickSpecOf(it.materialCode), docNo, lineNo: idx + 1, key: pickLineKey(docNo, idx, it), mos: moList.map(m => m.moNumber) }));
       return { docNo, businessDate: d.businessDate || '', approveTime: d.approveTime || '', transactionType: d.transactionType || '', sourceDocs: d.sourceDocs || [], mos: moList, items, ...pickProgress(items), ...pickSets(items, moList) };
     });
   }
@@ -9750,7 +9762,7 @@
       <div style="overflow:auto"><table class="table" style="width:100%;font-size:13px"><thead><tr><th>Job</th><th>รหัส Part / ชื่อ</th><th>ประเภท</th><th style="text-align:right">BOM ต้องใช้</th><th style="text-align:right">ในใบเบิก</th><th style="text-align:right">ขาด</th><th>เบิกเพิ่มแล้ว</th><th style="text-align:right">ยังต้องเบิก</th><th>โลเคชั่นแนะนำ (On-Hand, Lot เก่าก่อน)</th>${canReq ? '<th></th>' : ''}</tr></thead><tbody>
       ${rows.map(r => `<tr style="${r.remain ? '' : 'opacity:.6'}">
         <td style="font-size:12px;white-space:nowrap">${esc(r.mo)}</td>
-        <td><div style="font-weight:700">${esc(r.materialCode)}</div><div style="font-size:12px">${esc(r.materialName || '')}</div></td>
+        <td><div style="font-weight:700">${esc(r.materialCode)}</div><div style="font-size:12px">${esc(r.materialName || '')}</div>${(r.specification || pickSpecOf(r.materialCode)) ? `<div class="helper" style="font-size:11.5px">Spec: ${esc(r.specification || pickSpecOf(r.materialCode))}</div>` : ''}</td>
         <td style="white-space:nowrap">${r.type === 'missing' ? '<span style="color:#b91c1c;font-weight:700">ไม่อยู่ในใบ</span>' : '<span style="color:#92400e;font-weight:700">จำนวนไม่ครบ</span>'}</td>
         <td style="text-align:right">${fmt(r.demand)}</td><td style="text-align:right">${fmt(r.docQ)}</td><td style="text-align:right;font-weight:800;color:#b91c1c">${fmt(r.gap)}</td>
         <td style="font-size:12px;white-space:nowrap">${r.exN ? `${fmt(r.exReq)} <span class="helper">(${fmt(r.exN)} ใบ · จ่ายแล้ว ${fmt(r.exIssued)})</span>` : '<span class="helper">—</span>'}</td>
@@ -9898,7 +9910,7 @@
             : `<button type="button" class="btn primary pick-open-btn" data-key="${esc(r.key)}" style="padding:6px 12px;font-size:13px">📦 เบิก</button>`}</td>
           <td>${i + 1}</td>
           <td style="white-space:nowrap">${pickActualBin(r) && pickActualBin(r) !== r.fromBin ? `<span style="font-weight:800;font-size:14px;color:#7c3aed">📍 ${esc(pickActualBin(r))}</span><div class="helper" style="text-decoration:line-through">ใบเบิก: ${esc(r.fromBin || 'ไม่ระบุ')}</div>` : pickIsPublicBin(r.fromBin) ? `<span style="font-weight:700;color:#92400e">${esc(r.fromBin || 'ไม่ระบุ')}</span>` : `<span style="font-weight:800;font-size:14px;color:#0f766e">${esc(r.fromBin)}</span>`}</td>
-          <td><div style="font-weight:700">${esc(r.materialCode)}</div><div style="font-size:12px">${esc(r.materialName || '')}</div></td>
+          <td><div style="font-weight:700">${esc(r.materialCode)}</div><div style="font-size:12px">${esc(r.materialName || '')}</div>${(r.specification || pickSpecOf(r.materialCode)) ? `<div class="helper" style="font-size:11.5px">Spec: ${esc(r.specification || pickSpecOf(r.materialCode))}</div>` : ''}</td>
           <td style="white-space:nowrap">${pickActualLot(r) && pickActualLot(r) !== r.lotNumber ? `<b style="color:#7c3aed">${esc(pickActualLot(r))}</b><div class="helper" style="text-decoration:line-through">ใบเบิก: ${esc(r.lotNumber || '—')}</div>` : esc(r.lotNumber || '—')}</td>
           <td style="text-align:right;font-weight:800;font-size:14px">${fmt(r.qty)}</td>
           <td style="text-align:right;white-space:nowrap">${touched ? `<b style="font-size:15px;color:${isPartial ? '#b91c1c' : '#047857'}">${fmt(pickQtyOf(r))}</b> <span title="บันทึกแล้ว — กด ✏️ แก้ไข เพื่อเปลี่ยน">🔒</span>${isPartial ? `<div style="color:#b91c1c;font-size:11.5px;font-weight:700">ขาด ${fmt(n(r.qty) - pickQtyOf(r))}</div>` : ''}` : '<span class="helper">—</span>'}</td>
@@ -9919,9 +9931,9 @@
         <div class="meta-row"><span class="meta-label">ใบเบิก ZJDB (${sel.length}):</span><span>${sel.map(d => esc(d.docNo)).join(', ')}</span></div>
         <div class="meta-row"><span class="meta-label">Job / MO (${mos.length}):</span><span>${mos.map(esc).join(', ') || '—'}</span></div>
       </div>
-      <table><thead><tr><th>#</th><th>✓</th><th>โลเคชั่น<br>调出仓位</th><th>รหัส Part<br>物料编码</th><th>ชื่อ Part<br>物料名称</th><th>Lot<br>批号</th><th>จำนวน<br>数量</th><th>คลังปลายทาง<br>调入仓库</th><th>ใบเบิก</th><th>จ่ายจริง</th></tr></thead><tbody>
+      <table><thead><tr><th>#</th><th>✓</th><th>โลเคชั่น<br>调出仓位</th><th>รหัส Part<br>物料编码</th><th>ชื่อ Part<br>物料名称</th><th>Spec<br>规格型号</th><th>Lot<br>批号</th><th>จำนวน<br>数量</th><th>คลังปลายทาง<br>调入仓库</th><th>ใบเบิก</th><th>จ่ายจริง</th></tr></thead><tbody>
       ${rows.map((r, i) => `<tr><td class="num">${i + 1}</td><td style="width:26px;text-align:center">${pickIsPicked(r.key) ? '✓' : pickIsPartial(r.key) ? '⚠' : ''}</td>
-        <td class="nowrap"><b>${esc(pickActualBin(r) || r.fromBin || 'ไม่ระบุ')}</b>${pickActualBin(r) && pickActualBin(r) !== r.fromBin ? `<br><small>(ใบเบิก: ${esc(r.fromBin || '—')})</small>` : ''}</td><td class="nowrap">${esc(r.materialCode)}</td><td>${esc(r.materialName || '')}</td>
+        <td class="nowrap"><b>${esc(pickActualBin(r) || r.fromBin || 'ไม่ระบุ')}</b>${pickActualBin(r) && pickActualBin(r) !== r.fromBin ? `<br><small>(ใบเบิก: ${esc(r.fromBin || '—')})</small>` : ''}</td><td class="nowrap">${esc(r.materialCode)}</td><td>${esc(r.materialName || '')}</td><td class="nowrap">${esc(r.specification || '')}</td>
         <td class="nowrap">${esc(pickActualLot(r) || r.lotNumber || '—')}${pickActualLot(r) && pickActualLot(r) !== r.lotNumber ? `<br><small>(ใบเบิก: ${esc(r.lotNumber || '—')})</small>` : ''}</td><td class="num"><b>${fmt(r.qty)}</b></td><td>${esc(r.toWarehouse || '')}</td><td class="nowrap">${esc(r.docNo)}</td><td class="num" style="width:70px">${pickState.get(r.key) && pickState.get(r.key).status !== 'unpicked' ? fmt(pickQtyOf(r)) : ''}</td></tr>`).join('')}
       </tbody></table>
       <div class="doc-footer"><div>ผู้จัด: ____________________</div><div>ผู้ตรวจ: ____________________</div><div>ผู้รับ (ไลน์ผลิต): ____________________</div></div>
@@ -9932,9 +9944,9 @@
     const sel = pickSelectedDocList();
     if (!sel.length) { toast('กรุณาเลือกใบเบิกก่อนส่งออก'); return; }
     const rows = pickRows(sel);
-    const head = ['From Bin', 'From Warehouse', 'Material', 'Material Name', 'Lot', 'Qty', 'To Warehouse', 'ZJDB', 'MO', 'Picked', 'Picked Qty', 'Short Qty', 'Actual Bin', 'Actual Lot', 'Picked By', 'Picked At'];
+    const head = ['From Bin', 'From Warehouse', 'Material', 'Material Name', 'Specification', 'Lot', 'Qty', 'To Warehouse', 'ZJDB', 'MO', 'Picked', 'Picked Qty', 'Short Qty', 'Actual Bin', 'Actual Lot', 'Picked By', 'Picked At'];
     const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-    const csv = [head, ...rows.map(r => { const st = pickState.get(r.key) || {}; const done = st.status === 'picked' || st.status === 'partial'; const pq = pickQtyOf(r); return [r.fromBin, r.fromWarehouse, r.materialCode, r.materialName, r.lotNumber, r.qty, r.toWarehouse, r.docNo, r.mos.join(' '), st.status === 'picked' ? 'Y' : st.status === 'partial' ? 'PARTIAL' : '', done ? pq : '', done ? Math.max(0, n(r.qty) - pq) : '', pickActualBin(r), pickActualLot(r), done ? st.pickedBy : '', done ? st.pickedAt : '']; })].map(r => r.map(q).join(',')).join('\r\n');
+    const csv = [head, ...rows.map(r => { const st = pickState.get(r.key) || {}; const done = st.status === 'picked' || st.status === 'partial'; const pq = pickQtyOf(r); return [r.fromBin, r.fromWarehouse, r.materialCode, r.materialName, r.specification, r.lotNumber, r.qty, r.toWarehouse, r.docNo, r.mos.join(' '), st.status === 'picked' ? 'Y' : st.status === 'partial' ? 'PARTIAL' : '', done ? pq : '', done ? Math.max(0, n(r.qty) - pq) : '', pickActualBin(r), pickActualLot(r), done ? st.pickedBy : '', done ? st.pickedAt : '']; })].map(r => r.map(q).join(',')).join('\r\n');
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
     a.download = `picking-list-${new Date().toISOString().slice(0, 10)}.csv`;
@@ -10112,6 +10124,7 @@
       info: `<div style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:baseline">
         <span class="helper">โลเคชั่น</span><b style="font-size:18px;color:#0f766e">${esc(bin)}</b>
         <span class="helper">Part</span><span><b>${esc(row.materialCode)}</b> ${esc(row.materialName || '')}</span>
+        <span class="helper">Spec</span><span>${esc(row.specification || '—')}</span>
         <span class="helper">Lot</span><span>${esc(row.lotNumber || '—')}</span>
         <span class="helper">จำนวนในใบ</span><b style="font-size:16px">${fmt(row.qty)}</b>
         <span class="helper">ใบเบิก / Job</span><span>${esc(row.docNo)}${row.mos?.length ? ` · ${row.mos.map(esc).join(', ')}` : ''}</span>
