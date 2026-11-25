@@ -2190,10 +2190,12 @@
                 <option value="open">⏳ ยังเบิกไม่ครบ</option>
                 <option value="progress">🟡 กำลังเบิก</option>
                 <option value="short">⚠️ เบิกไม่ครบ</option>
+                <option value="bomgap">🧩 ใบเบิกไม่ครบตาม BOM</option>
                 <option value="done">✅ เบิกครบแล้ว</option>
                 <option value="">ทั้งหมด</option>
               </select>
               <input id="pickDateFilter" class="field" type="date" title="วันที่ใบเบิก (Business Date)">
+              <label class="helper" style="display:flex;gap:5px;align-items:center" title="ตระกูลลาเบลจ่ายแยก จึงไม่นับเป็นของขาดจากใบเบิก"><input type="checkbox" id="pickShowLabels"> นับลาเบลด้วย</label>
               <input id="pickSearch" class="field search" placeholder="ค้นหาเลขใบ ZJDB, MO, รหัส/ชื่อ Part, โลเคชั่น, ผู้เบิก">
             </div>
             <span id="pickDocCount" class="helper"></span>
@@ -2213,6 +2215,7 @@
             </div>
           </div>
           <div id="pickListTable" style="overflow:auto"></div>
+          <div id="pickBomGapBox"></div>
         </div>
       </section>
       <section class="page" id="page-stock">
@@ -9672,10 +9675,109 @@
     }));
     return [...mos.values()].map(x => ({ ...x, ...pickProgress(x.items), ...pickSets(x.items, [x]) }));
   }
+
+  // ===== เทียบ BOM (PPBOM) กับใบเบิก ZJDB + ใบเบิก Part เพิ่มเติม =====
+  // ตระกูลลาเบลจ่ายแยก → ไม่นับเป็นของขาด (เว้นแต่ติ๊ก "นับลาเบลด้วย")
+  const pickIsLabel = name => /label|ลาเบล|sticker|สติ๊กเกอร์|\bqr\s*code\b/i.test(String(name || ''));
+  let pickBomIdx = null, pickBomIdxSrc = null;
+  function pickBomIndex(){
+    const orders = pickGetOrders();
+    if (pickBomIdx && pickBomIdxSrc === orders) return pickBomIdx;
+    const idx = new Map();
+    orders.forEach(o => {
+      if (!o.moNumber || !o.materialCode) return;
+      let m = idx.get(o.moNumber); if (!m) { m = new Map(); idx.set(o.moNumber, m); }
+      const x = m.get(o.materialCode) || { materialCode: o.materialCode, materialName: o.materialName, specification: o.specification, unit: o.unit, demand: 0 };
+      x.demand += n(o.demandQty); m.set(o.materialCode, x);
+    });
+    pickBomIdxSrc = orders; return (pickBomIdx = idx);
+  }
+  function pickExtraReqs(mo){
+    const list = (typeof partRequisitionsList !== 'undefined' && Array.isArray(partRequisitionsList) && partRequisitionsList.length) ? partRequisitionsList : (window.PART_REQUISITIONS_SEED?.items || []);
+    const by = new Map(); let count = 0;
+    list.forEach(r => {
+      if (String(r.moNumber || '').trim().toUpperCase() !== String(mo).toUpperCase() || r.deleted || r.status === 'cancelled') return;
+      count++;
+      const k = String(r.materialCode || '').trim().toUpperCase();
+      const x = by.get(k) || { req: 0, issued: 0, n: 0 };
+      const q = n(r.requestQty); x.req += q; x.n++;
+      if (r.status === 'issued') x.issued += (Array.isArray(r.locations) && r.locations.some(l => n(l.qty) > 0)) ? r.locations.reduce((s, l) => s + n(l.qty), 0) : q;
+      by.set(k, x);
+    });
+    return { by, count };
+  }
+  function pickBomGap(m){
+    const bom = pickBomIndex().get(m.moNumber); if (!bom) return null;
+    const showLabels = !!el('pickShowLabels')?.checked;
+    const inDoc = new Map(); m.items.forEach(it => inDoc.set(it.materialCode, (inDoc.get(it.materialCode) || 0) + n(it.qty)));
+    const extra = pickExtraReqs(m.moNumber);
+    const rows = []; let labelsSkipped = 0;
+    bom.forEach(b => {
+      const docQ = inDoc.get(b.materialCode) || 0;
+      if (docQ >= b.demand - 1e-6) return;
+      if (pickIsLabel(b.materialName) && !showLabels) { labelsSkipped++; return; }
+      const ex = extra.by.get(String(b.materialCode).toUpperCase()) || { req: 0, issued: 0, n: 0 };
+      const gap = b.demand - docQ;
+      rows.push({ ...b, mo: m.moNumber, docQ, gap, type: docQ > 0 ? 'short' : 'missing', exReq: ex.req, exIssued: ex.issued, exN: ex.n, remain: Math.max(0, gap - ex.req) });
+    });
+    rows.sort((a, b) => (a.type === b.type ? 0 : a.type === 'missing' ? -1 : 1) || b.remain - a.remain);
+    return { rows, missing: rows.filter(r => r.type === 'missing').length, short: rows.filter(r => r.type === 'short').length, remain: rows.filter(r => r.remain > 0).length, labelsSkipped, extraCount: extra.count };
+  }
+  function pickBomCell(m){
+    const g = pickBomGap(m);
+    if (!g) return '<span class="helper">—</span>';
+    const ex = g.extraCount ? `<div class="helper">📝 เบิกเพิ่มแล้ว ${fmt(g.extraCount)} รายการ</div>` : '';
+    if (!g.rows.length) return `<span style="color:#047857;font-weight:700;white-space:nowrap">✅ ครบตาม BOM</span>${g.labelsSkipped ? `<div class="helper">ไม่นับลาเบล ${fmt(g.labelsSkipped)}</div>` : ''}${ex}`;
+    const parts = [g.missing ? `ไม่อยู่ในใบ ${fmt(g.missing)}` : '', g.short ? `ไม่ครบ ${fmt(g.short)}` : ''].filter(Boolean).join(' · ');
+    return `<span style="color:${g.remain ? '#b91c1c' : '#92400e'};font-weight:800;white-space:nowrap">🧩 ${parts}</span>${g.remain ? '' : '<div class="helper">เบิกเพิ่มครบแล้ว</div>'}${ex}`;
+  }
+  function pickSuggestBins(code){
+    const inv = (Array.isArray(db.inventory) && db.inventory.length ? db.inventory : (window.ONHAND_SEED?.inventory || []))
+      .filter(x => String(x.partCode || x.materialCode || '').trim() === code && n(x.onHand ?? x.onHandQty ?? x.availableQty) > 0
+        && !/^(H9 Assembly-Workshop Warehouse|Scrap Warehouse|Defective Warehouse|Sealed Inventory Warehouse|Outsourced Sealed Warehouse)$/.test(String(x.warehouse || '')));
+    return inv.sort((a, b) => String(a.lotNumber || '9').localeCompare(String(b.lotNumber || '9'))).slice(0, 3)
+      .map(x => `<div style="white-space:nowrap"><b style="color:#0f766e">${esc(String(x.storage || '').trim() || 'ไม่ระบุ')}</b> <span class="helper">Lot ${esc(x.lotNumber || '—')} · ${fmt(n(x.onHand ?? x.onHandQty ?? x.availableQty))}</span></div>`).join('') || '<span class="helper">ไม่มีใน On-Hand</span>';
+  }
+  function pickRenderBomGap(sel){
+    const box = el('pickBomGapBox'); if (!box) return;
+    if (!sel.length) { box.innerHTML = ''; return; }
+    const mos = pickBuildMos(sel), gaps = mos.map(m => pickBomGap(m)).filter(Boolean);
+    const rows = gaps.flatMap(g => g.rows), skipped = gaps.reduce((s, g) => s + g.labelsSkipped, 0);
+    const cu = typeof getCurrentUser === 'function' ? getCurrentUser() : null, canReq = cu && !['warehouse'].includes(cu.role);
+    if (!rows.length) { box.innerHTML = `<div style="margin-top:12px;padding:10px 12px;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:10px;font-size:13px;color:#047857;font-weight:700">✅ ใบเบิกครบตาม BOM${skipped ? ` <span class="helper" style="font-weight:400">(ไม่นับลาเบลที่จ่ายแยก ${fmt(skipped)} รายการ)</span>` : ''}</div>`; return; }
+    box.innerHTML = `<div style="margin-top:16px;border:1px solid #fecaca;border-radius:10px;overflow:hidden">
+      <div style="padding:10px 12px;background:#fef2f2;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><strong style="color:#b91c1c">🧩 Part ใน BOM ที่ไม่อยู่ในใบเบิก / จำนวนไม่ครบ (${fmt(rows.length)} รายการ)</strong><span class="helper">เทียบ PPBOM กับใบ ZJDB${skipped ? ` · ไม่นับลาเบลที่จ่ายแยก ${fmt(skipped)}` : ''} · จัดไปพร้อมกันได้จากโลเคชั่นแนะนำ</span></div>
+      <div style="overflow:auto"><table class="table" style="width:100%;font-size:13px"><thead><tr><th>Job</th><th>รหัส Part / ชื่อ</th><th>ประเภท</th><th style="text-align:right">BOM ต้องใช้</th><th style="text-align:right">ในใบเบิก</th><th style="text-align:right">ขาด</th><th>เบิกเพิ่มแล้ว</th><th style="text-align:right">ยังต้องเบิก</th><th>โลเคชั่นแนะนำ (On-Hand, Lot เก่าก่อน)</th>${canReq ? '<th></th>' : ''}</tr></thead><tbody>
+      ${rows.map(r => `<tr style="${r.remain ? '' : 'opacity:.6'}">
+        <td style="font-size:12px;white-space:nowrap">${esc(r.mo)}</td>
+        <td><div style="font-weight:700">${esc(r.materialCode)}</div><div style="font-size:12px">${esc(r.materialName || '')}</div></td>
+        <td style="white-space:nowrap">${r.type === 'missing' ? '<span style="color:#b91c1c;font-weight:700">ไม่อยู่ในใบ</span>' : '<span style="color:#92400e;font-weight:700">จำนวนไม่ครบ</span>'}</td>
+        <td style="text-align:right">${fmt(r.demand)}</td><td style="text-align:right">${fmt(r.docQ)}</td><td style="text-align:right;font-weight:800;color:#b91c1c">${fmt(r.gap)}</td>
+        <td style="font-size:12px;white-space:nowrap">${r.exN ? `${fmt(r.exReq)} <span class="helper">(${fmt(r.exN)} ใบ · จ่ายแล้ว ${fmt(r.exIssued)})</span>` : '<span class="helper">—</span>'}</td>
+        <td style="text-align:right;font-weight:800;font-size:14px;color:${r.remain ? '#b91c1c' : '#047857'}">${r.remain ? fmt(r.remain) : '✅'}</td>
+        <td>${pickSuggestBins(r.materialCode)}</td>
+        ${canReq ? `<td>${r.remain ? `<button type="button" class="btn pick-req-btn" data-mo="${esc(r.mo)}" data-code="${esc(r.materialCode)}" data-qty="${esc(r.remain)}" data-type="${r.type}" style="padding:4px 10px;font-size:12px;white-space:nowrap">📝 เบิกเพิ่ม</button>` : ''}</td>` : ''}</tr>`).join('')}
+      </tbody></table></div></div>`;
+  }
+  // เปิดหน้า เบิก Part เพิ่มเติม พร้อมกรอก MO / Part / จำนวน / สาเหตุ ให้
+  function pickOpenExtraReq(mo, code, qty, type){
+    goto('part-requisition');
+    setTimeout(() => {
+      try {
+        if (el('reqMoInput')) { el('reqMoInput').value = mo; if (typeof syncMoLinkedZjdbDisplay === 'function') syncMoLinkedZjdbDisplay(mo); }
+        if (typeof applySelectedMaterialCode === 'function') applySelectedMaterialCode(code); else if (el('reqMatCodeInput')) el('reqMatCodeInput').value = code;
+        if (el('reqQtyInput')) el('reqQtyInput').value = qty;
+        const rs = el('reqReasonSelect'); if (rs) { rs.value = type === 'missing' ? 'มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)' : 'ของไม่ครบตามถุง/Shortage'; rs.dispatchEvent(new Event('change', { bubbles: true })); }
+        el('reqQtyInput')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        toast(`กรอกให้แล้ว: ${mo} · ${code} · ${fmt(qty)} — ตรวจสอบแล้วกดบันทึก`);
+      } catch (_) {}
+    }, 250);
+  }
   function pickMatchState(stateFilter, s){
     if (stateFilter === 'open') return s !== 'done';
     if (stateFilter === 'progress') return s === 'progress';
     if (stateFilter === 'short') return s === 'short';
+    if (stateFilter === 'bomgap') return true;
     if (stateFilter === 'done') return s === 'done';
     return true;
   }
@@ -9703,6 +9805,7 @@
     return pickBuildMos(docs).filter(m => {
       if (dept && m.department !== dept) return false;
       if (!pickMatchState(stateF, m.state)) return false;
+      if (stateF === 'bomgap') { const g = pickBomGap(m); if (!g || !g.remain) return false; }
       if (date && !m.items.some(it => String(docs.find(d => d.docNo === it.docNo)?.businessDate || '').startsWith(date))) return false;
       if (q && ![m.moNumber, m.productCode, m.productName, ...m.docs, ...m.pickers].join(' ').toLowerCase().includes(q)) return false;
       return true;
@@ -9752,13 +9855,13 @@
       const list = pickFilterMos(docs), shown = list.slice(0, 300);
       el('pickDocCount').textContent = `${fmt(list.length)} Job${list.length > shown.length ? ` · แสดง ${shown.length} Job ล่าสุด` : ''} · เลือกใบเบิกแล้ว ${fmt(pickSelectedDocs.size)}`;
       el('pickDocTable').innerHTML = shown.length ? `<table class="table" style="width:100%;font-size:13px"><thead style="position:sticky;top:0;background:#f8fafc;z-index:1"><tr>
-        <th style="width:34px"><input type="checkbox" id="pickSelectAll" ${shown.length && shown.every(m => m.docs.every(d => pickSelectedDocs.has(d))) ? 'checked' : ''} title="เลือกทั้งหมดที่แสดง"></th><th>Job (MO)</th><th>สินค้า</th><th>ใบเบิก ZJDB</th><th>สถานะ</th><th style="text-align:right">จำนวนชุด<br><span class="helper">เบิกแล้ว / ทั้งหมด (set)</span></th><th>ความคืบหน้า</th><th>เบิกโดย / ล่าสุด</th></tr></thead><tbody>
+        <th style="width:34px"><input type="checkbox" id="pickSelectAll" ${shown.length && shown.every(m => m.docs.every(d => pickSelectedDocs.has(d))) ? 'checked' : ''} title="เลือกทั้งหมดที่แสดง"></th><th>Job (MO)</th><th>สินค้า</th><th>ใบเบิก ZJDB</th><th>สถานะ</th><th>เทียบ BOM</th><th style="text-align:right">จำนวนชุด<br><span class="helper">เบิกแล้ว / ทั้งหมด (set)</span></th><th>ความคืบหน้า</th><th>เบิกโดย / ล่าสุด</th></tr></thead><tbody>
         ${shown.map(m => { const sel = m.docs.every(d => pickSelectedDocs.has(d)); return `<tr data-mo-docs="${esc(m.docs.join(','))}" style="cursor:pointer;${sel ? 'background:#ecfdf5' : ''}">
           <td><input type="checkbox" ${sel ? 'checked' : ''}></td>
           <td style="font-weight:700;white-space:nowrap">${esc(m.moNumber)}<div class="helper">${esc(m.lastDate)}</div></td>
           <td><div style="font-weight:650">${esc(m.productName || '')}</div><div class="helper">${esc(m.productCode || '')} · สั่งผลิต ${fmt(m.orderQty)}</div></td>
           <td style="font-size:12px">${m.docs.map(esc).join('<br>')}</td>
-          <td>${pickStateBadge(m)}</td><td>${pickQtyCell(m)}</td><td>${pickProgressCell(m)}</td><td>${pickWhoCell(m)}</td></tr>`; }).join('')}
+          <td>${pickStateBadge(m)}</td><td>${pickBomCell(m)}</td><td>${pickQtyCell(m)}</td><td>${pickProgressCell(m)}</td><td>${pickWhoCell(m)}</td></tr>`; }).join('')}
         </tbody></table>` : `<div class="helper" style="padding:18px;text-align:center">ไม่พบ Job ตามตัวกรองนี้</div>`;
     } else {
       const list = pickFilterDocs(docs), shown = list.slice(0, 300);
@@ -9780,6 +9883,7 @@
   function renderPickingList(){
     const wrap = el('pickListTable'); if (!wrap) return;
     const sel = pickSelectedDocList();
+    pickRenderBomGap(sel);
     if (!sel.length) { wrap.innerHTML = `<div class="helper" style="padding:22px;text-align:center">เลือกใบเบิกหรือ Job ด้านบน (ติ๊ก ☑ ได้หลายรายการ) เพื่อดูรายการที่ต้องเบิกพร้อมโลเคชั่น</div>`; el('pickListInfo').textContent = ''; return; }
     const rows = pickRows(sel), hideDone = el('pickHideDone')?.checked, prog = pickProgress(rows);
     el('pickListInfo').innerHTML = `· ${fmt(new Set(sel.flatMap(d => d.mos.map(m => m.moNumber))).size)} Job (${fmt(sel.length)} ใบ) · Part เบิกครบ <b>${fmt(prog.partDone)}/${fmt(prog.partTotal)}</b> · จุดเบิก ${fmt(prog.doneCount)}/${fmt(prog.lineTotal)}${prog.partialCount ? ` · <b style="color:#b91c1c">⚠️ เบิกไม่ครบ ${fmt(prog.partialCount)} รายการ</b>` : ''} ${(() => { const s = pickBuildMos(sel).filter(m => m.setTotal !== null); return s.length ? ` · ชุด <b>${s.map(m => `${fmt(m.setDone)}/${fmt(m.setTotal)}`).join(', ')}</b> set` : ''; })()}`;
@@ -9876,6 +9980,8 @@
         pickSelectedDocs.has(doc) ? pickSelectedDocs.delete(doc) : pickSelectedDocs.add(doc);
         renderPickingPage();
       });
+      el('pickShowLabels')?.addEventListener('change', renderPickingPage);
+      el('pickBomGapBox')?.addEventListener('click', e => { const b = e.target.closest('.pick-req-btn'); if (b) pickOpenExtraReq(b.dataset.mo, b.dataset.code, n(b.dataset.qty), b.dataset.type); });
       el('pickListTable')?.addEventListener('click', e => {
         const btn = e.target.closest('.pick-open-btn'); if (!btn) return;
         const row = pickRows(pickSelectedDocList()).find(r => r.key === btn.dataset.key);
