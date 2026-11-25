@@ -2970,6 +2970,14 @@
  <div id="safetyFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ Safety Stock"><div class="stock-filter-popup-head"><strong id="safetyFilterTitle">ตัวกรอง</strong><button id="safetyFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><div style="display:flex;gap:6px;flex:0 0 auto"><button id="safetyFilterSortAsc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬆️ น้อย → มาก</button><button id="safetyFilterSortDesc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬇️ มาก → น้อย</button></div><input id="safetyFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="safetyFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="safetyFilterCount" class="helper"></div><div id="safetyFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="safetyFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="safetyFilterCancel" class="btn" type="button">ยกเลิก</button><button id="safetyFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
  <div id="poTrackingFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ ติดตาม Order ผลิต"><div class="stock-filter-popup-head"><strong id="poTrackingFilterTitle">ตัวกรอง</strong><button id="poTrackingFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><div style="display:flex;gap:6px;flex:0 0 auto"><button id="poTrackingFilterSortAsc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬆️ น้อย → มาก</button><button id="poTrackingFilterSortDesc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬇️ มาก → น้อย</button></div><input id="poTrackingFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="poTrackingFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="poTrackingFilterCount" class="helper"></div><div id="poTrackingFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="poTrackingFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="poTrackingFilterCancel" class="btn" type="button">ยกเลิก</button><button id="poTrackingFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
  <div class="toast" id="toast" role="status"></div>
+<style>
+  .pick-combo-drop{position:absolute;left:0;right:0;top:100%;margin-top:3px;max-height:260px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:9px;box-shadow:0 12px 30px #10262c30;z-index:30;font-size:13.5px}
+  .pick-combo-drop .grp{padding:6px 10px 3px;font-size:11.5px;font-weight:800;color:#64748b;background:#f8fafc;position:sticky;top:0}
+  .pick-combo-drop .opt{padding:7px 10px;cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+  .pick-combo-drop .opt b{font-weight:800;color:#0f172a}.pick-combo-drop .opt small{color:#64748b;white-space:nowrap}
+  .pick-combo-drop .opt.active,.pick-combo-drop .opt:hover{background:#ecfdf5}
+  .pick-combo-drop mark{background:#fde68a;color:inherit;padding:0}
+</style>
 <div class="modal-backdrop" id="pickModal" role="dialog" aria-modal="true" aria-labelledby="pickModalTitle"><div class="modal" style="width:min(520px,100%)">
   <h2 id="pickModalTitle"></h2>
   <div id="pickModalInfo" style="font-size:14px;color:#334155;margin:8px 0 4px"></div>
@@ -2981,14 +2989,15 @@
     </div>
     <div id="pickModalHint" style="margin-top:6px;font-size:13.5px;font-weight:700"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
-      <label style="font-weight:700;font-size:13.5px">โลเคชั่นที่เบิกจริง
-        <input id="pickModalBin" class="field" list="pickModalBinList" autocomplete="off" style="width:100%;margin-top:4px;font-weight:700">
-      </label>
-      <label style="font-weight:700;font-size:13.5px">Lot ที่เบิกจริง
-        <input id="pickModalLot" class="field" list="pickModalLotList" autocomplete="off" style="width:100%;margin-top:4px">
-      </label>
+      <div style="position:relative"><label for="pickModalBin" style="font-weight:700;font-size:13.5px">โลเคชั่นที่เบิกจริง</label>
+        <input id="pickModalBin" class="field" autocomplete="off" spellcheck="false" placeholder="พิมพ์เพื่อค้นหา เช่น cc16" role="combobox" aria-autocomplete="list" aria-controls="pickModalBinDrop" style="width:100%;margin-top:4px;font-weight:700">
+        <div id="pickModalBinDrop" class="pick-combo-drop hidden" role="listbox"></div>
+      </div>
+      <div style="position:relative"><label for="pickModalLot" style="font-weight:700;font-size:13.5px">Lot ที่เบิกจริง</label>
+        <input id="pickModalLot" class="field" autocomplete="off" spellcheck="false" placeholder="พิมพ์เพื่อค้นหา Lot" role="combobox" aria-autocomplete="list" aria-controls="pickModalLotDrop" style="width:100%;margin-top:4px">
+        <div id="pickModalLotDrop" class="pick-combo-drop hidden" role="listbox"></div>
+      </div>
     </div>
-    <datalist id="pickModalBinList"></datalist><datalist id="pickModalLotList"></datalist>
     <div id="pickModalLocHint" class="helper" style="margin-top:6px"></div>
   </div>
   <div class="modal-actions" style="flex-wrap:wrap">
@@ -9879,9 +9888,85 @@
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready); else ready();
   })();
 
+
+  // ===== Combobox ค้นหาโลเคชั่น/Lot (พิมพ์บางส่วน ไม่สนขีด/ตัวพิมพ์) =====
+  const pickComboOpts = { pickModalBin: [], pickModalLot: [] };
+  let pickAllBinsCache = null;
+  function pickAllBins(){
+    if (pickAllBinsCache) return pickAllBinsCache;
+    const set = new Set();
+    (Array.isArray(db.inventory) && db.inventory.length ? db.inventory : (window.ONHAND_SEED?.inventory || [])).forEach(x => { const b = String(x.storage || '').trim(); if (b) set.add(b); });
+    Object.values(window.PRODUCTION_EXECUTION_SEED?.directTransferDocsByDoc || {}).forEach(d => (d.items || []).forEach(it => { const b = String(it.fromBin || '').trim(); if (b) set.add(b); }));
+    return (pickAllBinsCache = [...set].sort((a, b) => a.localeCompare(b)));
+  }
+  const pickNorm = s => String(s || '').toUpperCase().replace(/[\s\-_/.]/g, '');
+  function pickComboScore(value, q){
+    if (!q) return 1;
+    const v = pickNorm(value), nq = pickNorm(q);
+    if (!nq) return 1;
+    if (v === nq) return 100;
+    if (v.startsWith(nq)) return 80;
+    const i = v.indexOf(nq); if (i >= 0) return 60 - Math.min(i, 20);
+    // จับคู่ทีละช่วง: cc16 → [CC][16] ตรงกับช่วง CC-01-16A (ข้ามช่วงได้, เลข 0 นำหน้าไม่นับ)
+    const toks = String(q).toUpperCase().match(/[A-Z]+|\d+/g) || [], segs = String(value).toUpperCase().split(/[\s\-_/.]+/).filter(Boolean);
+    if (toks.length > 1 || (toks.length === 1 && segs.length > 1)) {
+      let si = 0, okAll = true;
+      for (const tk of toks) {
+        let hit = false;
+        while (si < segs.length) { const sg = segs[si++], tz = tk.replace(/^0+(?=\d)/, ''), sz = sg.replace(/^0+(?=\d)/, ''); if (sg.startsWith(tk) || sz.startsWith(tz)) { hit = true; break; } }
+        if (!hit) { okAll = false; break; }
+      }
+      if (okAll) return 45;
+    }
+    let j = 0; for (const ch of v) { if (ch === nq[j]) j++; if (j === nq.length) return 20; } // ตัวอักษรเรียงตามลำดับ เช่น cc16 → CC-01-16A
+    return 0;
+  }
+  function pickComboHighlight(value, q){
+    const nq = pickNorm(q); if (!nq) return esc(value);
+    // ไฮไลต์ตัวอักษรที่ตรง (ข้ามขีด)
+    let j = 0, out = '';
+    for (const ch of String(value)) { const c = ch.toUpperCase(); if (j < nq.length && c === nq[j]) { out += `<mark>${esc(ch)}</mark>`; j++; } else out += esc(ch); }
+    return j === nq.length ? out : esc(value);
+  }
+  function pickComboRender(id, showAll = false){
+    const input = el(id), drop = el(id + 'Drop'); if (!input || !drop) return;
+    const q = showAll ? '' : input.value;
+    const list = pickComboOpts[id].map(o => ({ ...o, s: pickComboScore(o.value, q) })).filter(o => o.s > 0)
+      .sort((a, b) => (q ? b.s - a.s : 0) || 0).slice(0, 80);
+    if (!list.length) { drop.innerHTML = `<div class="grp" style="position:static">ไม่พบ "${esc(q)}" — ใช้ค่าที่พิมพ์ได้</div>`; drop.classList.remove('hidden'); drop.dataset.active = '-1'; return; }
+    let html = '', lastG = null;
+    list.forEach((o, i) => {
+      if (!q && o.group !== lastG) { html += `<div class="grp">${esc(o.group)}</div>`; lastG = o.group; }
+      html += `<div class="opt" role="option" data-i="${i}" data-v="${esc(o.value)}"><b>${pickComboHighlight(o.value, q)}</b><small>${esc(o.note || (q ? o.group.replace(/\s*\(.*\)$/, '') : ''))}</small></div>`;
+    });
+    drop.innerHTML = html; drop.classList.remove('hidden'); drop.dataset.active = '-1';
+  }
+  function pickComboClose(id){ el(id + 'Drop')?.classList.add('hidden'); }
+  function pickComboMove(id, dir){
+    const drop = el(id + 'Drop'); if (!drop || drop.classList.contains('hidden')) return false;
+    const opts = [...drop.querySelectorAll('.opt')]; if (!opts.length) return false;
+    let a = Number(drop.dataset.active || -1) + dir; a = Math.max(0, Math.min(opts.length - 1, a));
+    opts.forEach((o, i) => o.classList.toggle('active', i === a)); drop.dataset.active = String(a);
+    opts[a].scrollIntoView({ block: 'nearest' }); return true;
+  }
+  function pickComboPick(id, value){ const input = el(id); input.value = value; pickComboClose(id); pickModalLocHint(); }
+  function pickBindCombo(id){
+    const input = el(id), drop = el(id + 'Drop');
+    input.addEventListener('focus', () => { input.select(); pickComboRender(id, true); });
+    input.addEventListener('input', () => { pickComboRender(id); pickModalLocHint(); });
+    input.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown') { e.preventDefault(); if (drop.classList.contains('hidden')) pickComboRender(id, true); pickComboMove(id, 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); pickComboMove(id, -1); }
+      else if (e.key === 'Enter') { const a = drop.querySelectorAll('.opt')[Number(drop.dataset.active || -1)]; if (!drop.classList.contains('hidden')) { e.preventDefault(); e.stopPropagation(); if (a) pickComboPick(id, a.dataset.v); else pickComboClose(id); } }
+      else if (e.key === 'Escape' && !drop.classList.contains('hidden')) { e.preventDefault(); e.stopPropagation(); pickComboClose(id); }
+      else if (e.key === 'Tab') pickComboClose(id);
+    });
+    drop.addEventListener('mousedown', e => { const o = e.target.closest('.opt'); if (o) { e.preventDefault(); pickComboPick(id, o.dataset.v); } });
+    input.addEventListener('blur', () => setTimeout(() => pickComboClose(id), 120));
+  }
   // ===== Popup ยืนยันการเบิก (ใช้แทน confirm ของเบราว์เซอร์) =====
   let pickModalCtx = null;
-  function pickCloseModal(){ el('pickModal')?.classList.remove('show'); pickModalCtx = null; }
+  function pickCloseModal(){ el('pickModal')?.classList.remove('show'); pickModalCtx = null; ['pickModalBin', 'pickModalLot'].forEach(id => el(id + 'Drop')?.classList.add('hidden')); }
   function pickOpenModal({ title, info = '', row = null, okLabel = '✅ ยืนยันบันทึก', onOk, onUnpick = null }){
     pickModalCtx = { row, onOk, onUnpick };
     el('pickModalUnpick').dataset.armed = ''; el('pickModalUnpick').textContent = '↩️ ยกเลิกสถานะเบิก';
@@ -9943,8 +10028,13 @@
     const bins = new Map(), lots = new Map();
     inv.forEach(x => { const q = n(x.onHand ?? x.onHandQty ?? x.availableQty), b = String(x.storage || '').trim(), l = String(x.lotNumber || '').trim();
       if (b) bins.set(b, (bins.get(b) || 0) + q); if (l) { const cur = lots.get(l) || { q: 0, bins: new Set() }; cur.q += q; if (b) cur.bins.add(b); lots.set(l, cur); } });
-    el('pickModalBinList').innerHTML = [...bins].sort().map(([b, q]) => `<option value="${esc(b)}">คงเหลือ ${fmt(q)}</option>`).join('');
-    el('pickModalLotList').innerHTML = [...lots].sort().map(([l, v]) => `<option value="${esc(l)}">${esc([...v.bins].join(', '))} · คงเหลือ ${fmt(v.q)}</option>`).join('');
+    // ตัวเลือกโลเคชั่น: มี Part นี้ (พร้อมคงเหลือ) ก่อน แล้วตามด้วยโลเคชั่นทั้งหมดในระบบ
+    const allBins = pickAllBins();
+    pickComboOpts.pickModalBin = [
+      ...[...bins].sort((a, b) => b[1] - a[1]).map(([b, q]) => ({ value: b, note: `มี Part นี้ · คงเหลือ ${fmt(q)}`, group: '📦 มี Part นี้ (On-Hand)' })),
+      ...allBins.filter(b => !bins.has(b)).map(b => ({ value: b, note: '', group: `🗺️ โลเคชั่นทั้งหมดในระบบ (${fmt(allBins.length)})` }))
+    ];
+    pickComboOpts.pickModalLot = [...lots].sort((a, b) => String(a[0]).localeCompare(String(b[0]))).map(([l, v]) => ({ value: l, note: `${[...v.bins].join(', ') || '—'} · คงเหลือ ${fmt(v.q)}`, group: '🏷️ Lot ของ Part นี้ (On-Hand)' }));
     pickModalLocHint();
     pickModalHint();
   }
@@ -9952,7 +10042,7 @@
     if (!el('pickModal') || el('pickModal').dataset.bound) return;
     el('pickModal').dataset.bound = '1';
     el('pickModalQty').addEventListener('input', pickModalHint);
-    ['pickModalBin', 'pickModalLot'].forEach(id => el(id).addEventListener('input', pickModalLocHint));
+    ['pickModalBin', 'pickModalLot'].forEach(pickBindCombo);
     el('pickModalFull').addEventListener('click', () => { if (pickModalCtx?.row) { el('pickModalQty').value = n(pickModalCtx.row.qty); pickModalHint(); } });
     el('pickModalCancel').addEventListener('click', pickCloseModal);
     el('pickModal').addEventListener('click', e => { if (e.target.id === 'pickModal') pickCloseModal(); });
