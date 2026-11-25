@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-25T01:23:12.493Z",
+  "updatedAt": "2026-11-25T01:23:32.066Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -118,7 +118,7 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderB",
       "shift": "B",
       "requesterNote": "",
-      "status": "pending",
+      "status": "cancelled",
       "locations": [],
       "locationsSummary": "",
       "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CI-01-04A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Customer Supplied Material Warehouse)",
@@ -127,8 +127,12 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "24/11/2026 20:54:14",
-      "photoTakenAt": ""
+      "updatedAt": "25/11/2026 08:23:31",
+      "photoTakenAt": "",
+      "cancelledAt": "2026-11-25T01:23:31.196Z",
+      "cancelledBy": "อุทิศ",
+      "cancelledByRole": "warehouse",
+      "cancelReason": "ไม่มีงานเกิด (WH ยกเลิก)"
     },
     {
       "reqId": "REQ-20261124-29721",
