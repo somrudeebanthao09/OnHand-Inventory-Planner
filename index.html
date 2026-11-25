@@ -14405,54 +14405,64 @@
         if (await fetchPartReqSeedBaseline()) anySuccess = true;
       }
 
-      // 3. Cloud Relay: ใช้ทั้ง SSE stream และ poll สำรองทุก 5 วินาทีเพื่อให้เด้งแบบ Real-time ทันทีแม้เปิดบนมือถือ
-      if (shouldRunPartReqRelay() && (force || Date.now() - partReqLastRelayPollAt > 5000)) {
-        if (await pollPartReqRelayOnce()) anySuccess = true;
+      // 3-6. ยิงพร้อมกันแบบขนาน (ไม่รอคิวกัน) เพื่อลดดีเลย์แจ้งเตือนระหว่างเครื่องคนเบิกกับ WH
+      const tasks = [];
+
+      // 3. Cloud Relay: ถ้า SSE stream เปิดอยู่ ให้ poll สำรองห่างลง (20 วิ) เพื่อไม่ติด rate limit 429 บน Wi-Fi โรงงาน
+      const relayPollGapMs = partReqStreamHealthy ? 20000 : 5000;
+      if (shouldRunPartReqRelay() && (force || Date.now() - partReqLastRelayPollAt > relayPollGapMs)) {
+        tasks.push(pollPartReqRelayOnce().then(ok => { if (ok) anySuccess = true; }).catch(() => {}));
       } else if (partReqStreamHealthy) {
         anySuccess = true;
       }
 
-      // 4. Helper บนเครื่อง Admin / วง LAN (ซิงค์เร็ว < 1 วินาที และซิงค์ลง Google Sheet เบื้องหลัง)
-      const helperBase = await checkHelperHealth();
-      if (helperBase) {
-        const res = await fetchWithTimeout(`${helperBase}/part-requisitions`, { cache: 'no-store' }, 2500).then(r => r.json()).catch(() => null);
-        if (res?.ok) {
-          if (res.apiTokens?.req) partReqSharedApiTokens = res.apiTokens;
-          if (res.staffRoster && (res.staffRoster.requesters?.length || res.staffRoster.issuers?.length)) {
-            savePartStaffRoster({
-              requesters: res.staffRoster.requesters || [],
-              issuers: res.staffRoster.issuers || [],
-              source: 'sheet'
-            }, false);
+      // 4. Helper บนเครื่อง Admin / วง LAN (ไม่บล็อกการดึง Google Sheet)
+      tasks.push(
+        checkHelperHealth().then(async (helperBase) => {
+          if (!helperBase) return;
+          const res = await fetchWithTimeout(`${helperBase}/part-requisitions`, { cache: 'no-store' }, 2500).then(r => r.json()).catch(() => null);
+          if (res?.ok) {
+            if (res.apiTokens?.req) partReqSharedApiTokens = res.apiTokens;
+            if (res.staffRoster && (res.staffRoster.requesters?.length || res.staffRoster.issuers?.length)) {
+              savePartStaffRoster({
+                requesters: res.staffRoster.requesters || [],
+                issuers: res.staffRoster.issuers || [],
+                source: 'sheet'
+              }, false);
+            }
+            if (Array.isArray(res.items)) mergeIncomingPartRequisitions(res.items);
+            anySuccess = true;
           }
-          if (Array.isArray(res.items)) mergeIncomingPartRequisitions(res.items);
-          anySuccess = true;
-        }
-      }
+        }).catch(() => {})
+      );
 
       // 5. Google Sheets (เมื่อเปิดผ่าน Apps Script)
       if (hasGoogle()) {
-        const rows = await callGoogle('listPartRequisitions').catch(() => null);
-        if (Array.isArray(rows)) {
-          mergeIncomingPartRequisitions(rows.map(r => ({
-            ...r,
-            locations: (() => { try { return JSON.parse(r.locationsJson || '[]'); } catch (_) { return []; } })(),
-            hasPhoto: String(r.hasPhoto || '').toLowerCase() === 'yes'
-          })));
-          anySuccess = true;
-        }
+        tasks.push(
+          callGoogle('listPartRequisitions').then((rows) => {
+            if (Array.isArray(rows)) {
+              mergeIncomingPartRequisitions(rows.map(r => ({
+                ...r,
+                locations: (() => { try { return JSON.parse(r.locationsJson || '[]'); } catch (_) { return []; } })(),
+                hasPhoto: String(r.hasPhoto || '').toLowerCase() === 'yes'
+              })));
+              anySuccess = true;
+            }
+          }).catch(() => {})
+        );
       }
 
-      // 6. Shared Part API (Google Sheet PartRequisitions): ดึงแบบ Realtime ทุก 2.5 วินาทีโดยไม่บล็อกหน้าจอ
+      // 6. Shared Part API (Google Sheet PartRequisitions): ดึงแบบ Realtime ทันทีโดยไม่รอ Helper/Relay
       const currentPartUser = getCurrentUser();
       if (currentPartUser && partReqApiCanPostMessage() && (force || (document.visibilityState !== 'hidden' && Date.now() - partReqLastApiPullAt > 2500))) {
         const identity = `${currentPartUser.role}:${String(currentPartUser.username || '').trim().toLowerCase()}`;
         const p = partReqApiReconciledIdentity === identity
           ? pullPartReqSharedApiRecords()
           : initializePartReqSharedApi();
-        p.catch(err => console.warn('[PartReqAPI] sync warn:', err?.message || err));
-        anySuccess = true;
+        tasks.push(p.then(() => { anySuccess = true; }).catch(err => console.warn('[PartReqAPI] sync warn:', err?.message || err)));
       }
+
+      if (tasks.length) await Promise.allSettled(tasks);
 
       if (anySuccess && !partReqInitialSyncDone) {
         partReqInitialSyncDone = true;
