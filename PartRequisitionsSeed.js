@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-25T07:25:22.296Z",
+  "updatedAt": "2026-11-25T07:35:21.065Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261125-20776",
+      "requestDate": "25/11/2026 14:35:20",
+      "requestedAt": "25/11/2026 14:35:20",
+      "moNumber": "MO-20261124-003962",
+      "ppbomNumber": "PPBOM-20261124-004295",
+      "directTransferDocs": "ZJDB-261124-000046, ZJDB-261124-000047",
+      "materialCode": "1005QT00743",
+      "materialName": "QR CODE LABEL CLASSIC +",
+      "specification": "QGH51561",
+      "requestQty": 2500,
+      "unit": "PCS",
+      "reason": "ลาเบล",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-02-03D (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026102401, 2026102701, 2026112103",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "25/11/2026 14:35:20",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261125-03917",
       "requestDate": "25/11/2026 14:20:03",
