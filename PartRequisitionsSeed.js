@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-25T06:18:00.474Z",
+  "updatedAt": "2026-11-25T06:53:31.997Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261125-11569",
+      "requestDate": "25/11/2026 13:53:30",
+      "requestedAt": "25/11/2026 13:53:30",
+      "moNumber": "MO-20261124-003958",
+      "ppbomNumber": "PPBOM-20261124-004290",
+      "directTransferDocs": "ZJDB-261124-000045",
+      "materialCode": "1005QT00856",
+      "materialName": "WAY LABEL CLASSIC CU 2 + 4",
+      "specification": "QGH32670",
+      "requestQty": 5,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "จักรกฤษ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-02-06C (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CJ-01-09B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026092201, 2026102401, 2026102701, 2026100299",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "25/11/2026 13:53:31",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261125-84979",
       "requestDate": "25/11/2026 13:14:43",
