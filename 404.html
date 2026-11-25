@@ -2970,6 +2970,23 @@
  <div id="safetyFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ Safety Stock"><div class="stock-filter-popup-head"><strong id="safetyFilterTitle">ตัวกรอง</strong><button id="safetyFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><div style="display:flex;gap:6px;flex:0 0 auto"><button id="safetyFilterSortAsc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬆️ น้อย → มาก</button><button id="safetyFilterSortDesc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬇️ มาก → น้อย</button></div><input id="safetyFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="safetyFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="safetyFilterCount" class="helper"></div><div id="safetyFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="safetyFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="safetyFilterCancel" class="btn" type="button">ยกเลิก</button><button id="safetyFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
  <div id="poTrackingFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ ติดตาม Order ผลิต"><div class="stock-filter-popup-head"><strong id="poTrackingFilterTitle">ตัวกรอง</strong><button id="poTrackingFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><div style="display:flex;gap:6px;flex:0 0 auto"><button id="poTrackingFilterSortAsc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬆️ น้อย → มาก</button><button id="poTrackingFilterSortDesc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬇️ มาก → น้อย</button></div><input id="poTrackingFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="poTrackingFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="poTrackingFilterCount" class="helper"></div><div id="poTrackingFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="poTrackingFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="poTrackingFilterCancel" class="btn" type="button">ยกเลิก</button><button id="poTrackingFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
  <div class="toast" id="toast" role="status"></div>
+<div class="modal-backdrop" id="pickModal" role="dialog" aria-modal="true" aria-labelledby="pickModalTitle"><div class="modal" style="width:min(520px,100%)">
+  <h2 id="pickModalTitle"></h2>
+  <div id="pickModalInfo" style="font-size:14px;color:#334155;margin:8px 0 4px"></div>
+  <div id="pickModalQtyWrap" style="margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#f8fafc">
+    <label for="pickModalQty" style="font-weight:700;font-size:14px">จำนวนที่เบิกจริง</label>
+    <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
+      <input id="pickModalQty" class="field" type="number" min="0" step="any" inputmode="decimal" style="width:160px;font-size:20px;font-weight:800;text-align:right">
+      <button id="pickModalFull" class="btn" type="button">เต็มจำนวน</button>
+    </div>
+    <div id="pickModalHint" style="margin-top:6px;font-size:13.5px;font-weight:700"></div>
+  </div>
+  <div class="modal-actions" style="flex-wrap:wrap">
+    <button id="pickModalUnpick" class="btn danger" type="button" style="margin-right:auto">↩️ ยกเลิกสถานะเบิก</button>
+    <button id="pickModalCancel" class="btn" type="button">ยกเลิก</button>
+    <button id="pickModalOk" class="btn primary" type="button">✅ ยืนยันบันทึก</button>
+  </div>
+</div></div>
 <div class="modal-backdrop" id="fileErrorModal"><div class="modal"><h2 id="modalTitle">ไม่สามารถนำเข้าไฟล์</h2><p id="modalMessage"></p><div class="modal-actions"><button class="btn primary" id="modalClose">รับทราบ</button></div></div></div>
 
 <div class="modal-backdrop" id="autoSyncModal">
@@ -9746,17 +9763,19 @@
     el('pickListInfo').innerHTML = `· ${fmt(new Set(sel.flatMap(d => d.mos.map(m => m.moNumber))).size)} Job (${fmt(sel.length)} ใบ) · Part เบิกครบ <b>${fmt(prog.partDone)}/${fmt(prog.partTotal)}</b> · จุดเบิก ${fmt(prog.doneCount)}/${fmt(prog.lineTotal)}${prog.partialCount ? ` · <b style="color:#b91c1c">⚠️ เบิกไม่ครบ ${fmt(prog.partialCount)} รายการ</b>` : ''} ${(() => { const s = pickBuildMos(sel).filter(m => m.setTotal !== null); return s.length ? ` · ชุด <b>${s.map(m => `${fmt(m.setDone)}/${fmt(m.setTotal)}`).join(', ')}</b> set` : ''; })()}`;
     const vis = hideDone ? rows.filter(r => !pickIsPicked(r.key)) : rows;
     wrap.innerHTML = `<table class="table" style="width:100%;font-size:13px"><thead><tr>
-      <th style="width:52px">เบิกแล้ว</th><th>#</th><th>โลเคชั่น<br><span class="helper">调出仓位</span></th><th>รหัส Part / ชื่อ</th><th>Lot</th><th style="text-align:right">จำนวน</th><th style="text-align:right">เบิกจริง</th><th>เบิกโดย / เวลา</th><th>ใบเบิก / Job</th></tr></thead><tbody>
+      <th style="width:96px">สถานะ</th><th>#</th><th>โลเคชั่น<br><span class="helper">调出仓位</span></th><th>รหัส Part / ชื่อ</th><th>Lot</th><th style="text-align:right">จำนวน</th><th style="text-align:right">เบิกจริง</th><th>เบิกโดย / เวลา</th><th>ใบเบิก / Job</th></tr></thead><tbody>
       ${vis.map((r, i) => {
         const st = pickState.get(r.key), isDone = st?.status === 'picked', isPartial = st?.status === 'partial', touched = isDone || isPartial;
         return `<tr style="${isDone ? 'background:#f0fdf4' : isPartial ? 'background:#fef2f2' : ''}">
-          <td style="text-align:center"><input type="checkbox" class="pick-done-cb" data-key="${esc(r.key)}" ${isDone ? 'checked' : ''}></td>
+          <td style="text-align:center;white-space:nowrap">${touched
+            ? `<div style="font-weight:800;color:${isDone ? '#047857' : '#b91c1c'}">${isDone ? '✅ ครบ' : '⚠️ ไม่ครบ'}</div><button type="button" class="btn pick-open-btn" data-key="${esc(r.key)}" style="padding:2px 9px;font-size:12px;margin-top:3px">✏️ แก้ไข</button>`
+            : `<button type="button" class="btn primary pick-open-btn" data-key="${esc(r.key)}" style="padding:6px 12px;font-size:13px">📦 เบิก</button>`}</td>
           <td>${i + 1}</td>
           <td style="white-space:nowrap">${pickIsPublicBin(r.fromBin) ? `<span style="font-weight:700;color:#92400e">${esc(r.fromBin || 'ไม่ระบุ')}</span>` : `<span style="font-weight:800;font-size:14px;color:#0f766e">${esc(r.fromBin)}</span>`}</td>
           <td><div style="font-weight:700">${esc(r.materialCode)}</div><div style="font-size:12px">${esc(r.materialName || '')}</div></td>
           <td style="white-space:nowrap">${esc(r.lotNumber || '—')}</td>
           <td style="text-align:right;font-weight:800;font-size:14px">${fmt(r.qty)}</td>
-          <td style="text-align:right;white-space:nowrap"><input type="number" class="pick-qty-in field" data-key="${esc(r.key)}" min="0" step="any" value="${touched ? esc(pickQtyOf(r)) : ''}" placeholder="${esc(r.qty)}" title="กรอกจำนวนที่เบิกได้จริง (ถ้าน้อยกว่าจำนวนในใบ = เบิกไม่ครบ)" style="width:90px;text-align:right;padding:4px 6px;${isPartial ? 'border-color:#ef4444;color:#b91c1c;font-weight:700' : ''}">${isPartial ? `<div style="color:#b91c1c;font-size:11.5px;font-weight:700">⚠️ ขาด ${fmt(n(r.qty) - pickQtyOf(r))}</div>` : ''}</td>
+          <td style="text-align:right;white-space:nowrap">${touched ? `<b style="font-size:15px;color:${isPartial ? '#b91c1c' : '#047857'}">${fmt(pickQtyOf(r))}</b> <span title="บันทึกแล้ว — กด ✏️ แก้ไข เพื่อเปลี่ยน">🔒</span>${isPartial ? `<div style="color:#b91c1c;font-size:11.5px;font-weight:700">ขาด ${fmt(n(r.qty) - pickQtyOf(r))}</div>` : ''}` : '<span class="helper">—</span>'}</td>
           <td style="font-size:12px">${touched ? `<b>${esc(st.pickedBy || '')}</b><div class="helper">${esc(st.pickedAt || '')}${st.pending ? ' · ⏳ กำลังบันทึก' : ''}</div>` : '<span class="helper">—</span>'}</td>
           <td style="font-size:11.5px;white-space:nowrap">${esc(r.docNo)}${r.mos.length ? `<br><span class="helper">${r.mos.map(esc).join(', ')}</span>` : ''}</td></tr>`;
       }).join('')}</tbody></table>`;
@@ -9810,14 +9829,12 @@
       el('pickMarkAllBtn')?.addEventListener('click', () => {
         const rows = pickRows(pickSelectedDocList()).filter(r => !pickIsPicked(r.key));
         if (!rows.length) { toast(pickSelectedDocs.size ? 'ทุกรายการในใบที่เลือกเบิกครบแล้ว' : 'กรุณาเลือกใบเบิกก่อน'); return; }
-        if (!confirm(`บันทึกว่า "${pickPickerName()}" เบิกครบ ${fmt(rows.length)} รายการ?`)) return;
-        pickSetLines(rows, true);
+        pickOpenModal({ title: `✅ ยืนยันเบิกครบ ${fmt(rows.length)} รายการ?`, info: `<div>ผู้เบิก: <b>${esc(pickPickerName())}</b></div><div>ใบเบิก: ${[...new Set(rows.map(r => r.docNo))].map(esc).join(', ')}</div><div class="helper" style="margin-top:6px">ทุกบรรทัดที่ยังไม่ได้เบิกจะถูกบันทึกเป็นเบิกครบตามจำนวนในใบ</div>`, onOk: () => pickSetLines(rows, true) });
       });
       el('pickClearDoneBtn')?.addEventListener('click', () => {
-        const rows = pickRows(pickSelectedDocList()).filter(r => pickState.has(r.key) && pickIsPicked(r.key));
+        const rows = pickRows(pickSelectedDocList()).filter(r => pickIsPicked(r.key) || pickIsPartial(r.key));
         if (!rows.length) { toast('ไม่มีรายการที่เบิกแล้วในใบที่เลือก'); return; }
-        if (!confirm(`ยกเลิกสถานะเบิกแล้ว ${fmt(rows.length)} รายการ?`)) return;
-        pickSetLines(rows, false);
+        pickOpenModal({ title: `↩️ ยืนยันยกเลิกสถานะเบิก ${fmt(rows.length)} รายการ?`, info: `<div>ใบเบิก: ${[...new Set(rows.map(r => r.docNo))].map(esc).join(', ')}</div>`, okLabel: '↩️ ยืนยันยกเลิกสถานะ', onOk: () => pickSetLines(rows, false) });
       });
       el('pickDocTable')?.addEventListener('click', e => {
         if (e.target.id === 'pickSelectAll') {
@@ -9837,32 +9854,85 @@
         pickSelectedDocs.has(doc) ? pickSelectedDocs.delete(doc) : pickSelectedDocs.add(doc);
         renderPickingPage();
       });
-      el('pickListTable')?.addEventListener('change', e => {
-        const isCb = e.target.classList.contains('pick-done-cb'), isQty = e.target.classList.contains('pick-qty-in');
-        if (!isCb && !isQty) return;
-        const row = pickRows(pickSelectedDocList()).find(r => r.key === e.target.dataset.key);
-        if (!row) return;
-        // ยืนยันทุกครั้งก่อนบันทึก กันกดผิด — กดยกเลิกจะคืนค่าเดิม
-        const info = `\n\nโลเคชั่น: ${row.fromBin || 'ไม่ระบุ'}\nPart: ${row.materialCode} ${row.materialName || ''}\nLot: ${row.lotNumber || '—'}\nจำนวนในใบ: ${fmt(row.qty)}\nใบเบิก: ${row.docNo}\nผู้เบิก: ${pickPickerName()}`;
-        const ask = msg => { if (confirm(msg + info)) return true; renderPickingList(); return false; };
-        if (isCb) {
-          if (e.target.checked) { if (ask(`✅ ยืนยันว่าเบิกครบ ${fmt(row.qty)}?`)) pickSetLines([row], true); }
-          else { if (ask('↩️ ยืนยันยกเลิกสถานะเบิกของรายการนี้?')) pickSetLines([row], false); }
-          return;
-        }
-        const raw = String(e.target.value || '').trim();
-        const v = raw === '' ? 0 : n(raw);
-        if (v < 0) { toast('จำนวนต้องไม่ติดลบ'); renderPickingList(); return; }
-        if (v === 0) { if (ask('↩️ ยืนยันยกเลิกสถานะเบิกของรายการนี้?')) pickSetLines([row], false); return; }
-        if (v > n(row.qty)) { if (ask(`⚠️ จำนวนที่กรอก (${fmt(v)}) มากกว่าในใบเบิก — บันทึกเป็นเบิกครบ ${fmt(row.qty)}?`)) pickSetLines([row], true, n(row.qty)); return; }
-        if (v < n(row.qty)) { if (ask(`⚠️ ยืนยันเบิกไม่ครบ: เบิกจริง ${fmt(v)} (ขาด ${fmt(n(row.qty) - v)})?`)) pickSetLines([row], true, v); return; }
-        if (ask(`✅ ยืนยันว่าเบิกครบ ${fmt(row.qty)}?`)) pickSetLines([row], true, v);
+      el('pickListTable')?.addEventListener('click', e => {
+        const btn = e.target.closest('.pick-open-btn'); if (!btn) return;
+        const row = pickRows(pickSelectedDocList()).find(r => r.key === btn.dataset.key);
+        if (row) pickOpenLineModal(row);
       });
+      pickBindModal();
       // อัปเดตสถานะจาก Google Sheet ทุก 20 วินาที ขณะเปิดหน้านี้ เพื่อให้ทุกคนเห็นตรงกัน
       setInterval(() => { if (activePage === 'picking' && document.visibilityState !== 'hidden') pickRefresh(false); }, 20000);
     };
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready); else ready();
   })();
+
+  // ===== Popup ยืนยันการเบิก (ใช้แทน confirm ของเบราว์เซอร์) =====
+  let pickModalCtx = null;
+  function pickCloseModal(){ el('pickModal')?.classList.remove('show'); pickModalCtx = null; }
+  function pickOpenModal({ title, info = '', row = null, okLabel = '✅ ยืนยันบันทึก', onOk, onUnpick = null }){
+    pickModalCtx = { row, onOk, onUnpick };
+    el('pickModalUnpick').dataset.armed = ''; el('pickModalUnpick').textContent = '↩️ ยกเลิกสถานะเบิก';
+    el('pickModalTitle').textContent = title;
+    el('pickModalInfo').innerHTML = info;
+    el('pickModalQtyWrap').classList.toggle('hidden', !row);
+    el('pickModalUnpick').classList.toggle('hidden', !onUnpick);
+    el('pickModalOk').textContent = okLabel;
+    el('pickModal').classList.add('show');
+    if (row) { pickModalHint(); setTimeout(() => { el('pickModalQty').focus(); el('pickModalQty').select(); }, 30); }
+    else setTimeout(() => el('pickModalOk').focus(), 30);
+  }
+  function pickModalHint(){
+    const ctx = pickModalCtx; if (!ctx?.row) return true;
+    const qty = n(ctx.row.qty), raw = String(el('pickModalQty').value || '').trim(), v = n(raw), hint = el('pickModalHint'), ok = el('pickModalOk');
+    let msg = '', color = '#047857', valid = true;
+    if (raw === '' || v <= 0) { msg = 'กรอกจำนวนที่เบิกได้จริง (มากกว่า 0)'; color = '#b45309'; valid = false; }
+    else if (v > qty) { msg = `❌ เกินจำนวนในใบ (${fmt(qty)}) — กรอกได้ไม่เกินจำนวนในใบ`; color = '#b91c1c'; valid = false; }
+    else if (v < qty) { msg = `⚠️ เบิกไม่ครบ — ขาด ${fmt(qty - v)}`; color = '#b91c1c'; }
+    else msg = '✅ เบิกครบตามใบ';
+    hint.textContent = msg; hint.style.color = color; ok.disabled = !valid; ok.style.opacity = valid ? '1' : '.5';
+    return valid;
+  }
+  function pickOpenLineModal(row){
+    const st = pickState.get(row.key), touched = st && (st.status === 'picked' || st.status === 'partial');
+    const bin = row.fromBin || 'ไม่ระบุ';
+    pickOpenModal({
+      title: touched ? '✏️ แก้ไขการเบิก' : '📦 ยืนยันการเบิก',
+      row,
+      info: `<div style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:baseline">
+        <span class="helper">โลเคชั่น</span><b style="font-size:18px;color:#0f766e">${esc(bin)}</b>
+        <span class="helper">Part</span><span><b>${esc(row.materialCode)}</b> ${esc(row.materialName || '')}</span>
+        <span class="helper">Lot</span><span>${esc(row.lotNumber || '—')}</span>
+        <span class="helper">จำนวนในใบ</span><b style="font-size:16px">${fmt(row.qty)}</b>
+        <span class="helper">ใบเบิก / Job</span><span>${esc(row.docNo)}${row.mos?.length ? ` · ${row.mos.map(esc).join(', ')}` : ''}</span>
+        <span class="helper">ผู้เบิก</span><b>${esc(pickPickerName())}</b>
+        ${touched ? `<span class="helper">บันทึกไว้</span><span>${fmt(pickQtyOf(row))} โดย ${esc(st.pickedBy || '')} · ${esc(st.pickedAt || '')}</span>` : ''}
+      </div>`,
+      onOk: () => { const v = n(el('pickModalQty').value); pickSetLines([row], true, Math.min(v, n(row.qty))); },
+      onUnpick: touched ? () => pickSetLines([row], false) : null
+    });
+    el('pickModalQty').value = touched ? pickQtyOf(row) : n(row.qty);
+    pickModalHint();
+  }
+  function pickBindModal(){
+    if (!el('pickModal') || el('pickModal').dataset.bound) return;
+    el('pickModal').dataset.bound = '1';
+    el('pickModalQty').addEventListener('input', pickModalHint);
+    el('pickModalFull').addEventListener('click', () => { if (pickModalCtx?.row) { el('pickModalQty').value = n(pickModalCtx.row.qty); pickModalHint(); } });
+    el('pickModalCancel').addEventListener('click', pickCloseModal);
+    el('pickModal').addEventListener('click', e => { if (e.target.id === 'pickModal') pickCloseModal(); });
+    el('pickModalOk').addEventListener('click', () => { const ctx = pickModalCtx; if (!ctx || (ctx.row && !pickModalHint())) return; pickCloseModal(); ctx.onOk && ctx.onOk(); });
+    el('pickModalUnpick').addEventListener('click', () => {
+      const ctx = pickModalCtx; if (!ctx?.onUnpick) return;
+      if (el('pickModalUnpick').dataset.armed !== '1') { el('pickModalUnpick').dataset.armed = '1'; el('pickModalUnpick').textContent = '⚠️ กดอีกครั้งเพื่อยืนยันยกเลิก'; return; }
+      el('pickModalUnpick').dataset.armed = ''; el('pickModalUnpick').textContent = '↩️ ยกเลิกสถานะเบิก';
+      pickCloseModal(); ctx.onUnpick();
+    });
+    document.addEventListener('keydown', e => {
+      if (!el('pickModal')?.classList.contains('show')) return;
+      if (e.key === 'Escape') pickCloseModal();
+      if (e.key === 'Enter' && !el('pickModalOk').disabled) { e.preventDefault(); el('pickModalOk').click(); }
+    });
+  }
   window.renderPickingPage = renderPickingPage;
   window.pickRefresh = pickRefresh;
 
