@@ -2980,6 +2980,16 @@
       <button id="pickModalFull" class="btn" type="button">เต็มจำนวน</button>
     </div>
     <div id="pickModalHint" style="margin-top:6px;font-size:13.5px;font-weight:700"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+      <label style="font-weight:700;font-size:13.5px">โลเคชั่นที่เบิกจริง
+        <input id="pickModalBin" class="field" list="pickModalBinList" autocomplete="off" style="width:100%;margin-top:4px;font-weight:700">
+      </label>
+      <label style="font-weight:700;font-size:13.5px">Lot ที่เบิกจริง
+        <input id="pickModalLot" class="field" list="pickModalLotList" autocomplete="off" style="width:100%;margin-top:4px">
+      </label>
+    </div>
+    <datalist id="pickModalBinList"></datalist><datalist id="pickModalLotList"></datalist>
+    <div id="pickModalLocHint" class="helper" style="margin-top:6px"></div>
   </div>
   <div class="modal-actions" style="flex-wrap:wrap">
     <button id="pickModalUnpick" class="btn danger" type="button" style="margin-right:auto">↩️ ยกเลิกสถานะเบิก</button>
@@ -9533,6 +9543,9 @@
   const pickIsPicked = key => pickState.get(key)?.status === 'picked';
   const pickIsPartial = key => pickState.get(key)?.status === 'partial';
   // จำนวนที่เบิกจริงของบรรทัด: เบิกครบ = จำนวนในใบ, เบิกไม่ครบ = pickedQty ที่กรอก
+  // โลเคชั่น/Lot ที่เบิกจริง (ถ้าแก้ต่างจากใบเบิก) — ว่าง = ตามใบ
+  const pickActualBin = it => { const st = pickState.get(it.key); return st && st.status !== 'unpicked' && String(st.actualBin || '').trim() ? String(st.actualBin).trim() : ''; };
+  const pickActualLot = it => { const st = pickState.get(it.key); return st && st.status !== 'unpicked' && String(st.actualLot || '').trim() ? String(st.actualLot).trim() : ''; };
   function pickQtyOf(it){ const st = pickState.get(it.key); if (!st) return 0; if (st.status === 'picked') return n(it.qty); if (st.status === 'partial') return Math.max(0, n(st.pickedQty)); return 0; }
   function pickGetOrders(){ return (db.productionOrders && db.productionOrders.length) ? db.productionOrders : (window.PRODUCTION_ORDERS_SEED?.orders || []); }
   const pickLineKey = (docNo, idx, it) => [docNo, idx, it.materialCode, it.lotNumber, it.fromBin].join('|');
@@ -9573,12 +9586,12 @@
     else if (pickRemoteMode === 'offline') box.innerHTML = `<span style="color:#92400e;font-weight:700">📴 ยังไม่ได้เชื่อม Google Sheet</span> <span class="helper">(ต้องเข้าสู่ระบบผ่านเว็บออนไลน์) · สถานะที่ติ๊กจะเก็บเฉพาะเครื่องนี้</span>`;
     else box.innerHTML = `<span class="helper">⏳ กำลังเชื่อม Google Sheet...</span>`;
   }
-  async function pickSetLines(lines, picked, partialQty = null){
+  async function pickSetLines(lines, picked, partialQty = null, actual = null){
     if (!lines.length) return;
     const pickedBy = pickPickerName();
     try { localStorage.setItem('pickingPickerName', pickedBy); } catch (_) {}
     const nowTh = new Date().toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'medium' });
-    const payload = lines.map(r => ({ key: r.key, docNo: r.docNo, lineNo: r.lineNo, moNumbers: (r.mos || []).join(', '), materialCode: r.materialCode, materialName: r.materialName, lotNumber: r.lotNumber, fromWarehouse: r.fromWarehouse, fromBin: r.fromBin, qty: n(r.qty), status: !picked ? 'unpicked' : (partialQty !== null && partialQty < n(r.qty) ? 'partial' : 'picked'), pickedQty: !picked ? '' : (partialQty !== null && partialQty < n(r.qty) ? partialQty : n(r.qty)), pickedBy }));
+    const payload = lines.map(r => ({ key: r.key, docNo: r.docNo, lineNo: r.lineNo, moNumbers: (r.mos || []).join(', '), materialCode: r.materialCode, materialName: r.materialName, lotNumber: r.lotNumber, fromWarehouse: r.fromWarehouse, fromBin: r.fromBin, qty: n(r.qty), status: !picked ? 'unpicked' : (partialQty !== null && partialQty < n(r.qty) ? 'partial' : 'picked'), pickedQty: !picked ? '' : (partialQty !== null && partialQty < n(r.qty) ? partialQty : n(r.qty)), actualBin: picked && actual ? String(actual.bin || '').trim() : '', actualLot: picked && actual ? String(actual.lot || '').trim() : '', pickedBy }));
     const prev = new Map(payload.map(p => [p.key, pickState.get(p.key)]));
     payload.forEach(p => pickState.set(p.key, { ...p, pickedBy: picked ? pickedBy : '', pickedAt: picked ? nowTh : '', updatedAt: new Date().toISOString(), pending: pickRemoteMode === 'sheet' || pickApiAvailable() }));
     pickSaveCache(); renderPickingPage();
@@ -9771,9 +9784,9 @@
             ? `<div style="font-weight:800;color:${isDone ? '#047857' : '#b91c1c'}">${isDone ? '✅ ครบ' : '⚠️ ไม่ครบ'}</div><button type="button" class="btn pick-open-btn" data-key="${esc(r.key)}" style="padding:2px 9px;font-size:12px;margin-top:3px">✏️ แก้ไข</button>`
             : `<button type="button" class="btn primary pick-open-btn" data-key="${esc(r.key)}" style="padding:6px 12px;font-size:13px">📦 เบิก</button>`}</td>
           <td>${i + 1}</td>
-          <td style="white-space:nowrap">${pickIsPublicBin(r.fromBin) ? `<span style="font-weight:700;color:#92400e">${esc(r.fromBin || 'ไม่ระบุ')}</span>` : `<span style="font-weight:800;font-size:14px;color:#0f766e">${esc(r.fromBin)}</span>`}</td>
+          <td style="white-space:nowrap">${pickActualBin(r) && pickActualBin(r) !== r.fromBin ? `<span style="font-weight:800;font-size:14px;color:#7c3aed">📍 ${esc(pickActualBin(r))}</span><div class="helper" style="text-decoration:line-through">ใบเบิก: ${esc(r.fromBin || 'ไม่ระบุ')}</div>` : pickIsPublicBin(r.fromBin) ? `<span style="font-weight:700;color:#92400e">${esc(r.fromBin || 'ไม่ระบุ')}</span>` : `<span style="font-weight:800;font-size:14px;color:#0f766e">${esc(r.fromBin)}</span>`}</td>
           <td><div style="font-weight:700">${esc(r.materialCode)}</div><div style="font-size:12px">${esc(r.materialName || '')}</div></td>
-          <td style="white-space:nowrap">${esc(r.lotNumber || '—')}</td>
+          <td style="white-space:nowrap">${pickActualLot(r) && pickActualLot(r) !== r.lotNumber ? `<b style="color:#7c3aed">${esc(pickActualLot(r))}</b><div class="helper" style="text-decoration:line-through">ใบเบิก: ${esc(r.lotNumber || '—')}</div>` : esc(r.lotNumber || '—')}</td>
           <td style="text-align:right;font-weight:800;font-size:14px">${fmt(r.qty)}</td>
           <td style="text-align:right;white-space:nowrap">${touched ? `<b style="font-size:15px;color:${isPartial ? '#b91c1c' : '#047857'}">${fmt(pickQtyOf(r))}</b> <span title="บันทึกแล้ว — กด ✏️ แก้ไข เพื่อเปลี่ยน">🔒</span>${isPartial ? `<div style="color:#b91c1c;font-size:11.5px;font-weight:700">ขาด ${fmt(n(r.qty) - pickQtyOf(r))}</div>` : ''}` : '<span class="helper">—</span>'}</td>
           <td style="font-size:12px">${touched ? `<b>${esc(st.pickedBy || '')}</b><div class="helper">${esc(st.pickedAt || '')}${st.pending ? ' · ⏳ กำลังบันทึก' : ''}</div>` : '<span class="helper">—</span>'}</td>
@@ -9795,8 +9808,8 @@
       </div>
       <table><thead><tr><th>#</th><th>✓</th><th>โลเคชั่น<br>调出仓位</th><th>รหัส Part<br>物料编码</th><th>ชื่อ Part<br>物料名称</th><th>Lot<br>批号</th><th>จำนวน<br>数量</th><th>คลังปลายทาง<br>调入仓库</th><th>ใบเบิก</th><th>จ่ายจริง</th></tr></thead><tbody>
       ${rows.map((r, i) => `<tr><td class="num">${i + 1}</td><td style="width:26px;text-align:center">${pickIsPicked(r.key) ? '✓' : pickIsPartial(r.key) ? '⚠' : ''}</td>
-        <td class="nowrap"><b>${esc(r.fromBin || 'ไม่ระบุ')}</b></td><td class="nowrap">${esc(r.materialCode)}</td><td>${esc(r.materialName || '')}</td>
-        <td class="nowrap">${esc(r.lotNumber || '—')}</td><td class="num"><b>${fmt(r.qty)}</b></td><td>${esc(r.toWarehouse || '')}</td><td class="nowrap">${esc(r.docNo)}</td><td class="num" style="width:70px">${pickState.get(r.key) && pickState.get(r.key).status !== 'unpicked' ? fmt(pickQtyOf(r)) : ''}</td></tr>`).join('')}
+        <td class="nowrap"><b>${esc(pickActualBin(r) || r.fromBin || 'ไม่ระบุ')}</b>${pickActualBin(r) && pickActualBin(r) !== r.fromBin ? `<br><small>(ใบเบิก: ${esc(r.fromBin || '—')})</small>` : ''}</td><td class="nowrap">${esc(r.materialCode)}</td><td>${esc(r.materialName || '')}</td>
+        <td class="nowrap">${esc(pickActualLot(r) || r.lotNumber || '—')}${pickActualLot(r) && pickActualLot(r) !== r.lotNumber ? `<br><small>(ใบเบิก: ${esc(r.lotNumber || '—')})</small>` : ''}</td><td class="num"><b>${fmt(r.qty)}</b></td><td>${esc(r.toWarehouse || '')}</td><td class="nowrap">${esc(r.docNo)}</td><td class="num" style="width:70px">${pickState.get(r.key) && pickState.get(r.key).status !== 'unpicked' ? fmt(pickQtyOf(r)) : ''}</td></tr>`).join('')}
       </tbody></table>
       <div class="doc-footer"><div>ผู้จัด: ____________________</div><div>ผู้ตรวจ: ____________________</div><div>ผู้รับ (ไลน์ผลิต): ____________________</div></div>
     </div>`;
@@ -9806,9 +9819,9 @@
     const sel = pickSelectedDocList();
     if (!sel.length) { toast('กรุณาเลือกใบเบิกก่อนส่งออก'); return; }
     const rows = pickRows(sel);
-    const head = ['From Bin', 'From Warehouse', 'Material', 'Material Name', 'Lot', 'Qty', 'To Warehouse', 'ZJDB', 'MO', 'Picked', 'Picked Qty', 'Short Qty', 'Picked By', 'Picked At'];
+    const head = ['From Bin', 'From Warehouse', 'Material', 'Material Name', 'Lot', 'Qty', 'To Warehouse', 'ZJDB', 'MO', 'Picked', 'Picked Qty', 'Short Qty', 'Actual Bin', 'Actual Lot', 'Picked By', 'Picked At'];
     const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-    const csv = [head, ...rows.map(r => { const st = pickState.get(r.key) || {}; const done = st.status === 'picked' || st.status === 'partial'; const pq = pickQtyOf(r); return [r.fromBin, r.fromWarehouse, r.materialCode, r.materialName, r.lotNumber, r.qty, r.toWarehouse, r.docNo, r.mos.join(' '), st.status === 'picked' ? 'Y' : st.status === 'partial' ? 'PARTIAL' : '', done ? pq : '', done ? Math.max(0, n(r.qty) - pq) : '', done ? st.pickedBy : '', done ? st.pickedAt : '']; })].map(r => r.map(q).join(',')).join('\r\n');
+    const csv = [head, ...rows.map(r => { const st = pickState.get(r.key) || {}; const done = st.status === 'picked' || st.status === 'partial'; const pq = pickQtyOf(r); return [r.fromBin, r.fromWarehouse, r.materialCode, r.materialName, r.lotNumber, r.qty, r.toWarehouse, r.docNo, r.mos.join(' '), st.status === 'picked' ? 'Y' : st.status === 'partial' ? 'PARTIAL' : '', done ? pq : '', done ? Math.max(0, n(r.qty) - pq) : '', pickActualBin(r), pickActualLot(r), done ? st.pickedBy : '', done ? st.pickedAt : '']; })].map(r => r.map(q).join(',')).join('\r\n');
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
     a.download = `picking-list-${new Date().toISOString().slice(0, 10)}.csv`;
@@ -9892,6 +9905,13 @@
     hint.textContent = msg; hint.style.color = color; ok.disabled = !valid; ok.style.opacity = valid ? '1' : '.5';
     return valid;
   }
+  function pickModalLocHint(){
+    const ctx = pickModalCtx, h = el('pickModalLocHint'); if (!ctx?.row || !h) return;
+    const bin = String(el('pickModalBin').value || '').trim(), lot = String(el('pickModalLot').value || '').trim(), parts = [];
+    if (bin && bin !== String(ctx.row.fromBin || '')) parts.push(`โลเคชั่น ${esc(ctx.row.fromBin || '—')} → <b>${esc(bin)}</b>`);
+    if (lot && lot !== String(ctx.row.lotNumber || '')) parts.push(`Lot ${esc(ctx.row.lotNumber || '—')} → <b>${esc(lot)}</b>`);
+    h.innerHTML = parts.length ? `<span style="color:#7c3aed;font-weight:700">📍 เปลี่ยนจากใบเบิก: ${parts.join(' · ')}</span>` : 'ตามใบเบิก — แก้ได้ถ้าของไม่อยู่ที่โลเคชั่น/Lot ในใบ (มีรายการแนะนำจาก On-Hand)';
+  }
   function pickOpenLineModal(row){
     const st = pickState.get(row.key), touched = st && (st.status === 'picked' || st.status === 'partial');
     const bin = row.fromBin || 'ไม่ระบุ';
@@ -9907,16 +9927,32 @@
         <span class="helper">ผู้เบิก</span><b>${esc(pickPickerName())}</b>
         ${touched ? `<span class="helper">บันทึกไว้</span><span>${fmt(pickQtyOf(row))} โดย ${esc(st.pickedBy || '')} · ${esc(st.pickedAt || '')}</span>` : ''}
       </div>`,
-      onOk: () => { const v = n(el('pickModalQty').value); pickSetLines([row], true, Math.min(v, n(row.qty))); },
+      onOk: () => {
+        const v = n(el('pickModalQty').value), bin = String(el('pickModalBin').value || '').trim(), lot = String(el('pickModalLot').value || '').trim();
+        // เก็บเฉพาะเมื่อแก้ต่างจากใบเบิก
+        pickSetLines([row], true, Math.min(v, n(row.qty)), { bin: bin && bin !== String(row.fromBin || '') ? bin : '', lot: lot && lot !== String(row.lotNumber || '') ? lot : '' });
+      },
       onUnpick: touched ? () => pickSetLines([row], false) : null
     });
     el('pickModalQty').value = touched ? pickQtyOf(row) : n(row.qty);
+    el('pickModalBin').value = pickActualBin(row) || row.fromBin || '';
+    el('pickModalLot').value = pickActualLot(row) || row.lotNumber || '';
+    // แนะนำโลเคชั่น/Lot ของ Part นี้จาก On-Hand (ไม่นับคลังไลน์ H9)
+    const inv = (Array.isArray(db.inventory) && db.inventory.length ? db.inventory : (window.ONHAND_SEED?.inventory || []))
+      .filter(x => String(x.partCode || x.materialCode || '').trim() === row.materialCode && n(x.onHand ?? x.onHandQty ?? x.availableQty) > 0 && String(x.warehouse || '') !== 'H9 Assembly-Workshop Warehouse');
+    const bins = new Map(), lots = new Map();
+    inv.forEach(x => { const q = n(x.onHand ?? x.onHandQty ?? x.availableQty), b = String(x.storage || '').trim(), l = String(x.lotNumber || '').trim();
+      if (b) bins.set(b, (bins.get(b) || 0) + q); if (l) { const cur = lots.get(l) || { q: 0, bins: new Set() }; cur.q += q; if (b) cur.bins.add(b); lots.set(l, cur); } });
+    el('pickModalBinList').innerHTML = [...bins].sort().map(([b, q]) => `<option value="${esc(b)}">คงเหลือ ${fmt(q)}</option>`).join('');
+    el('pickModalLotList').innerHTML = [...lots].sort().map(([l, v]) => `<option value="${esc(l)}">${esc([...v.bins].join(', '))} · คงเหลือ ${fmt(v.q)}</option>`).join('');
+    pickModalLocHint();
     pickModalHint();
   }
   function pickBindModal(){
     if (!el('pickModal') || el('pickModal').dataset.bound) return;
     el('pickModal').dataset.bound = '1';
     el('pickModalQty').addEventListener('input', pickModalHint);
+    ['pickModalBin', 'pickModalLot'].forEach(id => el(id).addEventListener('input', pickModalLocHint));
     el('pickModalFull').addEventListener('click', () => { if (pickModalCtx?.row) { el('pickModalQty').value = n(pickModalCtx.row.qty); pickModalHint(); } });
     el('pickModalCancel').addEventListener('click', pickCloseModal);
     el('pickModal').addEventListener('click', e => { if (e.target.id === 'pickModal') pickCloseModal(); });
@@ -9930,7 +9966,7 @@
     document.addEventListener('keydown', e => {
       if (!el('pickModal')?.classList.contains('show')) return;
       if (e.key === 'Escape') pickCloseModal();
-      if (e.key === 'Enter' && !el('pickModalOk').disabled) { e.preventDefault(); el('pickModalOk').click(); }
+      if (e.key === 'Enter' && !el('pickModalOk').disabled && !['pickModalBin', 'pickModalLot'].includes(document.activeElement?.id)) { e.preventDefault(); el('pickModalOk').click(); }
     });
   }
   window.renderPickingPage = renderPickingPage;

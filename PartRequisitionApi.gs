@@ -857,7 +857,7 @@ const PICKING_LOG_SHEET_NAME = 'PickingLog';
 const PICKING_LOG_HEADERS = [
   'key', 'docNo', 'lineNo', 'moNumbers', 'materialCode', 'materialName', 'lotNumber',
   'fromWarehouse', 'fromBin', 'qty', 'status', 'pickedBy', 'pickedByUser', 'pickedAt', 'updatedAt',
-  'pickedQty'
+  'pickedQty', 'actualBin', 'actualLot'
 ];
 
 function partReqApiGetPickSheet_() {
@@ -935,7 +935,9 @@ function partReqApiSavePicks_(session, lines) {
         picked ? String(session.username || '') : '',
         picked ? nowTh : '',
         nowIso,
-        picked ? (status === 'partial' ? Math.max(0, Number(line.pickedQty) || 0) : (Number(line.qty) || 0)) : ''
+        picked ? (status === 'partial' ? Math.max(0, Number(line.pickedQty) || 0) : (Number(line.qty) || 0)) : '',
+        picked ? String(line.actualBin || '').slice(0, 60) : '',
+        picked ? String(line.actualLot || '').slice(0, 60) : ''
       ];
       const existingRow = rowByKey.get(key);
       if (existingRow > 0) sheet.getRange(existingRow, 1, 1, row.length).setValues([row]);
