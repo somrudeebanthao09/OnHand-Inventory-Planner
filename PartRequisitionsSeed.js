@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-25T13:25:22.488Z",
+  "updatedAt": "2026-11-25T13:50:01.475Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261125-00440",
+      "requestDate": "25/11/2026 20:49:59",
+      "requestedAt": "25/11/2026 20:49:59",
+      "moNumber": "MO-20261124-003994",
+      "ppbomNumber": "PPBOM-20261124-004328",
+      "directTransferDocs": "ZJDB-261124-000098",
+      "materialCode": "1005QT00165",
+      "materialName": "Neutral bridge with clinching nut",
+      "specification": "BRU87274",
+      "requestQty": 600,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "ไม่มี",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Defective Warehouse) | Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CJ-01-12B (Customer Supplied Material Warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Bending) | CJ-01-11A (Semi-finished Product Warehouse-Waiting Assembly) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | CG-04-07A (Customer Supplied Material Warehouse) | CE-03-01B (Customer Supplied Material Warehouse) | CO-06-01B (Customer Supplied Material Warehouse) | CF-01-01B (Customer Supplied Material Warehouse) | CJ-01-11A (Customer Supplied Material Warehouse) | CF-01-01B (Purchased parts warehouse) | Public area (Purchased parts warehouse)",
+      "lotSummary": "2026083001, 2026101901, 2026110701, 2026111401, 2026111901, 2026090201, 2026093001, 2026110502, 2026090902, 2026090903, 2026090907, 2026101701, 2026090904, 2026090905, 2026090906, 2026090908, 2026091001, 2026091002, 2026112501, 2026112504",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "25/11/2026 20:50:00",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261125-33800",
       "requestDate": "25/11/2026 14:37:13",
