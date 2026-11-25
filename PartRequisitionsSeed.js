@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-25T07:36:12.724Z",
+  "updatedAt": "2026-11-25T07:37:14.079Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261125-33800",
+      "requestDate": "25/11/2026 14:37:13",
+      "requestedAt": "25/11/2026 14:37:13",
+      "moNumber": "MO-20261124-003952",
+      "ppbomNumber": "PPBOM-20261124-004283",
+      "directTransferDocs": "ZJDB-261124-000039, ZJDB-261124-000036",
+      "materialCode": "1005QT00185",
+      "materialName": "Main breaker rating label 100A",
+      "specification": "75503802AA",
+      "requestQty": 1,
+      "unit": "Set",
+      "reason": "ลาเบล",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "",
+      "lotSummary": "",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "25/11/2026 14:37:13",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261125-72390",
       "requestDate": "25/11/2026 14:36:12",
