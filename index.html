@@ -2220,6 +2220,7 @@
           </div>
           <div id="pickListTable" style="overflow:auto"></div>
           <div id="pickBomGapBox"></div>
+          <input type="checkbox" id="pickBomShowAll" class="hidden">
         </div>
       </section>
       <section class="page" id="page-stock">
@@ -9708,7 +9709,7 @@
     orders.forEach(o => {
       if (!o.moNumber || !o.materialCode) return;
       let m = idx.get(o.moNumber); if (!m) { m = new Map(); idx.set(o.moNumber, m); }
-      const x = m.get(o.materialCode) || { materialCode: o.materialCode, materialName: o.materialName, specification: o.specification, unit: o.unit, demand: 0 };
+      const x = m.get(o.materialCode) || { materialCode: o.materialCode, materialName: o.materialName, specification: o.specification, unit: o.unit, demand: 0, orderQty: n(o.orderQty), productCode: o.productCode };
       x.demand += n(o.demandQty); m.set(o.materialCode, x);
     });
     pickBomIdxSrc = orders; return (pickBomIdx = idx);
@@ -9727,30 +9728,53 @@
     });
     return { by, count };
   }
+  // BOM master (Kingdee BOM Maintenance): qtyPer ต่อ Model+Part ใช้ตรวจว่า PPBOM ใช้ต่อชุดตรงกันไหม
+  let pickMasterIdx = null;
+  function pickMasterQtyPer(model, code){
+    if (!pickMasterIdx) { pickMasterIdx = new Map(); (window.BOM_SEED?.rows || db.bom || []).forEach(r => { const k = `${r.modelCode}|${r.materialCode}`; if (r.modelCode && r.materialCode && r.qtyPer != null) pickMasterIdx.set(k, (pickMasterIdx.get(k) || 0) + n(r.qtyPer)); }); }
+    const v = pickMasterIdx.get(`${model}|${code}`); return v == null ? null : v;
+  }
+  // ตรวจจำนวนตาม BOM ต่อ Job: ใช้/ชุด = demandQty ÷ orderQty (PPBOM), เทียบกับใบ ZJDB + เบิกจริง + ใบเบิกเพิ่ม
   function pickBomGap(m){
     const bom = pickBomIndex().get(m.moNumber); if (!bom) return null;
-    const showLabels = !!el('pickShowLabels')?.checked;
-    const inDoc = new Map(); m.items.forEach(it => inDoc.set(it.materialCode, (inDoc.get(it.materialCode) || 0) + n(it.qty)));
+    const showLabels = !!el('pickShowLabels')?.checked, eps = 1e-6;
+    const inDoc = new Map(), picked = new Map(), docInfo = new Map();
+    m.items.forEach(it => { inDoc.set(it.materialCode, (inDoc.get(it.materialCode) || 0) + n(it.qty)); picked.set(it.materialCode, (picked.get(it.materialCode) || 0) + pickQtyOf(it)); if (!docInfo.has(it.materialCode)) docInfo.set(it.materialCode, it); });
     const extra = pickExtraReqs(m.moNumber);
-    const rows = []; let labelsSkipped = 0;
-    bom.forEach(b => {
-      const docQ = inDoc.get(b.materialCode) || 0;
-      if (docQ >= b.demand - 1e-6) return;
-      if (pickIsLabel(b.materialName) && !showLabels) { labelsSkipped++; return; }
+    const orderQty = n(m.orderQty) || n([...bom.values()][0]?.orderQty);
+    const rows = []; let labelsSkipped = 0, setDoc = Infinity, setPicked = Infinity, limitPart = '';
+    const mk = (b, inBom) => {
+      const docQ = inDoc.get(b.materialCode) || 0, pk = picked.get(b.materialCode) || 0;
+      const per = inBom && orderQty ? b.demand / orderQty : 0;
       const ex = extra.by.get(String(b.materialCode).toUpperCase()) || { req: 0, issued: 0, n: 0 };
-      const gap = b.demand - docQ;
-      rows.push({ ...b, mo: m.moNumber, docQ, gap, type: docQ > 0 ? 'short' : 'missing', exReq: ex.req, exIssued: ex.issued, exN: ex.n, remain: Math.max(0, gap - ex.req) });
+      const master = inBom ? pickMasterQtyPer(b.productCode || m.productCode, b.materialCode) : null;
+      const status = !inBom ? 'notInBom' : docQ <= eps ? 'missing' : docQ < b.demand - eps ? 'short' : docQ > b.demand + eps ? 'over' : 'ok';
+      const gap = inBom ? Math.max(0, b.demand - docQ) : 0;
+      return { ...b, mo: m.moNumber, inBom, per, docQ, picked: pk, setsDoc: per ? Math.floor(docQ / per + eps) : null, setsPicked: per ? Math.floor((pk + ex.issued) / per + eps) : null,
+        status, type: status === 'missing' ? 'missing' : 'short', gap, over: inBom && docQ > b.demand ? docQ - b.demand : 0,
+        exReq: ex.req, exIssued: ex.issued, exN: ex.n, remain: Math.max(0, gap - ex.req), master, masterDiff: master != null && per && Math.abs(master - per) > 1e-6 };
+    };
+    bom.forEach(b => {
+      if (pickIsLabel(b.materialName) && !showLabels) { labelsSkipped++; return; }
+      const r = mk(b, true); rows.push(r);
+      if (r.per) { if (r.setsDoc < setDoc) { setDoc = r.setsDoc; limitPart = `${r.materialCode} ${r.materialName || ''}`; } setPicked = Math.min(setPicked, r.setsPicked); }
     });
-    rows.sort((a, b) => (a.type === b.type ? 0 : a.type === 'missing' ? -1 : 1) || b.remain - a.remain);
-    return { rows, missing: rows.filter(r => r.type === 'missing').length, short: rows.filter(r => r.type === 'short').length, remain: rows.filter(r => r.remain > 0).length, labelsSkipped, extraCount: extra.count };
+    inDoc.forEach((q, code) => { if (!bom.has(code)) { const it = docInfo.get(code); if (pickIsLabel(it.materialName) && !showLabels) return; rows.push(mk({ materialCode: code, materialName: it.materialName, specification: it.specification, demand: 0 }, false)); } });
+    const order = { missing: 0, short: 1, over: 2, notInBom: 3, ok: 4 };
+    rows.sort((a, b) => order[a.status] - order[b.status] || b.remain - a.remain || String(a.materialCode).localeCompare(String(b.materialCode)));
+    const problems = rows.filter(r => r.status !== 'ok' || r.masterDiff);
+    const cnt = s => rows.filter(r => r.status === s).length;
+    return { rows, problems, missing: cnt('missing'), short: cnt('short'), over: cnt('over'), notInBom: cnt('notInBom'), masterDiff: rows.filter(r => r.masterDiff).length,
+      remain: rows.filter(r => r.remain > 0).length, labelsSkipped, extraCount: extra.count, orderQty, setDoc: setDoc === Infinity ? null : setDoc, setPicked: setPicked === Infinity ? null : setPicked, limitPart };
   }
   function pickBomCell(m){
     const g = pickBomGap(m);
     if (!g) return '<span class="helper">—</span>';
     const ex = g.extraCount ? `<div class="helper">📝 เบิกเพิ่มแล้ว ${fmt(g.extraCount)} รายการ</div>` : '';
-    if (!g.rows.length) return `<span style="color:#047857;font-weight:700;white-space:nowrap">✅ ครบตาม BOM</span>${g.labelsSkipped ? `<div class="helper">ไม่นับลาเบล ${fmt(g.labelsSkipped)}</div>` : ''}${ex}`;
-    const parts = [g.missing ? `ไม่อยู่ในใบ ${fmt(g.missing)}` : '', g.short ? `ไม่ครบ ${fmt(g.short)}` : ''].filter(Boolean).join(' · ');
-    return `<span style="color:${g.remain ? '#b91c1c' : '#92400e'};font-weight:800;white-space:nowrap">🧩 ${parts}</span>${g.remain ? '' : '<div class="helper">เบิกเพิ่มครบแล้ว</div>'}${ex}`;
+    const sets = g.setDoc != null ? `<div class="helper">ใบเบิกพอ ${fmt(g.setDoc)}/${fmt(g.orderQty)} set</div>` : '';
+    const parts = [g.missing ? `ไม่อยู่ในใบ ${fmt(g.missing)}` : '', g.short ? `ไม่ครบ ${fmt(g.short)}` : '', g.over ? `เกิน ${fmt(g.over)}` : '', g.notInBom ? `ไม่อยู่ใน BOM ${fmt(g.notInBom)}` : ''].filter(Boolean).join(' · ');
+    if (!parts) return `<span style="color:#047857;font-weight:700;white-space:nowrap">✅ ครบตาม BOM</span>${sets}${g.labelsSkipped ? `<div class="helper">ไม่นับลาเบล ${fmt(g.labelsSkipped)}</div>` : ''}${ex}`;
+    return `<span style="color:${g.remain ? '#b91c1c' : '#92400e'};font-weight:800">🧩 ${parts}</span>${sets}${g.missing + g.short && !g.remain ? '<div class="helper">เบิกเพิ่มครบแล้ว</div>' : ''}${ex}`;
   }
   function pickSuggestBins(code){
     const inv = (Array.isArray(db.inventory) && db.inventory.length ? db.inventory : (window.ONHAND_SEED?.inventory || []))
@@ -9762,23 +9786,45 @@
   function pickRenderBomGap(sel){
     const box = el('pickBomGapBox'); if (!box) return;
     if (!sel.length) { box.innerHTML = ''; return; }
-    const mos = pickBuildMos(sel), gaps = mos.map(m => pickBomGap(m)).filter(Boolean);
-    const rows = gaps.flatMap(g => g.rows), skipped = gaps.reduce((s, g) => s + g.labelsSkipped, 0);
+    const showAll = !!el('pickBomShowAll')?.checked;
+    const gaps = pickBuildMos(sel).map(m => pickBomGap(m)).filter(Boolean);
+    if (!gaps.length) { box.innerHTML = ''; return; }
     const cu = typeof getCurrentUser === 'function' ? getCurrentUser() : null, canReq = cu && !['warehouse'].includes(cu.role);
-    if (!rows.length) { box.innerHTML = `<div style="margin-top:12px;padding:10px 12px;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:10px;font-size:13px;color:#047857;font-weight:700">✅ ใบเบิกครบตาม BOM${skipped ? ` <span class="helper" style="font-weight:400">(ไม่นับลาเบลที่จ่ายแยก ${fmt(skipped)} รายการ)</span>` : ''}</div>`; return; }
-    box.innerHTML = `<div style="margin-top:16px;border:1px solid #fecaca;border-radius:10px;overflow:hidden">
-      <div style="padding:10px 12px;background:#fef2f2;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><strong style="color:#b91c1c">🧩 Part ใน BOM ที่ไม่อยู่ในใบเบิก / จำนวนไม่ครบ (${fmt(rows.length)} รายการ)</strong><span class="helper">เทียบ PPBOM กับใบ ZJDB${skipped ? ` · ไม่นับลาเบลที่จ่ายแยก ${fmt(skipped)}` : ''} · จัดไปพร้อมกันได้จากโลเคชั่นแนะนำ</span></div>
-      <div style="overflow:auto"><table class="table" style="width:100%;font-size:13px"><thead><tr><th>Job</th><th>รหัส Part / ชื่อ</th><th>ประเภท</th><th style="text-align:right">BOM ต้องใช้</th><th style="text-align:right">ในใบเบิก</th><th style="text-align:right">ขาด</th><th>เบิกเพิ่มแล้ว</th><th style="text-align:right">ยังต้องเบิก</th><th>โลเคชั่นแนะนำ (On-Hand, Lot เก่าก่อน)</th>${canReq ? '<th></th>' : ''}</tr></thead><tbody>
-      ${rows.map(r => `<tr style="${r.remain ? '' : 'opacity:.6'}">
-        <td style="font-size:12px;white-space:nowrap">${esc(r.mo)}</td>
-        <td><div style="font-weight:700">${esc(r.materialCode)}</div><div style="font-size:12px">${esc(r.materialName || '')}</div>${(r.specification || pickSpecOf(r.materialCode)) ? `<div class="helper" style="font-size:11.5px">Spec: ${esc(r.specification || pickSpecOf(r.materialCode))}</div>` : ''}</td>
-        <td style="white-space:nowrap">${r.type === 'missing' ? '<span style="color:#b91c1c;font-weight:700">ไม่อยู่ในใบ</span>' : '<span style="color:#92400e;font-weight:700">จำนวนไม่ครบ</span>'}</td>
-        <td style="text-align:right">${fmt(r.demand)}</td><td style="text-align:right">${fmt(r.docQ)}</td><td style="text-align:right;font-weight:800;color:#b91c1c">${fmt(r.gap)}</td>
+    const statusCell = r => ({
+      missing: '<span style="color:#b91c1c;font-weight:800">❌ ไม่อยู่ในใบ</span>',
+      short: '<span style="color:#b91c1c;font-weight:800">⚠️ ไม่ครบ</span>',
+      over: `<span style="color:#7c3aed;font-weight:800">🔺 เกิน BOM ${fmt(r.over)}</span>`,
+      notInBom: '<span style="color:#92400e;font-weight:800">❓ ไม่อยู่ใน BOM</span>',
+      ok: '<span style="color:#047857;font-weight:700">✅ ตรง</span>'
+    }[r.status]) + (r.masterDiff ? `<div style="color:#b45309;font-size:11.5px;font-weight:700">BOM master = ${fmtQty(r.master)}/ชุด</div>` : '');
+    box.innerHTML = gaps.map(g => {
+      const rows = showAll ? g.rows : g.problems;
+      const okAll = !g.problems.length;
+      const head = `<div style="padding:10px 12px;background:${okAll ? '#f0fdf4' : '#fef2f2'};display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center">
+        <div><strong style="color:${okAll ? '#047857' : '#b91c1c'}">🧩 ตรวจจำนวนตาม BOM · ${esc(g.rows[0]?.mo || '')}</strong>
+          <div style="font-size:13px;margin-top:3px">สั่งผลิต <b>${fmt(g.orderQty)}</b> set · ใบเบิกพอผลิต <b style="color:${g.setDoc != null && g.setDoc < g.orderQty ? '#b91c1c' : '#047857'}">${g.setDoc != null ? fmt(g.setDoc) : '—'}</b> set${g.setDoc != null && g.setDoc < g.orderQty && g.limitPart ? ` <span class="helper">(ติดที่ ${esc(g.limitPart)})</span>` : ''} · เบิกจริงแล้วพอ <b>${g.setPicked != null ? fmt(g.setPicked) : '—'}</b> set</div>
+          <div class="helper">${[g.missing ? `ไม่อยู่ในใบ ${g.missing}` : '', g.short ? `ไม่ครบ ${g.short}` : '', g.over ? `เกิน BOM ${g.over}` : '', g.notInBom ? `ไม่อยู่ใน BOM ${g.notInBom}` : '', g.masterDiff ? `ใช้/ชุดไม่ตรง BOM master ${g.masterDiff}` : ''].filter(Boolean).join(' · ') || 'ทุก Part ตรงตาม BOM'}${g.labelsSkipped ? ` · ไม่นับลาเบลที่จ่ายแยก ${g.labelsSkipped}` : ''}</div></div>
+        <label class="helper" style="display:flex;gap:5px;align-items:center"><input type="checkbox" class="pick-bom-all" ${showAll ? 'checked' : ''}> แสดงทุก Part (${fmt(g.rows.length)})</label></div>`;
+      if (!rows.length) return `<div style="margin-top:16px;border:1px solid #bbf7d0;border-radius:10px;overflow:hidden">${head}</div>`;
+      if (pickIsMobile()) return `<div style="margin-top:16px;border:1px solid ${okAll ? '#bbf7d0' : '#fecaca'};border-radius:10px;overflow:hidden">${head}<div style="padding:8px">${rows.map(r => `<div class="pick-card">
+          <div class="row"><b>${esc(r.materialCode)}</b>${statusCell(r)}</div><div style="font-size:13px">${esc(r.materialName || '')}</div>${r.specification ? `<div class="helper">Spec: ${esc(r.specification)}</div>` : ''}
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;font-size:12.5px;margin-top:6px"><span>ใช้/ชุด: <b>${r.per ? fmtQty(r.per) : '—'}</b></span><span>BOM ต้องใช้: <b>${fmt(r.demand)}</b></span><span>ในใบเบิก: <b>${fmt(r.docQ)}</b> ${r.setsDoc != null ? `(${fmt(r.setsDoc)} set)` : ''}</span><span>เบิกจริง: <b>${fmt(r.picked)}</b></span>${r.exN ? `<span>เบิกเพิ่มแล้ว: <b>${fmt(r.exReq)}</b></span>` : ''}${r.remain ? `<span style="color:#b91c1c">ยังต้องเบิก: <b>${fmt(r.remain)}</b></span>` : ''}</div>
+          ${r.remain ? `<div style="margin-top:6px">${pickSuggestBins(r.materialCode)}</div>${canReq ? `<button type="button" class="btn pick-req-btn" data-mo="${esc(r.mo)}" data-code="${esc(r.materialCode)}" data-qty="${esc(r.remain)}" data-type="${r.type}" style="margin-top:6px;padding:6px 12px;font-size:13px">📝 เบิกเพิ่ม</button>` : ''}` : ''}</div>`).join('')}</div></div>`;
+      return `<div style="margin-top:16px;border:1px solid ${okAll ? '#bbf7d0' : '#fecaca'};border-radius:10px;overflow:hidden">${head}
+      <div style="overflow:auto"><table class="table" style="width:100%;font-size:13px"><thead><tr><th>รหัส Part / ชื่อ</th><th style="text-align:right">ใช้/ชุด</th><th style="text-align:right">BOM ต้องใช้<br><span class="helper">${fmt(g.orderQty)} set</span></th><th style="text-align:right">ในใบเบิก</th><th style="text-align:right">พอ (set)</th><th style="text-align:right">เบิกจริง</th><th>ผลตรวจ</th><th>เบิกเพิ่มแล้ว</th><th style="text-align:right">ยังต้องเบิก</th><th>โลเคชั่นแนะนำ (On-Hand, Lot เก่าก่อน)</th>${canReq ? '<th></th>' : ''}</tr></thead><tbody>
+      ${rows.map(r => `<tr style="${r.status === 'ok' ? '' : r.status === 'over' ? 'background:#faf5ff' : r.status === 'notInBom' ? 'background:#fffbeb' : 'background:#fef2f2'}">
+        <td><div style="font-weight:700">${esc(r.materialCode)}</div><div style="font-size:12px">${esc(r.materialName || '')}</div>${r.specification ? `<div class="helper" style="font-size:11.5px">Spec: ${esc(r.specification)}</div>` : ''}</td>
+        <td style="text-align:right">${r.per ? fmtQty(r.per) : '—'}</td><td style="text-align:right">${r.inBom ? fmt(r.demand) : '—'}</td>
+        <td style="text-align:right;font-weight:700">${fmt(r.docQ)}</td>
+        <td style="text-align:right;color:${r.setsDoc != null && r.setsDoc < g.orderQty ? '#b91c1c' : '#047857'};font-weight:700">${r.setsDoc != null ? fmt(r.setsDoc) : '—'}</td>
+        <td style="text-align:right">${r.picked ? fmt(r.picked) : '<span class="helper">—</span>'}</td>
+        <td style="white-space:nowrap">${statusCell(r)}</td>
         <td style="font-size:12px;white-space:nowrap">${r.exN ? `${fmt(r.exReq)} <span class="helper">(${fmt(r.exN)} ใบ · จ่ายแล้ว ${fmt(r.exIssued)})</span>` : '<span class="helper">—</span>'}</td>
-        <td style="text-align:right;font-weight:800;font-size:14px;color:${r.remain ? '#b91c1c' : '#047857'}">${r.remain ? fmt(r.remain) : '✅'}</td>
-        <td>${pickSuggestBins(r.materialCode)}</td>
+        <td style="text-align:right;font-weight:800;font-size:14px;color:${r.remain ? '#b91c1c' : '#047857'}">${r.remain ? fmt(r.remain) : (r.status === 'missing' || r.status === 'short') ? '✅' : '—'}</td>
+        <td>${r.remain ? pickSuggestBins(r.materialCode) : ''}</td>
         ${canReq ? `<td>${r.remain ? `<button type="button" class="btn pick-req-btn" data-mo="${esc(r.mo)}" data-code="${esc(r.materialCode)}" data-qty="${esc(r.remain)}" data-type="${r.type}" style="padding:4px 10px;font-size:12px;white-space:nowrap">📝 เบิกเพิ่ม</button>` : ''}</td>` : ''}</tr>`).join('')}
       </tbody></table></div></div>`;
+    }).join('');
   }
   // เปิดหน้า เบิก Part เพิ่มเติม พร้อมกรอก MO / Part / จำนวน / สาเหตุ ให้
   function pickOpenExtraReq(mo, code, qty, type){
@@ -10043,6 +10089,7 @@
         renderPickingPage();
       });
       el('pickShowLabels')?.addEventListener('change', renderPickingPage);
+      el('pickBomGapBox')?.addEventListener('change', e => { if (e.target.classList.contains('pick-bom-all')) { el('pickBomShowAll').checked = e.target.checked; renderPickingList(); } });
       el('pickBomGapBox')?.addEventListener('click', e => { const b = e.target.closest('.pick-req-btn'); if (b) pickOpenExtraReq(b.dataset.mo, b.dataset.code, n(b.dataset.qty), b.dataset.type); });
       el('pickListTable')?.addEventListener('click', e => {
         const btn = e.target.closest('.pick-open-btn'); if (!btn) return;
