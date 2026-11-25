@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-25T13:50:01.475Z",
+  "updatedAt": "2026-11-25T14:00:39.150Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -52,17 +52,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderB",
       "shift": "B",
       "requesterNote": "ไม่มี",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CE-03-01B",
+          "qty": 600,
+          "lot": "2026093001"
+        }
+      ],
+      "locationsSummary": "Loc#1: CE-03-01B (600 PCS) [Lot: 2026093001]",
       "onHandLocation": "Public area (Defective Warehouse) | Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CJ-01-12B (Customer Supplied Material Warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Bending) | CJ-01-11A (Semi-finished Product Warehouse-Waiting Assembly) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | CG-04-07A (Customer Supplied Material Warehouse) | CE-03-01B (Customer Supplied Material Warehouse) | CO-06-01B (Customer Supplied Material Warehouse) | CF-01-01B (Customer Supplied Material Warehouse) | CJ-01-11A (Customer Supplied Material Warehouse) | CF-01-01B (Purchased parts warehouse) | Public area (Purchased parts warehouse)",
-      "lotSummary": "2026083001, 2026101901, 2026110701, 2026111401, 2026111901, 2026090201, 2026093001, 2026110502, 2026090902, 2026090903, 2026090907, 2026101701, 2026090904, 2026090905, 2026090906, 2026090908, 2026091001, 2026091002, 2026112501, 2026112504",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026093001",
+      "issuerName": "ภิญโญ",
+      "issuedAt": "25/11/2026 21:00:35",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "25/11/2026 20:50:00",
-      "photoTakenAt": ""
+      "updatedAt": "25/11/2026 21:00:35",
+      "photoTakenAt": "25/11/2026 21:00:35",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261125-00440.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261125-33800",
