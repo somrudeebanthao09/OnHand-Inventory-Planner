@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-25T05:25:22.621Z",
+  "updatedAt": "2026-11-25T06:14:45.413Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -17,7 +17,8 @@ window.PART_REQUISITIONS_SEED = {
       "ภาคภูมิ",
       "อรรถพร",
       "จักรกฤษ",
-      "เจนภพ"
+      "เจนภพ",
+      "สมฤดี"
     ],
     "issuers": [
       "เจ้าหน้าที่คลังจ่าย Part (Warehouse)",
@@ -34,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261125-84979",
+      "requestDate": "25/11/2026 13:14:43",
+      "requestedAt": "25/11/2026 13:14:43",
+      "moNumber": "PILOT RUN",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00762",
+      "materialName": "Schneider Blank label packaging",
+      "specification": "AAV82794-BOI",
+      "requestQty": 1,
+      "unit": "Set",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "สมฤดี",
+      "requesterUsername": "admin",
+      "shift": "A",
+      "requesterNote": "งาน pilot run Line ใหม่",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-02-05E (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CI-02-01A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 2026100299",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "25/11/2026 13:14:44",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261125-15187",
       "requestDate": "25/11/2026 10:35:14",
