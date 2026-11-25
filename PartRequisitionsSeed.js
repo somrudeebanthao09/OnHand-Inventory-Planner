@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-25T03:25:22.523Z",
+  "updatedAt": "2026-11-25T03:35:15.150Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -34,6 +34,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261125-15187",
+      "requestDate": "25/11/2026 10:35:14",
+      "requestedAt": "25/11/2026 10:35:14",
+      "moNumber": "MO-20261124-003952",
+      "ppbomNumber": "PPBOM-20261124-004283",
+      "directTransferDocs": "ZJDB-261124-000039",
+      "materialCode": "1005QT00865",
+      "materialName": "BLANK LABEL STICKER SIZE12X12 OFFER1",
+      "specification": "51150308",
+      "requestQty": 4000,
+      "unit": "PCS",
+      "reason": "ลาเบล",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-01-01C (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026083001, 2026111301",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "25/11/2026 10:35:15",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261125-71156",
       "requestDate": "25/11/2026 08:14:30",
