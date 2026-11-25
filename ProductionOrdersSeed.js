@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-25T02:36:26.441Z",
+  "snapshotAt": "2026-11-25T02:48:04.888Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 16604,
   "orders": [
@@ -9611,7 +9611,7 @@ window.PRODUCTION_ORDERS_SEED = {
       "productName": "BRKT (AL) CASTING DEBURR SHOT BLASTCNC PACKING",
       "department": "Aluminum Die Casting - Post-Processing Production Line",
       "taskStatus": "Start",
-      "pickStatus": "Materials Not Issued",
+      "pickStatus": "Fully Issued",
       "materialCode": "5003JJ00027",
       "materialName": "BRKT (AL) CASTING DEBURR SHOT BLAST CNC",
       "specification": "TH-524B-1",
@@ -9623,12 +9623,12 @@ window.PRODUCTION_ORDERS_SEED = {
       "directTransferQty": 0,
       "directTransferDocs": "",
       "ppbomDemandQty": 43,
-      "ppbomIssuedQty": 0,
-      "ppbomUnissuedQty": 43,
+      "ppbomIssuedQty": 43,
+      "ppbomUnissuedQty": 0,
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
+      "consumedQty": 43,
       "wipQty": 0,
       "issuingWarehouse": "Aluminum Die Casting Semi-Finished Product Warehouse-Waiting Packaging",
       "requiredTime": "2026-11-24 12:01:01"
