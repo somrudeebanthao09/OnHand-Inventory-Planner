@@ -2182,7 +2182,7 @@
         </div>
         <div id="pickSyncInfo" class="helper" style="margin:-4px 0 6px;font-size:12.5px"></div>
         <div id="pickSheetStatus" style="margin:0 0 12px;font-size:12.5px"></div>
-        <div class="panel" style="margin-bottom:14px">
+        <div class="panel" id="pickJobPanel" style="margin-bottom:14px">
           <div class="toolbar" style="gap:10px;flex-wrap:wrap">
             <div class="filters" style="flex-wrap:wrap">
               <select id="pickDeptFilter" class="field" style="min-width:220px"></select>
@@ -2200,9 +2200,13 @@
             </div>
             <span id="pickDocCount" class="helper"></span>
           </div>
-          <div id="pickDocTable" style="max-height:400px;overflow:auto;border:1px solid var(--line);border-radius:8px"></div>
+          <div id="pickDocTable" style="overflow:auto;border:1px solid var(--line);border-radius:8px"></div>
         </div>
-        <div class="panel">
+        <div class="panel hidden" id="pickDetailPanel">
+          <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-bottom:10px">
+            <button class="btn" id="pickBackBtn" type="button" style="font-weight:700">← กลับไปรายการ Job</button>
+            <div id="pickDetailHead" style="flex:1;min-width:220px"></div>
+          </div>
           <div class="toolbar" style="gap:10px;flex-wrap:wrap">
             <div><strong style="font-size:15px">📦 รายการที่ต้องเบิก (เรียงตามโลเคชั่น)</strong> <span id="pickListInfo" class="helper"></span></div>
             <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
@@ -2210,8 +2214,8 @@
                 <select id="pickPickerName" class="field" style="min-width:190px"></select>
               </label>
               <label class="helper" style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="pickHideDone"> ซ่อนที่เบิกแล้ว</label>
-              <button class="btn primary" id="pickMarkAllBtn" type="button">✅ เบิกครบทั้งใบที่เลือก</button>
-              <button class="btn" id="pickClearDoneBtn" type="button">↩️ ยกเลิกสถานะของใบที่เลือก</button>
+              <button class="btn primary" id="pickMarkAllBtn" type="button">✅ เบิกครบทั้ง Job</button>
+              <button class="btn" id="pickClearDoneBtn" type="button">↩️ ยกเลิกสถานะทั้ง Job</button>
             </div>
           </div>
           <div id="pickListTable" style="overflow:auto"></div>
@@ -2974,6 +2978,10 @@
  <div id="poTrackingFilterPopup" class="stock-filter-popup hidden" role="dialog" aria-label="ตัวกรองคอลัมน์ ติดตาม Order ผลิต"><div class="stock-filter-popup-head"><strong id="poTrackingFilterTitle">ตัวกรอง</strong><button id="poTrackingFilterClose" class="btn" type="button" aria-label="ปิด">×</button></div><div style="display:flex;gap:6px;flex:0 0 auto"><button id="poTrackingFilterSortAsc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬆️ น้อย → มาก</button><button id="poTrackingFilterSortDesc" class="btn" type="button" style="flex:1;padding:6px 8px;font-size:12px;font-weight:700">⬇️ มาก → น้อย</button></div><input id="poTrackingFilterSearch" class="stock-filter-search" type="search" placeholder="พิมพ์เพื่อค้นหา..." autocomplete="off"><label class="stock-filter-select-all"><input id="poTrackingFilterSelectAll" type="checkbox"><span>เลือกทั้งหมดที่ค้นหา</span></label><div id="poTrackingFilterCount" class="helper"></div><div id="poTrackingFilterOptions" class="stock-filter-options"></div><div class="stock-filter-actions"><button id="poTrackingFilterReset" class="btn stock-filter-clear" type="button">ล้างคอลัมน์นี้</button><button id="poTrackingFilterCancel" class="btn" type="button">ยกเลิก</button><button id="poTrackingFilterApply" class="btn primary" type="button">ใช้ตัวกรอง</button></div></div>
  <div class="toast" id="toast" role="status"></div>
 <style>
+  .pick-card{border:1px solid var(--line);border-radius:12px;padding:12px;margin:0 0 10px;background:#fff}
+  .pick-card.done{background:#f0fdf4;border-color:#bbf7d0}.pick-card.partial{background:#fef2f2;border-color:#fecaca}
+  .pick-card .row{display:flex;justify-content:space-between;gap:8px;align-items:center}
+  @media (max-width:760px){#page-picking .title-row{flex-direction:column}#page-picking .filters{width:100%}#page-picking .filters>*{flex:1 1 100%;min-width:0!important}#pickDetailPanel .toolbar>div{width:100%}}
   .pick-combo-drop{position:absolute;left:0;right:0;top:100%;margin-top:3px;max-height:260px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:9px;box-shadow:0 12px 30px #10262c30;z-index:30;font-size:13.5px}
   .pick-combo-drop .grp{padding:6px 10px 3px;font-size:11.5px;font-weight:800;color:#64748b;background:#f8fafc;position:sticky;top:0}
   .pick-combo-drop .opt{padding:7px 10px;cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
@@ -9531,7 +9539,8 @@
   // ===== จัดออร์เดอร์ (Picking): ใบเบิก / Direct Transfer (ZJDB) ของ Order ใน ติดตาม Order ผลิต =====
   // โลเคชั่น/Lot/คลังต้นทาง มาจากใบ ZJDB ที่ Planner เปิด (PRODUCTION_EXECUTION_SEED.directTransferDocsByDoc)
   // สถานะการเบิก (ใคร/เมื่อไหร่) เก็บใน Google Sheet แท็บ PickingLog ผ่าน Part API (action: pick_list / pick_save)
-  let pickSelectedDocs = new Set(), pickDeptInit = false, pickView = 'mo', pickPerSet = new Map();
+  let pickSelectedDocs = new Set(), pickDeptInit = false, pickView = 'mo', pickPerSet = new Map(), pickOpenMo = null;
+  const pickIsMobile = () => window.matchMedia('(max-width: 760px)').matches;
   // จำนวนชุด (set): ใช้ต่อชุด = demandQty ÷ orderQty ของ Part ใน MO · ชุดที่ได้ = ค่าน้อยที่สุดในทุก Part ของใบ (floor)
   function pickSets(items, mos){
     const byMat = new Map();
@@ -9863,18 +9872,39 @@
       ? `🟢 ใบเบิก ZJDB ในระบบ <b>${fmt(docs.length)}</b> ใบ (${esc(dates[0] || '')} → ${esc(dates[dates.length - 1] || '')}) · ซิงก์จาก Kingdee ล่าสุด ${esc(time(seed.snapshotAt))}`
       : `⚠️ ยังไม่มีรายละเอียดใบ ZJDB ในระบบ (ต้องซิงก์ Direct Transfer จาก Kingdee ก่อน)`;
     pickRenderSheetStatus();
+    const openM = pickOpenMo ? pickBuildMos(docs).find(m => m.moNumber === pickOpenMo) : null;
+    if (pickOpenMo && !openM) pickOpenMo = null;
+    el('pickJobPanel')?.classList.toggle('hidden', !!openM);
+    el('pickDetailPanel')?.classList.toggle('hidden', !openM);
+    if (openM) {
+      pickSelectedDocs = new Set(openM.docs);
+      el('pickDetailHead').innerHTML = `<div style="font-size:17px;font-weight:800">${esc(openM.moNumber)} ${pickStateBadge(openM)}</div>
+        <div style="font-size:13.5px;font-weight:650">${esc(openM.productName || '')}</div>
+        <div class="helper">${esc(openM.productCode || '')} · สั่งผลิต ${fmt(openM.orderQty)} · ใบเบิก ${openM.docs.map(esc).join(', ')}</div>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:6px;align-items:flex-start"><div>${pickQtyCell(openM)}</div><div>${pickProgressCell(openM)}</div><div>${pickBomCell(openM)}</div></div>`;
+      renderPickingList();
+      return;
+    }
     if (pickView === 'mo') {
       const list = pickFilterMos(docs), shown = list.slice(0, 300);
-      el('pickDocCount').textContent = `${fmt(list.length)} Job${list.length > shown.length ? ` · แสดง ${shown.length} Job ล่าสุด` : ''} · เลือกใบเบิกแล้ว ${fmt(pickSelectedDocs.size)}`;
-      el('pickDocTable').innerHTML = shown.length ? `<table class="table" style="width:100%;font-size:13px"><thead style="position:sticky;top:0;background:#f8fafc;z-index:1"><tr>
-        <th style="width:34px"><input type="checkbox" id="pickSelectAll" ${shown.length && shown.every(m => m.docs.every(d => pickSelectedDocs.has(d))) ? 'checked' : ''} title="เลือกทั้งหมดที่แสดง"></th><th>Job (MO)</th><th>สินค้า</th><th>ใบเบิก ZJDB</th><th>สถานะ</th><th>เทียบ BOM</th><th style="text-align:right">จำนวนชุด<br><span class="helper">เบิกแล้ว / ทั้งหมด (set)</span></th><th>ความคืบหน้า</th><th>เบิกโดย / ล่าสุด</th></tr></thead><tbody>
-        ${shown.map(m => { const sel = m.docs.every(d => pickSelectedDocs.has(d)); return `<tr data-mo-docs="${esc(m.docs.join(','))}" style="cursor:pointer;${sel ? 'background:#ecfdf5' : ''}">
-          <td><input type="checkbox" ${sel ? 'checked' : ''}></td>
+      el('pickDocCount').textContent = `${fmt(list.length)} Job${list.length > shown.length ? ` · แสดง ${shown.length} Job ล่าสุด` : ''} · กด Job เพื่อดูรายการที่ต้องเบิก`;
+      if (!shown.length) el('pickDocTable').innerHTML = `<div class="helper" style="padding:18px;text-align:center">ไม่พบ Job ตามตัวกรองนี้</div>`;
+      else if (pickIsMobile()) el('pickDocTable').innerHTML = `<div style="padding:8px">${shown.map(m => `<div class="pick-card" data-open-mo="${esc(m.moNumber)}" style="cursor:pointer">
+          <div class="row"><b style="font-size:15px">${esc(m.moNumber)}</b>${pickStateBadge(m)}</div>
+          <div style="font-weight:650;margin-top:2px">${esc(m.productName || '')}</div>
+          <div class="helper">${esc(m.productCode || '')} · สั่งผลิต ${fmt(m.orderQty)} · ${esc(m.lastDate)}</div>
+          <div class="row" style="margin-top:8px;align-items:flex-start"><div>${pickBomCell(m)}</div><div>${pickQtyCell(m)}</div></div>
+          <div style="margin-top:6px">${pickProgressCell(m)}</div>
+          <div class="row" style="margin-top:8px"><span class="helper">${m.pickers.length ? `เบิกโดย ${m.pickers.map(esc).join(', ')}` : ''}</span><span class="btn primary" style="padding:5px 12px;font-size:13px">เปิด Job →</span></div></div>`).join('')}</div>`;
+      else el('pickDocTable').innerHTML = `<table class="table" style="width:100%;font-size:13px"><thead style="position:sticky;top:0;background:#f8fafc;z-index:1"><tr>
+        <th>Job (MO)</th><th>สินค้า</th><th>ใบเบิก ZJDB</th><th>สถานะ</th><th>เทียบ BOM</th><th style="text-align:right">จำนวนชุด<br><span class="helper">เบิกแล้ว / ทั้งหมด (set)</span></th><th>ความคืบหน้า</th><th>เบิกโดย / ล่าสุด</th><th></th></tr></thead><tbody>
+        ${shown.map(m => `<tr data-open-mo="${esc(m.moNumber)}" style="cursor:pointer">
           <td style="font-weight:700;white-space:nowrap">${esc(m.moNumber)}<div class="helper">${esc(m.lastDate)}</div></td>
           <td><div style="font-weight:650">${esc(m.productName || '')}</div><div class="helper">${esc(m.productCode || '')} · สั่งผลิต ${fmt(m.orderQty)}</div></td>
           <td style="font-size:12px">${m.docs.map(esc).join('<br>')}</td>
-          <td>${pickStateBadge(m)}</td><td>${pickBomCell(m)}</td><td>${pickQtyCell(m)}</td><td>${pickProgressCell(m)}</td><td>${pickWhoCell(m)}</td></tr>`; }).join('')}
-        </tbody></table>` : `<div class="helper" style="padding:18px;text-align:center">ไม่พบ Job ตามตัวกรองนี้</div>`;
+          <td>${pickStateBadge(m)}</td><td>${pickBomCell(m)}</td><td>${pickQtyCell(m)}</td><td>${pickProgressCell(m)}</td><td>${pickWhoCell(m)}</td>
+          <td><span class="btn primary" style="padding:5px 12px;font-size:13px;white-space:nowrap">เปิด →</span></td></tr>`).join('')}
+        </tbody></table>`;
     } else {
       const list = pickFilterDocs(docs), shown = list.slice(0, 300);
       el('pickDocCount').textContent = `${fmt(list.length)} ใบ${list.length > shown.length ? ` · แสดง ${shown.length} ใบล่าสุด` : ''} · เลือกแล้ว ${fmt(pickSelectedDocs.size)}`;
@@ -9900,6 +9930,22 @@
     const rows = pickRows(sel), hideDone = el('pickHideDone')?.checked, prog = pickProgress(rows);
     el('pickListInfo').innerHTML = `· ${fmt(new Set(sel.flatMap(d => d.mos.map(m => m.moNumber))).size)} Job (${fmt(sel.length)} ใบ) · Part เบิกครบ <b>${fmt(prog.partDone)}/${fmt(prog.partTotal)}</b> · จุดเบิก ${fmt(prog.doneCount)}/${fmt(prog.lineTotal)}${prog.partialCount ? ` · <b style="color:#b91c1c">⚠️ เบิกไม่ครบ ${fmt(prog.partialCount)} รายการ</b>` : ''} ${(() => { const s = pickBuildMos(sel).filter(m => m.setTotal !== null); return s.length ? ` · ชุด <b>${s.map(m => `${fmt(m.setDone)}/${fmt(m.setTotal)}`).join(', ')}</b> set` : ''; })()}`;
     const vis = hideDone ? rows.filter(r => !pickIsPicked(r.key)) : rows;
+    if (pickIsMobile()) {
+      wrap.innerHTML = vis.map((r, i) => {
+        const st = pickState.get(r.key), isDone = st?.status === 'picked', isPartial = st?.status === 'partial', touched = isDone || isPartial;
+        const bin = pickActualBin(r) || r.fromBin || 'ไม่ระบุ', lot = pickActualLot(r) || r.lotNumber || '—', spec = r.specification || pickSpecOf(r.materialCode);
+        return `<div class="pick-card ${isDone ? 'done' : isPartial ? 'partial' : ''}">
+          <div class="row"><span style="font-size:20px;font-weight:900;color:${pickActualBin(r) && pickActualBin(r) !== r.fromBin ? '#7c3aed' : pickIsPublicBin(r.fromBin) ? '#92400e' : '#0f766e'}">${i + 1}. ${esc(bin)}</span><span style="font-size:20px;font-weight:900">${fmt(r.qty)}</span></div>
+          ${pickActualBin(r) && pickActualBin(r) !== r.fromBin ? `<div class="helper" style="text-decoration:line-through">ใบเบิก: ${esc(r.fromBin || '—')}</div>` : ''}
+          <div style="margin-top:4px"><b>${esc(r.materialCode)}</b> ${esc(r.materialName || '')}</div>
+          <div class="helper">${spec ? `Spec: ${esc(spec)} · ` : ''}Lot: ${esc(lot)}${pickActualLot(r) && pickActualLot(r) !== r.lotNumber ? ` <span style="text-decoration:line-through">(${esc(r.lotNumber || '—')})</span>` : ''}</div>
+          <div class="row" style="margin-top:8px">
+            <span style="font-size:13px">${touched ? `<b style="color:${isDone ? '#047857' : '#b91c1c'}">${isDone ? '✅ เบิกครบ' : `⚠️ เบิก ${fmt(pickQtyOf(r))} (ขาด ${fmt(n(r.qty) - pickQtyOf(r))})`}</b> 🔒<div class="helper">${esc(st.pickedBy || '')} · ${esc(st.pickedAt || '')}${st.pending ? ' · ⏳' : ''}</div>` : `<span class="helper">${esc(r.docNo)}</span>`}</span>
+            ${touched ? `<button type="button" class="btn pick-open-btn" data-key="${esc(r.key)}" style="padding:6px 12px;font-size:13px">✏️ แก้ไข</button>` : `<button type="button" class="btn primary pick-open-btn" data-key="${esc(r.key)}" style="padding:10px 18px;font-size:15px">📦 เบิก</button>`}
+          </div></div>`;
+      }).join('') || '<div class="helper" style="padding:16px;text-align:center">เบิกครบทุกรายการแล้ว</div>';
+      return;
+    }
     wrap.innerHTML = `<table class="table" style="width:100%;font-size:13px"><thead><tr>
       <th style="width:96px">สถานะ</th><th>#</th><th>โลเคชั่น<br><span class="helper">调出仓位</span></th><th>รหัส Part / ชื่อ</th><th>Lot</th><th style="text-align:right">จำนวน</th><th style="text-align:right">เบิกจริง</th><th>เบิกโดย / เวลา</th><th>ใบเบิก / Job</th></tr></thead><tbody>
       ${vis.map((r, i) => {
@@ -9974,7 +10020,11 @@
         if (!rows.length) { toast('ไม่มีรายการที่เบิกแล้วในใบที่เลือก'); return; }
         pickOpenModal({ title: `↩️ ยืนยันยกเลิกสถานะเบิก ${fmt(rows.length)} รายการ?`, info: `<div>ใบเบิก: ${[...new Set(rows.map(r => r.docNo))].map(esc).join(', ')}</div>`, okLabel: '↩️ ยืนยันยกเลิกสถานะ', onOk: () => pickSetLines(rows, false) });
       });
+      el('pickBackBtn')?.addEventListener('click', () => { pickOpenMo = null; pickSelectedDocs = new Set(); renderPickingPage(); window.scrollTo({ top: 0 }); });
+      let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { if (activePage === 'picking') renderPickingPage(); }, 250); });
       el('pickDocTable')?.addEventListener('click', e => {
+        const openTr = e.target.closest('[data-open-mo]');
+        if (openTr) { pickOpenMo = openTr.dataset.openMo; renderPickingPage(); el('pickDetailPanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
         if (e.target.id === 'pickSelectAll') {
           const on = e.target.checked;
           const docsAll = pickBuildDocs();
