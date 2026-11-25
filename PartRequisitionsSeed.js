@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-25T15:25:23.345Z",
+  "updatedAt": "2026-11-25T16:04:10.393Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261125-50534",
+      "requestDate": "25/11/2026 23:04:09",
+      "requestedAt": "25/11/2026 23:04:09",
+      "moNumber": "MO-20261124-003985",
+      "ppbomNumber": "PPBOM-20261124-004318",
+      "directTransferDocs": "ZJDB-261124-000082, ZJDB-261124-000083",
+      "materialCode": "1005QT00862",
+      "materialName": "Wiring diagram label for CU",
+      "specification": "75504187AA",
+      "requestQty": 2500,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CH-01-04D (Customer Supplied Material Warehouse) | Public area (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026101201, 2026110301, 2026111701, 2026112103, 2026112401",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "25/11/2026 23:04:10",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261125-95557",
       "requestDate": "25/11/2026 21:08:14",
