@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-25T01:20:15.799Z",
+  "updatedAt": "2026-11-25T01:21:43.378Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -7856,26 +7856,24 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderA",
       "shift": "A",
       "requesterNote": "ไม่พอ",
-      "status": "issued",
-      "locations": [
-        {
-          "location": "ไม่ระบุ Location",
-          "qty": 1,
-          "lot": ""
-        }
-      ],
-      "locationsSummary": "Loc#1: ไม่ระบุ Location (1 PCS)",
+      "status": "cancelled",
+      "locations": [],
+      "locationsSummary": "",
       "onHandLocation": "",
       "lotSummary": "",
-      "issuerName": "นิตยา",
-      "issuedAt": "24/11/2026 18:54:32",
+      "issuerName": "",
+      "issuedAt": "",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "24/11/2026 18:54:32",
-      "photoTakenAt": "24/11/2026 18:54:32",
+      "updatedAt": "25/11/2026 08:21:42",
+      "photoTakenAt": "",
       "issuerUsername": "admin",
       "photoUrl": "part-photos/REQ-20261117-12770.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "cancelledAt": "2026-11-25T01:21:42.500Z",
+      "cancelledBy": "เจ้าหน้าที่คลังจ่าย Part (Warehouse)",
+      "cancelledByRole": "warehouse",
+      "cancelReason": "ไม่มีงานเกิด (WH ยกเลิก)"
     },
     {
       "reqId": "REQ-20261117-29373",
