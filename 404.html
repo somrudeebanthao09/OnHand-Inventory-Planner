@@ -9842,14 +9842,21 @@
         if (!isCb && !isQty) return;
         const row = pickRows(pickSelectedDocList()).find(r => r.key === e.target.dataset.key);
         if (!row) return;
-        if (isCb) { pickSetLines([row], e.target.checked); return; }
+        // ยืนยันทุกครั้งก่อนบันทึก กันกดผิด — กดยกเลิกจะคืนค่าเดิม
+        const info = `\n\nโลเคชั่น: ${row.fromBin || 'ไม่ระบุ'}\nPart: ${row.materialCode} ${row.materialName || ''}\nLot: ${row.lotNumber || '—'}\nจำนวนในใบ: ${fmt(row.qty)}\nใบเบิก: ${row.docNo}\nผู้เบิก: ${pickPickerName()}`;
+        const ask = msg => { if (confirm(msg + info)) return true; renderPickingList(); return false; };
+        if (isCb) {
+          if (e.target.checked) { if (ask(`✅ ยืนยันว่าเบิกครบ ${fmt(row.qty)}?`)) pickSetLines([row], true); }
+          else { if (ask('↩️ ยืนยันยกเลิกสถานะเบิกของรายการนี้?')) pickSetLines([row], false); }
+          return;
+        }
         const raw = String(e.target.value || '').trim();
-        if (raw === '') { pickSetLines([row], false); return; }
-        const v = n(raw);
+        const v = raw === '' ? 0 : n(raw);
         if (v < 0) { toast('จำนวนต้องไม่ติดลบ'); renderPickingList(); return; }
-        if (v === 0) { pickSetLines([row], false); return; }
-        if (v > n(row.qty) && !confirm(`จำนวนที่กรอก (${fmt(v)}) มากกว่าในใบเบิก (${fmt(row.qty)}) — บันทึกเป็นเบิกครบ?`)) { renderPickingList(); return; }
-        pickSetLines([row], true, Math.min(v, n(row.qty)));
+        if (v === 0) { if (ask('↩️ ยืนยันยกเลิกสถานะเบิกของรายการนี้?')) pickSetLines([row], false); return; }
+        if (v > n(row.qty)) { if (ask(`⚠️ จำนวนที่กรอก (${fmt(v)}) มากกว่าในใบเบิก — บันทึกเป็นเบิกครบ ${fmt(row.qty)}?`)) pickSetLines([row], true, n(row.qty)); return; }
+        if (v < n(row.qty)) { if (ask(`⚠️ ยืนยันเบิกไม่ครบ: เบิกจริง ${fmt(v)} (ขาด ${fmt(n(row.qty) - v)})?`)) pickSetLines([row], true, v); return; }
+        if (ask(`✅ ยืนยันว่าเบิกครบ ${fmt(row.qty)}?`)) pickSetLines([row], true, v);
       });
       // อัปเดตสถานะจาก Google Sheet ทุก 20 วินาที ขณะเปิดหน้านี้ เพื่อให้ทุกคนเห็นตรงกัน
       setInterval(() => { if (activePage === 'picking' && document.visibilityState !== 'hidden') pickRefresh(false); }, 20000);
