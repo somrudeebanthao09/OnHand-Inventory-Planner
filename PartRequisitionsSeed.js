@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-26T13:25:17.272Z",
+  "updatedAt": "2026-11-26T13:41:06.251Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261126-66087",
+      "requestDate": "26/11/2026 20:41:05",
+      "requestedAt": "26/11/2026 20:41:05",
+      "moNumber": "MO-20261124-003984",
+      "ppbomNumber": "PPBOM-20261124-004317",
+      "directTransferDocs": "ZJDB-261124-000081",
+      "materialCode": "1005QT00508",
+      "materialName": "DOLLY COVER 2 + 14, 14 WAY",
+      "specification": "NVE96532",
+      "requestQty": 4,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CJ-01-09B (Customer Supplied Material Warehouse) | CC-09-03A (Customer Supplied Material Warehouse) | CC-07-04A (Customer Supplied Material Warehouse) | CC-03-06A (Customer Supplied Material Warehouse) | CC-02-05B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026090904, 2026100299, 2026111601, 2026112101",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "26/11/2026 20:41:06",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261126-49781",
       "requestDate": "26/11/2026 20:20:49",
