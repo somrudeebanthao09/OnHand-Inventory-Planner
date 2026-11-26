@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-26T07:52:09.856Z",
+  "updatedAt": "2026-11-26T08:41:50.494Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261126-10323",
+      "requestDate": "26/11/2026 15:41:50",
+      "requestedAt": "26/11/2026 15:41:50",
+      "moNumber": "MO-20261124-003984",
+      "ppbomNumber": "PPBOM-20261124-004317",
+      "directTransferDocs": "ZJDB-261124-000081, ZJDB-261124-000080",
+      "materialCode": "1005QT00612",
+      "materialName": "LABEL BLANK 75X47 MATT",
+      "specification": "GEX45265",
+      "requestQty": 1000,
+      "unit": "PCS",
+      "reason": "ลาเบล",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CH-02-04E (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026083001, 2026090901",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "26/11/2026 15:41:50",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261126-66376",
       "requestDate": "26/11/2026 13:51:05",
