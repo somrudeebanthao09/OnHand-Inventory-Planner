@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-26T14:17:09.355Z",
+  "updatedAt": "2026-11-26T14:17:23.286Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261126-43150",
+      "requestDate": "26/11/2026 21:17:22",
+      "requestedAt": "26/11/2026 21:17:22",
+      "moNumber": "MO-20261124-003984",
+      "ppbomNumber": "PPBOM-20261124-004317",
+      "directTransferDocs": "ZJDB-261124-000081",
+      "materialCode": "1005QT00597",
+      "materialName": "Interior2 + 14way label",
+      "specification": "75504153DA",
+      "requestQty": 1,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-01-09E (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | FR056 (Customer Supplied Material Warehouse) | CJ-01-04B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 2026100999",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "26/11/2026 21:17:23",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261126-29223",
       "requestDate": "26/11/2026 21:17:08",
