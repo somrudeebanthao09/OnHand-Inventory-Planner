@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-26T13:41:49.076Z",
+  "updatedAt": "2026-11-26T13:42:06.632Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261126-26463",
+      "requestDate": "26/11/2026 20:42:06",
+      "requestedAt": "26/11/2026 20:42:06",
+      "moNumber": "MO-20261124-003984",
+      "ppbomNumber": "PPBOM-20261124-004317",
+      "directTransferDocs": "ZJDB-261124-000081",
+      "materialCode": "1005QT00511",
+      "materialName": "DOLLY COVER HINGE",
+      "specification": "NVE96547",
+      "requestQty": 16,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Defective Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CC-04-01B (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026083001, 2026100299, 2026102701, 2026111801",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "26/11/2026 20:42:06",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261126-08917",
       "requestDate": "26/11/2026 20:41:47",
