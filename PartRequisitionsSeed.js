@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-26T06:21:05.198Z",
+  "updatedAt": "2026-11-26T06:39:33.363Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261126-73259",
+      "requestDate": "26/11/2026 13:39:32",
+      "requestedAt": "26/11/2026 13:39:32",
+      "moNumber": "MO-20261124-003985",
+      "ppbomNumber": "PPBOM-20261124-004318",
+      "directTransferDocs": "ZJDB-261124-000082",
+      "materialCode": "1005QT00666",
+      "materialName": "NEUTRAL 2 + 18 Way label",
+      "specification": "75504152EA",
+      "requestQty": 4,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "จักรกฤษ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CI-01-03A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 2026100299",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "26/11/2026 13:39:33",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261126-65123",
       "requestDate": "26/11/2026 13:21:04",
