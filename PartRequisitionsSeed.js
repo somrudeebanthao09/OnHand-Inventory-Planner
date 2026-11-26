@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-26T18:55:57.291Z",
+  "updatedAt": "2026-11-26T18:58:23.698Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261127-03782",
+      "requestDate": "27/11/2026 01:58:23",
+      "requestedAt": "27/11/2026 01:58:23",
+      "moNumber": "MO-20261125-004027",
+      "ppbomNumber": "PPBOM-20261125-004361",
+      "directTransferDocs": "ZJDB-261125-000047",
+      "materialCode": "1005QT00609",
+      "materialName": "LABEL BLANK 21X13 56P310RP",
+      "specification": "915678",
+      "requestQty": 1000,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CI-01-04D (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026103199, 2026110601",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "27/11/2026 01:58:23",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261127-40753",
       "requestDate": "27/11/2026 01:35:40",
