@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-26T03:51:04.693Z",
+  "updatedAt": "2026-11-26T04:29:05.654Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261126-45249",
+      "requestDate": "26/11/2026 11:29:04",
+      "requestedAt": "26/11/2026 11:29:04",
+      "moNumber": "MO-20261124-003985",
+      "ppbomNumber": "PPBOM-20261124-004318",
+      "directTransferDocs": "ZJDB-261124-000082",
+      "materialCode": "1005QT00343",
+      "materialName": "Busbar 2 + 18",
+      "specification": "75504112AA",
+      "requestQty": 45,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CH-05-03A (Customer Supplied Material Warehouse) | CC-01-12B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 2026102601, 2026103001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "26/11/2026 11:29:05",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261126-91177",
       "requestDate": "26/11/2026 10:33:10",
