@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-26T13:41:06.251Z",
+  "updatedAt": "2026-11-26T13:41:49.076Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261126-08917",
+      "requestDate": "26/11/2026 20:41:47",
+      "requestedAt": "26/11/2026 20:41:47",
+      "moNumber": "MO-20261124-003984",
+      "ppbomNumber": "PPBOM-20261124-004317",
+      "directTransferDocs": "ZJDB-261124-000081",
+      "materialCode": "1005QT00390",
+      "materialName": "CIRCUIT IDENTIFICATION LABEL SPLIT",
+      "specification": "QGH32910",
+      "requestQty": 14,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026111601, 2026112103",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "26/11/2026 20:41:48",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261126-66087",
       "requestDate": "26/11/2026 20:41:05",
