@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-26T19:01:55.895Z",
+  "updatedAt": "2026-11-26T19:17:33.940Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261127-52879",
+      "requestDate": "27/11/2026 02:17:31",
+      "requestedAt": "27/11/2026 02:17:31",
+      "moNumber": "MO-20261117-003648",
+      "ppbomNumber": "PPBOM-20261117-003961",
+      "directTransferDocs": "ZJDB-261117-000070",
+      "materialCode": "1005QT00591",
+      "materialName": "INSTRUCTION SHEET",
+      "specification": "GEX45205",
+      "requestQty": 56,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CI-01-02F (Customer Supplied Material Warehouse) | CI-01-03A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CI-02-05C (Customer Supplied Material Warehouse)",
+      "lotSummary": "20261102, 2026100299",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "27/11/2026 02:17:32",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261127-03782",
       "requestDate": "27/11/2026 01:58:23",
