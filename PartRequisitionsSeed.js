@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-26T13:42:06.632Z",
+  "updatedAt": "2026-11-26T13:46:04.612Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261126-64451",
+      "requestDate": "26/11/2026 20:46:03",
+      "requestedAt": "26/11/2026 20:46:03",
+      "moNumber": "MO-20261124-003984",
+      "ppbomNumber": "PPBOM-20261124-004317",
+      "directTransferDocs": "ZJDB-261124-000081",
+      "materialCode": "1005QT00605",
+      "materialName": "IP2 COVER 4 WAY ADD ON",
+      "specification": "75170034AA",
+      "requestQty": 6,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Defective Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CC-03-04B (Customer Supplied Material Warehouse) | Public area (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026091901, 2026093001, 2026100601, 2026110701, 2026111801",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "26/11/2026 20:46:04",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261126-26463",
       "requestDate": "26/11/2026 20:42:06",
