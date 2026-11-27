@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-27T07:53:13.625Z",
+  "updatedAt": "2026-11-27T08:30:34.651Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261127-35085",
+      "requestDate": "27/11/2026 15:30:34",
+      "requestedAt": "27/11/2026 15:30:34",
+      "moNumber": "1126",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00492",
+      "materialName": "DBS15 CARTON 380X127X270",
+      "specification": "JYT94112",
+      "requestQty": 8,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "จักรกฤษ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CI-09-15A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CH-09-03B (Customer Supplied Material Warehouse) | CF-01-03B (Customer Supplied Material Warehouse) | Public area (Defective Warehouse)",
+      "lotSummary": "2026083001, 2026091701",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "27/11/2026 15:30:34",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261127-65278",
       "requestDate": "27/11/2026 14:21:04",
