@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-27T01:30:34.904Z",
+  "updatedAt": "2026-11-27T01:37:41.711Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261127-61930",
+      "requestDate": "27/11/2026 08:37:40",
+      "requestedAt": "27/11/2026 08:37:40",
+      "moNumber": "MO-20261125-004027",
+      "ppbomNumber": "PPBOM-20261125-004361",
+      "directTransferDocs": "ZJDB-261125-000047",
+      "materialCode": "1005QT00458",
+      "materialName": "DBF15/101 15 WAY COVER WH",
+      "specification": "826742",
+      "requestQty": 1,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Defective Warehouse) | Public area (Scrap Warehouse) | CF-02-01A (Customer Supplied Material Warehouse) | CQ-06-10A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026093001, 2026100501, 2026111701",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "27/11/2026 08:37:41",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261127-35154",
       "requestDate": "27/11/2026 08:30:34",
