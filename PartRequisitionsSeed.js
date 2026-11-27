@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-27T15:57:59.857Z",
+  "updatedAt": "2026-11-27T15:59:00.865Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261127-40770",
+      "requestDate": "27/11/2026 22:58:59",
+      "requestedAt": "27/11/2026 22:58:59",
+      "moNumber": "MO-20261124-003994",
+      "ppbomNumber": "PPBOM-20261124-004328",
+      "directTransferDocs": "ZJDB-261124-000097",
+      "materialCode": "1005QT00716",
+      "materialName": "Plastic with glue size A4",
+      "specification": "75503809AA",
+      "requestQty": 43,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Bending) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Bending) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | CJ-01-11B (Semi-finished Product Warehouse-Waiting Assembly) | CC-02-11B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 2026090707, 2026090907, 2026111401, 2026090501, 2026090701, 2026090702, 2026090703, 2026090704, 2026090705, 2026090706, 2026090708, 2026090801, 2026090802, 2026090901, 2026090903, 2026090904, 2026090902, 2026090905, 2026090906, 2026090908, 2026090909, 2026091001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "27/11/2026 22:59:00",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261127-28120",
       "requestDate": "27/11/2026 22:53:47",
