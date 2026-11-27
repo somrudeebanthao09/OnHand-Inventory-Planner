@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-27T17:53:13.677Z",
+  "updatedAt": "2026-11-27T18:28:00.841Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261128-81961",
+      "requestDate": "28/11/2026 01:28:01",
+      "requestedAt": "28/11/2026 01:28:01",
+      "moNumber": "MO-20261124-003994",
+      "ppbomNumber": "PPBOM-20261124-004328",
+      "directTransferDocs": "ZJDB-261124-000098, ZJDB-261124-000097",
+      "materialCode": "1005QT00865",
+      "materialName": "BLANK LABEL STICKER SIZE12X12 OFFER1",
+      "specification": "51150308",
+      "requestQty": 4000,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-01-01C (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026083001, 2026111301",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "28/11/2026 01:28:01",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261127-67854",
       "requestDate": "27/11/2026 23:46:07",
