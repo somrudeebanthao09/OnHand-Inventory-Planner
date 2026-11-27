@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-27T09:24:11.077Z",
+  "updatedAt": "2026-11-27T09:24:36.918Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261127-77714",
+      "requestDate": "27/11/2026 16:24:37",
+      "requestedAt": "27/11/2026 16:24:37",
+      "moNumber": "MO-20261126-004072",
+      "ppbomNumber": "PPBOM-20261126-004414",
+      "directTransferDocs": "ZJDB-261126-000013",
+      "materialCode": "1005QT00476",
+      "materialName": "DBF30/22 30 W FLUSH BOX",
+      "specification": "827087",
+      "requestQty": 19,
+      "unit": "Set",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Defective Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Scrap Warehouse) | Public area (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026091401, 2026091701, 2026111301, 2026111302, 2026111303, 2026111304, 2026111305",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "27/11/2026 16:24:37",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261127-51856",
       "requestDate": "27/11/2026 16:24:11",
