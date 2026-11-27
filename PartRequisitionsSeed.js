@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-27T08:39:38.040Z",
+  "updatedAt": "2026-11-27T08:43:50.832Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261127-31336",
+      "requestDate": "27/11/2026 15:43:50",
+      "requestedAt": "27/11/2026 15:43:50",
+      "moNumber": "1126",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00692",
+      "materialName": "NOTICE LABEL-DOOR",
+      "specification": "GEX64682",
+      "requestQty": 19,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "จักรกฤษ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CI-01-06D (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CJ-01-10B (Customer Supplied Material Warehouse) | CH-02-03D (Customer Supplied Material Warehouse)",
+      "lotSummary": "20261102, 2026083001, 2026103001, 2026090901",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "27/11/2026 15:43:51",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261127-78549",
       "requestDate": "27/11/2026 15:39:37",
