@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-27T13:53:13.664Z",
+  "updatedAt": "2026-11-27T14:09:24.294Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261127-65230",
+      "requestDate": "27/11/2026 21:09:24",
+      "requestedAt": "27/11/2026 21:09:24",
+      "moNumber": "MO-20261124-003994",
+      "ppbomNumber": "PPBOM-20261124-004328",
+      "directTransferDocs": "ZJDB-261124-000097",
+      "materialCode": "1005QT00199",
+      "materialName": "Way label cover 18way",
+      "specification": "BRU53760",
+      "requestQty": 76,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "อรรถพร",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-02-14A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | FR056 (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CJ-01-03B (Customer Supplied Material Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | CJ-01-09B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 2026102101, 2026090901, 2026100999",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "27/11/2026 21:09:25",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261127-20511",
       "requestDate": "27/11/2026 18:18:40",
