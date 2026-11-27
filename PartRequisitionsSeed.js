@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-27T01:53:14.458Z",
+  "updatedAt": "2026-11-27T01:54:53.673Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -90,17 +90,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderA",
       "shift": "A",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
-      "onHandLocation": "Public area (Defective Warehouse) | Public area (Scrap Warehouse) | CF-02-01A (Customer Supplied Material Warehouse) | CQ-06-10A (Customer Supplied Material Warehouse)",
-      "lotSummary": "2026093001, 2026100501, 2026111701",
-      "issuerName": "",
-      "issuedAt": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CQ-06-10A",
+          "qty": 1,
+          "lot": "2026111701"
+        }
+      ],
+      "locationsSummary": "Loc#1: CQ-06-10A (1 PCS) [Lot: 2026111701]",
+      "onHandLocation": "Public area (Defective Warehouse) | Public area (Scrap Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026111701",
+      "issuerName": "อธิเบศ",
+      "issuedAt": "27/11/2026 08:54:49",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "27/11/2026 08:37:41",
-      "photoTakenAt": ""
+      "updatedAt": "27/11/2026 08:54:49",
+      "photoTakenAt": "27/11/2026 08:54:49",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261127-61930.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261127-35154",
