@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-27T08:30:34.651Z",
+  "updatedAt": "2026-11-27T08:38:41.451Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261127-21975",
+      "requestDate": "27/11/2026 15:38:40",
+      "requestedAt": "27/11/2026 15:38:40",
+      "moNumber": "1126",
+      "ppbomNumber": "",
+      "directTransferDocs": "",
+      "materialCode": "1005QT00467",
+      "materialName": "DBF15-12 BUSBAR",
+      "specification": "827250",
+      "requestQty": 32,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "จักรกฤษ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CC-05-02A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Defective Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 2026110301, 2026112001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "27/11/2026 15:38:41",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261127-35085",
       "requestDate": "27/11/2026 15:30:34",
