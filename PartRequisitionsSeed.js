@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-27T03:53:13.617Z",
+  "updatedAt": "2026-11-27T04:21:24.195Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261127-84695",
+      "requestDate": "27/11/2026 11:21:24",
+      "requestedAt": "27/11/2026 11:21:24",
+      "moNumber": "MO-20261125-004027",
+      "ppbomNumber": "PPBOM-20261125-004361",
+      "directTransferDocs": "ZJDB-261125-000047",
+      "materialCode": "1005QT00297",
+      "materialName": "BLANK 112 X 70MM MATT",
+      "specification": "GEX45224",
+      "requestQty": 2,
+      "unit": "Set",
+      "reason": "ลาเบล",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CI-02-01D (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | CI-01-05A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026090901, 2026100299, 2026100901",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "27/11/2026 11:21:24",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261127-98705",
       "requestDate": "27/11/2026 08:38:17",
