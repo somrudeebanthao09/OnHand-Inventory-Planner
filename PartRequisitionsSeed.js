@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-27T15:19:34.233Z",
+  "updatedAt": "2026-11-27T15:24:08.929Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -52,17 +52,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderB",
       "shift": "B",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CF-02-01A",
+          "qty": 76,
+          "lot": ""
+        }
+      ],
+      "locationsSummary": "Loc#1: CF-02-01A (76 PCS)",
       "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CC-09-09A (Customer Supplied Material Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Bending) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | Public area (Defective Warehouse) | Public area (Scrap Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Customer Supplied Material Warehouse) | CF-02-05A (Customer Supplied Material Warehouse) | CO-02-08B (Customer Supplied Material Warehouse)",
       "lotSummary": "2026090501, 2026090702, 2026090703, 2026090704, 2026090705, 2026090706, 2026090707, 2026090708, 2026090709, 2026090801, 2026090802, 2026090901, 2026100299, 2026102901, 2026103002, 2026090701, 2026090902, 2026090903, 2026090904, 2026090905, 2026090906, 2026090907, 2026090908, 2026091001, 2026091002, 2026091401, 2026093011, 2026102701, 2026111701, 2026111705, 2026111706, 2026111708, 2026111709, 2026111711, 2026112502, 2026112503, 2026112504, 2026112501, 2026112601, 2026112603, 2026112602",
-      "issuerName": "",
-      "issuedAt": "",
+      "issuerName": "สาวิตรี",
+      "issuedAt": "27/11/2026 22:24:05",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "27/11/2026 22:19:35",
-      "photoTakenAt": ""
+      "updatedAt": "27/11/2026 22:24:05",
+      "photoTakenAt": "27/11/2026 22:24:05",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261127-75204.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261127-58016",
