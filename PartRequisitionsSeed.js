@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T12:40:08.766Z",
+  "updatedAt": "2026-11-28T13:46:01.811Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261128-60699",
+      "requestDate": "28/11/2026 20:45:59",
+      "requestedAt": "28/11/2026 20:45:59",
+      "moNumber": "MO-20261125-004031",
+      "ppbomNumber": "PPBOM-20261125-004365",
+      "directTransferDocs": "ZJDB-261125-000052",
+      "materialCode": "1005QT00466",
+      "materialName": "DBF15-10 LINK",
+      "specification": "826681",
+      "requestQty": 46,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CE-05-04A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CJ-01-01B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026091101, 2026103001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "28/11/2026 20:46:00",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261128-13938",
       "requestDate": "28/11/2026 19:18:33",
