@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T13:46:01.811Z",
+  "updatedAt": "2026-11-28T13:46:40.514Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261128-99439",
+      "requestDate": "28/11/2026 20:46:38",
+      "requestedAt": "28/11/2026 20:46:38",
+      "moNumber": "MO-20261125-004031",
+      "ppbomNumber": "PPBOM-20261125-004365",
+      "directTransferDocs": "ZJDB-261125-000052",
+      "materialCode": "1005QT00273",
+      "materialName": "4DBE EARTHING CONDUCTOR TAG",
+      "specification": "824612",
+      "requestQty": 3,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "CG-03-02A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CJ-01-01B (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 2026103001",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "28/11/2026 20:46:39",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261128-60699",
       "requestDate": "28/11/2026 20:45:59",
