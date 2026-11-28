@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T12:27:15.979Z",
+  "updatedAt": "2026-11-28T12:28:51.310Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -58,17 +58,22 @@ window.PART_REQUISITIONS_SEED = {
           "location": "ไม่ระบุ Location",
           "qty": 288,
           "lot": "2026111602 NEW, 2026111603 NEW, 2026111604 NEW, 2026111605 NEW, 2026111606 NEW, 2026111607 NEW, 2026111608 NEW, 2026111609 NEW, 2026111611 NEW, 2026111612 NEW, 2026111613 NEW, 2026112405, 2026112406, 2026112411, 2026112412, 2026112414, 2026112415, 2026112417"
+        },
+        {
+          "location": "ไม่ระบุ Location",
+          "qty": 2,
+          "lot": "2026111602 NEW, 2026111603 NEW, 2026111604 NEW, 2026111605 NEW, 2026111606 NEW, 2026111607 NEW, 2026111608 NEW, 2026111609 NEW, 2026111611 NEW, 2026111612 NEW, 2026111613 NEW, 2026112405, 2026112406, 2026112411, 2026112412, 2026112414, 2026112415, 2026112417"
         }
       ],
-      "locationsSummary": "Loc#1: ไม่ระบุ Location (288 PCS) [Lot: 2026111602 NEW, 2026111603 NEW, 2026111604 NEW, 2026111605 NEW, 2026111606 NEW, 2026111607 NEW, 2026111608 NEW, 2026111609 NEW, 2026111611 NEW, 2026111612 NEW, 2026111613 NEW, 2026112405, 2026112406, 2026112411, 2026112412, 2026112414, 2026112415, 2026112417]",
+      "locationsSummary": "Loc#1: ไม่ระบุ Location (288 PCS) [Lot: 2026111602 NEW, 2026111603 NEW, 2026111604 NEW, 2026111605 NEW, 2026111606 NEW, 2026111607 NEW, 2026111608 NEW, 2026111609 NEW, 2026111611 NEW, 2026111612 NEW, 2026111613 NEW, 2026112405, 2026112406, 2026112411, 2026112412, 2026112414, 2026112415, 2026112417] | Loc#2: ไม่ระบุ Location (2 PCS) [Lot: 2026111602 NEW, 2026111603 NEW, 2026111604 NEW, 2026111605 NEW, 2026111606 NEW, 2026111607 NEW, 2026111608 NEW, 2026111609 NEW, 2026111611 NEW, 2026111612 NEW, 2026111613 NEW, 2026112405, 2026112406, 2026112411, 2026112412, 2026112414, 2026112415, 2026112417]",
       "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Bending) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Customer Supplied Material Warehouse) | CI-07-05A (Customer Supplied Material Warehouse) | CI-07-01A (Customer Supplied Material Warehouse) | CF-04-04A (Customer Supplied Material Warehouse)",
       "lotSummary": "2026111602 NEW, 2026111603 NEW, 2026111604 NEW, 2026111605 NEW, 2026111606 NEW, 2026111607 NEW, 2026111608 NEW, 2026111609 NEW, 2026111611 NEW, 2026111612 NEW, 2026111613 NEW, 2026112405, 2026112406, 2026112411, 2026112412, 2026112414, 2026112415, 2026112417",
       "issuerName": "อุทิศ",
-      "issuedAt": "28/11/2026 19:27:11",
+      "issuedAt": "28/11/2026 19:28:45",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "28/11/2026 19:27:11",
-      "photoTakenAt": "28/11/2026 19:27:11",
+      "updatedAt": "28/11/2026 19:28:45",
+      "photoTakenAt": "28/11/2026 19:28:45",
       "issuerUsername": "wh",
       "photoUrl": "part-photos/REQ-20261128-13938.jpg",
       "hasPhoto": true
