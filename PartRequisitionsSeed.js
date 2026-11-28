@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T16:08:26.121Z",
+  "updatedAt": "2026-11-28T16:08:59.148Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261128-38184",
+      "requestDate": "28/11/2026 23:08:57",
+      "requestedAt": "28/11/2026 23:08:57",
+      "moNumber": "MO-20261125-004036",
+      "ppbomNumber": "PPBOM-20261125-004374",
+      "directTransferDocs": "ZJDB-261125-000063",
+      "materialCode": "1005QT00195",
+      "materialName": "Carton 600",
+      "specification": "BRU53768",
+      "requestQty": 34,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Defective Warehouse) | Public area (Scrap Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Customer Supplied Material Warehouse) | CF-04-05B (Customer Supplied Material Warehouse) | CF-02-06A (Customer Supplied Material Warehouse) | CF-03-04A (Customer Supplied Material Warehouse) | CG-05-01A (Customer Supplied Material Warehouse) | CG-04-05A (Customer Supplied Material Warehouse) | CG-04-05B (Customer Supplied Material Warehouse) | CG-05-03A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 2026090501, 2026093001, 2026093002, 2026100299, 2026100701, 2026102001, 2026102002, 2026103101, 2026103102, 2026110401, 2026110402, 2026110901, 2026111301, 2026111302, 2026111401, 2026111701, 2026111901, 2026112101, 2026112102, 2026112301, 2026100501, 2026100601, 2026102404, 2026110701, 2026090201, 2026101401, 2026102405, 2026102406, 2026110702, 2026110703, 2026110704, 2026111808, 2026111809, 2026111810, 2026112601, 2026112602, 2026112603, 2026112604, 2026112605, 2026112606, 2026111801, 2026111802, 2026111803, 2026111804, 2026111805, 2026111806, 2026111807",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "28/11/2026 23:08:58",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261128-05000",
       "requestDate": "28/11/2026 23:08:23",
