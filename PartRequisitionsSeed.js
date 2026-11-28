@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T16:27:04.558Z",
+  "updatedAt": "2026-11-28T16:27:52.082Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -67,11 +67,19 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "28/11/2026 23:26:58",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "28/11/2026 23:26:58",
+      "updatedAt": "28/11/2026 23:27:52",
       "photoTakenAt": "28/11/2026 23:26:58",
       "issuerUsername": "wh",
       "photoUrl": "part-photos/REQ-20261128-38184.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "sheetRow": 290,
+      "kingdeeTransferDoc": "ZJDB-261129-000002",
+      "kingdeeTransferItem": "1005QT00195 | Spec: BRU53768",
+      "kingdeeTransferFromBin": "Public area (34)",
+      "kingdeeTransferToWh": "CK028",
+      "kingdeeTransferQty": "34 PCS",
+      "kingdeeTransferredAt": "28/11/2026 23:27:52",
+      "kingdeeTransferStatus": "ตัดจ่ายในระบบแล้ว (ZJDB-261129-000002)"
     },
     {
       "reqId": "REQ-20261128-05000",
