@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T03:05:07.896Z",
+  "updatedAt": "2026-11-28T03:06:39.505Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -2816,11 +2816,13 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "24/11/2026 18:42:44",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "24/11/2026 18:42:44",
+      "updatedAt": "28/11/2026 10:06:39",
       "photoTakenAt": "24/11/2026 18:42:44",
       "issuerUsername": "wh",
       "photoUrl": "part-photos/REQ-20261124-15411.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "sheetRow": 216,
+      "kingdeeTransferStatus": "ข้าม (ตัดจ่ายไม่ได้): ไม่มีรหัส Specification (คอลัมน์ H)"
     },
     {
       "reqId": "REQ-20261124-45063",
@@ -3502,11 +3504,13 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "24/11/2026 18:50:11",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "24/11/2026 18:50:11",
+      "updatedAt": "28/11/2026 10:06:39",
       "photoTakenAt": "24/11/2026 18:50:11",
       "issuerUsername": "admin",
       "photoUrl": "part-photos/REQ-20261124-44680.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "sheetRow": 202,
+      "kingdeeTransferStatus": "ข้าม (ตัดจ่ายไม่ได้): บันทึก/อนุมัติไม่สำเร็จ (สถานะปัจจุบัน: Draft)"
     },
     {
       "reqId": "REQ-20261124-18671",
