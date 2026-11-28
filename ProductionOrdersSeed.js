@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-28T16:14:54.393Z",
+  "snapshotAt": "2026-11-28T16:35:02.904Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 17668,
   "orders": [
@@ -45658,8 +45658,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 5538,
-      "wipQty": 491,
+      "consumedQty": 6029,
+      "wipQty": 0,
       "issuingWarehouse": "Aluminum Die Casting Semi-Finished Product Warehouse-Waiting Packaging",
       "requiredTime": "2026-11-24 10:26:57"
     },
