@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T13:56:07.380Z",
+  "updatedAt": "2026-11-28T13:57:03.873Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -52,17 +52,26 @@ window.PART_REQUISITIONS_SEED = {
       "requesterUsername": "LeaderB",
       "shift": "B",
       "requesterNote": "",
-      "status": "pending",
-      "locations": [],
-      "locationsSummary": "",
+      "status": "issued",
+      "locations": [
+        {
+          "location": "CJ-01-01B",
+          "qty": 3,
+          "lot": "2026103001"
+        }
+      ],
+      "locationsSummary": "Loc#1: CJ-01-01B (3 PCS) [Lot: 2026103001]",
       "onHandLocation": "CG-03-02A (Customer Supplied Material Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CJ-01-01B (Customer Supplied Material Warehouse)",
-      "lotSummary": "2026083001, 2026103001",
-      "issuerName": "",
-      "issuedAt": "",
+      "lotSummary": "2026103001",
+      "issuerName": "สาวิตรี",
+      "issuedAt": "28/11/2026 20:56:31",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "28/11/2026 20:46:39",
-      "photoTakenAt": ""
+      "updatedAt": "28/11/2026 20:56:31",
+      "photoTakenAt": "28/11/2026 20:56:31",
+      "issuerUsername": "wh",
+      "photoUrl": "part-photos/REQ-20261128-99439.jpg",
+      "hasPhoto": true
     },
     {
       "reqId": "REQ-20261128-60699",
@@ -96,11 +105,19 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "28/11/2026 20:54:54",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "28/11/2026 20:54:54",
+      "updatedAt": "28/11/2026 20:57:03",
       "photoTakenAt": "28/11/2026 20:54:54",
       "issuerUsername": "wh",
       "photoUrl": "part-photos/REQ-20261128-60699.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "sheetRow": 287,
+      "kingdeeTransferDoc": "ZJDB-261128-000176",
+      "kingdeeTransferItem": "1005QT00466 | Spec: 826681",
+      "kingdeeTransferFromBin": "CE-05-04A (46)",
+      "kingdeeTransferToWh": "CK028",
+      "kingdeeTransferQty": "46 PCS",
+      "kingdeeTransferredAt": "28/11/2026 20:57:03",
+      "kingdeeTransferStatus": "ตัดจ่ายในระบบแล้ว (ZJDB-261128-000176)"
     },
     {
       "reqId": "REQ-20261128-13938",
