@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T03:20:55.826Z",
+  "updatedAt": "2026-11-28T03:21:45.932Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -2498,11 +2498,13 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "25/11/2026 13:17:55",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "25/11/2026 13:17:55",
+      "updatedAt": "28/11/2026 10:21:45",
       "photoTakenAt": "25/11/2026 13:17:55",
       "issuerUsername": "wh",
       "photoUrl": "part-photos/REQ-20261125-84979.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "sheetRow": 224,
+      "kingdeeTransferStatus": "ข้าม (ตัดจ่ายไม่ได้): ไม่พบ Storage Bin CI-02-05E สำหรับ Spec AAV82794-BOI (พบ Bin: ไม่มี) (ตรวจทั้ง Standard และ Entrusted Processing แล้ว)"
     },
     {
       "reqId": "REQ-20261125-15187",
