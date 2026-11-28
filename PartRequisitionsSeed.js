@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T16:27:52.082Z",
+  "updatedAt": "2026-11-28T16:47:22.513Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261128-41571",
+      "requestDate": "28/11/2026 23:47:20",
+      "requestedAt": "28/11/2026 23:47:20",
+      "moNumber": "MO-20261125-004036",
+      "ppbomNumber": "PPBOM-20261125-004374",
+      "directTransferDocs": "ZJDB-261125-000063",
+      "materialCode": "1005QT00687",
+      "materialName": "NEUTRAL TERMINAL 14H; 12SCR",
+      "specification": "75503580CA",
+      "requestQty": 23,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Defective Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Bending) | Public area (Scrap Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CC-01-07A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026083001, 2026090701, 2026090702, 2026090801, 2026090802, 2026093001, 2026090901, 2026090902, 2026100501, 2026103001, 2026112103",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "28/11/2026 23:47:21",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261128-38184",
       "requestDate": "28/11/2026 23:08:57",
