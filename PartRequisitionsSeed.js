@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T03:23:58.235Z",
+  "updatedAt": "2026-11-28T03:24:53.008Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -1486,11 +1486,13 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "26/11/2026 21:07:36",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "26/11/2026 21:07:36",
+      "updatedAt": "28/11/2026 10:24:52",
       "photoTakenAt": "26/11/2026 21:07:36",
       "issuerUsername": "wh",
       "photoUrl": "part-photos/REQ-20261126-64451.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "sheetRow": 248,
+      "kingdeeTransferStatus": "ข้าม (ตัดจ่ายไม่ได้): ไม่พบ Storage Bin CC-03-04B สำหรับ Spec 75170034AA (พบ Bin: Public area, CO-03-12B) (ตรวจทั้ง Standard และ Entrusted Pro"
     },
     {
       "reqId": "REQ-20261126-26463",
