@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T12:10:07.746Z",
+  "updatedAt": "2026-11-28T12:18:34.091Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261128-13938",
+      "requestDate": "28/11/2026 19:18:33",
+      "requestedAt": "28/11/2026 19:18:33",
+      "moNumber": "MO-20261125-004036",
+      "ppbomNumber": "PPBOM-20261125-004374",
+      "directTransferDocs": "ZJDB-261125-000063",
+      "materialCode": "1005QT00175",
+      "materialName": "Busway base 12way",
+      "specification": "BRU53693",
+      "requestQty": 290,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Semi-finished Product Warehouse-Waiting Bending) | Public area (Semi-finished Product Warehouse-Waiting Assembly) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Customer Supplied Material Warehouse) | CI-07-05A (Customer Supplied Material Warehouse) | CI-07-01A (Customer Supplied Material Warehouse) | CF-04-04A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026090701, 2026090702, 2026090703, 2026090704, 2026090801, 2026090802, 2026100707, 2026102103, 2026102104, 2026102106, 2026090901, 2026090902, 2026090903, 2026091001, 2026091002, 2026111602 NEW, 2026111603 NEW, 2026111604 NEW, 2026111605 NEW, 2026111606 NEW, 2026111607 NEW, 2026111608 NEW, 2026111609 NEW, 2026111611 NEW, 2026111612 NEW, 2026111613 NEW, 2026112405, 2026112406, 2026112411, 2026112412, 2026112414, 2026112415, 2026112417, 2026112401, 2026112402, 2026112403, 2026112404, 2026112407, 2026112408, 2026112409, 2026112410, 2026112501, 2026112502, 2026112413, 2026112416",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "28/11/2026 19:18:33",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261128-36979",
       "requestDate": "28/11/2026 14:25:35",
