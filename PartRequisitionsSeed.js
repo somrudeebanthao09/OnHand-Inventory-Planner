@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T07:20:27.103Z",
+  "updatedAt": "2026-11-28T07:24:39.657Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261128-79715",
+      "requestDate": "28/11/2026 14:24:38",
+      "requestedAt": "28/11/2026 14:24:38",
+      "moNumber": "MO-20261126-004113",
+      "ppbomNumber": "PPBOM-20261126-004454",
+      "directTransferDocs": "ZJDB-261126-000043",
+      "materialCode": "1005QT00510",
+      "materialName": "DOLLY COVER 2 + 6, 6 WAY",
+      "specification": "NVE96256",
+      "requestQty": 1,
+      "unit": "PCS",
+      "reason": "ของไม่ครบตามถุง/Shortage",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | CC-04-01A (Customer Supplied Material Warehouse) | Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | CC-03-03B (Customer Supplied Material Warehouse) | CC-04-03A (Customer Supplied Material Warehouse) | CF-01-02A (Customer Supplied Material Warehouse) | CI-04-01A (Customer Supplied Material Warehouse) | CC-03-02A (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026101701, 2026101908, 2026102201, 2026112401, 2026112402, 2026112407, 2026112408, 2026112410, 2026112406, 2026112411, 2026112404, 2026112405, 2026112409",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "28/11/2026 14:24:39",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261128-24742",
       "requestDate": "28/11/2026 14:10:23",
