@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T06:10:07.596Z",
+  "updatedAt": "2026-11-28T07:10:24.683Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261128-24742",
+      "requestDate": "28/11/2026 14:10:23",
+      "requestedAt": "28/11/2026 14:10:23",
+      "moNumber": "MO-20261126-004113",
+      "ppbomNumber": "PPBOM-20261126-004454",
+      "directTransferDocs": "ZJDB-261126-000043",
+      "materialCode": "1005QT00763",
+      "materialName": "Schneider carton label",
+      "specification": "75503737AA",
+      "requestQty": 2000,
+      "unit": "PCS",
+      "reason": "ลาเบล",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "Public area (Defective Warehouse) | Public area (Scrap Warehouse) | ไม่ระบุ Location (Sealed Inventory Warehouse) | Public area (Customer Supplied Material Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026091401, 2026091701, 2026091702, 2026093001, 2026093002, 2026100702, 2026101601, 2026102402, 2026100504, 2026100701, 2026102401, 2026111001, 2026112701",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "28/11/2026 14:10:24",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261128-10397",
       "requestDate": "28/11/2026 10:51:49",
