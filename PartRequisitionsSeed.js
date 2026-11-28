@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T07:14:55.388Z",
+  "updatedAt": "2026-11-28T07:20:27.103Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -67,11 +67,13 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "28/11/2026 14:14:34",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "28/11/2026 14:14:34",
+      "updatedAt": "28/11/2026 14:20:27",
       "photoTakenAt": "28/11/2026 14:14:34",
       "issuerUsername": "wh",
       "photoUrl": "part-photos/REQ-20261128-24742.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "sheetRow": 283,
+      "kingdeeTransferStatus": "ข้าม (ตัดจ่ายไม่ได้): สต็อกใน Bin Public area มีไม่พอ (913 < 2000) (ตรวจทั้ง Standard และ Entrusted Processing แล้ว)"
     },
     {
       "reqId": "REQ-20261128-10397",
