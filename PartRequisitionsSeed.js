@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T03:28:20.827Z",
+  "updatedAt": "2026-11-28T03:29:11.069Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -364,11 +364,13 @@ window.PART_REQUISITIONS_SEED = {
       "issuedAt": "27/11/2026 22:24:05",
       "issuerNote": "",
       "issuePhotoDataUrl": "",
-      "updatedAt": "27/11/2026 22:24:05",
+      "updatedAt": "28/11/2026 10:29:11",
       "photoTakenAt": "27/11/2026 22:24:05",
       "issuerUsername": "wh",
       "photoUrl": "part-photos/REQ-20261127-75204.jpg",
-      "hasPhoto": true
+      "hasPhoto": true,
+      "sheetRow": 274,
+      "kingdeeTransferStatus": "ข้าม (ตัดจ่ายไม่ได้): ไม่พบ Storage Bin CF-02-01A สำหรับ Spec BRU53692 (พบ Bin: Public area) (ตรวจทั้ง Standard และ Entrusted Processing แล้ว)"
     },
     {
       "reqId": "REQ-20261127-58016",
