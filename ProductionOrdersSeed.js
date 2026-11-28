@@ -1,5 +1,5 @@
 window.PRODUCTION_ORDERS_SEED = {
-  "snapshotAt": "2026-11-28T15:55:04.813Z",
+  "snapshotAt": "2026-11-28T16:14:54.393Z",
   "filename": "Export list_Production Material List-Latest.xlsx + Export Data_Direct Transfers-Latest.xlsx",
   "count": 17668,
   "orders": [
@@ -11758,8 +11758,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 204,
+      "consumedQty": 204,
+      "wipQty": 0,
       "issuingWarehouse": "Automobile Semi-finished Product Warehouse-Waiting Packaging",
       "requiredTime": "2026-11-28 14:22:47"
     },
@@ -11848,8 +11848,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 41,
+      "consumedQty": 41,
+      "wipQty": 0,
       "issuingWarehouse": "Semi-finished Product Warehouse After Plating",
       "requiredTime": "2026-11-28 14:08:54"
     },
@@ -12148,8 +12148,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 1470,
-      "wipQty": 34,
+      "consumedQty": 1504,
+      "wipQty": 0,
       "issuingWarehouse": "Automobile Semi-finished Product Warehouse-Waiting Packaging",
       "requiredTime": "2026-11-28 10:32:09"
     },
@@ -20548,8 +20548,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 400,
+      "consumedQty": 343,
+      "wipQty": 57,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Welding",
       "requiredTime": "2026-11-26 14:20:42"
     },
@@ -20578,8 +20578,8 @@ window.PRODUCTION_ORDERS_SEED = {
       "ppbomIssueQtyAvailable": true,
       "materialIssueDocs": "",
       "onlyZjdbMode": true,
-      "consumedQty": 0,
-      "wipQty": 800,
+      "consumedQty": 686,
+      "wipQty": 114,
       "issuingWarehouse": "Semi-finished Product Warehouse-Waiting Welding",
       "requiredTime": "2026-11-26 14:20:42"
     },
