@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T07:24:39.657Z",
+  "updatedAt": "2026-11-28T07:25:36.885Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261128-36979",
+      "requestDate": "28/11/2026 14:25:35",
+      "requestedAt": "28/11/2026 14:25:35",
+      "moNumber": "MO-20261126-004113",
+      "ppbomNumber": "PPBOM-20261126-004454",
+      "directTransferDocs": "ZJDB-261126-000043",
+      "materialCode": "1005QT00600",
+      "materialName": "Interior2 + 6way label",
+      "specification": "75504153BA",
+      "requestQty": 5,
+      "unit": "PCS",
+      "reason": "งานเสีย/NG ในไลน์ผลิต",
+      "requesterName": "ภาคภูมิ",
+      "requesterUsername": "LeaderA",
+      "shift": "A",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse) | Public area (Customer Supplied Material Warehouse)",
+      "lotSummary": "2026101201, 2026111701, 2026112701",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "28/11/2026 14:25:36",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261128-79715",
       "requestDate": "28/11/2026 14:24:38",
