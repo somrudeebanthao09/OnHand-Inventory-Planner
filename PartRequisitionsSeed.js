@@ -1,5 +1,5 @@
 window.PART_REQUISITIONS_SEED = {
-  "updatedAt": "2026-11-28T16:47:22.513Z",
+  "updatedAt": "2026-11-28T16:50:30.284Z",
   "spreadsheetId": "1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg",
   "spreadsheetName": "On-Hand Inventory Planner - H9 Assembly",
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1at35N5AItBVGiwRmgF74JAB2u6w4ZQ5MZJX1ExgNJHg/edit",
@@ -35,6 +35,35 @@ window.PART_REQUISITIONS_SEED = {
     "updatedAt": "2026-11-14T04:55:20.785Z"
   },
   "items": [
+    {
+      "reqId": "REQ-20261128-29343",
+      "requestDate": "28/11/2026 23:50:28",
+      "requestedAt": "28/11/2026 23:50:28",
+      "moNumber": "MO-20261125-004036",
+      "ppbomNumber": "PPBOM-20261125-004374",
+      "directTransferDocs": "ZJDB-261125-000063, ZJDB-261125-000064",
+      "materialCode": "1005QT00177",
+      "materialName": "Center cover 12way",
+      "specification": "75170108AA",
+      "requestQty": 11,
+      "unit": "PCS",
+      "reason": "มีใน BOM แต่ไม่โดน Direct Transfer (ZJDB)",
+      "requesterName": "เจนภพ",
+      "requesterUsername": "LeaderB",
+      "shift": "B",
+      "requesterNote": "",
+      "status": "pending",
+      "locations": [],
+      "locationsSummary": "",
+      "onHandLocation": "ไม่ระบุ Location (Sealed Inventory Warehouse) | ไม่ระบุ Location (H9 Assembly-Workshop Warehouse)",
+      "lotSummary": "2026090702, 2026102101, 2026110401",
+      "issuerName": "",
+      "issuedAt": "",
+      "issuerNote": "",
+      "issuePhotoDataUrl": "",
+      "updatedAt": "28/11/2026 23:50:29",
+      "photoTakenAt": ""
+    },
     {
       "reqId": "REQ-20261128-41571",
       "requestDate": "28/11/2026 23:47:20",
